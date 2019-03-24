@@ -1,0 +1,23 @@
+{
+  "name": "Achievement-Watcher-Updater",
+  "description": "Keep Achievement Watcher up-to-date",
+  "version": "1.0.0",
+  "main": "updater.js",
+  "scripts": {
+    "start": "node updater.js",
+    "clean": "npm prune --production"
+  },
+  "author": "Xan",
+  "license": "LGPL-3.0-only",
+  "devDependencies": {},
+  "dependencies": {
+    "asar-node": "^1.1.5",
+    "content-disposition": "^0.5.3",
+    "mkdirp": "^0.5.1",
+    "moment": "^2.24.0",
+    "rimraf": "^2.6.3",
+    "rwlock": "^5.0.0",
+    "single-instance": "0.0.1",
+    "win-tasklist": "^1.0.0"
+  }
+}

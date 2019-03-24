@@ -1,0 +1,11 @@
+html[lang="es"] .achievement .stats .time, 
+html[lang="es"] .achievement .stats .community 
+{
+    width: 235px;
+}
+
+html[lang="ja"] .achievement .stats .time, 
+html[lang="ja"] .achievement .stats .community 
+{
+    width: 260px;
+}

@@ -1,0 +1,7 @@
+{
+  "dir": "cache",
+  "data_retention": {
+    "header": 6,
+    "ach": 3
+  }
+}

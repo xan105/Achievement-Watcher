@@ -1,0 +1,8 @@
+\native\regedit\pkg\
+\native\regedit\src\
+\native\regedit\build.cmd
+\native\regedit\dependencies.cmd
+\native\regedit\README.md
+\native\regedit\build\regedit.x64.h
+\locale\README.md
+.git

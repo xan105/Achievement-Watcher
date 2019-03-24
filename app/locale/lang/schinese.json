@@ -1,0 +1,16 @@
+{
+  "achievements" : "成就",
+  "perfectGame" : "完美达成的游戏数",
+  "completionRate": "游戏平均完成率",
+  "unlocked" : "已获得",
+  "locked": "剩余",
+  "globalStat" : "所有玩家的百分比",
+  "hiddenRemain" : "剩余项隐藏成就",
+  "revealedOnceUnlocked" : "每项成就的详情将在解锁后显示",
+  "allGamesBackButton" : "所有比赛",
+  "settings": "设置",
+  "language": "语言",
+  "hiddenAch": "项隐藏成就",
+  "cancel": "取消",
+  "save": "保存"
+}

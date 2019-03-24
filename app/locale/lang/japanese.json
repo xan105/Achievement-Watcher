@@ -1,0 +1,17 @@
+{
+  "achievements" : "実績",
+  "perfectGame" : "全実績解除",
+  "completionRate": "ゲームの平均達成率",
+  "emptyList": "ノーゲーム",
+  "loading": "ロード中",
+  "locked": "残っている",
+  "globalStat" : "すべてのプレイヤーのうち",
+  "hiddenRemain" : "個の秘密の実績が残っている",
+  "revealedOnceUnlocked" : "各実績の詳細はアンロック時に明らかとなる",
+  "allGamesBackButton" : "すべてのゲーム",
+  "settings": "設定",
+  "language": "言語",
+  "hiddenAch": "個の秘密の実績",
+  "cancel": "キャンセル",
+  "save": "OK"
+}

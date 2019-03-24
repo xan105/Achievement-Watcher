@@ -1,0 +1,9 @@
+
+var HTMLParser = require('./dist');
+var parseHTML = HTMLParser.parse;
+var result = parseHTML('<div data-id=1><h3 data-id=2><h3><div>', {
+	fixIssues: true,
+	validate: true
+});
+
+console.log('fffffff', result.toString())

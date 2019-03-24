@@ -1,0 +1,24 @@
+{
+  "name": "steam-ach-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node start.js",
+    "server": "node server.js",
+    "clean": "npm prune --production"
+  },
+  "author": "Xan",
+  "license": "LGPL-3.0-only",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-rate-limit": "^3.4.0",
+    "forever-monitor": "^1.7.1",
+    "helmet": "^3.16.0",
+    "mkdirp": "^0.5.1",
+    "moment": "^2.24.0",
+    "node-html-parser": "^1.1.13",
+    "rimraf": "^2.6.3",
+    "rwlock": "^5.0.0"
+  }
+}

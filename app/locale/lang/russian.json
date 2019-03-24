@@ -1,0 +1,17 @@
+{
+  "achievements" : "достижений",
+  "perfectGame" : "Идеальных игр",
+  "completionRate": "Ср. процент достижений за игру",
+  "emptyList": "Нет игр",
+  "unlocked" : "Получено",
+  "locked": "осталось",
+  "globalStat" : "из всех игроков",
+  "hiddenRemain" : "Скрытых достижений осталось",
+  "revealedOnceUnlocked" : "Информация о каждом достижении будет доступна после его получения",
+  "allGamesBackButton" : "Все игры",
+  "settings": "настройки",
+  "language": "язык",
+  "hiddenAch": "Скрытых достижений",
+  "cancel": "отмена",
+  "save": "Ok"
+}
