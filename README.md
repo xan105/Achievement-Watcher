@@ -80,7 +80,7 @@ Use of the APIs also requires that you agree to the [Steam API Terms of Use](htt
 
 Options
 =======
-Options are stored in ```%AppData%\Roaming\achievement-watcher\cfg\options.ini```<br />
+Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini```<br />
 
 [achievement]
 - lang<br />
@@ -144,7 +144,7 @@ There are .cmd files in the root directory to create, delete and manually run th
 
 File cache & Logs
 =================
-in ```%AppData%\Roaming\achievement-watcher```
+in ```%AppData%\Roaming\Achievement Watcher```
 
 Legal
 =====
