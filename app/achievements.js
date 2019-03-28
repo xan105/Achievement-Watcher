@@ -130,7 +130,8 @@ async function discover() {
   try{
   
     let search = [
-        path.join(process.env['Public'],"Documents/Steam/CODEX")+"/*([0-9])/",
+        path.join(process.env['Public'],"Documents/Steam/CODEX")+"/*([0-9])/", 
+        path.join(process.env['APPDATA'],"Steam/CODEX")+"/*([0-9])/",
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*/*([0-9])/",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW")+"/*([0-9])/",
         path.join(process.env['APPDATA'],"CPY_SAVES")+"/*/*([0-9])/",
