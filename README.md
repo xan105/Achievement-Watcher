@@ -27,7 +27,7 @@ Game must be set to Window borderless for the notification to be rendered on top
 🚑 Not seeing any notification ? Quick fix :
 - try to set your game to Window borderless.
 - try to disable the automatic game rule in focus assistant
-- try to set checkIfProcessIsRunning to false in `%appdata%/achievement-watcher/options.ini`
+- try to set checkIfProcessIsRunning to false in `%appdata%/Achievement Watcher/options.ini`
 
 Oh and make sure `watchdog.exe` is running.<br />
 <br />
@@ -53,9 +53,10 @@ File Supported :
    
 In the following location :    
 - %PUBLIC%\Documents\Steam\CODEX
+- %appdata%\Steam\CODEX 
 - %ProgramData%\Steam\
 - %localappdata%\SKIDROW
--  %appdata%\SmartSteamEmu  
+- %appdata%\SmartSteamEmu  
     
 Will be scanned too altho there is no achievement file yet at the time of writing : 
 - Documents\CPY_SAVES
@@ -95,12 +96,12 @@ Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini``
 - notification<br />
   default to true<br />
   Display or not a Windows toast notification on achievement unlocking. <br />
-  (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdogd.exe` does).<br />
+  (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
   
 [notifier]
 - timeTreshold<br />
   default to 30 sec<br />
-  When an achievement file is modified; Amount of sec `watchdogd.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
+  When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
 
 - checkIfProcessIsRunning<br />
   default to true<br />
