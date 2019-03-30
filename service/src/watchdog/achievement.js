@@ -6,7 +6,7 @@ const ffs = require("./util/feverFS.js");
 const request = require("./util/request.js");
 const steamLanguages = require("./steamLanguages.json");
 
-module.exports.loadSteamData = async (appdID, lang, key) => {
+module.exports.loadSteamData = async (appID, lang, key) => {
 
   if (!steamLanguages.some( language => language.api === lang )) {
         throw "Unsupported API language code";
@@ -16,14 +16,14 @@ module.exports.loadSteamData = async (appdID, lang, key) => {
 
   try {
   
-    let filePath = path.join(`${cache}`,`${appdID}.json`);
+    let filePath = path.join(`${cache}`,`${appID}.json`);
     let result;
 
     if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: 1})) {
         result = JSON.parse(await ffs.promises.readFile(filePath));
     } else {
         if (key) {
-          result = await getSteamData(appdID, lang, key);
+          result = await getSteamData(appID, lang, key);
         } else {
           result = await getSteamDataFromSRV(appID, lang);
         }
