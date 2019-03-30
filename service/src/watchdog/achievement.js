@@ -12,7 +12,7 @@ module.exports.loadSteamData = async (appID, lang, key) => {
         throw "Unsupported API language code";
   }
   
-  const cache = path.join(process.env['APPDATA'],"achievement-watcher/steam_cache",lang);
+  const cache = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache",lang);
 
   try {
   

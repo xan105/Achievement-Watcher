@@ -4,13 +4,13 @@
 		"FileVersion": {
 			"Major": 1,
 			"Minor": 0,
-			"Patch": 0,
+			"Patch": 1,
 			"Build": 0
 		},
 		"ProductVersion": {
 			"Major": 1,
 			"Minor": 0,
-			"Patch": 0,
+			"Patch": 1,
 			"Build": 0
 		},
 		"FileFlagsMask": "3f",
@@ -24,14 +24,14 @@
 		"Comments": "",
 		"CompanyName": "Xan",
 		"FileDescription": "Achievement Watcher",
-		"FileVersion": "1.0.0",
+		"FileVersion": "1.0.1",
 		"InternalName": "nw",
 		"LegalCopyright": "Copyright 2019 Xan.",
 		"LegalTrademarks": "",
 		"OriginalFilename": "nw.exe",
 		"PrivateBuild": "",
 		"ProductName": "Achievement Watcher",
-		"ProductVersion": "1.0.0",
+		"ProductVersion": "1.0.1",
 		"SpecialBuild": ""
 	},
 	"VarFileInfo":
