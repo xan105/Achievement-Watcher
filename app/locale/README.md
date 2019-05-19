@@ -49,6 +49,9 @@ As of 18/03/2019
 - Greek (el) | Ελληνικά	
 - Hungarian (hu) | Magyar
 - Italian (it) | Italiano
+    <br/>Complete <br/>
+    css override <br/>
+    By pollolollo9001
 - Japanese (ja) | 日本語	
     <br/>Incomplete <br/>
     css override <br/>

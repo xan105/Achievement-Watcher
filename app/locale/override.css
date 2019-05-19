@@ -5,7 +5,9 @@ html[lang="es"] .achievement .stats .community
 }
 
 html[lang="ja"] .achievement .stats .time, 
-html[lang="ja"] .achievement .stats .community 
+html[lang="ja"] .achievement .stats .community,
+html[lang="it"] .achievement .stats .time, 
+html[lang="it"] .achievement .stats .community
 {
     width: 260px;
 }
