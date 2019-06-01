@@ -19,6 +19,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
       let result = [];
   
       let appidList = await discover();
+      
+      console.log(appidList);
 
       if ( appidList.length > 0) {
         let count = 1;
@@ -129,7 +131,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 async function discover() {
   try{
   
-    let search = [
+    let defaults = [
         path.join(process.env['Public'],"Documents/Steam/CODEX")+"/*([0-9])/", 
         path.join(process.env['APPDATA'],"Steam/CODEX")+"/*([0-9])/",
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*/*([0-9])/",
@@ -139,17 +141,45 @@ async function discover() {
         path.join(process.env['APPDATA'],"SmartSteamEmu")+"/*([0-9])/",
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/*([0-9])/"
     ];
-
+    
+    let search = defaults.concat(await parseUserCustomDir());
+    
+    console.log(search);
+    
     let data = (await glob(search,{onlyDirectories: true, absolute: true})).map((dir) => {
+    
                   return { appid: path.parse(dir).name, 
                             path: dir }
                });
-               
+
     return data;
 
   }catch(e){
-    //Do nothing
+    console.log(e);
   }
+
+}
+
+async function parseUserCustomDir(){
+  
+    try{
+          
+          let list = [];
+
+          const filePath = path.join(remote.app.getPath('userData'),"cfg/userdir.json");
+          
+          let userDirList = JSON.parse(await ffs.promises.readFile(filePath,"utf8"));
+          
+          for (let dir of userDirList) {
+            list.push(path.win32.normalize(dir.path)+"/*([0-9])/");
+          }
+          
+          return list;
+          
+    }catch(e){
+        console.error(e);
+        return [];
+    }
 
 }
 

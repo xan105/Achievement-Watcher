@@ -28,6 +28,7 @@ const dir = {
 }
 
 const filename = path.join(dir.config,"options.ini");
+const userDirListFile = path.join(dir.config,"userdir.json");
 
 var app = {
   cache : [],
@@ -49,8 +50,7 @@ var app = {
         self.watcher[0] = watch(filename, function(evt, name) {
               if (evt === "update") {
                 debug.log("Option file change detected");
-                self.watcher[1].close();
-                self.watcher[0].close();
+                self.watcher.forEach( (watcher) => watcher.close() );
                 self.start();
               } 
         });
@@ -58,7 +58,36 @@ var app = {
         debug.log("No option file > settings live reloading disabled");
       }
 
-      self.watch();
+      let i = 1;
+      try{
+        self.watch(i,dir.achievement);
+        i = i+1;
+      }catch(err){
+        debug.log(err);
+      }
+      
+      try {
+        let userDirList = JSON.parse(await ffs.promises.readFile(userDirListFile,"utf8"));
+        
+        for (let dir of userDirList) {
+           
+           if (dir.notify == true) {
+
+             if (await ffs.promises.exists(dir.path,true)) {
+                try {
+                  self.watch(i,dir.path);
+                  i = i+1;
+                }catch(err){
+                  debug.log(err);
+                }
+             }
+           }  
+        }
+        
+      }catch(err){
+        //Do Nothing
+        console.error(err);
+      }     
 
     }catch(err) {
       debug.log(err);
@@ -170,13 +199,13 @@ var app = {
 
       }
   },
-  watch : function (){
+  watch : function (i,dir){
     
     let self = this;
     
-    debug.log("Monitoring ach change ...");
+    debug.log(`Monitoring ach change in "${dir}" ...`);
     
-    self.watcher[1] = watch(dir.achievement, { recursive: true, filter: /([0-9]*)+\\+achievements.ini/ }, async function(evt, name) {
+    self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]*)+\\+achievements.ini/ }, async function(evt, name) {
     try {
 
        if (!self.options.achievement.notification || evt !== "update" || !await ffs.promises.isYoungerThan(name, {timeUnit:'seconds',time:10})) return;
