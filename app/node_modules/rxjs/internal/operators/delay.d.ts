@@ -17,7 +17,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  *
  * ## Examples
  * Delay each click by one second
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { delay } from 'rxjs/operators';
  *
@@ -27,7 +27,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * ```
  *
  * Delay all clicks until a future date happens
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { delay } from 'rxjs/operators';
  *

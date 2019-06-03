@@ -30,7 +30,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  *
  * ## Example
  * Ensure values in subscribe are called just before browser repaint.
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { observeOn } from 'rxjs/operators';
  *

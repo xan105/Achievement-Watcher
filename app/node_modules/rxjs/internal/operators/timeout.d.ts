@@ -30,7 +30,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  *
  * ## Examples
  * Check if ticks are emitted within certain timespan
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { timeout } from 'rxjs/operators';
  *
@@ -52,7 +52,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * ```
  *
  * Use Date to check if Observable completed
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { timeout } from 'rxjs/operators';
  *

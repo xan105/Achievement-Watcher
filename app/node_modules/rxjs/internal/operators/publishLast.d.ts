@@ -15,7 +15,7 @@ import { UnaryFunction } from '../types';
  *
  * ## Example
  *
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { publishLast, tap, take } from 'rxjs/operators';
  *

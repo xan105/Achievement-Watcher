@@ -25,7 +25,7 @@ export declare const defaultThrottleConfig: ThrottleConfig;
  *
  * ## Example
  * Emit clicks at a rate of at most one click per second
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { throttle } from 'rxjs/operators';
  *

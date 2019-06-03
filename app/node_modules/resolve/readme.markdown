@@ -59,6 +59,8 @@ options are:
 
 * opts.isFile - function to asynchronously test whether a file exists
 
+* opts.isDirectory - function to asynchronously test whether a directory exists
+
 * `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
   * pkgfile - path to package.json
@@ -101,6 +103,15 @@ default `opts` values:
             return cb(err);
         });
     },
+    isDirectory: function isDirectory(dir, cb) {
+        fs.stat(dir, function (err, stat) {
+            if (!err) {
+                return cb(null, stat.isDirectory());
+            }
+            if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return cb(null, false);
+            return cb(err);
+        });
+    },
     moduleDirectory: 'node_modules',
     preserveSymlinks: true
 }
@@ -120,6 +131,8 @@ options are:
 * opts.readFile - how to read files synchronously
 
 * opts.isFile - function to synchronously test whether a file exists
+
+* opts.isDirectory - function to synchronously test whether a directory exists
 
 * `opts.packageFilter(pkg, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
@@ -156,6 +169,15 @@ default `opts` values:
             throw e;
         }
         return stat.isFile() || stat.isFIFO();
+    },
+    isDirectory: function isDirectory(dir) {
+        try {
+            var stat = fs.statSync(dir);
+        } catch (e) {
+            if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
+            throw e;
+        }
+        return stat.isDirectory();
     },
     moduleDirectory: 'node_modules',
     preserveSymlinks: true

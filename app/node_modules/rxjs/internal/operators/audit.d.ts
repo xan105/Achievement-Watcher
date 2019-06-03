@@ -23,7 +23,7 @@ import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
  * ## Example
  *
  * Emit clicks at a rate of at most one click per second
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { audit } from 'rxjs/operators'
  *

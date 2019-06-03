@@ -11,6 +11,7 @@ const htmlParser = require('node-html-parser').parse;
 const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedit.js"));
 
 const steamLanguages = require("./locale/steam.json");
+const userdir = path.join(remote.app.getPath('userData'),"cfg/userdir.json");
 
 module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
@@ -131,7 +132,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 async function discover() {
   try{
   
-    let defaults = [
+    let search = [
         path.join(process.env['Public'],"Documents/Steam/CODEX")+"/*([0-9])/", 
         path.join(process.env['APPDATA'],"Steam/CODEX")+"/*([0-9])/",
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*/*([0-9])/",
@@ -142,8 +143,17 @@ async function discover() {
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/*([0-9])/"
     ];
     
-    let search = defaults.concat(await parseUserCustomDir());
+    try{
     
+      for (let dir of await getUserCustomDir()) {
+           search.push(dir.path+"/*([0-9])/");
+      }
+    
+    }catch(err){
+      //error no file or json parse -> do nothing
+      console.error(err);
+    }
+
     console.log(search);
     
     let data = (await glob(search,{onlyDirectories: true, absolute: true})).map((dir) => {
@@ -160,27 +170,24 @@ async function discover() {
 
 }
 
-async function parseUserCustomDir(){
-  
+const getUserCustomDir = module.exports.getUserCustomDir = async () => {
+
     try{
-          
-          let list = [];
-
-          const filePath = path.join(remote.app.getPath('userData'),"cfg/userdir.json");
-          
-          let userDirList = JSON.parse(await ffs.promises.readFile(filePath,"utf8"));
-          
-          for (let dir of userDirList) {
-            list.push(path.win32.normalize(dir.path)+"/*([0-9])/");
-          }
-          
-          return list;
-          
+        return JSON.parse(await ffs.promises.readFile(userdir,"utf8"));   
     }catch(e){
-        console.error(e);
-        return [];
+        throw e;
     }
+    
+}
 
+module.exports.saveUserCustomDir = async (data) => {
+
+    try{
+        await ffs.promises.writeFile(userdir,JSON.stringify(data, null, 2),"utf8");    
+    }catch(e){
+        throw e;
+    }
+    
 }
 
 async function loadSteamData(cfg) {

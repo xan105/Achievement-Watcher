@@ -12,7 +12,7 @@ import { Observable } from '../Observable';
  *
  * ##  Example
  * ### Emit the number 7, then never emit anything else (not even complete)
- * ```javascript
+ * ```ts
  * import { NEVER } from 'rxjs';
  * import { startWith } from 'rxjs/operators';
  *

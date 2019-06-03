@@ -20,7 +20,7 @@ import { SchedulerLike } from '../types';
  *
  * ## Examples
  * ### Emits ascending numbers, one every second (1000ms), starting after 3 seconds
- * ```javascript
+ * ```ts
  * import { timer } from 'rxjs';
  *
  * const numbers = timer(3000, 1000);
@@ -28,7 +28,7 @@ import { SchedulerLike } from '../types';
  * ```
  *
  * ### Emits one number after five seconds
- * ```javascript
+ * ```ts
  * import { timer } from 'rxjs';
  *
  * const numbers = timer(5000);

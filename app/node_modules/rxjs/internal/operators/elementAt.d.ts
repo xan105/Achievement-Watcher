@@ -15,7 +15,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *
  * ## Example
  * Emit only the third click event
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { elementAt } from 'rxjs/operators';
  *

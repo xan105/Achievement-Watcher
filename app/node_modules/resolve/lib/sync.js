@@ -15,6 +15,16 @@ var defaultIsFile = function isFile(file) {
     return stat.isFile() || stat.isFIFO();
 };
 
+var defaultIsDir = function isDirectory(dir) {
+    try {
+        var stat = fs.statSync(dir);
+    } catch (e) {
+        if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
+        throw e;
+    }
+    return stat.isDirectory();
+};
+
 module.exports = function (x, options) {
     if (typeof x !== 'string') {
         throw new TypeError('Path must be a string.');
@@ -23,6 +33,7 @@ module.exports = function (x, options) {
 
     var isFile = opts.isFile || defaultIsFile;
     var readFileSync = opts.readFileSync || fs.readFileSync;
+    var isDirectory = opts.isDirectory || defaultIsDir;
 
     var extensions = opts.extensions || ['.js'];
     var basedir = opts.basedir || path.dirname(caller());
@@ -145,10 +156,12 @@ module.exports = function (x, options) {
         var dirs = nodeModulesPaths(start, opts, x);
         for (var i = 0; i < dirs.length; i++) {
             var dir = dirs[i];
-            var m = loadAsFileSync(path.join(dir, '/', x));
-            if (m) return m;
-            var n = loadAsDirectorySync(path.join(dir, '/', x));
-            if (n) return n;
+            if (isDirectory(dir)) {
+                var m = loadAsFileSync(path.join(dir, '/', x));
+                if (m) return m;
+                var n = loadAsDirectorySync(path.join(dir, '/', x));
+                if (n) return n;
+            }
         }
     }
 };

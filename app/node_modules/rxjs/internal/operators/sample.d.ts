@@ -17,7 +17,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *
  * ## Example
  * On every click, sample the most recent "seconds" timer
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { sample } from 'rxjs/operators';
  *

@@ -79,3 +79,4 @@ export interface SchedulerAction<T> extends Subscription {
     schedule(state?: T, delay?: number): Subscription;
 }
 export declare type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
+export declare type ObservedValuesFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;

@@ -7,26 +7,26 @@ import { MonoTypeOperatorFunction } from '../types';
  * ![](throwIfEmpty.png)
  *
  * ## Example
- * ```javascript
+ * ```ts
  * import { fromEvent, timer } from 'rxjs';
  * import { throwIfEmpty, takeUntil } from 'rxjs/operators';
  *
- * const click$ = fromEvent(button, 'click');
+ * const click$ = fromEvent(document, 'click');
  *
- * clicks$.pipe(
+ * click$.pipe(
  *   takeUntil(timer(1000)),
  *   throwIfEmpty(
- *     () => new Error('the button was not clicked within 1 second')
+ *     () => new Error('the document was not clicked within 1 second')
  *   ),
  * )
  * .subscribe({
  *   next() { console.log('The button was clicked'); },
- *   error(err) { console.error(err); },
+ *   error(err) { console.error(err); }
  * });
  * ```
  *
- * @param {Function} [errorFactory] A factory function called to produce the
+ * @param errorFactory A factory function called to produce the
  * error to be thrown when the source observable completes without emitting a
  * value.
  */
-export declare const throwIfEmpty: <T>(errorFactory?: () => any) => MonoTypeOperatorFunction<T>;
+export declare function throwIfEmpty<T>(errorFactory?: (() => any)): MonoTypeOperatorFunction<T>;

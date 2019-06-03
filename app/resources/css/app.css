@@ -651,7 +651,7 @@ main {
 }
 
 #settings .box {
-    width: 500px;
+    width: 750px;
     background: #1b2838;
     position: absolute;
     top: 50%;
@@ -661,8 +661,6 @@ main {
     border-radius: 3px;
     overflow: hidden;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    display: flex;
-    flex-direction: column; 
     display: none;
 }
 
@@ -677,8 +675,43 @@ main {
     margin: 0 auto auto auto;
 }
 
+#settings .box .container {
+    display: flex;
+    flex-direction: row;
+    padding: 15px 20px;
+    background: #1f3042;
+}
+
+#settingNav {
+  margin: 0 0 auto auto;
+  min-width: 160px;
+}
+
+#settingNav li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#settingNav li.active {
+    background: #1b2838;
+    font-family: Open-sans-bold;
+    border-radius: 3px 0 0 3px;
+    pointer-events: none !important;
+}
+
 #settings .box .content {
-  padding: 5px 10px;
+  min-width: 500px;
+  min-height: 444px;
+  max-width: 500px;
+  margin: 0 auto auto 0;
+  background: #1b2838;
+  padding: 10px 20px;
+  border-radius: 0 3px 3px 0;
+  display: none;
+}
+
+#settings .box .content.active {
+  display: block;
 }
 
 #settings .box .footer {
@@ -730,7 +763,6 @@ main {
 
 #options-ui {
   font-family: Open-sans;
-  margin: 10px 0;
 }
 
 #options-ui li {
@@ -818,6 +850,7 @@ main {
 
 #options-steam-api {
   padding: 0 12px;
+  margin-top: 10px;
 }
 
 #options-steam-api .title {
@@ -847,4 +880,153 @@ main {
     padding: 5px 0;
     display: block;
     font-style: italic;
+}
+
+#settings .content[data-view="folder"] .title {
+    font-family: Open-sans-bold;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+    margin: 10px 0;
+}
+
+#settings .content[data-view="folder"] .disclaimer {
+  text-align: center;
+  font-family: "Open-sans";
+}
+
+#dirlist {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 190px;
+  max-height: 190px;
+  font-size: 14px;
+}
+
+#dirlist::-webkit-scrollbar {
+  width: 10px;
+}
+#dirlist::-webkit-scrollbar-track {
+  background: #27374a;
+}
+#dirlist::-webkit-scrollbar-thumb {
+  background: #354b65;
+}
+#dirlist::-webkit-scrollbar-thumb:hover{
+  background: #415b79;
+}
+
+#defaultdir {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+#dirlist > li,
+#defaultdir > li {
+    display: flex;
+}
+
+#dirlist > li {
+    margin: 2px 0;
+}
+
+#dirlist > li .path {
+    display: inline-block;
+    width: 350px;
+    height: 16px;
+    max-width: 350px;
+    margin: auto auto auto 0;
+    overflow: hidden;
+    position: relative;
+    padding: 5px 0;
+}
+
+#defaultdir > li .path {
+    display: inline-block;
+    width: 350px;
+    max-width: 350px;
+    margin: auto auto auto 0;
+}
+
+#dirlist > li .path  span {
+    position: absolute;
+    white-space: nowrap;
+    transform: translateX(0);
+    transition: 1s ease-out;
+    max-width: 350px;
+    text-overflow: ellipsis; 
+    overflow: hidden;
+}
+#dirlist > li .path.overflow:hover span { /*js calc width >= 350px apply overflow class*/
+  max-width: initial;
+  text-overflow: initial; 
+  overflow: initial;
+  transform: translateX(calc(350px - 100%));
+}
+
+
+#dirlist > li .controls,
+#defaultdir > li .controls {
+    display: inline-block;
+    margin: 0 10px 0 auto;
+}
+
+#dirlist > li .controls ul > li {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: auto 0;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all .2s ease-in;
+    width: 34px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#defaultdir > li .controls ul > li {
+    display: inline-block;
+    width: 34px;
+    box-sizing: border-box;
+    text-align: center;
+    margin: auto 0;
+}
+
+#dirlist > li .controls ul > li:hover {
+    background-color: rgba(255,255,255,0.20);
+    color: #ffffff;
+}
+
+#defaultdir li span.constant {
+    color: #9ba0a5;
+}
+
+#settings .content[data-view="folder"] > .controls {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+#settings .content[data-view="folder"] > .controls ul {
+    margin: 0 auto;
+}
+
+#settings .content[data-view="folder"] > .controls li {
+    margin: 2px 5px;
+}
+
+#settings .content[data-view="folder"] > .controls .btn{
+    padding: 5px 10px;
+    border: 1px solid white;
+    background: #27374a;
+    border: solid #3e5065 1px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#settings .content[data-view="folder"] > .controls .btn:hover{
+    background: #1b2838;
+}
+
+#settings .content[data-view="folder"] > .controls .btn:active {
+    transform: scale(0.9);
 }

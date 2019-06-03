@@ -17,7 +17,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  *
  * ## Example
  * Every second, emit the most recent click at most once
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { sampleTime } from 'rxjs/operators';
  *

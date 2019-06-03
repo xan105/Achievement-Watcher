@@ -1,6 +1,5 @@
 "use strict";
 
-const os = require('os');
 const path = require('path');
 const ini = require("ini");
 const moment = require("moment");
@@ -19,8 +18,6 @@ const debug = new (require("./util/log.js"))({
 });
 
 const steamLanguages = require("./steamLanguages.json");
-
-const winVer = os.release().split(".");
 
 const dir = {
   achievement : path.join(process.env['Public'],"Documents/Steam/CODEX"),
@@ -325,7 +322,7 @@ var app = {
   notify : function (notification = {}){
 
      toast({
-            appID: (winVer[0] == 10) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+            appID: self.options.notifier.appID || "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
             title: notification.title,
             message: notification.message,
             icon: notification.icon,

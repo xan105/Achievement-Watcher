@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="author" content="Beaumont Anthony">  
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net; connect-src 'self' https://api.steampowered.com">
-    <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-jTFzRHnGayPcZHkUx5hTuWbygQevlGFimHdpRHicjyJXGyyjcioudSScb7/YN0PE"/>
-    <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-53Zcgcs3BtHk92JgcOyDGPy1a7uAFhl9G93THkqty5DyXxyL5/hvKC3GPzSbAPTm"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-73/FVOBRJCrjKrMod4HPm2voFdxHfo7hFvf4+0AQYV0gGrWsUSqiwu/iy1QrFsTd"/>
-    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-LSxjVFBytKCmkde+0++VQMWwGlF30DXyC+byji+ushro+gWo0STf/G8QvRU3pGZI"/>
+    <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
+    <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-tiBTAbdm/vx7qIYDCyrBRerRZXrXh9a20TdshWm+anWYcSUWQVZHNnLHUnnVGmTj"/>
+    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-OlA5ofRBaR5b8pch31eMGQSJ4JNmyCxBCBBCDUlk/luO4hlkDQ+RnQNfQQICi+hB"/>
   </head>
   <body>
     
@@ -100,7 +100,65 @@
         <div class="box">
               
              <div class="header"><i class="fas fa-cog"></i> <span></span></div> 
-             <div class="content">
+             
+             <div class="container">
+             
+             <nav id="settingNav">
+              <ul>
+                <li class="active" data-view="general"><i class="fas fa-tools"></i> General</li>
+                <li data-view="folder"><i class="far fa-folder"></i> Folder</li>
+              </ul>
+             
+             </nav>
+             <section class="content" data-view="folder">
+             
+             <div class="disclaimer"><i class="fas fa-info-circle"></i> Where to look for achievement files :</div>
+             
+             <div class="title">Default Dir</div>
+             <ul id="defaultdir">
+               <li>
+                <div class="path"><span class="constant">%PUBLIC%</span>\Documents\Steam\CODEX</div>
+                <div class="controls">
+                  <ul>
+                    <li><i class="fas fa-bell"></i></li>
+                  </ul>
+                </div>
+               </li> 
+               <li>
+                <div class="path"><span class="constant">%appdata%</span>\Steam\CODEX</div>
+               </li> 
+               <li>
+                <div class="path"><span class="constant">%ProgramData%</span>\Steam\*</div>
+               </li> 
+               <li>
+                <div class="path"><span class="constant">%localappdata%</span>\SKIDROW</div>
+               </li> 
+               <li>
+                <div class="path"><span class="constant">%appdata%</span>\SmartSteamEmu</div>
+               </li> 
+               <li>
+                <div class="path"><span class="constant">Documents</span>\CPY_SAVES\*</div>
+               </li>
+               <li>
+                <div class="path"><span class="constant">%appdata%</span>\CPY_SAVES\*</div>
+               </li>
+               <li>
+                <div class="path"><span class="constant">%appdata%</span>\Goldberg SteamEmu Saves</div>
+               </li>
+             </ul>
+             
+             <div class="title"><i class="fas fa-user-edit"></i> User Custom Dir</div>
+             
+             <div class="controls">
+              <ul>
+              <li><div id="addCustomDir" class="btn"><i class="fas fa-folder-plus"></i> <span>Add folder</span></div></li>
+              </ul>
+             </div>
+             
+             <ul id="dirlist"></ul>
+
+             </section>
+             <section class="content active" data-view="general">
              
                 <div id="options-ui">
                   <ul>
@@ -178,11 +236,13 @@
                   
                 </div>
              
+             </section>
              </div>
+             
              <div class="footer">
                  <div class="notice">
                       <p><span></span> <span></span></p>
-                      <p><i class="fab fa-github"></i> <a href="https://github.com/" target="_blank">xan105/achievement-watcher</a></p>
+                      <p><i class="fab fa-github"></i> <a href="https://github.com/xan105/Achievement-Watcher" target="_blank">xan105/achievement-watcher</a></p>
                  </div>
                  <div class="buttons">
                     <div id="btn-settings-cancel"></div>
@@ -199,7 +259,7 @@
 <script src="../ui/window.js" type="text/javascript" integrity="sha384-GKKy2QeSRtNbou2qRrAEY3BmXx/Cr8bmYt7u48YdduF8F+m0cl8ASCsF3b3Zm7R6"></script>
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-FG8YwzQ7tq4uGHrZXAIALUOsJsiMbCh8cK/BJK1xvmTPQmn2DfNbRuCszTumDFEU"></script>
 <script src="../ui/sort.js" type="text/javascript" integrity="sha384-rsEaxVN47Pgy0D935yvvflpBGaN7gk8Ek+vynHwbECaB64qhwwSU/dKLP2oQb6r+"></script>
-<script src="../ui/settings.js" type="text/javascript" integrity="sha384-vRYxMo2Fn2ma3FH+T1uNXPmPIdfiA3JBm97GzREdDfdkN6nWitdnLTYwk9xebHfA"></script>   
+<script src="../ui/settings.js" type="text/javascript" integrity="sha384-Ksk6SzOx2q5vByR9+NA8CGnIzuaVaa2Ak0WlE3QXnZexhZpE4Ecbcuku4hQIBvRo"></script>   
 <script src="../app.js" type="text/javascript"></script>     
     
   </body>

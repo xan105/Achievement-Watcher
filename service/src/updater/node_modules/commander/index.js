@@ -527,14 +527,11 @@ Command.prototype.executeSubCommand = function(argv, args, unknown) {
 
   // In case of globally installed, get the base dir where executable
   //  subcommand file should be located at
-  var baseDir,
-    link = fs.lstatSync(f).isSymbolicLink() ? fs.readlinkSync(f) : f;
+  var baseDir;
 
-  // when symbolink is relative path
-  if (link !== f && link.charAt(0) !== '/') {
-    link = path.join(dirname(f), link);
-  }
-  baseDir = dirname(link);
+  var resolvedLink = fs.realpathSync(f);
+
+  baseDir = dirname(resolvedLink);
 
   // prefer local `./<bin>` to bin in the $PATH
   var localBin = path.join(baseDir, bin);
@@ -664,7 +661,7 @@ Command.prototype.parseArgs = function(args, unknown) {
       this.unknownOption(unknown[0]);
     }
     if (this.commands.length === 0 &&
-        this._args.filter(function(a) { return a.required }).length === 0) {
+        this._args.filter(function(a) { return a.required; }).length === 0) {
       this.emit('command:*');
     }
   }

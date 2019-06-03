@@ -11,4 +11,5 @@ const isPromise = input => (
 );
 
 module.exports = isPromise;
+// TODO: Remove this for the next major release
 module.exports.default = isPromise;

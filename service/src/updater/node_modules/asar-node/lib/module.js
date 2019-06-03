@@ -45,7 +45,6 @@ function checkFilename (request, absolutePath) {
       }
       return absolutePath
     }
-    throw new Error('Cannot find module \'' + request + '\'')
   }
   if (fs.existsSync(absolutePath + '.js') && fs.statSync(absolutePath + '.js').isFile()) return absolutePath + '.js'
   if (fs.existsSync(absolutePath + '.json') && fs.statSync(absolutePath + '.json').isFile()) return absolutePath + '.json'

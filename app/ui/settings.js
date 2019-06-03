@@ -21,6 +21,21 @@
           }
         }
         
+        $("#dirlist").empty();
+        achievements.getUserCustomDir()
+        .then( (userDirList) => {
+          console.log(userDirList);
+          
+          for (let dir of userDirList) {
+            populateUserDirList(dir.path,dir.notify);
+          }
+        })
+        .catch( (err) => {
+          //Do nothing
+          console.error(err)
+        });
+        
+        
      });
      
      $("#btn-settings-cancel, #settings .overlay").click(function(){
@@ -28,6 +43,11 @@
           self.css("pointer-events","none");
           $("#settings .box").fadeOut(()=>{
             $("#settings").hide();
+            let elem = $("#settingNav li").first();
+            $("#settingNav li").removeClass("active");
+            elem.addClass("active");
+            $("#settings .box section.content").removeClass("active");
+            $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
             self.css("pointer-events","initial");
             $("#win-settings").css("pointer-events","initial");
           });
@@ -62,8 +82,20 @@
             }
           }
         }
-    
-        settings.save(app.config).then(()=>{
+        
+        let userDirList = [];
+        $("#dirlist > li").each(function(){
+
+          let dir = $(this).find(".path span").text();
+          let notify = ($(this).find(".controls .notify").attr("data-notify") === "true") ? true : false;
+        
+          userDirList.push({"path":dir,"notify":notify});
+        });
+
+        Promise.all([
+          settings.save(app.config),
+          achievements.saveUserCustomDir(userDirList)
+        ]).then(()=>{
         
           $("#settings .box").fadeOut(()=>{
               
@@ -79,6 +111,11 @@
               $("#game-list .loading").show();
               $("#user-info").css("opacity",0).css("pointer-events","none");
               $("#game-list .isEmpty").hide();
+              let elem = $("#settingNav li").first();
+              $("#settingNav li").removeClass("active");
+              elem.addClass("active");
+              $("#settings .box section.content").removeClass("active");
+              $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
               console.clear();
               if (app.args.appid) app.args.appid = null;
               app.onStart();
@@ -88,6 +125,11 @@
             
           $("#settings .box").fadeOut(()=>{
             $("#settings").hide();
+            let elem = $("#settingNav li").first();
+            $("#settingNav li").removeClass("active");
+            elem.addClass("active");
+            $("#settings .box section.content").removeClass("active");
+            $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
             self.css("pointer-events","initial");
             $("#win-settings").css("pointer-events","initial");
             
@@ -118,6 +160,95 @@
         let tooltip = self.find("option:selected").data("tooltip");
         self.attr("title",tooltip);
       });  
+      
+      $("#settingNav li").click(function(){
+        let self = $(this);
+        self.css("pointer-events","none");
+        let view = self.data("view");
+        
+        $("#settingNav li").removeClass("active");
+        self.addClass("active");
+        
+        $("#settings .box section.content").removeClass("active");
+        $("#settings .box section.content[data-view='"+view+"']").addClass("active");
+        
+        self.css("pointer-events","initial");
+      });
+      
+      $("#addCustomDir").click(function(){
+        let self = $(this);
+        self.css("pointer-events","none");
+        
+        remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']},function(filePaths){
+          
+          if (filePaths){
+            console.log(filePaths);
+            
+            populateUserDirList(filePaths[0]);
+
+          }else{
+            console.log("cancel");
+          }
+          
+          self.css("pointer-events","initial");
+        }); 
+        
+      });
 
   });
 }(window.jQuery, window, document)); 
+
+function populateUserDirList(dirpath,notify = false){
+
+            let template = `<li>
+                <div class="path"><span>${dirpath}</span></div>
+                <div class="controls">
+                  <ul>
+                    <li class="edit"><i class="fas fa-pen"></i></li>
+                    <li class="trash"><i class="fas fa-trash-alt"></i></li>
+                    ${(notify) ? '<li class="notify" data-notify="true"><i class="fas fa-bell"></i></li>' : '<li class="notify" data-notify="false"><i class="fas fa-bell-slash"></i></li>'}
+                  </ul>
+                </div>
+              </li>`;
+            
+            $("#dirlist").prepend(template);
+
+            let elem = $("#dirlist > li").first();
+            if ( elem.find(".path span").width() >= 350) {
+              elem.find(".path").addClass("overflow");
+            }
+            
+            elem.find(".controls .trash").click(function(){ elem.remove() });
+            elem.find(".controls .notify").click(function(){ 
+
+                if ($(this).attr("data-notify") === "false") {
+                  $(this).attr("data-notify","true").html('<i class="fas fa-bell"></i>');
+                } else {
+                  $(this).attr("data-notify","false").html('<i class="fas fa-bell-slash"></i>');
+                }
+
+            });
+            elem.find(".controls .edit").click(function(){ 
+            
+              let path = elem.find(".path span").text();
+            
+              remote.dialog.showOpenDialog(win,{defaultPath: path,properties : ['openDirectory','showHiddenFiles']},function(filePaths){
+              
+                  if (filePaths){
+                    console.log(filePaths);
+                    
+                    elem.find(".path span").text(filePaths[0]);
+                    elem.find(".path").removeClass("overflow");
+                    if ( elem.find(".path span").width() >= 350) {
+                      elem.find(".path").addClass("overflow");
+                    }
+
+                  }else{
+                    console.log("cancel");
+                  }
+              });
+            
+            
+            });
+
+}

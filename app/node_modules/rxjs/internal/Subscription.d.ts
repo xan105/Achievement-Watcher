@@ -20,9 +20,7 @@ export declare class Subscription implements SubscriptionLike {
      */
     closed: boolean;
     /** @internal */
-    protected _parent: Subscription;
-    /** @internal */
-    protected _parents: Subscription[];
+    protected _parentOrParents: Subscription | Subscription[];
     /** @internal */
     private _subscriptions;
     /**
@@ -65,6 +63,4 @@ export declare class Subscription implements SubscriptionLike {
      * @return {void}
      */
     remove(subscription: Subscription): void;
-    /** @internal */
-    private _addParent;
 }

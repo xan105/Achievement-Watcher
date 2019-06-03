@@ -15,6 +15,16 @@ var defaultIsFile = function isFile(file, cb) {
     });
 };
 
+var defaultIsDir = function isDirectory(dir, cb) {
+    fs.stat(dir, function (err, stat) {
+        if (!err) {
+            return cb(null, stat.isDirectory());
+        }
+        if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return cb(null, false);
+        return cb(err);
+    });
+};
+
 module.exports = function resolve(x, options, callback) {
     var cb = callback;
     var opts = options;
@@ -32,6 +42,7 @@ module.exports = function resolve(x, options, callback) {
     opts = normalizeOptions(x, opts);
 
     var isFile = opts.isFile || defaultIsFile;
+    var isDirectory = opts.isDirectory || defaultIsDir;
     var readFile = opts.readFile || fs.readFile;
 
     var extensions = opts.extensions || ['.js'];
@@ -208,8 +219,14 @@ module.exports = function resolve(x, options, callback) {
         if (dirs.length === 0) return cb(null, undefined);
         var dir = dirs[0];
 
-        var file = path.join(dir, x);
-        loadAsFile(file, opts.package, onfile);
+        isDirectory(dir, isdir);
+
+        function isdir(err, isdir) {
+            if (err) return cb(err);
+            if (!isdir) return processDirs(cb, dirs.slice(1));
+            var file = path.join(dir, x);
+            loadAsFile(file, opts.package, onfile);
+        }
 
         function onfile(err, m, pkg) {
             if (err) return cb(err);

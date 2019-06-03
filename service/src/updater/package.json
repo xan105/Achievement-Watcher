@@ -11,7 +11,7 @@
   "license": "LGPL-3.0-only",
   "devDependencies": {},
   "dependencies": {
-    "asar-node": "^1.1.5",
+    "asar-node": "^1.1.6",
     "content-disposition": "^0.5.3",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",

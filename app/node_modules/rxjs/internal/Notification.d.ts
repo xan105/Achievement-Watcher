@@ -1,6 +1,9 @@
 import { PartialObserver } from './types';
 import { Observable } from './Observable';
-export declare const enum NotificationKind {
+/**
+ * @deprecated NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.
+ */
+export declare enum NotificationKind {
     NEXT = "N",
     ERROR = "E",
     COMPLETE = "C"
@@ -20,11 +23,11 @@ export declare const enum NotificationKind {
  * @class Notification<T>
  */
 export declare class Notification<T> {
-    kind: NotificationKind;
+    kind: 'N' | 'E' | 'C';
     value?: T;
     error?: any;
     hasValue: boolean;
-    constructor(kind: NotificationKind, value?: T, error?: any);
+    constructor(kind: 'N' | 'E' | 'C', value?: T, error?: any);
     /**
      * Delivers to the given `observer` the value wrapped by this Notification.
      * @param {Observer} observer

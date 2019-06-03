@@ -2,12 +2,13 @@ language: node_js
 os:
  - linux
 node_js:
-  - "11.6"
+  - "12.2"
+  - "11.15"
   - "10.15"
   - "9.11"
   - "8.15"
   - "7.10"
-  - "6.16"
+  - "6.17"
   - "5.12"
   - "4.9"
   - "iojs-v3.3"
@@ -37,6 +38,28 @@ matrix:
       env: PRETEST=true
     - node_js: "lts/*"
       env: POSTTEST=true
+    - node_js: "12.1"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "12.0"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.14"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.13"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.12"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.11"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.10"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.9"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.8"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.7"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.6"
+      env: TEST=true ALLOW_FAILURE=true
     - node_js: "11.5"
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "11.4"
@@ -150,6 +173,8 @@ matrix:
     - node_js: "7.1"
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "7.0"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "6.16"
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "6.15"
       env: TEST=true ALLOW_FAILURE=true
