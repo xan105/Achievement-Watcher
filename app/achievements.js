@@ -11,7 +11,7 @@ const htmlParser = require('node-html-parser').parse;
 const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedit.js"));
 
 const steamLanguages = require("./locale/steam.json");
-const userdir = path.join(remote.app.getPath('userData'),"cfg/userdir.json");
+const userdir = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
 
 module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 

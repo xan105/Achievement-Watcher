@@ -25,7 +25,7 @@ const dir = {
 }
 
 const filename = path.join(dir.config,"options.ini");
-const userDirListFile = path.join(dir.config,"userdir.json");
+const userDirListFile = path.join(dir.config,"userdir.db");
 
 var app = {
   cache : [],
@@ -46,15 +46,15 @@ var app = {
       try {
         self.watcher[0] = watch(filename, function(evt, name) {
               if (evt === "update") {
-                debug.log("Option file change detected");
+                debug.log(`file change detected in ${path.parse(name).name}`);
                 self.watcher.forEach( (watcher) => watcher.close() );
                 self.start();
               } 
         });
       }catch(err){
         debug.log("No option file > settings live reloading disabled");
-      }
-
+      }   
+      
       let i = 1;
       try{
         self.watch(i,dir.achievement);
@@ -84,7 +84,7 @@ var app = {
       }catch(err){
         //Do Nothing
         console.error(err);
-      }     
+      }  
 
     }catch(err) {
       debug.log(err);

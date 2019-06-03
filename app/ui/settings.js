@@ -53,7 +53,7 @@
           });
        });
        
-       $("#btn-settings-save").click(function(){
+     $("#btn-settings-save").click(function(){
      
      let self = $(this);
      self.css("pointer-events","none");
@@ -92,53 +92,56 @@
           userDirList.push({"path":dir,"notify":notify});
         });
 
-        Promise.all([
-          settings.save(app.config),
-          achievements.saveUserCustomDir(userDirList)
-        ]).then(()=>{
+        achievements.saveUserCustomDir(userDirList).catch((err)=>{
+        
+          remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while saving user dir list", detail: `${err}`});
+        
+        }).finally(()=>{
+        settings.save(app.config).then(()=>{
         
           $("#settings .box").fadeOut(()=>{
+                
+                if( $("#achievement").is(":visible")) {
+                  $("#btn-previous").trigger( "click" );
+                }
+                $("#settings").hide();
+                $("#game-list ul").empty();
+                $("#game-list .loading .progressBar").attr("data-percent",0);
+                $("#game-list .loading .progressBar > .meter").css("width","0%");
+                self.css("pointer-events","initial");
+                $("#win-settings").css("pointer-events","initial");
+                $("#game-list .loading").show();
+                $("#user-info").css("opacity",0).css("pointer-events","none");
+                $("#game-list .isEmpty").hide();
+                let elem = $("#settingNav li").first();
+                $("#settingNav li").removeClass("active");
+                elem.addClass("active");
+                $("#settings .box section.content").removeClass("active");
+                $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
+                console.clear();
+                if (app.args.appid) app.args.appid = null;
+                app.onStart();
+            });
+
+          }).catch((err)=>{
               
-              if( $("#achievement").is(":visible")) {
-                $("#btn-previous").trigger( "click" );
-              }
+            $("#settings .box").fadeOut(()=>{
               $("#settings").hide();
-              $("#game-list ul").empty();
-              $("#game-list .loading .progressBar").attr("data-percent",0);
-              $("#game-list .loading .progressBar > .meter").css("width","0%");
-              self.css("pointer-events","initial");
-              $("#win-settings").css("pointer-events","initial");
-              $("#game-list .loading").show();
-              $("#user-info").css("opacity",0).css("pointer-events","none");
-              $("#game-list .isEmpty").hide();
               let elem = $("#settingNav li").first();
               $("#settingNav li").removeClass("active");
               elem.addClass("active");
               $("#settings .box section.content").removeClass("active");
               $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
-              console.clear();
-              if (app.args.appid) app.args.appid = null;
-              app.onStart();
-          });
+              self.css("pointer-events","initial");
+              $("#win-settings").css("pointer-events","initial");
+              
+              remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while writing settings to file.", detail: `${err}`});
+              
+            });
 
-        }).catch((err)=>{
-            
-          $("#settings .box").fadeOut(()=>{
-            $("#settings").hide();
-            let elem = $("#settingNav li").first();
-            $("#settingNav li").removeClass("active");
-            elem.addClass("active");
-            $("#settings .box section.content").removeClass("active");
-            $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
-            self.css("pointer-events","initial");
-            $("#win-settings").css("pointer-events","initial");
-            
-            remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while writing settings to file.", detail: `${err}`});
-            
-          });
-            
-           
-       });
+          });       
+        
+        });
 
      });
      
