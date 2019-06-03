@@ -24,5 +24,11 @@
   "disable": "Désactiver",
   "cancel": "Annuler",
   "save": "Ok",
-  "version": "Version"
+  "version": "Version",
+  "general": "Général",
+  "folder": "Dossiers",
+  "dirDisclaimer": "Où chercher les données des succès:",
+  "dirAdd": "Ajouter un dossier",
+  "dirDefault": "Répertoire par défaut",
+  "dirCustom": "Répertoire de l'utilisateur"
 }

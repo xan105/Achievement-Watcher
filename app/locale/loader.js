@@ -84,6 +84,13 @@ function translateUI(lang,locale,template){
         selector.find("span:eq(1)").text(clear(remote.app.getVersion()));
         $("#btn-settings-cancel").text(clear(template.cancel));
         $("#btn-settings-save").text(clear(template.save));
+        $("#settingNav li[data-view='general'] span").text(clear(template.general));
+        $("#settingNav li[data-view='folder'] span").text(clear(template.folder));
+        selector = $("#settings .box .content[data-view='folder']");
+        selector.find(".disclaimer span").text(clear(template.dirDisclaimer));
+        selector.find(".title:eq(0) span").text(clear(template.dirDefault));
+        selector.find(".title:eq(1) span").text(clear(template.dirCustom));
+        $("#addCustomDir span").text(clear(template.dirAdd));
       });
    }(window.jQuery, window, document));  
 }

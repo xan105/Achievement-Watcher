@@ -24,5 +24,11 @@
   "disable": "Deaktivieren",
   "cancel": "Stornieren",
   "save": "Sparen",
-  "version": "Version"
+  "version": "Version",
+  "general": "Allgemeine",
+  "folder": "Ordner",
+  "dirDisclaimer": "Wo nach Errungenschaften Daten gesucht werden soll :",
+  "dirAdd": "Ordner hinzufügen",
+  "dirDefault": "Standardverzeichnis",
+  "dirCustom": "Benutzerverzeichnis"
 }
