@@ -320,6 +320,8 @@ var app = {
   
   },
   notify : function (notification = {}){
+  
+    let self = this;
 
      toast({
             appID: self.options.notifier.appID || "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",

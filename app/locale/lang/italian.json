@@ -24,5 +24,11 @@
   "disable": "Disabilita",
   "cancel": "Elimina",
   "save": "Salva",
-  "version": "Versione"
+  "version": "Versione",
+  "general": "Generale",
+  "folder": "Cartelle",
+  "dirDisclaimer": "Dove cercare dati achievement :",
+  "dirAdd": "Aggiungi una cartella",
+  "dirDefault": "Directory Predefinita",
+  "dirCustom": "Directory Utente"
 }
