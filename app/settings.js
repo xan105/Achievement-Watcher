@@ -33,6 +33,10 @@ module.exports.load = ()=>{
           options.achievement.mergeDuplicate = true;
         }
         
+        if (typeof options.achievement.hideZero !== "boolean"){
+          options.achievement.hideZero = false;
+        }
+        
         if (typeof options.achievement.notification !== "boolean"){
           options.achievement.notification = true;
         }
@@ -61,6 +65,7 @@ module.exports.load = ()=>{
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
+            hideZero: false,
             notification: true
           },
           notifier: {

@@ -680,6 +680,7 @@ main {
     flex-direction: row;
     padding: 15px 20px;
     background: #1f3042;
+    min-height: 482px;
 }
 
 #settingNav {
@@ -701,7 +702,7 @@ main {
 
 #settings .box .content {
   min-width: 500px;
-  min-height: 444px;
+  min-height: 462px;
   max-width: 500px;
   margin: 0 auto auto 0;
   background: #1b2838;
@@ -774,6 +775,10 @@ main {
 
 #options-ui li .left{
   margin: auto auto auto 0;
+}
+
+#options-ui li .left > i {
+  min-width: 20px;
 }
 
 #options-ui li .right{
@@ -897,8 +902,8 @@ main {
 #dirlist {
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 190px;
-  max-height: 190px;
+  height: 210px;
+  max-height: 210px;
   font-size: 14px;
 }
 

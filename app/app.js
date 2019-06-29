@@ -70,6 +70,8 @@ var app = {
 
       for (let game of list) {
 
+        if ( game.achievement.unlocked > 0 || self.config.achievement.hideZero == false) {
+        
         let progress = Math.round((100 * game.achievement.unlocked) / game.achievement.total);
         
         progress_cache.push(progress);
@@ -87,6 +89,8 @@ var app = {
         `;
 
          elem.append(template);
+         
+         }
 
       }
       

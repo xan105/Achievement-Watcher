@@ -76,9 +76,12 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(3) .left span").text(clear(template.mergeDuplicates));
         selector.find("li:nth-child(3) .right select option[value='true']").text(clear(template.enable));
         selector.find("li:nth-child(3) .right select option[value='false']").text(clear(template.disable));
-        selector.find("li:nth-child(4) .left span").text(clear(template.notification));
+        selector.find("li:nth-child(4) .left span").text(clear(template.hideZero));
         selector.find("li:nth-child(4) .right select option[value='true']").text(clear(template.enable));
         selector.find("li:nth-child(4) .right select option[value='false']").text(clear(template.disable));
+        selector.find("li:nth-child(5) .left span").text(clear(template.notification));
+        selector.find("li:nth-child(5) .right select option[value='true']").text(clear(template.enable));
+        selector.find("li:nth-child(5) .right select option[value='false']").text(clear(template.disable));
         selector = $("#settings .box .footer .notice p:nth-child(1)");
         selector.find("span:eq(0)").text(clear(template.version));
         selector.find("span:eq(1)").text(clear(remote.app.getVersion()));
