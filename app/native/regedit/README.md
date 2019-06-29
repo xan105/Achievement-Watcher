@@ -30,6 +30,12 @@ API
 `RegKeyExists`<br />
 (root *C.char, key *C.char) C.uint // 0: false | 1: true
 
+`RegListAllSubkeys`<br />
+(root *C.char, key *C.char) *C.char // Comma seperated list
+
+`RegListAllValues`<br />
+(root *C.char, key *C.char) *C.char // Comma seperated list
+
 `RegQueryStringValue` // REG_SZ & REG_EXPAND_SZ<br />
 (root *C.char, key *C.char, name *C.char) *C.char
 
@@ -67,10 +73,11 @@ Node.js
 ```js
 const path = require('path');
 const ffi = require('ffi-napi');
-const arch = (process.arch === "x64") ? "x64" : "x86";
 
-const regedit = ffi.Library(path.resolve(__dirname, `build/regedit.${arch}.dll`), {
+const regedit = ffi.Library(path.resolve(__dirname, "build/regedit.dll"), {
    'RegKeyExists': ["int", ["string", "string"]],
+   'RegListAllSubkeys': ["string", ["string", "string"]],
+   'RegListAllValues': ["string", ["string", "string"]],
    'RegQueryStringValue': ["string", ["string", "string", "string"]],
    'RegQueryStringValueAndExpand': ["string", ["string", "string", "string"]],
    'RegQueryBinaryValue': ["string", ["string", "string", "string"]],

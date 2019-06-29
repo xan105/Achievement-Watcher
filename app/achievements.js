@@ -13,6 +13,11 @@ const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedi
 const steamLanguages = require("./locale/steam.json");
 const userdir = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
 
+const debug = new (require(path.join(appPath,"util/log.js")))({
+  console: remote.getCurrentWindow().isDev || false,
+  file: path.join(remote.app.getPath('userData'),"logs/Parser.log")
+});
+
 module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
   try {
@@ -34,83 +39,117 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
             let isDuplicate = false;
 
             try {
-            
-                let ACH_File = ["achievements.ini","stats/achievements.ini","achieve.dat"];
-                
-                let local;
-                for (let file of ACH_File) {
-                  try {
-                    local = ini.parse(await ffs.promises.readFile(path.join(appid.path,file),"utf8"));
-                    break;
-                  } catch (e) {}
-                }
-            
-                if(!local) { 
-                  throw "No achievement file found";
-                } 
-                else if (result.some( res => res.appid == appid.appid) && option.merge) {
+
+                if (result.some( res => res.appid == appid.appid) && option.merge) {
                   isDuplicate = true;
                   game = result.find( elem => elem.appid == appid.appid);
                 }
                 else {
                   game = await loadSteamData({appID: appid.appid, lang: option.lang, key: option.key });      
                 }
+
+                let root;
                 
-                let root = local.ACHIEVE_DATA || local;
-
-                for (let i in root){
-
-                    if (i !== "SteamAchievements" && i !== "Steam64" && i !== "Steam") {
+                if (appid.data.type === "file") {
+                
+                    let local;
+                    
+                    let ACH_File = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat"];
+                    
+                    for (let file of ACH_File) {
                       try {
-                        let achievement = game.achievement.list.find( elem => elem.name === i);
-                        
-                        if(root[i].State) { 
-                          root[i].State = new Uint32Array(Buffer.from(root[i].State.toString(),"hex"))[0]; //uint32 -> int
-                          root[i].CurProgress = parseInt(root[i].CurProgress.toString(),16);
-                          root[i].MaxProgress = parseInt(root[i].CurProgress.toString(),16);
-                        }
-                        
-                        let result = {
-                          Achieved : (root[i].Achieved == 1 || root[i].State == 1 || root[i] == 1 ) ? true : false,
-                          CurProgress : root[i].CurProgress || 0,
-                          MaxProgress : root[i].MaxProgress || 0,
-                          UnlockTime : root[i].UnlockTime || 0
-                        };
-
-                        if (isDuplicate) {
-                          if (result.Achieved && !achievement.Achieved) {    
-                            achievement.Achieved = true;
-                          }
-                          
-                          if (result.CurProgress > achievement.CurProgress || !achievement.CurProgress) {
-                            achievement.CurProgress = result.CurProgress;
-                          }
-                          
-                         if (result.MaxProgress > achievement.MaxProgress || !achievement.MaxProgress) {
-                            achievement.MaxProgress = result.MaxProgress;
-                          }
-                          
-                          if (result.UnlockTime > achievement.UnlockTime || !achievement.UnlockTime) {
-                            achievement.UnlockTime = result.UnlockTime;
-                          }
-                          
-                        } else {
-                          Object.assign(achievement,result);
-                        }
- 
-                      }catch(e){
-                        //Achievement not found in steam data ?! ... Achievement was probably deleted or renamed over time
-                      }
+                        local = ini.parse(await ffs.promises.readFile(path.join(appid.data.path,file),"utf8"));
+                        break;
+                      } catch (e) {}
                     }
-                  }                
+                
+                    if(!local) throw "No achievement file found"; 
+                    
+                    root = local.ACHIEVE_DATA || local;
+                    
+                 } else if (appid.data.type === "reg") {
+                       
+                    root = regedit.RegListAllValues(appid.data.root,appid.data.path); 
+                    if (!root) throw "No achievement found in registry"; 
 
-                game.achievement.unlocked = game.achievement.list.filter(x => x.Achieved == 1).length;
-                if (!isDuplicate) {
-                  result.push(game);
-                }
-            
+                 }
+
+                 for (let i in root){
+
+                     if (i !== "SteamAchievements" && i !== "Steam64" && i !== "Steam") { 
+                     
+                     try {
+                     
+                          let achievement;
+                          let parsed;
+                          
+                          if (appid.data.type === "file") { 
+                          
+                                achievement = game.achievement.list.find( elem => elem.name === i);
+      
+                                if(root[i].State) { 
+                                  root[i].State = new Uint32Array(Buffer.from(root[i].State.toString(),"hex"))[0]; //uint32 -> int
+                                  root[i].CurProgress = parseInt(root[i].CurProgress.toString(),16);
+                                  root[i].MaxProgress = parseInt(root[i].CurProgress.toString(),16); 
+                                }
+                                                       
+                                parsed = {
+                                  Achieved : (root[i].Achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i] == 1 ) ? true : false,
+                                  CurProgress : root[i].CurProgress || 0,
+                                  MaxProgress : root[i].MaxProgress || 0,
+                                  UnlockTime : root[i].UnlockTime || root[i].HaveAchievedTime || 0
+                                };
+                              
+                          } else if (appid.data.type === "reg") {
+
+                               achievement = game.achievement.list.find( elem => elem.name === root[i]);
+                               
+                               parsed = {
+                                     Achieved : (parseInt(regedit.RegQueryIntegerValue(appid.data.root,appid.data.path,root[i])) == 1 ) ? true : false,
+                                     CurProgress : 0,
+                                     MaxProgress : 0,
+                                     UnlockTime :  0
+                               };
+
+                          }
+                         
+                          if (isDuplicate) {
+                                if (parsed.Achieved && !achievement.Achieved) {    
+                                  achievement.Achieved = true;
+                                }
+                                
+                                if (parsed.CurProgress > achievement.CurProgress || !achievement.CurProgress) {
+                                  achievement.CurProgress = result.CurProgress;
+                                }
+                                
+                               if (parsed.MaxProgress > achievement.MaxProgress || !achievement.MaxProgress) {
+                                  achievement.MaxProgress = result.MaxProgress;
+                                }
+                                
+                                if (parsed.UnlockTime > achievement.UnlockTime || !achievement.UnlockTime) {
+                                  achievement.UnlockTime = result.UnlockTime;
+                                }
+                                
+                           } else {
+                                Object.assign(achievement,parsed);
+                           }
+     
+                       }catch(e){
+                            debug.log(`[${appid.appid}] Achievement not found in steam data ?! ... Achievement was probably deleted or renamed over time`);
+                       }  
+                     }             
+                    }
+
+                   game.achievement.unlocked = game.achievement.list.filter(x => x.Achieved == 1).length;
+                   if (!isDuplicate) {
+                     result.push(game);
+                   }
+                 
+
+            //loop appid
             } catch(err) {
-              //error parsing local achievements.ini > SKIPPING
+              debug.log(`[${appid.appid}] Error parsing local achievements.ini > SKIPPING`);
+              debug.log(err);
             }
             
         callbackProgress(percent);
@@ -143,29 +182,74 @@ async function discover() {
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/*([0-9])/"
     ];
     
+    let ALI213 = [];
+    
     try{
     
       for (let dir of await getUserCustomDir()) {
-           search.push(dir.path+"/*([0-9])/");
+        
+        try {
+          let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
+          ALI213.push({ appid: info.Settings.AppID,
+                      data: {
+                            type: "file",
+                            path: path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`)
+                            }
+          });
+        }catch(e){
+          console.error(e);
+          search.push(dir.path+"/*([0-9])/");
+        }
+
       }
     
     }catch(err){
-      //error no file or json parse -> do nothing
-      console.error(err);
+      debug.log("User Custom Dir:");
+      debug.log(err);
     }
-
+    
     console.log(search);
     
     let data = (await glob(search,{onlyDirectories: true, absolute: true})).map((dir) => {
     
                   return { appid: path.parse(dir).name, 
-                            path: dir }
+                           data: {
+                            type: "file",
+                            path: dir
+                           }
+                          }
                });
+     
+    if (ALI213.length > 0) {
+      data = data.concat(ALI213);
+    }           
+               
+    let glr = regedit.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID"); //return a iterable obj even on failure so we can invok it directly in for loop declaration ?
+    if (glr) {
+      for (let key of glr) {
+
+           let glr_ach_enable = parseInt(regedit.RegQueryIntegerValue ("HKCU","SOFTWARE/GLR/AppID/"+key,"SkipStatsAndAchievements"));
+           
+           console.log(glr_ach_enable);
+           
+           if(glr_ach_enable === 0) {
+           
+           console.log("pushing");
+      
+             data.push({appid: key,
+                         data: {
+                            type: "reg",
+                            root: "HKCU",
+                            path: `SOFTWARE/GLR/AppID/${key}/Achievements`}
+                      });
+           }
+      }
+    }
 
     return data;
 
   }catch(e){
-    console.log(e);
+    debug.log(e);
   }
 
 }

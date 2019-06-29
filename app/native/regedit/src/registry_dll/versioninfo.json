@@ -3,13 +3,13 @@
 	{
 		"FileVersion": {
 			"Major": 1,
-			"Minor": 0,
+			"Minor": 1,
 			"Patch": 0,
 			"Build": 0
 		},
 		"ProductVersion": {
 			"Major": 1,
-			"Minor": 0,
+			"Minor": 1,
 			"Patch": 0,
 			"Build": 0
 		},
@@ -31,7 +31,7 @@
 		"OriginalFilename": "",
 		"PrivateBuild": "",
 		"ProductName": "Read/Write Windows Registry",
-		"ProductVersion": "v1.0.0.0",
+		"ProductVersion": "v1.1.0.0",
 		"SpecialBuild": ""
 	},
 	"VarFileInfo":

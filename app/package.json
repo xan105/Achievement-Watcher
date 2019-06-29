@@ -6,11 +6,13 @@
   "scripts": {
     "start": "electron .",
     "native-rebuild": "call .\\node_modules\\.bin\\electron-rebuild.cmd",
-    "clean": "npm prune --production"
+    "clean": "npm prune --production",
+    "prepare": "patch-package"
   },
   "author": "Xan",
   "license": "LGPL-3.0-only",
   "devDependencies": {
+    "patch-package": "^6.1.2",
     "electron": "^4.2.3",
     "electron-context-menu": "^0.11.0",
     "electron-rebuild": "^1.8.5"

@@ -6,6 +6,7 @@ import (
 	"golang.org/x/sys/windows/registry"
 	"encoding/hex"
 	"strconv"
+	"strings"
 )
 
 func GetHKEY(root string) registry.Key {
@@ -46,6 +47,40 @@ func RegKeyExists(root *C.char, key *C.char) C.uint {
 		 
   return C.uint(result)
 
+}
+
+//export RegListAllSubkeys
+func RegListAllSubkeys(root *C.char, key *C.char) *C.char {
+  
+  var result string
+  HKEY := GetHKEY(C.GoString(root))
+  
+  k, _ := registry.OpenKey(HKEY , C.GoString(key), registry.QUERY_VALUE | registry.ENUMERATE_SUB_KEYS)
+		 defer k.Close()
+  
+  list, _ := k.ReadSubKeyNames(-1)
+  
+  result = strings.Join(list[:], ",")
+  
+  return C.CString(result)
+  
+}
+
+//export RegListAllValues
+func RegListAllValues(root *C.char, key *C.char) *C.char {
+  
+  var result string
+  HKEY := GetHKEY(C.GoString(root))
+  
+  k, _ := registry.OpenKey(HKEY , C.GoString(key), registry.QUERY_VALUE | registry.ENUMERATE_SUB_KEYS)
+		 defer k.Close()
+  
+  list, _ := k.ReadValueNames(-1)
+  
+  result = strings.Join(list[:], ",")
+  
+  return C.CString(result)
+  
 }
 
 //export RegQueryStringValue
