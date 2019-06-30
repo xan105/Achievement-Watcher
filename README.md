@@ -92,9 +92,9 @@ by default in `%PUBLIC%\Documents\Steam\CODEX` but you can add other location in
 
 |Steam Emulator|Unlock Time|Ach Progress|Notification|Location|
 |--------------|-----------|------------|------------|----|
-|Green Luma Reborn| No | No | No | HKCU\SOFTWARE\GLR\AppID\[APPID] |
+|Green Luma Reborn| No | No | No | `HKCU\SOFTWARE\GLR\AppID\[APPID]` |
 
-⚠️ Parse GLR ach for APPID only if the reg key "SkipStatsAndAchievements" is set to dword:00000000.
+⚠️ Parse GLR ach. for an APPID only if the reg key "SkipStatsAndAchievements" is set to dword:00000000.
 
 Steam Web API Key
 =================
