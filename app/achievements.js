@@ -163,7 +163,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
     }
       
   }catch(err) {
-    //Do nothing
+    debug.log(err);
   }
 };
 
@@ -197,18 +197,14 @@ async function discover() {
                             }
           });
         }catch(e){
-          console.error(e);
           search.push(dir.path+"/*([0-9])/");
         }
 
       }
     
     }catch(err){
-      debug.log("User Custom Dir:");
       debug.log(err);
     }
-    
-    console.log(search);
     
     let data = (await glob(search,{onlyDirectories: true, absolute: true})).map((dir) => {
     
@@ -221,29 +217,34 @@ async function discover() {
                });
      
     if (ALI213.length > 0) {
+      debug.log("Adding ALI213 from user custom dir");
       data = data.concat(ALI213);
     }           
                
-    let glr = regedit.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID"); //return a iterable obj even on failure so we can invok it directly in for loop declaration ?
+    let glr = regedit.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID");
     if (glr) {
       for (let key of glr) {
+          
+          try {
+             let glr_ach_enable = parseInt(regedit.RegQueryIntegerValue ("HKCU",`SOFTWARE/GLR/AppID/${key}`,"SkipStatsAndAchievements"));
 
-           let glr_ach_enable = parseInt(regedit.RegQueryIntegerValue ("HKCU","SOFTWARE/GLR/AppID/"+key,"SkipStatsAndAchievements"));
-           
-           console.log(glr_ach_enable);
-           
-           if(glr_ach_enable === 0) {
-           
-           console.log("pushing");
-      
-             data.push({appid: key,
-                         data: {
-                            type: "reg",
-                            root: "HKCU",
-                            path: `SOFTWARE/GLR/AppID/${key}/Achievements`}
-                      });
+             if(glr_ach_enable === 0) {
+
+               data.push({appid: key,
+                           data: {
+                              type: "reg",
+                              root: "HKCU",
+                              path: `SOFTWARE/GLR/AppID/${key}/Achievements`}
+                        });
+              } else {
+                debug.log(`[${key}] SkipStatsAndAchievements is no set to 0 in registry > SKIPPING`);
+              }
+           }catch(e){
+              debug.log(e);
            }
-      }
+      }//for loop
+    } else {
+      debug.log("GLR No achievement found in registry");
     }
 
     return data;
