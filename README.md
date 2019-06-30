@@ -152,7 +152,7 @@ Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini``
   
   |Name| AppID |
   |----|-------|
-  |Xbox Gane Bar|Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App |
+  |Xbox Game Bar|Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App |
   |Xbox App| Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp |
   
   ⚠️ You need to use a UWP AppID otherwise you won't be able to remotely load ach. img.
