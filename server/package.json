@@ -10,14 +10,14 @@
   "author": "Xan",
   "license": "LGPL-3.0-only",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "express-rate-limit": "^3.4.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^3.5.3",
     "forever-monitor": "^1.7.1",
-    "helmet": "^3.16.0",
+    "helmet": "^3.18.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
-    "node-html-parser": "^1.1.13",
+    "node-html-parser": "^1.1.15",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0"
   }
