@@ -25,8 +25,6 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
       let result = [];
   
       let appidList = await discover();
-      
-      console.log(appidList);
 
       if ( appidList.length > 0) {
         let count = 1;

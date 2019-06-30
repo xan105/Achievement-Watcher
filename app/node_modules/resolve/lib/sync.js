@@ -59,6 +59,8 @@ module.exports = function (x, options) {
         if (x === '..' || x.slice(-1) === '/') res += '/';
         var m = loadAsFileSync(res) || loadAsDirectorySync(res);
         if (m) return m;
+    } else if (core[x]) {
+        return x;
     } else {
         var n = loadNodeModulesSync(x, absoluteStart);
         if (n) return n;

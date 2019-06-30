@@ -18,7 +18,7 @@ var getNodeModulesDirs = function getNodeModulesDirs(absoluteStart, modules) {
 
     return paths.reduce(function (dirs, aPath) {
         return dirs.concat(modules.map(function (moduleDir) {
-            return path.join(prefix, aPath, moduleDir);
+            return path.resolve(prefix, aPath, moduleDir);
         }));
     }, []);
 };

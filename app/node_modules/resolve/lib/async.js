@@ -73,8 +73,8 @@ module.exports = function resolve(x, options, callback) {
             } else loadAsFile(res, opts.package, onfile);
         } else loadNodeModules(x, basedir, function (err, n, pkg) {
             if (err) cb(err);
-            else if (n) cb(null, n, pkg);
             else if (core[x]) return cb(null, x);
+            else if (n) cb(null, n, pkg);
             else {
                 var moduleError = new Error("Cannot find module '" + x + "' from '" + parent + "'");
                 moduleError.code = 'MODULE_NOT_FOUND';

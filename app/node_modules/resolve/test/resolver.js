@@ -283,17 +283,6 @@ test('without basedir', function (t) {
     });
 });
 
-test('#25: node modules with the same name as node stdlib modules', function (t) {
-    t.plan(1);
-
-    var resolverDir = path.join(__dirname, 'resolver/punycode');
-
-    resolve('punycode', { basedir: resolverDir }, function (err, res, pkg) {
-        if (err) t.fail(err);
-        t.equal(res, path.join(resolverDir, 'node_modules/punycode/index.js'));
-    });
-});
-
 test('#52 - incorrectly resolves module-paths like "./someFolder/" when there is a file of the same name', function (t) {
     t.plan(2);
 

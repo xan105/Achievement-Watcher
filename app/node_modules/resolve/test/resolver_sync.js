@@ -184,17 +184,6 @@ test('incorrect main', function (t) {
     t.end();
 });
 
-test('#25: node modules with the same name as node stdlib modules', function (t) {
-    var resolverDir = path.join(__dirname, 'resolver/punycode');
-
-    t.equal(
-        resolve.sync('punycode', { basedir: resolverDir }),
-        path.join(resolverDir, 'node_modules/punycode/index.js')
-    );
-
-    t.end();
-});
-
 var stubStatSync = function stubStatSync(fn) {
     var fs = require('fs');
     var statSync = fs.statSync;

@@ -1,9 +1,12 @@
 "use strict";
 
+const { remote } = require('electron');
 const path = require('path');
 const ffi = require('ffi-napi');
 
-const regedit = ffi.Library(path.resolve(__dirname, "build/regedit.dll"), {
+const dll = path.join(remote.app.getAppPath(),"native/regedit/build/regedit.dll").replace('app.asar', 'app.asar.unpacked');
+
+const regedit = ffi.Library(dll, {
    'RegKeyExists': ["int", ["string", "string"]],
    'RegListAllSubkeys': ["string", ["string", "string"]],
    'RegListAllValues': ["string", ["string", "string"]],
