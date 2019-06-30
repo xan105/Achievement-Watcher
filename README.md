@@ -7,6 +7,21 @@ A sexy achievement file parser with real-time notification.
 </tr>
 </table>
 
+Some steam emulator generate a text file where all the achievements you have unlocked are stored.
+But they aren't very friendly to know which is which, here is an example :
+```ini
+[NEW_ACHIEVEMENT_1_1]
+Achieved=1
+CurProgress=0
+MaxProgress=0
+UnlockTime=0000000000
+[SteamAchievements]
+00000=NEW_ACHIEVEMENT_1_1
+Count=1
+```
+So which achievement is NEW_ACHIEVEMENT_1_1 ? You'll have to ask the steam API or look online in a site like the steamdb to find out.
+So let's just do that automagically :)
+
 Live notification on achievement unlocking
 ==========================================
 
@@ -33,35 +48,53 @@ Oh and make sure `watchdog.exe` is running.<br />
 <br />
 Not all games are supported, please see below.<br />
   
-File Supported :
+Compatibility :
 ================
 
-1 `achievements.ini`
-- Progression: no *(Always to zero ?)*
-- Unlock time: **yes**
-- Live notification: **yes**
-    
-2 `stats\achievements.ini`
-- Progression: no *(Always to zero ?)*
-- Unlock time: no *(Unknow hex time format)*
-- Live notification: no *(Coz no unlock time)*
-  
-3 `achieve.dat`
-- Progression: no *(None)*
-- Unlock time: no *(None)*
-- Live notification: no *(Coz no unlock time)*
-   
-In the following location :    
+**From file:**<br/>
+
+|Steam Emulator|Unlock Time|Ach Progress|Notification|File|
+|--------------|-----------|------------|------------|----|
+|Codex| Yes | No (always set to zero by emu) | Yes | achievements.ini |
+|RLD!| No (Unknow hex time) | No (always set to zero by emu) | No | stats\achievements.ini |
+|Skidrow| No | No | No | achieve.dat |
+|ALI213| Yes | No | No | achievements.bin |
+
+By default the following location will be scanned for the above steam emu file :
+```
 - %PUBLIC%\Documents\Steam\CODEX
-- %appdata%\Steam\CODEX 
-- %ProgramData%\Steam\
+- %appdata%\Steam\CODEX
+- %ProgramData%\Steam\*\
 - %localappdata%\SKIDROW
-- %appdata%\SmartSteamEmu  
-    
-Will be scanned too altho there is no achievement file yet at the time of writing : 
-- Documents\CPY_SAVES
-- %appdata%\CPY_SAVES
+- %appdata%\SmartSteamEmu
+```
+
+Will be scanned too altho there is no achievement file yet at the time of writing :
+```
+- Documents\CPY_SAVES\*\
+- %appdata%\CPY_SAVES\*\
 - %appdata%\Goldberg SteamEmu Saves
+```
+
+You can add your own folder in the app, just make sure that you select a folder which contains appid folder(s) :<br/>
+ ```
+ |___ Custom dir
+      |___ 480 
+      |___ 220 
+ ```
+For ALI213 there is no default folder so choose the dir where the `AlI213.ini` file is; <br>
+The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
+
+⚠️ Please note that notification only works with CODEX emu file,<br/>
+by default in `%PUBLIC%\Documents\Steam\CODEX` but you can add other location in the app.
+
+**From Registry:**<br/>
+
+|Steam Emulator|Unlock Time|Ach Progress|Notification|Location|
+|--------------|-----------|------------|------------|----|
+|Green Luma Reborn| No | No | No | `HKCU\SOFTWARE\GLR\AppID\[APPID]` |
+
+⚠️ Parse GLR ach. for an APPID only if the reg key "SkipStatsAndAchievements" is set to dword:00000000.
 
 Steam Web API Key
 =================
@@ -93,6 +126,9 @@ Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini``
 - mergeDuplicate<br />
   default to true<br />
   Try to merge multiple achievement files with the same steam appid<br />
+- hideZero<br />
+  default to false<br />
+  Hide 0% Game<br />
 - notification<br />
   default to true<br />
   Display or not a Windows toast notification on achievement unlocking. <br />
@@ -108,6 +144,18 @@ Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini``
   When an achievement file is modified; Wether to check or not if the corresponding game is running and responding.<br />
   <br />
   Both options are mainly there to mitigate false positive.
+  
+- appID<br />
+  if not set, default to "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp"<br />
+  Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
+  Example: 
+  
+  |Name| AppID |
+  |----|-------|
+  |Xbox Game Bar|Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App |
+  |Xbox App| Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp |
+  
+  ⚠️ You need to use a UWP AppID otherwise you won't be able to remotely load ach. img.
 
 Command Line Args | URI Scheme
 ==============================
