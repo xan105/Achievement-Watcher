@@ -12,6 +12,7 @@ const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedi
 
 const steamLanguages = require("./locale/steam.json");
 const userdir = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
+const exclusion = path.join(remote.app.getPath('userData'),"cfg/exclusion.db");
 
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,
@@ -243,6 +244,23 @@ async function discover() {
       }//for loop
     } else {
       debug.log("GLR No achievement found in registry");
+    }
+
+    const exclude = [
+      480, //Space War
+      753, //Steam Config
+    ];
+
+    try{  
+        try{
+          let userExclusion = JSON.parse(await ffs.promises.readFile(exclusion,"utf8")); 
+          exclude.concat(userExclusion); 
+        }catch(e){
+          //Do nothing
+        }
+        data = data.filter(appid => { return !exclude.some((id) => id == appid.appid) }); 
+    }catch(e){
+        debug.log(e);
     }
 
     return data;
