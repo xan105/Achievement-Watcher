@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "init.js",
   "scripts": {
     "start": "electron .",
@@ -12,7 +12,7 @@
   "author": "Xan",
   "license": "LGPL-3.0-only",
   "devDependencies": {
-    "electron": "^4.2.5",
+    "electron": "^4.2.6",
     "electron-context-menu": "^0.11.0",
     "electron-rebuild": "^1.8.5",
     "patch-package": "^6.1.2"
@@ -26,7 +26,7 @@
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
-    "node-html-parser": "^1.1.15",
+    "node-html-parser": "^1.1.16",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0"
   },
