@@ -89,6 +89,7 @@ function translateUI(lang,locale,template){
         $("#btn-settings-save").text(clear(template.save));
         $("#settingNav li[data-view='general'] span").text(clear(template.general));
         $("#settingNav li[data-view='folder'] span").text(clear(template.folder));
+        $("#settingNav li[data-view='advanced'] span").text(clear(template.advanced));
         selector = $("#settings .box .content[data-view='folder']");
         selector.find(".disclaimer span").text(clear(template.dirDisclaimer));
         selector.find(".title:eq(0) span").text(clear(template.dirDefault));

@@ -31,5 +31,6 @@
   "dirDisclaimer": "Où chercher les données des succès:",
   "dirAdd": "Ajouter un dossier",
   "dirDefault": "Répertoire par défaut",
-  "dirCustom": "Répertoire de l'utilisateur"
+  "dirCustom": "Répertoire de l'utilisateur",
+  "advanced": "Avancé"
 }

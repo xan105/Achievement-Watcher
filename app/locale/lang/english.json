@@ -31,5 +31,6 @@
   "dirDisclaimer": "Where to look for achievements files :",
   "dirAdd": "Add a Folder",
   "dirDefault": "Default Dir",
-  "dirCustom": "User Dir"
+  "dirCustom": "User Dir",
+  "advanced": "Advanced"
 }

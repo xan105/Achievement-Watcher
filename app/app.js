@@ -94,8 +94,7 @@ var app = {
 
       }
       
-      let progress_sum = progress_cache.reduce((acc, curr) => ( acc + curr ));
-      let average_progress = Math.round(progress_sum / progress_cache.length);
+      let average_progress = (progress_cache.length > 0) ? Math.floor(progress_cache.reduce((acc, curr) => ( acc + curr )) / progress_cache.length) : 0;
       
       $("#user-info .info .stats li:eq(2) span.data").text(average_progress);
       
@@ -104,6 +103,25 @@ var app = {
       $("#user-info .info .stats li:eq(0) span.data").text(list.filter( game => game.achievement.unlocked > 0).reduce((acc, curr) => { return acc + parseInt(curr.achievement.unlocked) }, 0));
 
       $("#game-list .game-box").click(function(){ self.onGameBoxClick($(this),list) });
+      
+      $("#game-list .game-box").contextmenu(function(e) { 
+         e.preventDefault();
+         let appid = $(this).data("appid");
+
+         const { Menu, MenuItem } = remote;
+         const menu = new Menu();
+         menu.append(new MenuItem({ label: 'Remove from list', click() { 
+         
+          try{
+            achievements.parserBlacklist(appid);
+            app.onStart();
+          }catch(err){
+            remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: `Failed to add item to user blacklist`, detail: `${err}`});
+          }
+         
+          } }));
+         menu.popup({ window: win });
+       });
       
       if (self.args.appid) $(`#game-list .game-box[data-appid="${self.args.appid.toString().replace(/[^\d]/g, '')}"]`).first().trigger("click");
 

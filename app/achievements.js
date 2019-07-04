@@ -246,19 +246,23 @@ async function discover() {
       debug.log("GLR No achievement found in registry");
     }
 
-    const exclude = [
-      480, //Space War
-      753, //Steam Config
-    ];
-
+    //AppID Blacklisting
     try{  
+    
+        let exclude = [
+          480, //Space War
+          753, //Steam Config
+        ];
+        
         try{
           let userExclusion = JSON.parse(await ffs.promises.readFile(exclusion,"utf8")); 
-          exclude.concat(userExclusion); 
+          exclude = [...new Set([...exclude,...userExclusion])];
+          
         }catch(e){
           //Do nothing
         }
         data = data.filter(appid => { return !exclude.some((id) => id == appid.appid) }); 
+        
     }catch(e){
         debug.log(e);
     }
@@ -279,6 +283,40 @@ const getUserCustomDir = module.exports.getUserCustomDir = async () => {
         throw e;
     }
     
+}
+
+module.exports.resetBlackList = async() => {
+  try{
+    await ffs.promises.writeFile(exclusion,JSON.stringify([], null, 2),"utf8"); 
+  }catch(e){
+    throw e;
+  }
+}
+
+module.exports.parserBlacklist = async (appid) => {
+    try{
+        
+        debug.log(`Blacklisting ${appid} ...`);
+        
+        let userExclusion;
+        
+        try{
+          userExclusion = JSON.parse(await ffs.promises.readFile(exclusion,"utf8"));
+        }catch(e){
+          userExclusion = [];
+        } 
+        
+        if (!userExclusion.includes(appid)) {
+          userExclusion.push(appid);
+          await ffs.promises.writeFile(exclusion,JSON.stringify(userExclusion, null, 2),"utf8"); 
+          debug.log("Done.");
+        } else {
+          debug.log("Already blacklisted.");
+        }
+  
+    }catch(e){
+        throw e;
+    }
 }
 
 module.exports.saveUserCustomDir = async (data) => {
