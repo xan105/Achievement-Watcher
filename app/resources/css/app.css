@@ -364,7 +364,7 @@ main {
 }
 
 #achievement .wrapper > .header .title {
-    padding: 20px 0;
+    padding: 12px 0 20px 0;
     display: flex;
 }
 
@@ -387,6 +387,7 @@ main {
     white-space: nowrap;
     overflow: hidden;
     max-width: 800px;
+    padding: 8px 0;
 }
 
 #achievement .wrapper > .header .stats {
