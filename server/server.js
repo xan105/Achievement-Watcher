@@ -34,7 +34,7 @@ app.get("/steam/ach/:appid", (req, res) => { //reroute old route to new
   let appID = req.params.appid;
   let lang = req.query.lang;
 
-  (lang) ? res.redirect(301,`/steam/ach/schema/${appID}?${lang}`) : res.redirect(301,`/steam/ach/schema/${appID}`);
+  (lang) ? res.redirect(301,`/steam/ach/schema/${appID}?lang=${lang}`) : res.redirect(301,`/steam/ach/schema/${appID}`);
   
 }).get("/steam/ach/schema/:appid", async (req, res) => {
   
