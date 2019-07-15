@@ -74,8 +74,27 @@ module.exports.getUserStats = async (user, appID) => {
   try {
 
     let result = await request.getJson(url);
-    return result;
+    return result.playerstats;
     
+  }catch(err){
+    debug.log(err);
+    throw err
+  }
+
+};
+
+module.exports.getUserOwnedGames = async (user) => {
+
+  const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${key.userStats}&steamid=${user}&include_played_free_games=true&format=json`;
+
+  try {
+
+    let result = await request.getJson(url);
+    
+    if(Object.keys(result.response).length === 0) throw 403;
+
+    return result.response 
+
   }catch(err){
     debug.log(err);
     throw err
