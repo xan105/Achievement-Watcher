@@ -14,9 +14,12 @@ const keychain = require("./key.json");
 const cache = require("./cache.json");
 const steamLanguages = require("./steamLanguages.json");
 
-const key = aes.decrypt(keychain.key);
+const key = {
+  schema : aes.decrypt(keychain.schema),
+  userStats : aes.decrypt(keychain.userStats)
+}
 
-module.exports = async (appID,lang = "english") => {
+module.exports.getSchema = async (appID,lang = "english") => {
   try {
   
     debug.log(`Loading ${appID} - ${lang}`);
@@ -64,6 +67,22 @@ module.exports = async (appID,lang = "english") => {
   }
 }
 
+module.exports.getUserStats = async (user, appID) => {
+
+  const url = `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${appID}&key=${key.userStats}&steamid=${user}"`;
+
+  try {
+
+    let result = await request.getJson(url);
+    return result;
+    
+  }catch(err){
+    debug.log(err);
+    throw err
+  }
+
+};
+
 function getSteamHeaderData(appID) {
 
   const url = `https://store.steampowered.com/api/appdetails?appids=${appID}`;
@@ -108,7 +127,7 @@ function getSteamHeaderData(appID) {
 
 function getSteamAchData(appID,lang) {
 
-  const url = `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${key}&appid=${appID}&l=${lang}&format=json`;
+  const url = `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${key.schema}&appid=${appID}&l=${lang}&format=json`;
 
   return new Promise((resolve, reject) => {
     return request.getJson(url).then((data)=>{
