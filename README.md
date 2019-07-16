@@ -98,13 +98,14 @@ by default in `%PUBLIC%\Documents\Steam\CODEX` but you can add other location in
 ⚠️ Parse GLR ach. only if the reg key "SkipStatsAndAchievements" is set to dword:00000000 for that APPID.
 
 **From Steam:**<br/>
+
 Unlock Time|Ach Progress|Location|
 |--------------|-----------|------------|
 | Yes | No | `STEAM\appcache\stats` |
 
 You can choose to view none / only installed / all owned Steam games.<br/>
 
-⚠️ This feature requires that your Steam Profile is set to Public.
+⚠️ This feature requires that your Steam Profile is set to `Public`.
 
 Steam Web API Key
 =================
