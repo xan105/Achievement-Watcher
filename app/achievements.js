@@ -337,9 +337,15 @@ async function discover(legitSteamListingType) {
         ];
         
         try{
+          let srvExclusion = (await request.getJson("https://api.xan105.com/steam/getBogusList")).data;
+          exclude = [...new Set([...exclude,...srvExclusion])];
+        }catch(e){
+          //Do nothing
+        }
+        
+        try{
           let userExclusion = JSON.parse(await ffs.promises.readFile(exclusion,"utf8")); 
           exclude = [...new Set([...exclude,...userExclusion])];
-          
         }catch(e){
           //Do nothing
         }
@@ -348,8 +354,6 @@ async function discover(legitSteamListingType) {
     }catch(e){
         debug.log(e);
     }
-
-console.log(data);
 
     return data;
 
@@ -424,31 +428,24 @@ async function loadSteamUserStats(cfg) {
       steam : path.join(`${cfg.path}`,`UserGameStats_${cfg.user.user}_${cfg.appID}.bin`)
     };
     
-    console.log(cache);
-    
     let time = {
       local : 0,
       steam: 0
     };
     
     let local = await ffs.promises.stats(cache.local);
-    console.log(local);
     if (Object.keys(local).length > 0) {
       time.local = moment(local.mtime).valueOf();
     }
 
     let steamStats = await ffs.promises.stats(cache.steam);
-    console.log(steamStats);
     if (Object.keys(steamStats).length > 0) {
       time.steam = moment(steamStats.mtime).valueOf();
     }else{
       throw "No Steam cache file found"
     }
-
-    console.log(time);
     
     if (time.steam > time.local) {
-        console.error("steam user ach : from remote");
         if (cfg.key) {
           result = await getSteamUserStats(cfg);
         } else {
@@ -457,14 +454,12 @@ async function loadSteamUserStats(cfg) {
         ffs.promises.writeFile(cache.local,JSON.stringify(result, null, 2)).catch((err) => {});
 
     } else {
-      console.error("steam user ach : from local cache");
       result = JSON.parse(await ffs.promises.readFile(cache.local));
     }
 
    return result;
    
  }catch( err) {
-  console.error(err);
   throw "Could not load Steam User Stats."
  }
  
@@ -473,8 +468,6 @@ async function loadSteamUserStats(cfg) {
 function getSteamUserStatsFromSRV(user,appID) {
 
   const url = `https://api.xan105.com/steam/user/${user}/stats/${appID}`;
-  
-  console.log(url);
   
   return new Promise((resolve, reject) => {
   

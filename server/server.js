@@ -5,13 +5,14 @@ const bodyParser = require("body-parser");
 const helmet = require('helmet');
 const rateLimit = require("express-rate-limit")({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 200, // limit each IP to 200 requests per windowMs
   message: {
     error : "Too many requests, please try again later.",
     data : null
   }
 });
 const steam = require("./steam.js");
+const blacklist = require("./blacklist.js");
 const debug = new (require(require.resolve("./util/log.js")))({
   console: true,
   file: path.resolve("./log/server.log")
@@ -36,18 +37,30 @@ app.get("/steam/ach/:appid", async (req, res) => {
                }
   };
 
+  let appID = numerify(req.params.appid);
+  
   try {
 
-    let appID = numerify(req.params.appid);
     let lang = stringify(req.query.lang);
-    
+
     debug.log(`Request received: ach schema for ${appID}`);
     if (lang) debug.log(`with lang: ${lang}`);
 
-    result.status = 200;
-    result.response.data = await steam.getSchema(appID,lang);
-  
+    if (appID == 0) {
+      result.status = 400;
+      result.response.error = "Bad Request";
+    }
+    else if (await blacklist.isIn(appID)) {
+      debug.log(`${appID} is blacklisted`);
+      result.status = 500;
+      result.response.error = "Internal Server Error";
+    } else {
+      result.status = 200;
+      result.response.data = await steam.getSchema(appID,lang);
+    }
+
   } catch(err) {
+    
     if (err === "Unsupported API language code") {
       result.status = 400;
       result.response.error = err;
@@ -55,6 +68,11 @@ app.get("/steam/ach/:appid", async (req, res) => {
       result.status = 500;
       result.response.error = "Internal Server Error";
       debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
+      try{
+        blacklist.add(appID).then(()=>{
+          debug.log(`${appID} added to blacklist`);
+        });
+      }catch(e){}
     }
   }
   finally {
@@ -99,7 +117,7 @@ app.get("/steam/ach/:appid", async (req, res) => {
     res.status(result.status).json(result.response);
   }
 
-}).get("/steam/user/:user/owned", async (req, res) => {
+}).get("/steam/getBogusList", async (req, res) => {
   
   let result = { 
     status : null,
@@ -110,25 +128,15 @@ app.get("/steam/ach/:appid", async (req, res) => {
 
   try {
 
-    let user = stringify(req.params.user); //int64
+    debug.log("Request received: bogus appId list");
     
-    debug.log(`Request received: user (${user}) owned games`);
-
     result.status = 200;
-    result.response.data = await steam.getUserOwnedGames(user);
+    result.response.data = await blacklist.get();
   
   } catch(err) {
-     if (err === 400) {
-        result.status = 400;
-        result.response.error = "Steam: Bad Request";
-     } else if (err === 403) {
-        result.status = 403;
-        result.response.error = "Steam: Forbidden - Is the requested profile set to Public ?";
-     } else { 
       result.status = 500;
       result.response.error = "Internal Server Error";
-      debug.log("An error has occurred in API: 'Steam/achievement/GetUserOwnedGames':\n" + err);
-     }
+      debug.log("An error has occurred in API: 'Steam/getBogusList':\n" + err);
   }
   finally {
     debug.log("Sending response");

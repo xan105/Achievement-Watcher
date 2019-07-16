@@ -74,7 +74,7 @@ module.exports.getUserStats = async (user, appID) => {
   try {
 
     let result = await request.getJson(url);
-    return result.playerstats;
+    return result.playerstats.achievements;
     
   }catch(err){
     debug.log(err);
