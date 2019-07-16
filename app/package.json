@@ -23,12 +23,15 @@
     "ffi-napi": "^2.4.5",
     "glob": "^7.1.4",
     "ini": "^1.3.5",
+    "lodash.omit": "^4.5.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "node-html-parser": "^1.1.16",
     "rimraf": "^2.6.3",
-    "rwlock": "^5.0.0"
+    "rwlock": "^5.0.0",
+    "steamid": "^1.1.3",
+    "xml2js": "^0.4.19"
   },
   "config": {
     "debug": true,
