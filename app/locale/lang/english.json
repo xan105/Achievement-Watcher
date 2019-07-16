@@ -32,5 +32,10 @@
   "dirAdd": "Add a Folder",
   "dirDefault": "Default Dir",
   "dirCustom": "User Dir",
-  "advanced": "Advanced"
+  "advanced": "Advanced",
+  "legitSteam": "Display Steam Games",
+  "none": "None",
+  "installed": "Installed",
+  "owned": "Owned",
+  "publicProfile": "Your Steam profile must be public !"
 }

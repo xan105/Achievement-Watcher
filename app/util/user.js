@@ -7,7 +7,7 @@ const regedit = require("../native/regedit/regedit.js");
 module.exports.get = () => {
   return new Promise((resolve) => {
 
-    const sourceID = regedit.RegQueryStringValue("HKCU","Software\\Microsoft\\Windows\\CurrentVersion\\AccountPicture","SourceId");
+    const sourceID = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/AccountPicture","SourceId");
 
     let result = {
       avatar: null,

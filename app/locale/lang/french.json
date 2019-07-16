@@ -32,5 +32,10 @@
   "dirAdd": "Ajouter un dossier",
   "dirDefault": "Répertoire par défaut",
   "dirCustom": "Répertoire de l'utilisateur",
-  "advanced": "Avancé"
+  "advanced": "Avancé",
+  "legitSteam": "Afficher les jeux Steam",
+  "none": "Aucun",
+  "installed": "Installé(s)",
+  "owned": "Possédé(s)",
+  "publicProfile": "Votre profil Steam doit être publique !"
 }

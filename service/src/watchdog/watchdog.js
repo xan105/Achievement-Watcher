@@ -137,6 +137,11 @@ var app = {
           fixFile = true;
         }
         
+        if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
+          options.achievement.legitSteam = 1;
+          fixFile = true;
+        }
+        
         if (isNaN(self.options.notifier.timeTreshold)){
           self.options.notifier.timeTreshold = 30;
           fixFile = true;
@@ -169,7 +174,8 @@ var app = {
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
-            notification: true
+            notification: true,
+            legitSteam: 1
           },
           notifier: {
             timeTreshold: 30,

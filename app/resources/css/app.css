@@ -769,9 +769,10 @@ main {
 
 #options-ui li {
   font-size: 16px;
-  padding: 10px 12px;
+  padding: 5px 12px;
   position: relative;
   display: flex;
+  height: 24px;
 }
 
 #options-ui li .left{
@@ -854,9 +855,21 @@ main {
   cursor: pointer;
 }
 
+#options-ui li.hasHelper {
+  margin-bottom: 16px;
+}
+#options-ui li .help {
+    position: absolute;
+    bottom: 0;
+    left: 36px;
+    translateY: -100%;
+    transform: translateY(100%);
+    font-size: 14px;
+    color: #9ba0a5;
+}
+
 #options-steam-api {
-  padding: 0 12px;
-  margin-top: 10px;
+  margin-top: 18px;
 }
 
 #options-steam-api .title {

@@ -82,6 +82,11 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(5) .left span").text(clear(template.notification));
         selector.find("li:nth-child(5) .right select option[value='true']").text(clear(template.enable));
         selector.find("li:nth-child(5) .right select option[value='false']").text(clear(template.disable));
+        selector.find("li:nth-child(6) .left span").text(clear(template.legitSteam));
+        selector.find("li:nth-child(6) .right select option[value='0']").text(clear(template.none));
+        selector.find("li:nth-child(6) .right select option[value='1']").text(clear(template.installed));
+        selector.find("li:nth-child(6) .right select option[value='2']").text(clear(template.owned));
+        selector.find("li:nth-child(6) .help").text(clear(template.publicProfile));
         selector = $("#settings .box .footer .notice p:nth-child(1)");
         selector.find("span:eq(0)").text(clear(template.version));
         selector.find("span:eq(1)").text(clear(remote.app.getVersion()));

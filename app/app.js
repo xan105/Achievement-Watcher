@@ -45,6 +45,7 @@ var app = {
    achievements.makeList({
       lang: self.config.achievement.lang, 
       merge: self.config.achievement.mergeDuplicate,
+      steam: self.config.achievement.legitSteam,
       key: self.config.steam.apiKey
    },(percent)=>{
    

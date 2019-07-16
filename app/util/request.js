@@ -9,7 +9,7 @@ const DEFAULT = {
   userAgent : 'Chrome/'
 };
 
-const request = module.exports = (request_url, option = {} ) => {
+const request = module.exports = (url, option = {} ) => {
 
   let options = {
     timeout : option.timeout || DEFAULT.timeout,
@@ -25,11 +25,11 @@ const request = module.exports = (request_url, option = {} ) => {
 
   return new Promise((resolve, reject) => {
 
-    let url = urlParser.parse(request_url);
+    url = urlParser.parse(url);
     url.headers = options.headers;
 
     const lib = (url.protocol === "https:") ? https : http;
-    let request = lib.get(url, (response) => {
+    let req = lib.get(url, (response) => {
     
       if (response.statusCode >= 200 && response.statusCode < 300) { 
 
@@ -49,28 +49,33 @@ const request = module.exports = (request_url, option = {} ) => {
         });
         response.on('error', function(err) {
              reject(err);
-             request.abort();
+             req.abort();
         });
+        
+      } else if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
       
+        let redirect = (urlParser.parse(response.headers.location).hostname) ? response.headers.location : `${url.protocol}//${url.hostname}/${response.headers.location}`;
+        return resolve(request(redirect, option));
+
       } else {
          reject(response.statusCode);
-         request.abort();
+         req.abort();
       }
       
       
    });
-   request.setTimeout(options.timeout, () => {
-        request.abort();
+   req.setTimeout(options.timeout, () => {
+        req.abort();
    });
-   request.on('error', (err) =>  {
+   req.on('error', (err) =>  {
         reject(err);
-        request.abort();
+        req.abort();
    });
   
   });  
 }
 
-module.exports.getJson = async (request_url, option = {} ) => {
+module.exports.getJson = async (url, option = {} ) => {
 
   let options = {
     timeout : option.timeout || DEFAULT.timeout,
@@ -86,7 +91,7 @@ module.exports.getJson = async (request_url, option = {} ) => {
 
   try {
   
-     let json = await request(request_url, options);
+     let json = await request(url, options);
      return JSON.parse(json);
 
   }catch(err){

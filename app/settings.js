@@ -41,6 +41,10 @@ module.exports.load = ()=>{
           options.achievement.notification = true;
         }
         
+        if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
+          options.achievement.legitSteam = 1;
+        }
+        
         if (isNaN(options.notifier.timeTreshold)){
           options.notifier.timeTreshold = 30;
         }
@@ -66,7 +70,8 @@ module.exports.load = ()=>{
             showHidden: false,
             mergeDuplicate: true,
             hideZero: false,
-            notification: true
+            notification: true,
+            legitSteam: 1
           },
           notifier: {
             timeTreshold: 30,

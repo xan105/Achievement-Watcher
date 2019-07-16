@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net; connect-src 'self' https://api.steampowered.com">
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-/WjaJcwrOQT64JoB3jkos/XuolhMgNsUA4nBVnefdPREZfYoZNzaWOO8JKffF0hp"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-UIpj5JnSY6Gaa5GMHNpGzL4z5r7RFMwwrwMBntXDc8hcPy4HIHdoTsHVSYndMaZe"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-OlA5ofRBaR5b8pch31eMGQSJ4JNmyCxBCBBCDUlk/luO4hlkDQ+RnQNfQQICi+hB"/>
   </head>
   <body>
@@ -113,10 +113,35 @@
              </nav>
 
              <section class="content" data-view="advanced">
-             <ul>
-              <li>AppID Blacklist</li>
-              <li><div id="blacklist_reset" class="btn"><i class="fas fa-file-medical-alt"></i> <span>Reset blacklist</span></div></li>
-             </ul>
+               <ul>
+                <li>AppID Blacklist</li>
+                <li><div id="blacklist_reset" class="btn"><i class="fas fa-file-medical-alt"></i> <span>Reset blacklist</span></div></li>
+               </ul>
+               
+               <div id="options-steam-api">
+                    <div class="title"><i class="fas fa-key"></i> Steam Web API Key</div>
+                    <div class="disclaimer">                
+                      <p>
+                      Some use of the Steam Web API to fetch data from Steam requires the use of an API Key.  
+                      </p>
+
+                      <p>
+                      Leave this field blank to automagically fetch said data.<br />
+                      This service is not guarantee over time and is solely provided for your own convenience.<br />
+                      If you experience any issues please use your own Steam Web API key.              
+                      </p>              
+                        
+                      <p>                
+                      You can acquire one <a href="https://steamcommunity.com/dev/apikey" target="_blank">by filling out this form</a>.<br /> 
+                      Use of the APIs also requires that you agree to the <a href="https://steamcommunity.com/dev/apiterms" target="_blank">Steam API Terms of Use</a>.
+                      </p>
+                    </div>
+
+                    <label for="steamwebapikey"><i class="fab fa-steam-symbol"></i> Your Steam Web API Key :</label>
+                    <input type="password" pattern="[a-fA-F\d]+" id="steamwebapikey" >
+                    <span>Key will be crypted and stored to your computer in aes-256-cbc.</span>
+                    
+               </div>
              </section>
              
              <section class="content" data-view="folder">
@@ -228,35 +253,24 @@
                          <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
                         </div>
                       </li>
+                      
+                      <li class="hasHelper">
+                        <div class="left"><i class="fab fa-steam"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" class="dropdown" id="option_legitSteam">
+                            <option value="0"></option>
+                            <option value="1" selected></option>
+                            <option value="2"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
 
                   </ul>
                 </div>
-             
-                <div id="options-steam-api">
-                  <div class="title"><i class="fas fa-key"></i> Steam Web API Key</div>
-                  <div class="disclaimer">                
-                    <p>
-                    Some use of the Steam Web API to fetch data from Steam requires the use of an API Key.  
-                    </p>
 
-                    <p>
-                    Leave this field blank to automagically fetch said data.<br />
-                    This service is not guarantee over time and is solely provided for your own convenience.<br />
-                    If you experience any issues please use your own Steam Web API key.              
-                    </p>              
-                      
-                    <p>                
-                    You can acquire one <a href="https://steamcommunity.com/dev/apikey" target="_blank">by filling out this form</a>.<br /> 
-                    Use of the APIs also requires that you agree to the <a href="https://steamcommunity.com/dev/apiterms" target="_blank">Steam API Terms of Use</a>.
-                    </p>
-                  </div>
-
-                  <label for="steamwebapikey"><i class="fab fa-steam-symbol"></i> Your Steam Web API Key :</label>
-                  <input type="password" pattern="[a-fA-F\d]+" id="steamwebapikey" >
-                  <span>Key will be crypted and stored to your computer in aes-256-cbc.</span>
-                  
-                </div>
-             
              </section>
              </div>
              

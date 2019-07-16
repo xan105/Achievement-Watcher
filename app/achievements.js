@@ -5,10 +5,13 @@ const path = require("path");
 const util = require("util");
 const glob = require("fast-glob");
 const ini = require("ini");
+const omit = require('lodash.omit');
+const moment = require('moment');
 const request = require(require.resolve("./util/request.js"));
 const ffs = require(require.resolve("./util/feverFS.js"));
 const htmlParser = require('node-html-parser').parse;
 const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedit.js"));
+const steamID = require(require.resolve("./util/steamID.js"));
 
 const steamLanguages = require("./locale/steam.json");
 const userdir = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
@@ -25,7 +28,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
       let result = [];
   
-      let appidList = await discover();
+      let appidList = await discover(option.steam);
 
       if ( appidList.length > 0) {
         let count = 1;
@@ -63,20 +66,32 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                     }
                 
                     if(!local) throw "No achievement file found"; 
+
+                    const filter = ["SteamAchievements","Steam64","Steam"];
                     
-                    root = local.ACHIEVE_DATA || local;
-                    
+                    root = omit(local.ACHIEVE_DATA || local, filter);
+
                  } else if (appid.data.type === "reg") {
                        
                     root = regedit.RegListAllValues(appid.data.root,appid.data.path); 
                     if (!root) throw "No achievement found in registry"; 
 
+                 } else if (appid.data.type === "steamAPI") {
+                 
+                   let users = appid.data.userID;
+                   for (let user of users)  {
+                      try {
+                       root = await loadSteamUserStats({appID: appid.appid, user: user, path: appid.data.cachePath , key: option.key });
+                       break;
+                      }catch(e){
+                        //Do nothing -> try with next public user if any
+                      }
+                   }
+
                  }
 
                  for (let i in root){
 
-                     if (i !== "SteamAchievements" && i !== "Steam64" && i !== "Steam") { 
-                     
                      try {
                      
                           let achievement;
@@ -86,7 +101,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                           
                                 achievement = game.achievement.list.find( elem => elem.name === i);
       
-                                if(root[i].State) { 
+                                if(root[i].State) { //RLD!
                                   root[i].State = new Uint32Array(Buffer.from(root[i].State.toString(),"hex"))[0]; //uint32 -> int
                                   root[i].CurProgress = parseInt(root[i].CurProgress.toString(),16);
                                   root[i].MaxProgress = parseInt(root[i].CurProgress.toString(),16); 
@@ -108,6 +123,17 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                      CurProgress : 0,
                                      MaxProgress : 0,
                                      UnlockTime :  0
+                               };
+
+                          } else if (appid.data.type === "steamAPI") {
+
+                               achievement = game.achievement.list.find( elem => elem.name === root[i].apiname);
+                               
+                               parsed = {
+                                     Achieved : (root[i].achieved == 1) ? true : false,
+                                     CurProgress : 0,
+                                     MaxProgress : 0,
+                                     UnlockTime :  root[i].unlocktime
                                };
 
                           }
@@ -135,8 +161,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
      
                        }catch(e){
                             debug.log(`[${appid.appid}] Achievement not found in steam data ?! ... Achievement was probably deleted or renamed over time`);
-                       }  
-                     }             
+                       }          
                     }
 
                    game.achievement.unlocked = game.achievement.list.filter(x => x.Achieved == 1).length;
@@ -147,7 +172,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
             //loop appid
             } catch(err) {
-              debug.log(`[${appid.appid}] Error parsing local achievements.ini > SKIPPING`);
+              debug.log(`[${appid.appid}] Error parsing local achievements data > SKIPPING`);
               debug.log(err);
             }
             
@@ -167,7 +192,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 };
 
 
-async function discover() {
+async function discover(legitSteamListingType) {
   try{
   
     let search = [
@@ -176,7 +201,7 @@ async function discover() {
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*/*([0-9])/",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW")+"/*([0-9])/",
         path.join(process.env['APPDATA'],"CPY_SAVES")+"/*/*([0-9])/",
-        path.join(regedit.RegQueryStringValue("HKCU","Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders","Personal"),"CPY_SAVES")+"/*/*([0-9])/",
+        path.join(regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal"),"CPY_SAVES")+"/*/*([0-9])/",
         path.join(process.env['APPDATA'],"SmartSteamEmu")+"/*([0-9])/",
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/*([0-9])/"
     ];
@@ -220,6 +245,7 @@ async function discover() {
       data = data.concat(ALI213);
     }           
                
+    //GreenLuma Reborn
     let glr = regedit.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID");
     if (glr) {
       for (let key of glr) {
@@ -241,9 +267,63 @@ async function discover() {
            }catch(e){
               debug.log(e);
            }
-      }//for loop
+      }
     } else {
       debug.log("GLR No achievement found in registry");
+    }
+    
+    //Legit Steam
+    
+    console.error(legitSteamListingType);
+    
+    if (regedit.RegKeyExists("HKCU","Software/Valve/Steam") && legitSteamListingType != 0){ 
+      try{
+        const steamPath = regedit.RegQueryStringValue("HKCU","Software/Valve/Steam","SteamPath");
+        if (!steamPath) throw "SteamPath not found";
+        
+        let userID = [];
+        let users = regedit.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
+        if (!users) throw "No Steam User ID found"; 
+        for (let user of users) {
+            let id = steamID.to64(user);
+            if (await steamID.isPublic(id)) { 
+              debug.log(`${user} - ${id} is public`);
+              userID.push({
+                user: user,
+                id: id
+              }); 
+            }
+         }
+         
+         let steamCache = path.join(steamPath,"appcache/stats");
+         let steamAppIDList = (await glob("UserGameStatsSchema_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map(filename => filename.match(/([0-9])\w+/g)[0] );
+               
+         for (let appid of steamAppIDList) {
+          
+             let hasStatsSchema = await ffs.promises.exists(path.join(steamCache,`UserGameStatsSchema_${appid}.bin`));
+
+             let isInstalled = true;
+             if (legitSteamListingType == 1) {
+                isInstalled = (regedit.RegQueryIntegerValue("HKCU",`Software/Valve/Steam/Apps/${appid}`,"Installed") === "1") ? true : false;
+             }
+                                 
+             if ( hasStatsSchema && isInstalled) {
+            
+                  data.push({appid: appid,
+                             data: {
+                                type: "steamAPI",
+                                userID: userID,
+                                cachePath: steamCache
+                             }
+                  });
+            }       
+          }
+
+        }catch(e){
+          debug.log(e);
+        }
+    } else {
+      debug.log("Legit Steam not found.");
     }
 
     //AppID Blacklisting
@@ -252,6 +332,8 @@ async function discover() {
         let exclude = [
           480, //Space War
           753, //Steam Config
+          250820, //SteamVR
+          228980 //Steamworks Common Redistributables
         ];
         
         try{
@@ -266,6 +348,8 @@ async function discover() {
     }catch(e){
         debug.log(e);
     }
+
+console.log(data);
 
     return data;
 
@@ -328,6 +412,103 @@ module.exports.saveUserCustomDir = async (data) => {
     }
     
 }
+
+async function loadSteamUserStats(cfg) {
+
+  try {
+  
+    let result;
+  
+    let cache = {
+      local : path.join(remote.app.getPath('userData'),"steam_cache",cfg.user.user,`${cfg.appID}.db`),
+      steam : path.join(`${cfg.path}`,`UserGameStats_${cfg.user.user}_${cfg.appID}.bin`)
+    };
+    
+    console.log(cache);
+    
+    let time = {
+      local : 0,
+      steam: 0
+    };
+    
+    let local = await ffs.promises.stats(cache.local);
+    console.log(local);
+    if (Object.keys(local).length > 0) {
+      time.local = moment(local.mtime).valueOf();
+    }
+
+    let steamStats = await ffs.promises.stats(cache.steam);
+    console.log(steamStats);
+    if (Object.keys(steamStats).length > 0) {
+      time.steam = moment(steamStats.mtime).valueOf();
+    }else{
+      throw "No Steam cache file found"
+    }
+
+    console.log(time);
+    
+    if (time.steam > time.local) {
+        console.error("steam user ach : from remote");
+        if (cfg.key) {
+          result = await getSteamUserStats(cfg);
+        } else {
+          result = await getSteamUserStatsFromSRV(cfg.user.id,cfg.appID);
+        }
+        ffs.promises.writeFile(cache.local,JSON.stringify(result, null, 2)).catch((err) => {});
+
+    } else {
+      console.error("steam user ach : from local cache");
+      result = JSON.parse(await ffs.promises.readFile(cache.local));
+    }
+
+   return result;
+   
+ }catch( err) {
+  console.error(err);
+  throw "Could not load Steam User Stats."
+ }
+ 
+}
+
+function getSteamUserStatsFromSRV(user,appID) {
+
+  const url = `https://api.xan105.com/steam/user/${user}/stats/${appID}`;
+  
+  console.log(url);
+  
+  return new Promise((resolve, reject) => {
+  
+    request.getJson(url).then((data) => {
+      
+      if (data.error) {
+        return reject(data.error);
+      } else if (data.data){
+        return resolve(data.data);
+      } else {
+        return reject("Unexpected Error");
+      }
+      
+    }).catch((err) => {
+      return reject(err);
+    });
+  
+  });
+}
+
+async function getSteamUserStats(cfg) {
+
+  const url = `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${cfg.appID}&key=${cfg.key}&steamid=${cfg.user.id}"`;
+
+  try {
+
+    let result = await request.getJson(url);
+    return result.playerstats.achievements;
+    
+  }catch(err){
+    throw err
+  }
+
+};
 
 async function loadSteamData(cfg) {
 
