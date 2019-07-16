@@ -1,4 +1,5 @@
-A sexy achievement file parser with real-time notification.
+A sexy achievement file parser with real-time notification.<br />
+View all the achievements earned on your PC whether it's coming from Steam or a Steam emulator.
 
 <table >
 <tr>
@@ -94,7 +95,16 @@ by default in `%PUBLIC%\Documents\Steam\CODEX` but you can add other location in
 |--------------|-----------|------------|------------|----|
 |Green Luma Reborn| No | No | No | `HKCU\SOFTWARE\GLR\AppID\[APPID]` |
 
-⚠️ Parse GLR ach. for an APPID only if the reg key "SkipStatsAndAchievements" is set to dword:00000000.
+⚠️ Parse GLR ach. only if the reg key "SkipStatsAndAchievements" is set to dword:00000000 for that APPID.
+
+**From Steam:**<br/>
+Unlock Time|Ach Progress|Location|
+|--------------|-----------|------------|
+| Yes | No | `STEAM\appcache\stats` |
+
+You can choose to view none / only installed / all owned Steam games.<br/>
+
+⚠️ This feature requires that your Steam Profile is set to Public.
 
 Steam Web API Key
 =================
@@ -133,6 +143,9 @@ Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini``
   default to true<br />
   Display or not a Windows toast notification on achievement unlocking. <br />
   (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
+- legitSteam<br />
+  default to 1<br />
+  Steam games : (0) none / (1) installed / (2) owned.<br />
   
 [notifier]
 - timeTreshold<br />
