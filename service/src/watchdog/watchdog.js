@@ -137,8 +137,8 @@ var app = {
           fixFile = true;
         }
         
-        if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
-          options.achievement.legitSteam = 1;
+        if (self.options.achievement.legitSteam != 0 && self.options.achievement.legitSteam != 1 && self.options.achievement.legitSteam != 2){
+          self.options.achievement.legitSteam = 1;
           fixFile = true;
         }
         

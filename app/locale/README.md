@@ -21,7 +21,7 @@ Available/Supported langs (based on [steam](https://partner.steamgames.com/doc/s
 
 Translation Status
 ==================
-As of 18/03/2019
+As of 17/07/2019
 
 - Arabic (ar) | العربية
 - Bulgarian (bg) | български език
@@ -43,13 +43,13 @@ As of 18/03/2019
     No css override <br/>
     By Anthony Beaumont
 - German (de) | Deutsch
-    <br/>Complete <br/>
+    <br/>Incomplete <br/>
     No css override <br/>
     By Anthony Beaumont
 - Greek (el) | Ελληνικά	
 - Hungarian (hu) | Magyar
 - Italian (it) | Italiano
-    <br/>Complete <br/>
+    <br/>Incomplete <br/>
     css override <br/>
     By pollolollo9001
 - Japanese (ja) | 日本語	
@@ -74,7 +74,7 @@ As of 18/03/2019
     <br/>Inherit css override from Spanish (es) <br/>
 - Swedish (sv) | Svenska	
 - Thai (th) | ไทย
-    <br/>Complete <br/>
+    <br/>Incomplete <br/>
     No css override <br/>
     By Anthony Beaumont
 - Turkish (tr) | Türkçe

@@ -12,11 +12,11 @@ module.exports.loadSteamData = async (appID, lang, key) => {
         throw "Unsupported API language code";
   }
   
-  const cache = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache",lang);
+  const cache = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache/schema",lang);
 
   try {
   
-    let filePath = path.join(`${cache}`,`${appID}.json`);
+    let filePath = path.join(`${cache}`,`${appID}.db`);
     let result;
 
     if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: 1})) {

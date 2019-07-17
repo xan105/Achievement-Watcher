@@ -60,8 +60,6 @@ var app = {
         $("#game-list .isEmpty").show();
         return;
       }
-      
-      debug.log("generating gamebox");
 
       let elem = $("#game-list ul");
       
@@ -111,7 +109,7 @@ var app = {
 
          const { Menu, MenuItem } = remote;
          const menu = new Menu();
-         menu.append(new MenuItem({ label: 'Remove from list', click() { 
+         menu.append(new MenuItem({ label: $("#game-list").attr("data-contextMenu0"), click() { 
          
           try{
             achievements.parserBlacklist(appid);
@@ -139,8 +137,6 @@ var app = {
         self.css("pointer-events","none");
 
         let game = list.find( elem => elem.appid == self.data("appid"))
-        
-        debug.log(game);
 
         $("#home").fadeOut(function() {
             $("body").fadeIn().css("background",`url(${game.img.background})`);

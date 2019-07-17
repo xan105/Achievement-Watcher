@@ -84,7 +84,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                        root = await loadSteamUserStats({appID: appid.appid, user: user, path: appid.data.cachePath , key: option.key });
                        break;
                       }catch(e){
-                        //Do nothing -> try with next public user if any
+                        debug.log(e);
+                        debug.log(`trying with next public user if any for ${appid.appid}`);
                       }
                    }
 
@@ -274,8 +275,6 @@ async function discover(legitSteamListingType) {
     
     //Legit Steam
     
-    console.error(legitSteamListingType);
-    
     if (regedit.RegKeyExists("HKCU","Software/Valve/Steam") && legitSteamListingType != 0){ 
       try{
         const steamPath = regedit.RegQueryStringValue("HKCU","Software/Valve/Steam","SteamPath");
@@ -338,6 +337,8 @@ async function discover(legitSteamListingType) {
         
         try{
           let srvExclusion = (await request.getJson("https://api.xan105.com/steam/getBogusList")).data;
+          debug.log("blacklist from srv:");
+          debug.log(srvExclusion);
           exclude = [...new Set([...exclude,...srvExclusion])];
         }catch(e){
           //Do nothing
@@ -424,7 +425,7 @@ async function loadSteamUserStats(cfg) {
     let result;
   
     let cache = {
-      local : path.join(remote.app.getPath('userData'),"steam_cache",cfg.user.user,`${cfg.appID}.db`),
+      local : path.join(remote.app.getPath('userData'),"steam_cache/user",cfg.user.user,`${cfg.appID}.db`),
       steam : path.join(`${cfg.path}`,`UserGameStats_${cfg.user.user}_${cfg.appID}.bin`)
     };
     
@@ -459,7 +460,8 @@ async function loadSteamUserStats(cfg) {
 
    return result;
    
- }catch( err) {
+ }catch(err) {
+  debug.log(err);
   throw "Could not load Steam User Stats."
  }
  
@@ -509,11 +511,11 @@ async function loadSteamData(cfg) {
         throw "Unsupported API language code";
   }
 
-  const cache = path.join(remote.app.getPath('userData'),"steam_cache",cfg.lang);
+  const cache = path.join(remote.app.getPath('userData'),"steam_cache/schema",cfg.lang);
 
   try {
   
-    let filePath = path.join(`${cache}`,`${cfg.appID}.json`);
+    let filePath = path.join(`${cache}`,`${cfg.appID}.db`);
     
     let result;
 
@@ -531,6 +533,7 @@ async function loadSteamData(cfg) {
    return result;
    
  }catch( err) {
+  debug.log(err);
   throw "Could not load Steam data."
  }
  

@@ -37,5 +37,6 @@
   "none": "Aucun",
   "installed": "Installé(s)",
   "owned": "Possédé(s)",
-  "publicProfile": "Votre profil Steam doit être publique !"
+  "publicProfile": "Votre profil Steam doit être publique !",
+  "removeFromList": "Retirer de la liste"
 }

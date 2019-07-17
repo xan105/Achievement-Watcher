@@ -37,5 +37,6 @@
   "none": "None",
   "installed": "Installed",
   "owned": "Owned",
-  "publicProfile": "Your Steam profile must be public !"
+  "publicProfile": "Your Steam profile must be public !",
+  "removeFromList": "Remove from list"
 }
