@@ -52,8 +52,8 @@ app.get("/steam/ach/:appid", async (req, res) => {
     }
     else if (await blacklist.isIn(appID)) {
       debug.log(`${appID} is blacklisted`);
-      result.status = 500;
-      result.response.error = "Internal Server Error";
+      result.status = 409 ;
+      result.response.error = "this appID is currently blacklisted";
     } else {
       result.status = 200;
       result.response.data = await steam.getSchema(appID,lang);
@@ -64,7 +64,11 @@ app.get("/steam/ach/:appid", async (req, res) => {
     if (err === "Unsupported API language code") {
       result.status = 400;
       result.response.error = err;
-    } else {
+    } else if (err.includes("ETIMEDOUT")) {
+      result.status = 504;
+      result.response.error = "Gateway Time-out";
+      debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
+    }else {
       result.status = 500;
       result.response.error = "Internal Server Error";
       debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
