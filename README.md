@@ -108,6 +108,10 @@ Ach. are updated based on files timestamp in `STEAM\appcache\stats`<br/>
 
 ⚠️ This feature requires that your Steam Profile is set to `Public`.<br/>
 
+<p align="center">
+<img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/steam_privacy.png">
+</p>
+
 Due to the server rate limit if you 've a huge Steam library it might not get all your games in one go.<br/>
 If you are using your own steam web api key (see below), this doesn't concern you.
 
