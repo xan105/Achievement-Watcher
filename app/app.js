@@ -2,6 +2,7 @@
 
 const path = require('path');
 const appPath = remote.app.getAppPath();
+const args_split = require('argv-split');
 const args = require('minimist');
 const moment = require('moment');
 const settings = require(path.join(appPath,"settings.js"));
@@ -14,7 +15,7 @@ const debug = new (require(path.join(appPath,"util/log.js")))({
 });
 
 var app = {
-  args: args(remote.process.argv),
+  args: getArgs(remote.process.argv),
   config : settings.load(),
   errorExit: function(err, message = "An unexpected error has occured"){
        remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: `${message}`, detail: `${err}`});
@@ -141,7 +142,6 @@ var app = {
         $("#home").fadeOut(function() {
             $("body").fadeIn().css("background",`url(${game.img.background})`);
             
-            
             $("#achievement .wrapper > .header .title .icon").css("background",`url(${game.img.icon})`);
             $("#achievement .wrapper > .header .title span").text(game.name);
             $("#achievement .wrapper > .header .stats .counter").attr("data-count",game.achievement.unlocked).attr("data-max",game.achievement.total).attr("data-percent",self.find(".progressBar").data("percent"));
@@ -225,10 +225,24 @@ var app = {
             if (hidden_counter > 0) {
               lock.append(hidden_template);
             }
-            
+
+            let elem = $("#achievement .achievement-list ul > li");
+            elem.removeClass("highlight");
+
             getSteamGlobalStat(self.data("appid"));
-            
+
             $("#achievement").fadeIn(600,function() {
+              if(app.args.appid && app.args.name) {
+                  let target = elem.find(`.achievement[data-name="${app.args.name.toString().replace(/<\/?[^>]+>/gi, '')}"]`).parent("li");
+                  target.addClass("highlight");
+                  
+                  let pos = (target.offset().top + $(this).scrollTop()) - target.outerHeight(true);
+
+                  $(this).animate({
+                    scrollTop:(pos)
+                  }, 250, 'swing');
+              }
+            
                 self.css("pointer-events","initial");
             });
         });
@@ -239,12 +253,12 @@ var app = {
   $(function() {
   
       try {
-      
+        
         app.onStart();
 
         remote.app.on('second-instance', (event, argv, cwd) => {
-          app.args = args(argv);
-          if (args.appid) {
+          app.args = getArgs(argv);
+          if (app.args.appid) {
             app.onStart();  
           }    
         });
@@ -256,3 +270,13 @@ var app = {
 
   });
 }(window.jQuery, window, document)); 
+
+function getArgs(argv){
+
+  if (argv[1].includes("ach:")) {
+   argv[1] = argv[1].replace("ach:","");
+   argv = args_split(argv[1]);
+  }
+
+  return args(argv);
+}

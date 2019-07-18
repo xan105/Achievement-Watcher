@@ -82,8 +82,7 @@ var app = {
         }
         
       }catch(err){
-        //Do Nothing
-        console.error(err);
+        debug.log(err);
       }  
 
     }catch(err) {
@@ -245,6 +244,7 @@ var app = {
                   await self.notify({
                     appid: game.appid,
                     title: game.name,
+                    id: ach.name,
                     message: ach.displayName,
                     icon: ach.icon
                   });
@@ -341,7 +341,7 @@ var app = {
                 message: notification.message,
                 icon: notification.icon,
                 attribution: "Achievement",
-                onClick: `ach:${notification.appid}`
+                onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
          });
 
     }catch(err){

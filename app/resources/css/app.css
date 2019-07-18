@@ -492,6 +492,10 @@ main {
   box-sizing: border-box;
 }
 
+#achievement .achievement-list ul > li.highlight {
+  box-shadow: rgb(198, 212, 223) 0px 0px 8px 2px;
+}
+
 .achievement {
   display: flex;
 }

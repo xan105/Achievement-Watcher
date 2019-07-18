@@ -40,6 +40,8 @@ function getSteamGlobalStat(appid) {
         let self = $(this);
         self.css("pointer-events","none");
         
+        if(app.args.name) app.args.name = null;
+        
         $("#achievement").fadeOut(500,function() {
             setTimeout(()=>{  
               $("body").removeAttr("style");

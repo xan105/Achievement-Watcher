@@ -119,6 +119,7 @@
                 $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
                 console.clear();
                 if (app.args.appid) app.args.appid = null;
+                if (app.args.name) app.args.name = null;
                 app.onStart();
             });
 

@@ -179,14 +179,16 @@ Command Line Args | URI Scheme
 ==============================
 
 Args:<br />
-`--appid xxxxx `<br />
+`--appid xxx [--name yyy]`<br />
 
 URI:<br />
-`ach:xxxx`<br />
+`ach:--appid xxx [--name yyy]`<br />
 
 xxx is a steam appid<br />
+yyy is an optional steam ach id name<br />
 
 After the loading directly display the specified game.<br />
+And if specified highlight an achievement.
                     
 Windows compatibility
 =====================

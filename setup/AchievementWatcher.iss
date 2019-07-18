@@ -8,7 +8,7 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.0.5"
+#define OurVersion "1.0.6"
 #define Author "Xan"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
@@ -114,7 +114,7 @@ Filename: "{cmd}"; Parameters: "/c SCHTASKS /Delete /F /TN ""Achievement Watcher
 Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueData: "URL:Custom Protocol"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: "" ;Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach\DefaultIcon"; ValueType: "string"; ValueData: "{#AppMain},0" ;Flags: uninsdeletekey
-Root: HKCR; Subkey: "ach\shell\open\command"; ValueType: "string"; ValueData: """{#AppMain}"" --appid ""%1""" ;Flags: uninsdeletekey
+Root: HKCR; Subkey: "ach\shell\open\command"; ValueType: "string"; ValueData: """{#AppMain}"" ""%1""" ;Flags: uninsdeletekey
 
 [Code]
 

@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "init.js",
   "scripts": {
     "start": "electron .",
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "accountpicture-ms-extractor": "^1.1.0",
+    "argv-split": "^2.0.1",
     "fast-glob": "^2.2.7",
     "ffi-napi": "^2.4.5",
     "glob": "^7.1.4",
