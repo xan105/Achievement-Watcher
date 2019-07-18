@@ -273,9 +273,11 @@ var app = {
 
 function getArgs(argv){
 
-  if (argv[1].includes("ach:")) {
-   argv[1] = argv[1].replace("ach:","");
-   argv = args_split(argv[1]);
+  if(argv[1]){
+    if (argv[1].includes("ach:")) {
+     argv[1] = argv[1].replace("ach:","");
+     argv = args_split(argv[1]);
+    }
   }
 
   return args(argv);
