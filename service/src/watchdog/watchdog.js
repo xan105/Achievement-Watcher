@@ -234,23 +234,25 @@ var app = {
           
             let elapsedTime = moment().diff(moment.unix(localAchievements[0].UnlockTime), 'seconds');
             
-            if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notifier.timeTreshold) {
+            for (i of localAchievements) {
             
-                let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
-                
-                debug.log("Unlocked: "+ach.displayName);
-                
-                self.notify({
-                  appid: game.appid,
-                  title: game.name,
-                  message: ach.displayName,
-                  icon: ach.icon
-                });
-            
-            } else {
-              debug.log("already unlocked");
+              if (i.Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notifier.timeTreshold) {
+              
+                  let ach = game.achievement.list.find(achievement => achievement.name === i.name);
+                  
+                  debug.log("Unlocked: "+ach.displayName);
+                  
+                  await self.notify({
+                    appid: game.appid,
+                    title: game.name,
+                    message: ach.displayName,
+                    icon: ach.icon
+                  });
+              
+              } else {
+                debug.log("already unlocked");
+              }
             }
-          
           }
         
         } else {
@@ -325,23 +327,28 @@ var app = {
     }
   
   },
-  notify : function (notification = {}){
+  notify : async function (notification = {}){
   
-    let self = this;
+      try {
+    
+         let self = this;
 
-     toast({
-            appID: self.options.notifier.appID || "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
-            title: notification.title,
-            message: notification.message,
-            icon: notification.icon,
-            attribution: "Achievement",
-            onClick: `ach:${notification.appid}`
-     }).catch((err) => { 
-        debug.log(err)
-     });
+         debug.log(notification);
 
+         await toast({
+                appID: self.options.notifier.appID || "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+                title: notification.title,
+                message: notification.message,
+                icon: notification.icon,
+                attribution: "Achievement",
+                onClick: `ach:${notification.appid}`
+         });
+
+    }catch(err){
+      debug.log("Fail to invoke toast notification");
+      throw err;
+    }
   }
-
 }
 
 singleInstance.lock().then(() => {
