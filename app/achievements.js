@@ -280,20 +280,8 @@ async function discover(legitSteamListingType) {
         const steamPath = regedit.RegQueryStringValue("HKCU","Software/Valve/Steam","SteamPath");
         if (!steamPath) throw "SteamPath not found";
         
-        let userID = [];
-        let users = regedit.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
-        if (!users) throw "No Steam User ID found"; 
-        for (let user of users) {
-            let id = steamID.to64(user);
-            if (await steamID.isPublic(id)) { 
-              debug.log(`${user} - ${id} is public`);
-              userID.push({
-                user: user,
-                id: id
-              }); 
-            }
-         }
-         
+         let userID = await getSteamUsers(steamPath);
+
          let steamCache = path.join(steamPath,"appcache/stats");
          let steamAppIDList = (await glob("UserGameStatsSchema_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map(filename => filename.match(/([0-9])\w+/g)[0] );
                
@@ -416,6 +404,40 @@ module.exports.saveUserCustomDir = async (data) => {
         throw e;
     }
     
+}
+
+async function getSteamUsers(steamPath) {
+     try {
+            
+        let result = [];
+       
+        let users = regedit.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
+        if (!users) users = await glob("*([0-9])/",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
+     
+        if (users.length == 0) throw "No Steam User ID found";
+            for (let user of users) {
+               let id = steamID.to64(user);
+               if (await steamID.isPublic(id)) { 
+                   debug.log(`${user} - ${id} is public`);
+                   result.push({
+                      user: user,
+                      id: id
+                   }); 
+                } else {
+                   debug.log(`${user} - ${id} is not public`);
+                }
+             }
+                
+         if (result.length > 0) {
+             return result;
+         } else {
+             throw "Public profile: none.";
+         }
+            
+     }catch(err){
+         throw err;
+     }
+          
 }
 
 async function loadSteamUserStats(cfg) {
