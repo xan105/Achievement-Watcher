@@ -46,7 +46,7 @@ module.exports.load = ()=>{
         }
         
         if (isNaN(options.notifier.timeTreshold)){
-          options.notifier.timeTreshold = 30;
+          options.notifier.timeTreshold = 5;
         }
         
         if (typeof options.notifier.checkIfProcessIsRunning !== "boolean"){
@@ -74,7 +74,7 @@ module.exports.load = ()=>{
             legitSteam: 1
           },
           notifier: {
-            timeTreshold: 30,
+            timeTreshold: 5,
             checkIfProcessIsRunning: true
           },
           steam: {}

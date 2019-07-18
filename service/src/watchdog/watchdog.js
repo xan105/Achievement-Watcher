@@ -142,7 +142,7 @@ var app = {
         }
         
         if (isNaN(self.options.notifier.timeTreshold)){
-          self.options.notifier.timeTreshold = 30;
+          self.options.notifier.timeTreshold = 5;
           fixFile = true;
         }
         
@@ -177,7 +177,7 @@ var app = {
             legitSteam: 1
           },
           notifier: {
-            timeTreshold: 30,
+            timeTreshold: 5,
             checkIfProcessIsRunning: true
           },
           steam: {}
@@ -233,11 +233,9 @@ var app = {
           
             let elapsedTime = moment().diff(moment.unix(localAchievements[0].UnlockTime), 'seconds');
             
-            for (i of localAchievements) {
-            
-              if (i.Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notifier.timeTreshold) {
+              if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notifier.timeTreshold) {
               
-                  let ach = game.achievement.list.find(achievement => achievement.name === i.name);
+                  let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
                   
                   debug.log("Unlocked: "+ach.displayName);
                   
@@ -248,11 +246,31 @@ var app = {
                     message: ach.displayName,
                     icon: ach.icon
                   });
+                  
+                 for (i in localAchievements) { 
+
+                    if ( i > 0) {
+                      if (localAchievements[i].Achieved) {
+                        if (localAchievements[i].UnlockTime === localAchievements[0].UnlockTime) {
+                            let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[i].name);
+                            
+                            debug.log("Unlocked: "+ach.displayName);
+                            
+                            await self.notify({
+                              appid: game.appid,
+                              title: game.name,
+                              id: ach.name,
+                              message: ach.displayName,
+                              icon: ach.icon
+                            });
+                        }
+                      }
+                    }
+                 }
               
               } else {
                 debug.log("already unlocked");
               }
-            }
           }
         
         } else {

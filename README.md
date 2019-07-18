@@ -158,7 +158,7 @@ Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini``
   
 [notifier]
 - timeTreshold<br />
-  default to 30 sec<br />
+  default to 5 sec<br />
   When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
 
 - checkIfProcessIsRunning<br />
