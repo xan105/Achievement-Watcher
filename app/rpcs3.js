@@ -4,7 +4,7 @@ const path = require('path');
 const util = require('util');
 const xml2js = require('xml2js');
 const glob = require("fast-glob");
-const ffs = require('./feverFS.js');
+const ffs = require('./util/feverFS.js');
 
 const magic = {
   header : Buffer.from('818F54AD','hex'),
@@ -77,6 +77,8 @@ async function getAchievements (dir){
    });
    
    file = await ffs.promises.readFile(path.join(dir,files.userData));
+   
+   if (!file.toString('hex').startsWith(magic.header.toString('hex'))) throw `Unexpected ${files.userData} file format`
     
    let headerEndPos = indexOf(file.toString('hex'),magic.delimiter[0].toString('hex'),2) + magic.delimiter[0].toString('hex').length;
    let separator = new RegExp(magic.delimiter[0].toString('hex') + "|" + magic.delimiter[1].toString('hex') , "g");
@@ -93,7 +95,6 @@ async function getAchievements (dir){
        let hasAchieved = (data[i+schema.trophy.length].slice(30,32) === "01") ? true : false;
         
        let achievement = result.achievement.list.find(ach => ach.name == id);
-       
        achievement.Achieved = hasAchieved;
        achievement.UnlockTime = (timestamp == "ffffffff") ? 0 : parseInt(timestamp,16);
      }catch(err){
