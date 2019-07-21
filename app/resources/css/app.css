@@ -370,7 +370,6 @@ main {
 
 #achievement .wrapper > .header .title .icon {
   background: #27374a;
-  background: url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/883710/86ef2fdebeced746313994ccf2d7afb1f2887bf0.jpg);
   background-repeat: no-repeat !important;
   width: 32px;
   height: 32px;
@@ -696,11 +695,12 @@ main {
 #settingNav li {
   padding: 10px 20px;
   cursor: pointer;
+  width: 125px;
 }
 
 #settingNav li.active {
     background: #1b2838;
-    font-family: Open-sans-bold;
+    font-family: "Raleway-bold";
     border-radius: 3px 0 0 3px;
     pointer-events: none !important;
 }
@@ -907,7 +907,7 @@ main {
 
 #settings .content[data-view="folder"] .title,
 #settings .content[data-view="advanced"] li:first-child {
-    font-family: Open-sans-bold;
+    font-family: "Raleway-bold";
     border-bottom: 1px solid white;
     padding-bottom: 5px;
     margin: 10px 0;

@@ -11,3 +11,19 @@ html[lang="it"] .achievement .stats .community
 {
     width: 260px;
 }
+
+html[lang="ru"] .achievement .stats .community
+{
+    width: 260px;
+    font-size: 14px;
+}
+html[lang="ru"] .achievement .stats .community > i 
+{
+  font-size: 16px;
+  line-height: 14px;
+  vertical-align: text-bottom;
+}
+html[lang="ru"] #achievement .achievements .achievement-list > .header
+{
+  font-family: "Raleway-bold";
+}
