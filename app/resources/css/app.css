@@ -435,7 +435,6 @@ main {
 
 #achievement .wrapper > .header .title .icon {
   background: #27374a;
-  background: url(../img/playstation.png) no-repeat, #19191919;
   background-repeat: no-repeat !important;
   width: 32px;
   height: 32px;
