@@ -1,5 +1,5 @@
 A sexy achievement file parser with real-time notification.<br />
-View all the achievements earned on your PC whether it's coming from Steam or a Steam emulator.
+View all the achievements earned on your PC whether it's coming from Steam or a Steam emulator, and more.
 
 <table >
 <tr>
@@ -88,6 +88,14 @@ The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievemen
 
 ⚠️ Please note that notification only works with CODEX emu file,<br/>
 by default in `%PUBLIC%\Documents\Steam\CODEX` but you can add other location in the app.
+
+|Emulator|File|
+|--------------|-----------|
+|RPCS3| TROPUSR.DAT / TROPCONF.SFM |
+
+Please add a folder in the app where `rpcs3.exe` is located. The app will then look for ~~achievement~~ trophy for every game and every ps3 user.<br/>
+Note that `TROPCONF.SFM` is language specific; So for PS3 games, trophies will be in the language you are playing with.<br/>
+As of this writing there is no unlock time : the trophies unlocked in a PS3 that has never been connected online doesn't contains timestamps.
 
 **From Registry:**<br/>
 
