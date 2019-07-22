@@ -19,8 +19,10 @@ const exclusion = path.join(remote.app.getPath('userData'),"cfg/exclusion.db");
 
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,
-  file: path.join(remote.app.getPath('userData'),"logs/Parser.log")
+  file: path.join(remote.app.getPath('userData'),"logs/parser.log")
 });
+
+const rpcs3 = require(require.resolve("./rpcs3.js"));
 
 module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
@@ -46,7 +48,9 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                   isDuplicate = true;
                   game = result.find( elem => elem.appid == appid.appid);
                 }
-                else {
+                else if (appid.data.type === "rpcs3"){
+                  game = await rpcs3.getGameData(appid.data.path);
+                }else{
                   game = await loadSteamData({appID: appid.appid, lang: option.lang, key: option.key });      
                 }
 
@@ -89,6 +93,9 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                       }
                    }
 
+                 } else if (appid.data.type === "rpcs3"){
+                  
+                   root = await rpcs3.getAchievements(appid.data.path,game.achievement.total);
                  }
 
                  for (let i in root){
@@ -137,6 +144,13 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                      UnlockTime :  root[i].unlocktime
                                };
 
+                          } else if (appid.data.type === "rpcs3") {
+                               achievement = game.achievement.list.find(elem => elem.name == root[i].id);
+                               
+                               parsed = {
+                                  Achieved : root[i].hasAchieved,
+                                  UnlockTime: (root[i].timestamp == "ffffffff") ? 0 : parseInt(root[i].timestamp,16)
+                               };
                           }
                          
                           if (isDuplicate) {
@@ -161,7 +175,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                            }
      
                        }catch(e){
-                            debug.log(`[${appid.appid}] Achievement not found in steam data ?! ... Achievement was probably deleted or renamed over time`);
+                            debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
                        }          
                     }
 
@@ -195,7 +209,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
 async function discover(legitSteamListingType) {
   try{
-  
+    
     let search = [
         path.join(process.env['Public'],"Documents/Steam/CODEX")+"/*([0-9])/", 
         path.join(process.env['APPDATA'],"Steam/CODEX")+"/*([0-9])/",
@@ -208,23 +222,36 @@ async function discover(legitSteamListingType) {
     ];
     
     let ALI213 = [];
+    let ps3 = [];
     
     try{
     
       for (let dir of await getUserCustomDir()) {
         
-        try {
-          let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
-          ALI213.push({ appid: info.Settings.AppID,
-                      data: {
-                            type: "file",
-                            path: path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`)
-                            }
-          });
-        }catch(e){
-          search.push(dir.path+"/*([0-9])/");
-        }
+        //rpcs3
+        try{
+          
+          if (ffs.promises.exists(path.join(dir.path,"rpcs3.exe"))) {
 
+            ps3 = await rpcs3.scan(dir.path);
+
+          } else {
+            try {
+              let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
+              ALI213.push({ appid: info.Settings.AppID,
+                          data: {
+                                type: "file",
+                                path: path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`)
+                          }
+              });
+            }catch(e){
+              search.push(dir.path+"/*([0-9])/");
+            }
+          }
+        }catch(e){
+          debug.log(e);
+        }
+        
       }
     
     }catch(err){
@@ -244,7 +271,12 @@ async function discover(legitSteamListingType) {
     if (ALI213.length > 0) {
       debug.log("Adding ALI213 from user custom dir");
       data = data.concat(ALI213);
-    }           
+    }   
+    
+    if (ps3.length > 0) {
+      debug.log("Adding ps3 from user custom dir");
+      data = data.concat(ps3);
+    }            
                
     //GreenLuma Reborn
     let glr = regedit.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID");
@@ -310,7 +342,7 @@ async function discover(legitSteamListingType) {
           debug.log(e);
         }
     } else {
-      debug.log("Legit Steam not found.");
+      debug.log("Legit Steam not found or disabled.");
     }
 
     //AppID Blacklisting

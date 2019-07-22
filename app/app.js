@@ -55,6 +55,8 @@ var app = {
 
    }).then((list) => {
    
+      console.log(list);
+   
       loadingElem.elem.hide();
 
       if (!list || list.length == 0) {
@@ -78,13 +80,13 @@ var app = {
 
         let template = `
         <li>
-                <div class="game-box" data-appid="${game.appid}">
-                  <div class="header" style="background: url(${game.img.header});"></i></div>
-                  <div class="info">
-                    <div class="title">${game.name}</div>
-                    <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
-                  </div>
-                </div>
+            <div class="game-box" data-appid="${game.appid}" ${(game.system) ? `data-system="${game.system}"` : ''}>
+              <div class="header" style="background: url(${game.img.header});"></i></div>
+              <div class="info">
+                   <div class="title">${game.name}</div>
+                   <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
+              </div>
+            </div>
         </li>
         `;
 
@@ -101,6 +103,22 @@ var app = {
       $("#user-info .info .stats li:eq(1) span.data").text(list.filter( game => game.achievement.unlocked == game.achievement.total ).length);
       
       $("#user-info .info .stats li:eq(0) span.data").text(list.filter( game => game.achievement.unlocked > 0).reduce((acc, curr) => { return acc + parseInt(curr.achievement.unlocked) }, 0));
+
+      if ($('#game-list .game-box[data-system="playstation"]').length > 0) {
+      
+         $("#user-info .info .trophy li.platinum span").text(list.filter( game => game.system === "playstation").reduce((acc, curr) => { return acc + curr.achievement.list.filter( ach => ach.Achieved && ach.type === "P").length }, 0));
+         
+         $("#user-info .info .trophy li.gold span").text(list.filter( game => game.system === "playstation").reduce((acc, curr) => { return acc + curr.achievement.list.filter( ach => ach.Achieved && ach.type === "G").length }, 0));
+         
+         $("#user-info .info .trophy li.silver span").text(list.filter( game => game.system === "playstation").reduce((acc, curr) => { return acc + curr.achievement.list.filter( ach => ach.Achieved && ach.type === "S").length }, 0));
+         
+         $("#user-info .info .trophy li.bronze span").text(list.filter( game => game.system === "playstation").reduce((acc, curr) => { return acc + curr.achievement.list.filter( ach => ach.Achieved && ach.type === "B").length }, 0));
+         
+          $("#user-info .info .trophy").show();
+      
+      } else {
+        $("#user-info .info .trophy").hide();
+      }
 
       $("#game-list .game-box").click(function(){ self.onGameBoxClick($(this),list) });
       
@@ -140,11 +158,34 @@ var app = {
         let game = list.find( elem => elem.appid == self.data("appid"))
 
         $("#home").fadeOut(function() {
-            $("body").fadeIn().css("background",`url(${game.img.background})`);
             
-            $("#achievement .wrapper > .header .title .icon").css("background",`url(${game.img.icon})`);
+            if(game.img.background) {
+              $("body").fadeIn().css("background",`url(${game.img.background})`);
+            } else {
+              $("body").fadeIn();
+            }
+            
+            if (game.system) {
+              $("#achievement .wrapper > .header").attr("data-system",game.system);
+            } else {
+              $("#achievement .wrapper > .header").removeAttr("data-system");
+            }
+            
+            if(game.img.icon) {
+              $("#achievement .wrapper > .header .title .icon").css("background",`url(${game.img.icon})`);
+            }
+
             $("#achievement .wrapper > .header .title span").text(game.name);
             $("#achievement .wrapper > .header .stats .counter").attr("data-count",game.achievement.unlocked).attr("data-max",game.achievement.total).attr("data-percent",self.find(".progressBar").data("percent"));
+            
+            if(game.system === "playstation"){
+              
+              $('#achievement .wrapper > .header[data-system="playstation"] .trophy li.platinum span').text(game.achievement.list.filter( ach => ach.Achieved && ach.type === "P").length);
+              $('#achievement .wrapper > .header[data-system="playstation"] .trophy li.gold span').text(game.achievement.list.filter( ach => ach.Achieved && ach.type === "G").length);
+              $('#achievement .wrapper > .header[data-system="playstation"] .trophy li.silver span').text(game.achievement.list.filter( ach => ach.Achieved && ach.type === "S").length);
+              $('#achievement .wrapper > .header[data-system="playstation"] .trophy li.bronze span').text(game.achievement.list.filter( ach => ach.Achieved && ach.type === "B").length);
+              
+            }
             
             let unlock = $("#unlock ul");
             let lock = $("#lock ul");
@@ -161,7 +202,7 @@ var app = {
                          <div class="achievement" data-name="${achievement.name}">
                             <div class="icon" style="background: url(${achievement.Achieved ? achievement.icon : achievement.icongray});"></div>
                             <div class="content">
-                                <div class="title">${achievement.displayName}</div>
+                                <div class="title">${game.system === "playstation" ? `<i class="fas fa-trophy" data-type="${achievement.type}"></i> ${achievement.displayName}` : `${achievement.displayName}`}</div>
                                 <div class="description">${achievement.description || ''}</div>
                                 <div class="progressBar" data-current="${achievement.CurProgress || '0'}" data-max="${achievement.MaxProgress || '0'}"><span class="meter"></span></div>
                             </div>
@@ -229,7 +270,13 @@ var app = {
             let elem = $("#achievement .achievement-list ul > li");
             elem.removeClass("highlight");
 
-            getSteamGlobalStat(self.data("appid"));
+            if (game.system == "playstation"){
+              $(".achievement .stats .community").hide();
+            }
+            else {
+              $(".achievement .stats .community").show();
+              getSteamGlobalStat(self.data("appid"));
+            }
 
             $("#achievement").fadeIn(600,function() {
               if(app.args.appid && app.args.name) {

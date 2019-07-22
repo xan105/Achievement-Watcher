@@ -26,7 +26,7 @@
 }
 
 
-html, body, ul, li, p { margin: 0; padding: 0; }
+html, body, ul, ol, li, p { margin: 0; padding: 0; }
 *:focus{ outline: none; }
 img { -webkit-user-drag: none; user-drag: none; }
 li { list-style: none; }
@@ -134,7 +134,7 @@ main {
 }
 
 #user-info .info .stats {
-  padding-top: 5px;
+  padding-top: 6px;
 }
 
 #user-info .info .stats li {
@@ -283,6 +283,11 @@ main {
   transition: opacity .5s ease;
 }
 
+#game-list .game-box[data-system="playstation"] .header {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
 #game-list ul > li .game-box:hover .header {
   opacity: 0.5;
 }
@@ -363,6 +368,66 @@ main {
   position: relative;
 }
 
+#achievement .wrapper > .header[data-system="playstation"] .title .icon {
+  background: url(../img/playstation.png) no-repeat, #27374a !important;
+  background-size: contain !important;
+}
+
+#achievement .wrapper > .header .trophy {
+  background: #15202db5;
+  padding: 10px 20px;
+  border-radius: 3px;
+  display: inline-block;
+  height: 19px;
+  vertical-align: top;
+  margin-left: 10px;
+  display: none;
+}
+
+#achievement .wrapper > .header[data-system="playstation"] .trophy {
+  display: inline-block;
+}
+
+.trophy li {
+  display: inline-block;
+  margin: 0 5px;
+}
+.trophy li i {
+  text-shadow: rgba(0, 0, 0, .5) 4px 4px 3px;
+}
+.trophy li.platinum i,
+.achievement .title i.fa-trophy[data-type="P"]{
+  color: #aebad0;
+}
+.trophy li.gold i,
+.achievement .title i.fa-trophy[data-type="G"]{
+  color: #ffd700;
+}
+.trophy li.silver i,
+.achievement .title i.fa-trophy[data-type="S"]{
+  color: #acacac;
+}
+.trophy li.bronze i,
+.achievement .title i.fa-trophy[data-type="B"]{
+  color: #b8592b;
+}
+.achievement .title i.fa-trophy{
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+#user-info .info .trophy {
+  padding-top: 4px;
+}
+
+#user-info .info .trophy li i {
+  text-shadow: none;
+}
+
+#user-info .info .trophy li:first-child {
+  margin-left: 0;
+}
+
 #achievement .wrapper > .header .title {
     padding: 12px 0 20px 0;
     display: flex;
@@ -370,6 +435,7 @@ main {
 
 #achievement .wrapper > .header .title .icon {
   background: #27374a;
+  background: url(../img/playstation.png) no-repeat, #19191919;
   background-repeat: no-repeat !important;
   width: 32px;
   height: 32px;
@@ -394,6 +460,8 @@ main {
     padding: 10px 20px;
     border-radius: 3px;
     display: inline-block;
+    height: 19px;
+    vertical-align: top;
 }
 
 #achievement .wrapper > .header .stats .counter:after {
@@ -502,12 +570,17 @@ main {
 .achievement .icon {
   background-color: #253446;
   background-repeat: no-repeat !important;
+  background-size: contain !important;
   width: 64px;
   height: 64px;
   border: solid #2d455f 1px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin: auto 0;
 }
+
+#achievement .wrapper > .header[data-system="playstation"] ~ .achievements #lock .achievement .icon {
+  filter: grayscale(100);
+} 
 
 .achievement .content {
   margin: 0 auto 0 20px;

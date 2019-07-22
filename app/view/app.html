@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net; connect-src 'self' https://api.steampowered.com">
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-Dsq+Omv2msMnzQ9x6Jr5/fZDQ6oPL2uS7bNqphY3Ui/NUoYph4O0oeWvkC/7MGAd"/>
-    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-OlA5ofRBaR5b8pch31eMGQSJ4JNmyCxBCBBCDUlk/luO4hlkDQ+RnQNfQQICi+hB"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-rM5NQXs/rRvKbGw6/KP9m8ITTWzwdBY1z9wfza2M2fe/oVcWsG8JadcA5fmx3uv7"/>
+    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="Nb3XmGzva8AUtKVqD2TlLEa/yLHAzeABBDFOS2DpLZDFxMINc2lctXhb0cSlm3qe"/>
   </head>
   <body>
     
@@ -28,6 +28,14 @@
           <div class="avatar"></div>
           <div class="info">
             <div class="name"></div>
+            <div class="trophy">
+              <ol>
+                <li class="platinum"><i class="fas fa-trophy"></i> <span>0</span></li>
+                <li class="gold"><i class="fas fa-trophy"></i> <span>0</span></li>
+                <li class="silver"><i class="fas fa-trophy"></i> <span>0</span></li>
+                <li class="bronze"><i class="fas fa-trophy"></i> <span>0</span></li>
+              </ol>  
+            </div>
             <div class="stats">
               <ul>
                 <li><i class="fas fa-trophy"></i> <span class="data">0</span> <span></span></li>
@@ -61,6 +69,14 @@
               <div class="title"><div class="icon"></div><span></span></div>
               <div class="stats">
                 <div class="counter" data-count="0" data-max="0" data-percent="0"><i class="fas fa-trophy"></i></div>
+              </div>
+              <div class="trophy">
+                <ol>
+                  <li class="platinum"><i class="fas fa-trophy"></i> <span>0</span></li>
+                  <li class="gold"><i class="fas fa-trophy"></i> <span>0</span></li>
+                  <li class="silver"><i class="fas fa-trophy"></i> <span>0</span></li>
+                  <li class="bronze"><i class="fas fa-trophy"></i> <span>0</span></li>
+                </ol>  
               </div>
               <div class="backButton" id="btn-previous"></div>
             </div>
@@ -111,7 +127,7 @@
               </ul>
              
              </nav>
-
+               
              <section class="content" data-view="advanced">
                <ul>
                 <li>AppID Blacklist</li>
