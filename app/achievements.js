@@ -231,9 +231,9 @@ async function discover(legitSteamListingType) {
         //rpcs3
         try{
           
-          if (ffs.promises.exists(path.join(dir.path,"rpcs3.exe"))) {
+          if (await ffs.promises.exists(path.join(dir.path,"rpcs3.exe"))) {
 
-            ps3 = await rpcs3.scan(dir.path);
+            ps3 = ps3.concat(await rpcs3.scan(dir.path));
 
           } else {
             try {

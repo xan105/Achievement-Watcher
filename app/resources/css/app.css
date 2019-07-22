@@ -418,6 +418,7 @@ main {
 
 #user-info .info .trophy {
   padding-top: 4px;
+  display: none;
 }
 
 #user-info .info .trophy li i {
