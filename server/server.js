@@ -64,7 +64,7 @@ app.get("/steam/ach/:appid", async (req, res) => {
     if (err === "Unsupported API language code") {
       result.status = 400;
       result.response.error = err;
-    } else if (err.includes("ETIMEDOUT")) {
+    } else if (err.includes("ETIMEDOUT") || err.includes("ECONNABORTED")) {
       result.status = 504;
       result.response.error = "Gateway Time-out";
       debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
