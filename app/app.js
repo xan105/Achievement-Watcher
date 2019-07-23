@@ -70,20 +70,20 @@ var app = {
       
       let progress_cache = [];
 
-      for (let game of list) {
+      for (let game in list) {
 
-        if ( game.achievement.unlocked > 0 || self.config.achievement.hideZero == false) {
+        if ( list[game].achievement.unlocked > 0 || self.config.achievement.hideZero == false) {
         
-        let progress = Math.round((100 * game.achievement.unlocked) / game.achievement.total);
+        let progress = Math.round((100 * list[game].achievement.unlocked) / list[game].achievement.total);
         
         progress_cache.push(progress);
 
         let template = `
         <li>
-            <div class="game-box" data-appid="${game.appid}" ${(game.system) ? `data-system="${game.system}"` : ''}>
-              <div class="header" style="background: url(${game.img.header});"></i></div>
+            <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
+              <div class="header" style="background: url(${list[game].img.header});"></i></div>
               <div class="info">
-                   <div class="title">${game.name}</div>
+                   <div class="title">${list[game].name}</div>
                    <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
               </div>
             </div>
@@ -155,7 +155,7 @@ var app = {
   onGameBoxClick: function(self,list){
         self.css("pointer-events","none");
 
-        let game = list.find( elem => elem.appid == self.data("appid"))
+        let game = list.find( elem => elem.appid == self.data("appid") && list.indexOf(elem) == self.data("index"));
 
         $("#home").fadeOut(function() {
             

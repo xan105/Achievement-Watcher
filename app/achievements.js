@@ -159,15 +159,15 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                 }
                                 
                                 if (parsed.CurProgress > achievement.CurProgress || !achievement.CurProgress) {
-                                  achievement.CurProgress = result.CurProgress;
+                                  achievement.CurProgress = parsed.CurProgress;
                                 }
                                 
                                if (parsed.MaxProgress > achievement.MaxProgress || !achievement.MaxProgress) {
-                                  achievement.MaxProgress = result.MaxProgress;
+                                  achievement.MaxProgress = parsed.MaxProgress;
                                 }
                                 
                                 if (parsed.UnlockTime > achievement.UnlockTime || !achievement.UnlockTime) {
-                                  achievement.UnlockTime = result.UnlockTime;
+                                  achievement.UnlockTime = parsed.UnlockTime;
                                 }
                                 
                            } else {
