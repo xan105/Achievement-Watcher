@@ -22,7 +22,7 @@ module.exports.scan = async (dir) => {
 
     let data = [];
     
-    let users = await glob("([0-9])*",{cwd: path.join(dir,"dev_hdd0/home"), onlyDirectories: true, absolute: false});
+    let users = await glob("([0-9])+",{cwd: path.join(dir,"dev_hdd0/home"), onlyDirectories: true, absolute: false});
             
             for (let user of users) {
                 try{

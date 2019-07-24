@@ -32,8 +32,8 @@ module.exports.loadSteamData = async (appID, lang, key) => {
    
    return result;
    
- }catch( err) {
-  throw "Could not load Steam data."
+ }catch(err) {
+  throw `Could not load Steam data for ${appID} - ${lang}: ${err}`
  }
  
 }

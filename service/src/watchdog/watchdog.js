@@ -207,14 +207,14 @@ var app = {
     
     debug.log(`Monitoring ach change in "${dir}" ...`);
     
-    self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]*)+\\+achievements.ini/ }, async function(evt, name) {
+    self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]+)+\\+achievements.ini/ }, async function(evt, name) {
     try {
 
        if (!self.options.achievement.notification || evt !== "update" || !await ffs.promises.isYoungerThan(name, {timeUnit:'seconds',time:10})) return;
 
        debug.log("ach file change detected");
         
-        let appID = path.parse(name).dir.match(/([0-9])\w+/g)[0];
+        let appID = path.parse(name).dir.match(/([0-9]+$)/g)[0];
         
         let game = await self.load(appID);
         

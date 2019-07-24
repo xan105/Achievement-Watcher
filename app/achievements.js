@@ -211,14 +211,14 @@ async function discover(legitSteamListingType) {
   try{
     
     let search = [
-        path.join(process.env['Public'],"Documents/Steam/CODEX")+"/*([0-9])/", 
-        path.join(process.env['APPDATA'],"Steam/CODEX")+"/*([0-9])/",
-        path.join(process.env['PROGRAMDATA'],"Steam")+"/*/*([0-9])/",
-        path.join(process.env['LOCALAPPDATA'],"SKIDROW")+"/*([0-9])/",
-        path.join(process.env['APPDATA'],"CPY_SAVES")+"/*/*([0-9])/",
-        path.join(regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal"),"CPY_SAVES")+"/*/*([0-9])/",
-        path.join(process.env['APPDATA'],"SmartSteamEmu")+"/*([0-9])/",
-        path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/*([0-9])/"
+        path.join(process.env['Public'],"Documents/Steam/CODEX")+"/([0-9]+)/", 
+        path.join(process.env['APPDATA'],"Steam/CODEX")+"/([0-9]+)/",
+        path.join(process.env['PROGRAMDATA'],"Steam")+"/*/([0-9]+)/",
+        path.join(process.env['LOCALAPPDATA'],"SKIDROW")+"/([0-9]+)/",
+        path.join(process.env['APPDATA'],"CPY_SAVES")+"/*/([0-9]+)/",
+        path.join(regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal"),"CPY_SAVES")+"/*/([0-9]+)/",
+        path.join(process.env['APPDATA'],"SmartSteamEmu")+"/([0-9]+)/",
+        path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/([0-9]+)/"
     ];
     
     let ALI213 = [];
@@ -245,7 +245,7 @@ async function discover(legitSteamListingType) {
                           }
               });
             }catch(e){
-              search.push(dir.path+"/*([0-9])/");
+              search.push(dir.path+"/([0-9]+)/");
             }
           }
         }catch(e){
@@ -267,6 +267,8 @@ async function discover(legitSteamListingType) {
                            }
                           }
                });
+               
+               console.log(data);
      
     if (ALI213.length > 0) {
       debug.log("Adding ALI213 from user custom dir");
@@ -315,7 +317,7 @@ async function discover(legitSteamListingType) {
          let userID = await getSteamUsers(steamPath);
 
          let steamCache = path.join(steamPath,"appcache/stats");
-         let steamAppIDList = (await glob("UserGameStatsSchema_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map(filename => filename.match(/([0-9])\w+/g)[0] );
+         let steamAppIDList = (await glob("UserGameStatsSchema_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map(filename => filename.match(/([0-9]+)/g)[0]);
                
          for (let appid of steamAppIDList) {
           
