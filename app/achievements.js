@@ -267,8 +267,6 @@ async function discover(legitSteamListingType) {
                            }
                           }
                });
-               
-               console.log(data);
      
     if (ALI213.length > 0) {
       debug.log("Adding ALI213 from user custom dir");
