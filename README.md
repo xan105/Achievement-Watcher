@@ -59,7 +59,7 @@ Compatibility :
 |Codex| Yes | No (always set to zero by emu) | Yes | achievements.ini |
 |RLD!| No (Unknow hex time) | No (always set to zero by emu) | No | stats\achievements.ini |
 |Skidrow| No | No | No | achieve.dat |
-|ALI213| Yes | No | No | achievements.bin |
+|ALI213| Yes | No | Yes | achievements.bin |
 
 By default the following location will be scanned for the above steam emu file :
 ```
@@ -67,13 +67,6 @@ By default the following location will be scanned for the above steam emu file :
 - %appdata%\Steam\CODEX
 - %ProgramData%\Steam\*\
 - %localappdata%\SKIDROW
-- %appdata%\SmartSteamEmu
-```
-
-Will be scanned too altho there is no achievement file yet at the time of writing :
-```
-- Documents\CPY_SAVES\*\
-- %appdata%\CPY_SAVES\*\
 - %appdata%\Goldberg SteamEmu Saves
 ```
 
@@ -86,8 +79,7 @@ You can add your own folder in the app, just make sure that you select a folder 
 For ALI213 there is no default folder so choose the dir where the `AlI213.ini` file is; <br>
 The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
 
-⚠️ Please note that notification only works with CODEX emu file,<br/>
-by default in `%PUBLIC%\Documents\Steam\CODEX` but you can add other location in the app.
+⚠️ Please note that notification only works with CODEX or ALI213 emu file<br/>
 
 |Emulator|File|
 |--------------|-----------|

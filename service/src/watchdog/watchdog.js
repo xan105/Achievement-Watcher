@@ -19,13 +19,19 @@ const debug = new (require("./util/log.js"))({
 
 const steamLanguages = require("./steamLanguages.json");
 
-const dir = {
-  achievement : path.join(process.env['Public'],"Documents/Steam/CODEX"),
-  config: path.join(process.env['APPDATA'],"Achievement Watcher/cfg")
+const folder = {
+  config: path.join(process.env['APPDATA'],"Achievement Watcher/cfg"),
+  achievement : [
+    path.join(process.env['Public'],"Documents/Steam/CODEX"),
+    path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")
+  ]
 }
 
-const filename = path.join(dir.config,"options.ini");
-const userDirListFile = path.join(dir.config,"userdir.db");
+const file = {
+  config: path.join(folder.config,"options.ini"),
+  userDir: path.join(folder.config,"userdir.db"),
+  achievement: ["achievements.ini","Achievements.Bin"]
+}
 
 var app = {
   cache : [],
@@ -44,7 +50,7 @@ var app = {
       debug.log(self.options);
       
       try {
-        self.watcher[0] = watch(filename, function(evt, name) {
+        self.watcher[0] = watch(file.config, function(evt, name) {
               if (evt === "update") {
                 debug.log(`file change detected in ${path.parse(name).name}`);
                 self.watcher.forEach( (watcher) => watcher.close() );
@@ -55,29 +61,39 @@ var app = {
         debug.log("No option file > settings live reloading disabled");
       }   
       
-      let i = 1;
-      try{
-        self.watch(i,dir.achievement);
-        i = i+1;
-      }catch(err){
-        debug.log(err);
+      let i = 1;        
+      for (let dir of folder.achievement) {
+        try{
+          if (await ffs.promises.exists(dir,true)) {
+            self.watch(i,dir);
+            i = i+1;
+          }
+        }catch(err){
+          debug.log(err);
+        }
       }
       
       try {
-        let userDirList = JSON.parse(await ffs.promises.readFile(userDirListFile,"utf8"));
+        let userDirList = JSON.parse(await ffs.promises.readFile(file.userDir,"utf8"));
         
         for (let dir of userDirList) {
            
            if (dir.notify == true) {
 
+             try {
+             let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
+             dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`);
+             }catch(err){/*continue*/}
+             
              if (await ffs.promises.exists(dir.path,true)) {
-                try {
-                  self.watch(i,dir.path);
-                  i = i+1;
-                }catch(err){
-                  debug.log(err);
-                }
+                    try {
+                      self.watch(i,dir.path);
+                      i = i+1;
+                    }catch(err){
+                      debug.log(err);
+                    }
              }
+             
            }  
         }
         
@@ -99,7 +115,7 @@ var app = {
         
         let fixFile = false;
         
-        self.options = ini.parse(await ffs.promises.readFile(filename,"utf8"));
+        self.options = ini.parse(await ffs.promises.readFile(file.config,"utf8"));
         
         if (!steamLanguages.some(lang => lang.api == self.options.achievement.lang)) {
         
@@ -163,7 +179,7 @@ var app = {
           self.options.steam = {};
         }
         
-        if (fixFile) await ffs.promises.writeFile(filename,ini.stringify(self.options),"utf8").catch(()=>{});
+        if (fixFile) await ffs.promises.writeFile(file.config,ini.stringify(self.options),"utf8").catch(()=>{});
 
       }catch(err){
       
@@ -197,7 +213,7 @@ var app = {
           self.options.achievement.lang = "english";
         }
         
-        await ffs.promises.writeFile(filename,ini.stringify(self.options),"utf8").catch(()=>{});
+        await ffs.promises.writeFile(file.config,ini.stringify(self.options),"utf8").catch(()=>{});
 
       }
   },
@@ -207,23 +223,22 @@ var app = {
     
     debug.log(`Monitoring ach change in "${dir}" ...`);
     
-    self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]+)+\\+achievements.ini/ }, async function(evt, name) {
+    self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]+)/ }, async function(evt, name) {
     try {
-
-       if (!self.options.achievement.notification || evt !== "update" || !await ffs.promises.isYoungerThan(name, {timeUnit:'seconds',time:10})) return;
-
-       debug.log("ach file change detected");
         
-        let appID = path.parse(name).dir.match(/([0-9]+$)/g)[0];
+        if (!self.options.achievement.notification || evt !== "update") return;
+        
+        let filePath = path.parse(name);
+        
+        if (!file.achievement.some(file => file == filePath.base) || !await ffs.promises.isYoungerThan(name, {timeUnit:'seconds',time:10})) return;
+        
+        debug.log("ach file change detected");
+        
+        let appID = filePath.dir.match(/([0-9]+$)/g)[0];
         
         let game = await self.load(appID);
         
-        let isRunning;
-        if (self.options.notifier.checkIfProcessIsRunning) {
-          isRunning = await tasklist.isProcessRunning(game.binary).catch((err)=>{return false});
-        } else {
-          isRunning = true;
-        }
+        let isRunning = (self.options.notifier.checkIfProcessIsRunning) ? await tasklist.isProcessRunning(game.binary).catch((err)=>{return false}) : true;
         
         if (isRunning) {
           
@@ -231,8 +246,10 @@ var app = {
           
           if (localAchievements.length > 0) {
           
+            if (typeof localAchievements[0].Achieved !== "boolean") throw "Achieved Value is not a boolean";
+            if (!localAchievements[0].UnlockTime) throw "Unvalid timestamp";
             let elapsedTime = moment().diff(moment.unix(localAchievements[0].UnlockTime), 'seconds');
-            
+              
               if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notifier.timeTreshold) {
               
                   let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
@@ -247,7 +264,7 @@ var app = {
                     icon: ach.icon
                   });
                   
-                 for (i in localAchievements) { 
+                 for (let i in localAchievements) { 
 
                     if ( i > 0) {
                       if (localAchievements[i].Achieved) {
@@ -286,6 +303,8 @@ var app = {
   
     try {
   
+      debug.log(`loading steam schema for ${appID}`);
+      
       let self = this;
     
       let search = self.cache.find(game => game.appid == appID);
@@ -322,10 +341,10 @@ var app = {
                 try {
                   let result = {
                       name: achievement,
-                      Achieved : (local[achievement].Achieved == 1) ? true : false,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
-                      UnlockTime : local[achievement].UnlockTime || 0
+                      UnlockTime : local[achievement].UnlockTime || local[achievement].HaveAchievedTime || 0
                   };
                   achievements.push(result);
                 }catch(e){}
