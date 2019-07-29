@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "main": "init.js",
   "scripts": {
     "start": "electron .",
@@ -12,7 +12,7 @@
   "author": "Xan",
   "license": "LGPL-3.0-only",
   "devDependencies": {
-    "electron": "^4.2.6",
+    "electron": "^5.0.8",
     "electron-context-menu": "^0.11.0",
     "electron-rebuild": "^1.8.5",
     "patch-package": "^6.1.2"

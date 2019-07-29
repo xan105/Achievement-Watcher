@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.1.1](https://www.github.com/yargs/yargs-parser/compare/v13.1.0...v13.1.1) (2019-06-10)
+
+
+### Bug Fixes
+
+* convert values to strings when tokenizing ([#167](https://www.github.com/yargs/yargs-parser/issues/167)) ([57b7883](https://www.github.com/yargs/yargs-parser/commit/57b7883))
+* nargs should allow duplicates when duplicate-arguments-array=false ([#164](https://www.github.com/yargs/yargs-parser/issues/164)) ([47ccb0b](https://www.github.com/yargs/yargs-parser/commit/47ccb0b))
+* should populate "_" when given config with "short-option-groups" false ([#179](https://www.github.com/yargs/yargs-parser/issues/179)) ([6055974](https://www.github.com/yargs/yargs-parser/commit/6055974))
+
 ## [13.1.0](https://github.com/yargs/yargs-parser/compare/v13.0.0...v13.1.0) (2019-05-05)
 
 
