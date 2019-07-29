@@ -6,6 +6,7 @@ const moment = require("moment");
 const watch = require('node-watch');
 const toast = require("powertoast");
 const tasklist = require('win-tasklist');
+const getStartApps = require('get-startapps');
 const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const osLocale = require('os-locale');
 
@@ -38,6 +39,7 @@ var app = {
   options : {},
   steamKey : null,
   watcher: [],
+  hasXboxOverlay: false,
   start: async function() {
     try {
     debug.log("Watchdog Starting ...");
@@ -45,10 +47,16 @@ var app = {
       let self = this;
       self.cache = [];
     
+      getStartApps.has({id:"GamingOverlay"}).then((has) => {
+        if (has) { 
+          self.hasXboxOverlay = true;
+          debug.log("Xbox Gamebar found!");
+        }
+      }).catch(()=>{});
+    
       await self.loadOption();
-      
       debug.log(self.options);
-      
+
       try {
         self.watcher[0] = watch(file.config, function(evt, name) {
               if (evt === "update") {
@@ -373,7 +381,7 @@ var app = {
          debug.log(notification);
 
          await toast({
-                appID: self.options.notifier.appID || "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+                appID: self.options.notifier.appID || (self.hasXboxOverlay === true) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
                 title: notification.title,
                 message: notification.message,
                 icon: notification.icon,
