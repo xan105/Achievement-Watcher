@@ -1,7 +1,3 @@
 temp/
-setup/output/
-setup/prod/resources/
 todo.txt
 server/start.sh
-setup/prod/AchievementWatcher.exe
-service/build/
