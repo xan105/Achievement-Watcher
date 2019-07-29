@@ -4,7 +4,7 @@ const path = require('path');
 const util = require('util');
 const xml2js = require('xml2js');
 const glob = require("fast-glob");
-const ffs = require('./util/feverFS.js');
+const ffs = require("../util/feverFS.js");
 
 const magic = {
   header : Buffer.from('818F54AD','hex'),
@@ -108,10 +108,13 @@ module.exports.getAchievements = async (dir,length) => {
    
    for (let i=0;i<=length-1;i++) {
      try {
+       
+       let timestamp = data[i].slice(32,40);
+       
        result.push({
           id : parseInt(data[i].slice(6,8),16),
-          timestamp : data[i].slice(32,40),
-          hasAchieved : (data[i+length].slice(30,32) === "01") ? true : false
+          UnlockTime : (timestamp == "ffffffff") ? 0 : parseInt(timestamp,16),
+          Achieved : (data[i+length].slice(30,32) === "01") ? true : false
        });
      }catch(err){
       //Do nothing -> try to parse the next one

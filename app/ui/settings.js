@@ -22,7 +22,7 @@
         }
         
         $("#dirlist").empty();
-        achievements.getUserCustomDir()
+        userDir.get()
         .then( (userDirList) => {
           
           for (let dir of userDirList) {
@@ -91,7 +91,7 @@
           userDirList.push({"path":dir,"notify":notify});
         });
 
-        achievements.saveUserCustomDir(userDirList).catch((err)=>{
+        userDir.save(userDirList).catch((err)=>{
         
           remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while saving user dir list", detail: `${err}`});
         
@@ -202,7 +202,7 @@
          let self = $(this);
          self.css("pointer-events","none");
         
-         achievements.resetBlackList()
+         blacklist.reset()
          .then(()=>{
                 if( $("#achievement").is(":visible")) {
                   $("#btn-previous").trigger( "click" );

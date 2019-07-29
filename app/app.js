@@ -6,7 +6,9 @@ const args_split = require('argv-split');
 const args = require('minimist');
 const moment = require('moment');
 const settings = require(path.join(appPath,"settings.js"));
-const achievements = require(path.join(appPath,"achievements.js"));
+const achievements = require(path.join(appPath,"parser/achievements.js"));
+const blacklist = require(path.join(appPath,"parser/blacklist.js"));
+const userDir = require(path.join(appPath,"parser/userDir.js"));
 const user = require(path.join(appPath,"util/user.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
@@ -54,8 +56,6 @@ var app = {
       loadingElem.meter.css("width",percent);
 
    }).then((list) => {
-   
-      console.log(list);
    
       loadingElem.elem.hide();
 
@@ -131,7 +131,7 @@ var app = {
          menu.append(new MenuItem({ label: $("#game-list").attr("data-contextMenu0"), click() { 
          
           try{
-            achievements.parserBlacklist(appid);
+            blacklist.add(appid);
             app.onStart();
           }catch(err){
             remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: `Failed to add item to user blacklist`, detail: `${err}`});
