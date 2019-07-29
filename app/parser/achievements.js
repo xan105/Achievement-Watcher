@@ -154,8 +154,9 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                           let id = root[i].id || root[i].apiname || i;
                           
-                          let achievement = game.achievement.list.find( elem => elem.name === id);
-      
+                          let achievement = game.achievement.list.find( elem => elem.name == id);
+                          if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
+                          
                           if(root[i].State) { //RLD!
                                 root[i].State = new Uint32Array(Buffer.from(root[i].State.toString(),"hex"))[0]; //uint32 -> int
                                 root[i].CurProgress = parseInt(root[i].CurProgress.toString(),16);
@@ -169,24 +170,33 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                 UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || 0
                           };
 
-                          if (parsed.Achieved && !achievement.Achieved) {    
-                                achievement.Achieved = true;
-                          }
-                                
-                          if (parsed.CurProgress > achievement.CurProgress || !achievement.CurProgress) {
-                                achievement.CurProgress = parsed.CurProgress;
-                          }
-                                
-                          if (parsed.MaxProgress > achievement.MaxProgress || !achievement.MaxProgress) {
-                                achievement.MaxProgress = parsed.MaxProgress;
-                          }
-                                
-                          if (parsed.UnlockTime > achievement.UnlockTime || !achievement.UnlockTime) {
-                                achievement.UnlockTime = parsed.UnlockTime;
+                          if (isDuplicate) {
+                              if (parsed.Achieved && !achievement.Achieved) {    
+                                    achievement.Achieved = true;
+                              }
+                                    
+                              if (!achievement.CurProgress || parsed.CurProgress > achievement.CurProgress) {
+                                    achievement.CurProgress = parsed.CurProgress;
+                              }
+                                    
+                              if (!achievement.MaxProgress || parsed.MaxProgress > achievement.MaxProgress) {
+                                    achievement.MaxProgress = parsed.MaxProgress;
+                              }
+                                    
+                              if (!achievement.UnlockTime || parsed.UnlockTime > achievement.UnlockTime) {
+                                    achievement.UnlockTime = parsed.UnlockTime;
+                              }
+                          } else {
+                              Object.assign(achievement,parsed);
                           }
      
-                       }catch(e){
+                       }catch(err){
+                       
+                          if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
                             debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
+                           }else {
+                            debug.log(`Unexpected Error: ${err}`);
+                           }
                        }          
                     }
 
