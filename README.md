@@ -67,6 +67,7 @@ By default the following location will be scanned for the above steam emu file :
 - %appdata%\Steam\CODEX
 - %ProgramData%\Steam\*\
 - %localappdata%\SKIDROW
+- %appdata%\SmartSteamEmu
 - %appdata%\Goldberg SteamEmu Saves
 ```
 
@@ -133,7 +134,7 @@ Use of the APIs also requires that you agree to the [Steam API Terms of Use](htt
 
 Options
 =======
-Options are stored in ```%AppData%\Roaming\Achievement Watcher\cfg\options.ini```<br />
+Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini```<br />
 
 [achievement]
 - lang<br />
@@ -217,7 +218,7 @@ There are .cmd files in the root directory to create, delete and manually run th
 
 File cache & Logs
 =================
-in ```%AppData%\Roaming\Achievement Watcher```
+in ```%AppData%\Achievement Watcher```
 
 Legal
 =====

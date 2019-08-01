@@ -185,12 +185,10 @@
         remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']},function(filePaths){
           
           if (filePaths){
-            console.log(filePaths);
-            
+            debug.log(`${filePaths}`);
             populateUserDirList(filePaths[0]);
-
           }else{
-            console.log("cancel");
+            debug.log("cancel");
           }
           
           self.css("pointer-events","initial");
@@ -250,7 +248,8 @@ function populateUserDirList(dirpath,notify = false){
             $("#dirlist").prepend(template);
 
             let elem = $("#dirlist > li").first();
-            if ( elem.find(".path span").width() >= 350) {
+
+            if ( elem.find(".path span").width() >= 350 || dirpath.length > 42) {
               elem.find(".path").addClass("overflow");
             }
             
