@@ -2,8 +2,8 @@
 
 const { remote } = require('electron');
 const path = require("path");
-const request = require("../util/request.js");
-const ffs = require("../util/feverFS.js");
+const request = require(path.join(appPath,"util/request.js"));
+const ffs = require(path.join(appPath,"util/feverFS.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,
   file: path.join(remote.app.getPath('userData'),"logs/blacklist.log")

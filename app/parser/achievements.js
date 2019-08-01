@@ -2,12 +2,12 @@
 
 const { remote } = require('electron');
 const path = require("path");
-const ffs = require("../util/feverFS.js");
-const steam = require(require.resolve("./steam.js"));
-const rpcs3 = require("./rpcs3.js");
-const glr = require("./glr.js");
-const userDir = require("./userDir.js");
-const blacklist = require("./blacklist.js");
+const ffs = require(path.join(appPath,"util/feverFS.js"));
+const steam = require(path.join(appPath,"parser/steam.js"));
+const rpcs3 = require(path.join(appPath,"parser/rpcs3.js"));
+const glr = require(path.join(appPath,"parser/glr.js"));
+const userDir = require(path.join(appPath,"parser/userDir.js"));
+const blacklist = require(path.join(appPath,"parser/blacklist.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,
   file: path.join(remote.app.getPath('userData'),"logs/parser.log")

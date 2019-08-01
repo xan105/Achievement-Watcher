@@ -2,7 +2,7 @@
 
 const { remote } = require('electron');
 const path = require("path");
-const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedit.js"));
+const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
 
 module.exports.scan = async () => {
   try {

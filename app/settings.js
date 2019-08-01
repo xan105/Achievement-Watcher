@@ -3,9 +3,9 @@
 const { remote } = require('electron');
 const path = require("path");
 const ini = require("ini");
-const ffs = require("./util/feverFS.js");
-const aes = require("./util/aes.js");
-const steamLanguages = require("./locale/steam.json");
+const ffs = require(path.join(appPath,"util/feverFS.js"));
+const aes = require(path.join(appPath,"util/aes.js"));
+const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
 const filename = path.join(remote.app.getPath('userData'),"cfg/options.ini");
 

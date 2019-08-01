@@ -1,10 +1,10 @@
 "use strict";
 
 const { remote } = require('electron');
-const ffs = require(path.join(remote.app.getAppPath(),"util/feverFS.js"));
+const ffs = require(path.join(appPath,"util/feverFS.js"));
 
-const langDir = path.join(remote.app.getAppPath(),"locale/lang");
-const steamLanguages = require(path.join(remote.app.getAppPath(),"locale/steam.json"));
+const langDir = path.join(appPath,"locale/lang");
+const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
 module.exports.load = async (lang = "english") => {
     try {

@@ -2,7 +2,7 @@
 
 const { remote } = require('electron');
 const path = require("path");
-const ffs = require("../util/feverFS.js");
+const ffs = require(path.join(appPath,"util/feverFS.js"));
 
 const file = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
 

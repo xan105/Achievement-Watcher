@@ -6,12 +6,12 @@ const glob = require("fast-glob");
 const ini = require("ini");
 const omit = require('lodash.omit');
 const moment = require('moment');
-const request = require("../util/request.js");
-const ffs = require("../util/feverFS.js");
+const request = require(path.join(appPath,"util/request.js"));
+const ffs = require(path.join(appPath,"util/feverFS.js"));
 const htmlParser = require('node-html-parser').parse;
-const regedit = require(path.join(remote.app.getAppPath(),"native/regedit/regedit.js"));
-const steamID = require("../util/steamID.js");
-const steamLanguages = require("../locale/steam.json");
+const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
+const steamID = require(path.join(appPath,"util/steamID.js"));
+const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
 module.exports.scan = async (additionalSearch = []) => {
   try {

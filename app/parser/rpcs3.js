@@ -4,7 +4,7 @@ const path = require('path');
 const util = require('util');
 const xml2js = require('xml2js');
 const glob = require("fast-glob");
-const ffs = require("../util/feverFS.js");
+const ffs = require(path.join(appPath,"util/feverFS.js"));
 
 const magic = {
   header : Buffer.from('818F54AD','hex'),
