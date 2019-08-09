@@ -2,6 +2,7 @@
 
 const { remote } = require('electron');
 const path = require("path");
+const ini = require("ini");
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const steam = require(path.join(appPath,"parser/steam.js"));
 const rpcs3 = require(path.join(appPath,"parser/rpcs3.js"));
@@ -28,6 +29,7 @@ async function discover(legitSteamListingType) {
           if (await ffs.promises.exists(path.join(dir.path,"rpcs3.exe"))) {
             temp[0] = temp[0].concat(await rpcs3.scan(dir.path));
           } else {
+          
             try { //ALI213
               let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
               temp[1].push({ appid: info.Settings.AppID,
@@ -36,7 +38,8 @@ async function discover(legitSteamListingType) {
                                 path: path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`)
                           }
               });
-            }catch(e){//
+              
+            }catch(e){
               temp[2].push(dir.path);
             }
           }
@@ -57,7 +60,7 @@ async function discover(legitSteamListingType) {
       debug.log(err);
     }
     
-   ///Non-Legit Steam
+   //Non-Legit Steam
     try {
       data = data.concat(await steam.scan(temp[2]));
     }catch(err){
