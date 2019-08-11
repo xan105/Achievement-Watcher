@@ -81,7 +81,7 @@ var app = {
         let template = `
         <li>
             <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
-              <div class="header" style="background: url(${list[game].img.header});"></i></div>
+              <div class="header" style="background: url('${list[game].img.header}');"></i></div>
               <div class="info">
                    <div class="title">${list[game].name}</div>
                    <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
@@ -160,7 +160,7 @@ var app = {
         $("#home").fadeOut(function() {
             
             if(game.img.background) {
-              $("body").fadeIn().css("background",`url(${game.img.background})`);
+              $("body").fadeIn().css("background",`url('${game.img.background}')`);
             } else {
               $("body").fadeIn();
             }
@@ -172,7 +172,7 @@ var app = {
             }
             
             if(game.img.icon) {
-              $("#achievement .wrapper > .header .title .icon").css("background",`url(${game.img.icon})`);
+              $("#achievement .wrapper > .header .title .icon").css("background",`url('${game.img.icon}')`);
             }
 
             $("#achievement .wrapper > .header .title span").text(game.name);
@@ -200,7 +200,7 @@ var app = {
                 <li>
                       
                          <div class="achievement" data-name="${achievement.name}">
-                            <div class="icon" style="background: url(${achievement.Achieved ? achievement.icon : achievement.icongray});"></div>
+                            <div class="icon" style="background: url('${achievement.Achieved ? achievement.icon : achievement.icongray}');"></div>
                             <div class="content">
                                 <div class="title">${game.system === "playstation" ? `<i class="fas fa-trophy" data-type="${achievement.type}"></i> ${achievement.displayName}` : `${achievement.displayName}`}</div>
                                 <div class="description">${achievement.description || ''}</div>
