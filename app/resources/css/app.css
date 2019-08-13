@@ -86,6 +86,8 @@ header {
 #window-controls.button.hover > li:hover { background-color: rgba(255,255,255,0.20); color: #dedede}
 #window-controls.button.hover > #win-close:hover { background-color: rgba(215,40,40,0.9);}
 
+#win-settings { pointer-events: none; }
+
 main {
   color: #d9dfe4; 
   font-family: 'Raleway';
@@ -152,6 +154,8 @@ main {
     position: absolute;
     right: calc( ( 100% - 91.85% ) / 2 );
     top: 110px;
+    opacity: 0;
+    pointer-events:none;
 }
 #sort-box .sort{
   display: inline-block;

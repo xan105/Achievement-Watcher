@@ -149,6 +149,8 @@ var app = {
       debug.log(err);
    }).finally(() => {
       $("#user-info").fadeTo('fast', 1).css("pointer-events","initial");
+      $("#sort-box").fadeTo('fast', 1).css("pointer-events","initial");
+      $("#win-settings").css("pointer-events","initial");
    });
 
   },
