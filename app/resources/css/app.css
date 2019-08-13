@@ -95,6 +95,7 @@ main {
 
 #home {
   height: 100%;
+  position: relative;
 }
 
 #user-info {
@@ -146,27 +147,26 @@ main {
   margin-left: 0;
 }
 
-.sort-box {
+#sort-box {
     box-sizing: border-box;
     position: absolute;
-    right: -50px;
-    bottom: 0px;
-    transform: translateX(100%);
+    right: calc( ( 100% - 91.85% ) / 2 );
+    top: 110px;
 }
-.sort-box .sort{
+#sort-box .sort{
   display: inline-block;
   margin: 0 5px;
   padding: 5px;
   font-size: 18px;
   cursor: pointer;
 }
-.sort-box .sort.active {
+#sort-box .sort.active {
   text-shadow: 0px 0px 20px white;
 }
-.sort-box .alpha{
+#sort-box .alpha{
   
 }
-.sort-box .percentage > i.fa-percent{
+#sort-box .percentage > i.fa-percent{
     font-size: 12px;
     line-height: 18px;
     vertical-align: top;
@@ -178,7 +178,7 @@ main {
     padding: 20px;
     background: #15202d;
     margin: 0 auto;
-    width: 1100px;
+    width: 91.85%;
     height: 78.3%;
     border: solid #24374c 1px;
     box-sizing: border-box;
@@ -259,7 +259,7 @@ main {
 
 #game-list ul > li {
   padding: 15px 10px;
-  margin: 0 6px;
+  margin: 0 auto;
   display: block;
 }
 

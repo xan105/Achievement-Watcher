@@ -5,17 +5,17 @@ function sortOptions() {
   let options = {alpha: false, percent: false};
       
   if (localStorage.sortByAlpha === "true" || typeof localStorage.sortByAlpha === 'undefined') {
-        $("#home .sort-box .sort.alpha").addClass("active");
+        $("#sort-box .sort.alpha").addClass("active");
         options.alpha = true;
   } else {
-        $("#home .sort-box .sort.alpha").removeClass("active");
+        $("#sort-box .sort.alpha").removeClass("active");
   }
       
   if(localStorage.sortByPercent === "true" || typeof localStorage.sortByPercent === 'undefined') {
-        $("#home .sort-box .sort.percentage").addClass("active");
+        $("#sort-box .sort.percentage").addClass("active");
         options.percent = true;
   } else {
-        $("#home .sort-box .sort.percentage").removeClass("active");
+        $("#sort-box .sort.percentage").removeClass("active");
   }
   
   return options;
@@ -54,12 +54,12 @@ function sort(elem, option = {}) {
 (function($, window, document) {
   $(function() {
 
-    $("#home .sort-box .sort.alpha").click(function(){
+    $("#sort-box .sort.alpha").click(function(){
         let self = $(this);
-        $("#home .sort-box .sort").css("pointer-events","none");
+        $("#sort-box .sort").css("pointer-events","none");
         
         let gamelist = $("#game-list ul");
-        let percent = $("#home .sort-box .sort.percentage").hasClass("active") ? true : false;
+        let percent = $("#sort-box .sort.percentage").hasClass("active") ? true : false;
         
         gamelist.fadeOut(()=>{
         
@@ -72,17 +72,17 @@ function sort(elem, option = {}) {
             self.addClass("active");
             localStorage.sortByAlpha = "true";
           }
-          gamelist.fadeIn(()=>{ $("#home .sort-box .sort").css("pointer-events","initial") });
+          gamelist.fadeIn(()=>{ $("#sort-box .sort").css("pointer-events","initial") });
           
         });
     });
     
-    $("#home .sort-box .sort.percentage").click(function(){
+    $("#sort-box .sort.percentage").click(function(){
         let self = $(this);
-        $("#home .sort-box .sort").css("pointer-events","none");
+        $("#sort-box .sort").css("pointer-events","none");
         
         let gamelist = $("#game-list ul");
-        let alpha = $("#home .sort-box .sort.alpha").hasClass("active") ? true : false;
+        let alpha = $("#sort-box .sort.alpha").hasClass("active") ? true : false;
         
         gamelist.fadeOut(()=>{
 
@@ -95,7 +95,7 @@ function sort(elem, option = {}) {
             self.addClass("active");
             localStorage.sortByPercent = "true";
           }
-          gamelist.fadeIn(()=>{ $("#home .sort-box .sort").css("pointer-events","initial") });
+          gamelist.fadeIn(()=>{ $("#sort-box .sort").css("pointer-events","initial") });
           
         });
     });
