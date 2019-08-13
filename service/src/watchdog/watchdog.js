@@ -381,7 +381,7 @@ var app = {
          debug.log(notification);
 
          await toast({
-                appID: self.options.notifier.appID || (self.hasXboxOverlay === true) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+                appID: (self.options.notifier.appID && self.options.notifier.appID !== '') ? self.options.notifier.appID : (self.hasXboxOverlay === true) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
                 title: notification.title,
                 message: notification.message,
                 icon: notification.icon,
