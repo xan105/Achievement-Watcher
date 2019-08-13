@@ -1,10 +1,8 @@
 "use strict";
 
-const { remote } = require('electron');
-const path = require("path");
 const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
 
-module.exports.scan = async () => {
+module.exports.scan = () => {
   try {
   
     let data = [];
@@ -41,7 +39,7 @@ module.exports.scan = async () => {
   }
 }
 
-module.exports.getAchievements = async (root,key) => {
+module.exports.getAchievements = (root,key) => {
   try {
   
     let result = regedit.RegListAllValues(root,key);

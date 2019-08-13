@@ -19,11 +19,13 @@
   },
   "dependencies": {
     "accountpicture-ms-extractor": "^1.1.0",
+    "adm-zip": "^0.4.13",
     "argv-split": "^2.0.1",
     "fast-glob": "^2.2.7",
     "ffi-napi": "^2.4.5",
     "glob": "^7.1.4",
     "ini": "^1.3.5",
+    "js-yaml": "^3.13.1",
     "lodash.omit": "^4.5.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",

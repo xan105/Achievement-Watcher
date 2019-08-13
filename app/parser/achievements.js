@@ -5,6 +5,7 @@ const path = require("path");
 const ini = require("ini");
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const steam = require(path.join(appPath,"parser/steam.js"));
+const uplay = require(path.join(appPath,"parser/uplay.js"));
 const rpcs3 = require(path.join(appPath,"parser/rpcs3.js"));
 const glr = require(path.join(appPath,"parser/glr.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
@@ -31,7 +32,12 @@ async function discover(legitSteamListingType) {
           } else {
           
             try { //ALI213
-              let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
+              let info;
+              try {
+                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
+              }catch(e){
+                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"valve.ini"),"utf8"));
+              }
               temp[1].push({ appid: info.Settings.AppID,
                           data: {
                                 type: "file",
@@ -79,6 +85,12 @@ async function discover(legitSteamListingType) {
       debug.log(err);
     }
     
+    try{
+      data = data.concat(await uplay.scan());
+    }catch(err){
+      debug.log(err);
+    }
+    
     //AppID Blacklisting
     try{  
         let exclude = await blacklist.get();
@@ -121,6 +133,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                 }
                 else if (appid.data.type === "rpcs3"){
                   game = await rpcs3.getGameData(appid.data.path);
+                }else if (appid.data.type === "uplay" || appid.data.type === "lumaplay"){
+                  game = await uplay.getGameData(appid.appid,option.lang);
                 }else{
                   game = await steam.getGameData({appID: appid.appid, lang: option.lang, key: option.key });      
                 }
@@ -133,7 +147,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                  } else if (appid.data.type === "reg") {
                        
-                    root = await glr.getAchievements(appid.data.root,appid.data.path);
+                    root = glr.getAchievements(appid.data.root,appid.data.path);
 
                  } else if (appid.data.type === "steamAPI") {
                  
@@ -149,6 +163,11 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                  } else if (appid.data.type === "rpcs3"){
                   
                    root = await rpcs3.getAchievements(appid.data.path,game.achievement.total);
+                   
+                 } else if (appid.data.type === "lumaplay"){
+                  
+                   root = uplay.getAchievementsFromLumaPlay(appid.data.root,appid.data.path);
+                   
                  }
 
                  for (let i in root){
@@ -208,8 +227,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
             //loop appid
             } catch(err) {
-              debug.log(`[${appid.appid}] Error parsing local achievements data > SKIPPING`);
-              debug.log(err);
+              debug.log(`[${appid.appid}] Error parsing local achievements data => ${err} > SKIPPING`);
             }
             
         callbackProgress(percent);

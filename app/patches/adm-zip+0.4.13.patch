@@ -1,0 +1,13 @@
+diff --git a/node_modules/adm-zip/headers/entryHeader.js b/node_modules/adm-zip/headers/entryHeader.js
+index 42a1186..9a78295 100644
+--- a/node_modules/adm-zip/headers/entryHeader.js
++++ b/node_modules/adm-zip/headers/entryHeader.js
+@@ -213,7 +213,7 @@ module.exports = function () {
+             // modification time (2 bytes time, 2 bytes date)
+             data.writeUInt32LE(_time, Constants.CENTIM);
+             // uncompressed file crc-32 value
+-            data.writeInt32LE(_crc & 0xFFFF, Constants.CENCRC, true);
++            data.writeUInt32LE(_crc, Constants.CENCRC);
+             // compressed size
+             data.writeUInt32LE(_compressedSize, Constants.CENSIZ);
+             // uncompressed size

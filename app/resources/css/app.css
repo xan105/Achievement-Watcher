@@ -288,6 +288,15 @@ main {
   background-position: center !important;
 }
 
+#game-list .game-box[data-system="uplay"] .header {
+  background-size: contain !important;
+  background-position: center !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  background-origin: content-box !important;
+  background-color: #121519 !important;
+}
+
 #game-list ul > li .game-box:hover .header {
   opacity: 0.5;
 }
@@ -437,6 +446,7 @@ main {
 #achievement .wrapper > .header .title .icon {
   background: #27374a;
   background-repeat: no-repeat !important;
+  background-size: contain !important;
   width: 32px;
   height: 32px;
   margin: auto 0;
@@ -578,7 +588,9 @@ main {
   margin: auto 0;
 }
 
-#achievement .wrapper > .header[data-system="playstation"] ~ .achievements #lock .achievement .icon {
+#achievement .wrapper > .header[data-system="playstation"] ~ .achievements #lock .achievement .icon, 
+#achievement .wrapper > .header[data-system="uplay"] ~ .achievements #lock .achievement .icon
+{
   filter: grayscale(100);
 } 
 

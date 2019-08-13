@@ -54,7 +54,7 @@ module.exports.scanLegit = async (listingType = 1) => {
   if (regedit.RegKeyExists("HKCU","Software/Valve/Steam") && listingType > 0){ 
   
         const steamPath = regedit.RegQueryStringValue("HKCU","Software/Valve/Steam","SteamPath");
-        if (!steamPath) throw "SteamPath not found";
+        if (!steamPath) throw "Steam Path not found";
         
          let userID = await getSteamUsers(steamPath);
 

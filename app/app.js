@@ -160,7 +160,14 @@ var app = {
         $("#home").fadeOut(function() {
             
             if(game.img.background) {
-              $("body").fadeIn().css("background",`url('${game.img.background}')`);
+
+              if (game.system === "uplay") {
+                let gradient = `linear-gradient(to bottom right, rgba(0, 47, 75, .8), rgba(35, 54, 78, 0.9))`;
+                $("body").fadeIn().attr("style",`background: ${gradient}, url('${game.img.background}')`);
+              } else {
+                $("body").fadeIn().css("background",`url('${game.img.background}')`);
+              }
+              
             } else {
               $("body").fadeIn();
             }
@@ -270,7 +277,7 @@ var app = {
             let elem = $("#achievement .achievement-list ul > li");
             elem.removeClass("highlight");
 
-            if (game.system == "playstation"){
+            if (game.system){
               $(".achievement .stats .community").hide();
             }
             else {
