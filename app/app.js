@@ -27,6 +27,8 @@ var app = {
 
    let self = this;
    
+   $("#win-settings").css("pointer-events","none");
+   
    l10n.load(self.config.achievement.lang).then((locale)=>{
       moment.locale(locale);
    }).catch((err)=>{
@@ -56,7 +58,7 @@ var app = {
       loadingElem.meter.css("width",percent);
 
    }).then((list) => {
-   
+
       loadingElem.elem.hide();
 
       if (!list || list.length == 0) {

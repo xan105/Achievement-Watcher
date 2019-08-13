@@ -111,6 +111,7 @@
                 $("#win-settings").css("pointer-events","initial");
                 $("#game-list .loading").show();
                 $("#user-info").css("opacity",0).css("pointer-events","none");
+                $("#sort-box").css("opacity",0).css("pointer-events","none");
                 $("#game-list .isEmpty").hide();
                 let elem = $("#settingNav li").first();
                 $("#settingNav li").removeClass("active");
