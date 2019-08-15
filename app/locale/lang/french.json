@@ -38,5 +38,7 @@
   "installed": "Installé(s)",
   "owned": "Possédé(s)",
   "publicProfile": "Votre profil Steam doit être publique !",
-  "removeFromList": "Retirer de la liste"
+  "removeFromList": "Retirer de la liste",
+  "souvenir": "Souvenir",
+  "souvenirDescription": "Prendre une capture d'écran lorsque vous débloquez un succès"
 }

@@ -45,8 +45,16 @@ module.exports.load = ()=>{
           options.achievement.legitSteam = 1;
         }
         
+        if (typeof options.achievement.souvenir !== "boolean"){
+          options.achievement.souvenir = true;
+        }
+        
         if (isNaN(options.notifier.timeTreshold)){
           options.notifier.timeTreshold = 5;
+        }
+        
+        if (isNaN(options.notifier.tick)){
+          options.notifier.tick = 600;
         }
         
         if (typeof options.notifier.checkIfProcessIsRunning !== "boolean"){
@@ -71,10 +79,12 @@ module.exports.load = ()=>{
             mergeDuplicate: true,
             hideZero: false,
             notification: true,
-            legitSteam: 1
+            legitSteam: 1,
+            souvenir: true
           },
           notifier: {
             timeTreshold: 5,
+            tick: 600,
             checkIfProcessIsRunning: true
           },
           steam: {}

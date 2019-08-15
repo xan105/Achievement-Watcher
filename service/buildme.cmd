@@ -4,6 +4,7 @@ go generate
 cd "%~dp0"
 set GOPATH="%~dp0"
 go build -ldflags "-H windowsgui" -o "%~dp0\build\nw.exe" nw
+call "%~dp0src\souvenir\build.cmd"
 rem npm i -g pkg
 cd "%~dp0src\watchdog"
 call npm prune --production

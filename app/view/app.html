@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net; connect-src 'self' https://api.steampowered.com">
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-uNO9iOz40NtxyjPn5L37xNsO+vC5ORJ6Ksk8x0poS7FTLJ3BkLhZo/pyia+Q4+n9"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-1nRQGdNIYuFQrJ+xiMPyWl78IGtruC+yJBng5141PI72VZ8C8X80CdvqILEwKpF2"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-Nb3XmGzva8AUtKVqD2TlLEa/yLHAzeABBDFOS2DpLZDFxMINc2lctXhb0cSlm3qe"/>
   </head>
   <body>
@@ -201,7 +201,7 @@
              
              <div class="controls">
                <div class="info">
-                For ALI213 & RPCS3 please select a folder where the ALI213.ini or RPCS3.exe file is located.
+                Select a folder which contains appid folder(s). For ALI213 & RPCS3 please select a folder where the ALI213.ini, valve.ini or RPCS3.exe file is located.
                </div>
               <ul>
               <li><div id="addCustomDir" class="btn"><i class="fas fa-folder-plus"></i> <span></span></div></li>
@@ -281,6 +281,19 @@
                             <option value="0"></option>
                             <option value="1" selected></option>
                             <option value="2"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                      <li class="hasHelper">
+                        <div class="left"><i class="fas fa-camera"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_souvenir">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
                           </select>
                          <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
                         </div>

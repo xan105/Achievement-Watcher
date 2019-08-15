@@ -10,6 +10,7 @@ const getStartApps = require('get-startapps');
 const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const osLocale = require('os-locale');
 
+const screenshot = require("./util/screenshot.js");
 const ffs = require("./util/feverFS.js");
 const achievement = require("./achievement.js");
 const aes = require("./util/aes.js");
@@ -40,6 +41,7 @@ var app = {
   steamKey : null,
   watcher: [],
   hasXboxOverlay: false,
+  tick: 0,
   start: async function() {
     try {
     debug.log("Watchdog Starting ...");
@@ -155,6 +157,11 @@ var app = {
           fixFile = true;
         }
         
+        if (typeof self.options.achievement.hideZero !== "boolean"){
+          self.options.achievement.hideZero = false;
+          fixFile = true;
+        }
+        
         if (typeof self.options.achievement.notification !== "boolean"){
           self.options.achievement.notification = true;
           fixFile = true;
@@ -165,8 +172,18 @@ var app = {
           fixFile = true;
         }
         
+        if (typeof self.options.achievement.souvenir !== "boolean"){
+          self.options.achievement.souvenir = true;
+          fixFile = true;
+        }
+        
         if (isNaN(self.options.notifier.timeTreshold)){
           self.options.notifier.timeTreshold = 5;
+          fixFile = true;
+        }
+        
+        if (isNaN(self.options.notifier.tick)){
+          self.options.notifier.tick = 600;
           fixFile = true;
         }
         
@@ -198,10 +215,12 @@ var app = {
             showHidden: false,
             mergeDuplicate: true,
             notification: true,
-            legitSteam: 1
+            legitSteam: 1,
+            souvenir: true
           },
           notifier: {
             timeTreshold: 5,
+            tick: 600,
             checkIfProcessIsRunning: true
           },
           steam: {}
@@ -234,13 +253,16 @@ var app = {
     self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]+)/ }, async function(evt, name) {
     try {
         
-        if (!self.options.achievement.notification || evt !== "update") return;
+        if (evt !== "update") return;
         
         let filePath = path.parse(name);
         
         if (!file.achievement.some(file => file == filePath.base) || !await ffs.promises.isYoungerThan(name, {timeUnit:'seconds',time:10})) return;
         
         debug.log("ach file change detected");
+        
+        if (moment().diff(moment(self.tick)) <= self.options.notifier.tick) throw "Spamming protection is enabled > SKIPPING";
+        self.tick = moment().valueOf();
         
         let appID = filePath.dir.match(/([0-9]+$)/g)[0];
         
@@ -264,34 +286,39 @@ var app = {
                   
                   debug.log("Unlocked: "+ach.displayName);
                   
-                  await self.notify({
-                    appid: game.appid,
-                    title: game.name,
-                    id: ach.name,
-                    message: ach.displayName,
-                    icon: ach.icon
-                  });
+                    await self.notify({
+                      appid: game.appid,
+                      title: game.name,
+                      id: ach.name,
+                      message: ach.displayName,
+                      icon: ach.icon
+                    });
                   
-                 for (let i in localAchievements) { 
+                  if(self.options.achievement.souvenir) await screenshot(game.name,ach.displayName).catch((err)=>{debug.log(err)});
+                  
+                  for (let i in localAchievements) { 
 
                     if ( i > 0) {
                       if (localAchievements[i].Achieved) {
                         if (localAchievements[i].UnlockTime === localAchievements[0].UnlockTime) {
                             let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[i].name);
                             
-                            debug.log("Unlocked: "+ach.displayName);
+                            debug.log("Unlocked (at the same time): "+ach.displayName);
+
+                              await self.notify({
+                                appid: game.appid,
+                                title: game.name,
+                                id: ach.name,
+                                message: ach.displayName,
+                                icon: ach.icon
+                              });
+
+                            if(self.options.achievement.souvenir) await screenshot(game.name,ach.displayName).catch((err)=>{debug.log(err)});
                             
-                            await self.notify({
-                              appid: game.appid,
-                              title: game.name,
-                              id: ach.name,
-                              message: ach.displayName,
-                              icon: ach.icon
-                            });
                         }
                       }
                     }
-                 }
+                  }
               
               } else {
                 debug.log("already unlocked");
@@ -378,16 +405,20 @@ var app = {
     
          let self = this;
 
-         debug.log(notification);
+         if (self.options.achievement.notification) {
+           debug.log(notification);
 
-         await toast({
-                appID: (self.options.notifier.appID && self.options.notifier.appID !== '') ? self.options.notifier.appID : (self.hasXboxOverlay === true) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
-                title: notification.title,
-                message: notification.message,
-                icon: notification.icon,
-                attribution: "Achievement",
-                onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
-         });
+           await toast({
+                  appID: (self.options.notifier.appID && self.options.notifier.appID !== '') ? self.options.notifier.appID : (self.hasXboxOverlay === true) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+                  title: notification.title,
+                  message: notification.message,
+                  icon: notification.icon,
+                  attribution: "Achievement",
+                  onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
+           });
+         } else {
+           debug.log("Notification is disabled > SKIPPING");
+         }   
 
     }catch(err){
       debug.log("Fail to invoke toast notification");

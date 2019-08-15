@@ -38,5 +38,7 @@
   "installed": "Installed",
   "owned": "Owned",
   "publicProfile": "Your Steam profile must be public !",
-  "removeFromList": "Remove from list"
+  "removeFromList": "Remove from list",
+  "souvenir": "Souvenir",
+  "souvenirDescription": "Take a screenshot when you unlock an achievement"
 }
