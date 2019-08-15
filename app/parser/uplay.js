@@ -74,21 +74,29 @@ module.exports.scanLegit = () => { //Uplay /*Unused function; As of writing ther
 
 module.exports.getGameData = async (appid,lang) => {
   try {
-  
-    //local cache
-    //network srv
-    //generate from ubi local if available
-      
+     
+     const cacheFile = path.join(remote.app.getPath('userData'),"uplay_cache/schema",`${appid}.db`); 
      
      let schema;
      
-     //check if ubi installed ? if not throw err
-     schema = await generateSchemaFromLocalCache(appid);
-
+     if (await ffs.promises.existsAndIsYoungerThan(cacheFile,{timeUnit: 'month', time: 1})) {
+        schema = JSON.parse(await ffs.promises.readFile(cacheFile));
+     } else {
+        try {
+          schema = await getUplayDataFromSRV(appid); //implement me
+        }catch(err){
+          let uplayPath = regedit.RegQueryStringValue("HKLM","Software/WOW6432Node/Ubisoft/Launcher","InstallDir");
+          if (!uplayPath) throw "Uplay not found : can't generate schema if uplay is not installed.";
+          schema = await generateSchemaFromLocalCache(appid,uplayPath);
+        }
+        ffs.promises.writeFile(cacheFile,JSON.stringify(schema, null, 2)).catch((err) => {});
+     }
+     
+     //Lang Loading
      if (schema.achievement.list[`${lang}`]) {
       schema.achievement.list = schema.achievement.list[`${lang}`]; //load only user lang
      } else {
-      schema.achievement.list = schema.achievement.list["english"]; //default to english is the game has not that lang
+      schema.achievement.list = schema.achievement.list["english"]; //default to english if the game has not that lang
      }
      
      return schema;
@@ -116,16 +124,14 @@ module.exports.getAchievementsFromLumaPlay = (root,key) => {
   }
 }
 
-async function generateSchemaFromLocalCache(appid) {
+async function generateSchemaFromLocalCache(appid,uplayPath) {
   try{
 
-    const dir = "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher"; //replace me
+    let id = await availableID.get(uplayPath,appid);
     
-    let id = await availableID.get(appid);
+    let index = await indexDB.get(uplayPath,id.index);
     
-    let index = await indexDB.get(id.index);
-    
-    console.log(`${index.name} - ${id.appid}`);
+    debug.log(`${index.name} - ${id.appid}`);
         
     const cache = path.join(remote.app.getPath('userData'),"uplay_cache/img/",`${id.appid}`);
         
@@ -200,7 +206,7 @@ async function generateSchemaFromLocalCache(appid) {
         
         try{
           let dest = path.join(`${cache}`,`background${path.parse(index.background).ext}`);
-          await ffs.promises.copyFile(path.join(dir,"cache/assets",`${index.background}`),dest);
+          await ffs.promises.copyFile(path.join(uplayPath,"cache/assets",`${index.background}`),dest);
           game.img.background = dest.replace(/\\/g,"/");
         }catch(e){
           debug.log(e);
@@ -208,7 +214,7 @@ async function generateSchemaFromLocalCache(appid) {
         
         try{
           let dest = path.join(`${cache}`,`header${path.parse(index.header).ext}`);
-          await ffs.promises.copyFile(path.join(dir,"cache/assets",`${index.header}`),dest);
+          await ffs.promises.copyFile(path.join(uplayPath,"cache/assets",`${index.header}`),dest);
           game.img.header = dest.replace(/\\/g,"/");
         }catch(e){
           debug.log(e);
@@ -216,7 +222,7 @@ async function generateSchemaFromLocalCache(appid) {
         
         try{
           let dest = path.join(`${cache}`,`icon${path.parse(index.icon).ext}`);
-          await ffs.promises.copyFile(path.join(dir,"data/games",`${index.icon}`),dest);
+          await ffs.promises.copyFile(path.join(uplayPath,"data/games",`${index.icon}`),dest);
           game.img.icon = dest.replace(/\\/g,"/");
         }catch(e){
           debug.log(e);
@@ -235,10 +241,10 @@ async function generateSchemaFromLocalCache(appid) {
 
 let indexDB = {
   cache: null,
-  make: async function (path_ubisoft_root){
+  make: async function (uplayPath){
       try{
 
-          const file = path.join(path_ubisoft_root,"cache/configuration/configurations");
+          const file = path.join(uplayPath,"cache/configuration/configurations");
 
           if (!await ffs.promises.exists(file)){
             throw "No Uplay Configurations file found"
@@ -333,10 +339,10 @@ let indexDB = {
           debug.log(err);
          }
       },
-  get: async function(index=null) {
+  get: async function(uplayPath,index=null) {
       try{
         if (!this.cache) { 
-          this.cache = await this.make("C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher"); //replace me
+          this.cache = await this.make(uplayPath);
         } 
         
         if(index){
@@ -352,10 +358,10 @@ let indexDB = {
 
 let availableID = {
   cache: null,
-  make: async function(path_ubisoft_root){
+  make: async function(uplayPath){
     try{
 
-      const dir = path.join(path_ubisoft_root,"cache/achievements");
+      const dir = path.join(uplayPath,"cache/achievements");
       
       let list = (await glob("([0-9]+)_*",{cwd: dir, onlyFiles: true, absolute: false})).map((filename) => {
       
@@ -375,11 +381,11 @@ let availableID = {
       throw err;
     }  
   },
-  get: async function(appid=null) {
+  get: async function(uplayPath,appid=null) {
     try{
     
       if (!this.cache) {
-        this.cache = await this.make("C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher") //replace me
+        this.cache = await this.make(uplayPath);
       }
       
       if(appid) {
