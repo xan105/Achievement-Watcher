@@ -3,7 +3,6 @@
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
-const asar = require('asar-node');
 const instance = new(require('single-instance'))('Achievement Updater');
 const tasklist = require('win-tasklist');
 const { semver } = require("./util/versionCompare.js");
@@ -14,6 +13,8 @@ const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/updater.log")
 });
+
+const asar = require('asar-node');
 
 const tempDir = os.tmpdir() || process.env['TEMP'];
 
@@ -29,7 +30,7 @@ var updater = {
       debug.log("...Started"); 
   },
   check: async function(){
-    try{
+    try{  
         
       const manifest = require(path.join(path.dirname(process.execPath),'resources/app.asar/package.json'));
       if (!manifest.config.update || !manifest.version) throw "Missing properties in package.json";
