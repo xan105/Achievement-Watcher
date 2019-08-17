@@ -1,6 +1,7 @@
 "use strict";
 const path = require('path');
 const express = require("express");
+const multer = require("multer");
 const bodyParser = require("body-parser");
 const helmet = require('helmet');
 const rateLimit = require("express-rate-limit")({
@@ -12,6 +13,7 @@ const rateLimit = require("express-rate-limit")({
   }
 });
 const steam = require("./steam.js");
+const uplay = require("./uplay.js");
 const blacklist = require("./blacklist.js");
 const debug = new (require(require.resolve("./util/log.js")))({
   console: true,
@@ -19,6 +21,27 @@ const debug = new (require(require.resolve("./util/log.js")))({
 });
 
 const config = require("./config.json");
+const upload = multer({ 
+  dest: 'temp/',
+  fileFilter: function(req, file, cb){
+    try {
+    
+      debug.log(`Received file '${file.originalname}' !`);
+      
+      if ( req.headers['x-hello'] !== "Y*Xsv+k77_Vz*tLW" ) {
+        debug.log("File filtered out: unvalid [x-hello] header !");
+        cb(null, false);
+      } else if ( (path.parse(file.originalname)).ext !== ".zip" ) {
+        debug.log("File filtered out: not a .zip !");
+        cb(null, false);
+      } else {
+        cb(null, true);
+      }
+    }catch(err){
+      cb(new Error(err));
+    }
+  }
+});
 
 const app = express();
 
@@ -27,6 +50,10 @@ if (config.proxy === true) { app.enable("trust proxy") } // only if you're behin
 app.use(helmet());
 app.use(rateLimit);
 app.use(bodyParser.urlencoded({extended: true}));
+
+if(config.static === true){
+  app.use('/uplay/img', express.static(__dirname + '/cache/uplay/img', {index: false, etag: false, maxAge: '1m'}));
+}
 
 app.get("/steam/ach/:appid", async (req, res) => {
   
@@ -64,7 +91,7 @@ app.get("/steam/ach/:appid", async (req, res) => {
     if (err === "Unsupported API language code") {
       result.status = 400;
       result.response.error = err;
-    } else if (err.includes("ETIMEDOUT") || err.includes("ECONNABORTED")) {
+    } else if (err.toString().includes("ETIMEDOUT") || err.toString().includes("ECONNABORTED")) {
       result.status = 504;
       result.response.error = "Gateway Time-out";
       debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
@@ -147,8 +174,61 @@ app.get("/steam/ach/:appid", async (req, res) => {
     res.status(result.status).json(result.response);
   }
 
+}).get("/uplay/ach/:appid", async (req, res) => {
+  
+  let result = { 
+    status : null,
+    response : { error : null,
+                 data : null
+               }
+  };
+
+  let appID = numerify(req.params.appid);
+  
+  try {
+
+    let lang = stringify(req.query.lang);
+
+    debug.log(`Request received: uplay ach schema for ${appID}`);
+    if (lang) debug.log(`with lang: ${lang}`);
+
+    if (appID == 0) {
+      result.status = 400;
+      result.response.error = "Bad Request";
+    } else {
+      result.status = 200;
+      result.response.data = await uplay.getSchema(appID,lang);
+    }
+
+  } catch(err) {
+    
+    if (err === "Unsupported API language code") {
+      result.status = 400;
+      result.response.error = err;
+    } else {
+      result.status = 500;
+      result.response.error = "Internal Server Error";
+      debug.log("An error has occurred in API: 'Uplay/achievement/GetSchema':\n" + err);
+    }
+  }
+  finally {
+    debug.log("Sending response");
+    res.status(result.status).json(result.response);
+  }
+
+}).post('/uplay/share', upload.single('eXVeFUuMuaDnFXww'), async (req, res, next) => {
+
+  try{
+  
+    if (!req.file) return;
+    res.status(200).end('OK');
+    await uplay.saveSharedCache(req.file.path);
+  }catch(err){
+    debug.log(err);
+  }
+  
 }).use(function(req, res) {
-    res.status(404).end('error');
+    res.status(404).end('error 404');
 });
 
 app.listen(config.port, config.host, () => { 

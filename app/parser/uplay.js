@@ -7,6 +7,7 @@ const glob = require("fast-glob");
 const zip = require('adm-zip');
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
+const request = require('request-zero');
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
 const debug = new (require(path.join(appPath,"util/log.js")))({
@@ -83,11 +84,18 @@ module.exports.getGameData = async (appid,lang) => {
         schema = JSON.parse(await ffs.promises.readFile(cacheFile));
      } else {
         try {
-          schema = await getUplayDataFromSRV(appid); //implement me
+          schema = await getUplayDataFromSRV(appid);
         }catch(err){
+          debug.log("Failed to get schema from server; Trying to generate from local Uplay installation ...");
+          
           let uplayPath = regedit.RegQueryStringValue("HKLM","Software/WOW6432Node/Ubisoft/Launcher","InstallDir");
           if (!uplayPath) throw "Uplay not found : can't generate schema if uplay is not installed.";
           schema = await generateSchemaFromLocalCache(appid,uplayPath);
+          try{
+            await shareCache(schema);
+          }catch(err){
+            debug.log(`Failed to share ${appid} cache to server => ${err}`)
+          }
         }
         ffs.promises.writeFile(cacheFile,JSON.stringify(schema, null, 2)).catch((err) => {});
      }
@@ -236,6 +244,54 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
   }
 }
 
+function getUplayDataFromSRV(appID,lang = null){
+
+  const url = (lang) ? `https://api.xan105.com/uplay/ach/${appID}?lang=${lang}` : `https://api.xan105.com/uplay/ach/${appID}` 
+
+  return new Promise((resolve, reject) => {
+  
+    request.getJson(url).then((data) => {
+      
+      if (data.error) {
+        return reject(data.error);
+      } else if (data.data){
+        return resolve(data.data);
+      } else {
+        return reject("Unexpected Error");
+      }
+      
+    }).catch((err) => {
+      return reject(err);
+    });
+  
+  });
+}
+
+async function shareCache(schema){
+
+  //const url = `https://api.xan105.com/uplay/share/`;
+  const url = `http://127.0.0.1/uplay/share/`;
+
+  try {
+  
+    let appid = schema.appid.replace("UPLAY","");
+
+    const cache = path.join(remote.app.getPath('userData'),"uplay_cache/img/",`${appid}`);
+
+    let archive = new zip();
+    archive.addFile("schema.json", Buffer.from(JSON.stringify(schema)));
+    archive.addLocalFolder(cache);
+
+    debug.log(`Sharing ${schema.name} - ${appid}`);
+    await request.upload(url, archive.toBuffer(), {
+                        headers:{"x-hello": "Y*Xsv+k77_Vz*tLW"}, fieldname: "eXVeFUuMuaDnFXww", filename: `${schema.name} - ${appid}.zip`
+                        });
+  
+  }catch(err){
+  console.error(err);
+    throw err;
+  }
+}
 
 /* =========================================== */
 
