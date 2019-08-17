@@ -9,7 +9,7 @@
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
 #define OurVersion "1.1.0"
-#define Author "Xan"
+#define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
 #define VersionURL "https://github.com/xan105/Achievement-Watcher/raw/master/setup/version.ini"
