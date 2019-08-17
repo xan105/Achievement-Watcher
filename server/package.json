@@ -1,5 +1,5 @@
 {
-  "name": "steam-ach-api",
+  "name": "achievement-watcher-server-api",
   "version": "1.0.8",
   "main": "server.js",
   "scripts": {
@@ -7,9 +7,10 @@
     "server": "node server.js",
     "clean": "npm prune --production"
   },
-  "author": "Xan",
+  "author": "Anthony Beaumont",
   "license": "LGPL-3.0-only",
   "dependencies": {
+    "adm-zip": "^0.4.13",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-rate-limit": "^3.5.3",
@@ -17,7 +18,9 @@
     "helmet": "^3.18.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
+    "multer": "^1.4.2",
     "node-html-parser": "^1.1.16",
+    "request-zero": "^0.2.2",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0"
   }
