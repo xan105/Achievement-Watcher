@@ -1,7 +1,7 @@
 const util = require('util');
 const SteamID = require('steamid');
 const xml2js = require('xml2js');
-const request = require("./request.js");
+const request = require('request-zero');
 
 module.exports = {
   to64 : function(userID){
@@ -15,7 +15,7 @@ module.exports = {
     try {
     
       let data = await request(url);
-      let userProfile = await util.promisify(xml2js.parseString)(data,options);
+      let userProfile = await util.promisify(xml2js.parseString)(data.body,options);
       return userProfile;
 
     }catch(err){

@@ -2,7 +2,7 @@
 
 const { remote } = require('electron');
 const path = require("path");
-const request = require(path.join(appPath,"util/request.js"));
+const request = require('request-zero');
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,

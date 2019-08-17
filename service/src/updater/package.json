@@ -7,7 +7,7 @@
     "start": "node updater.js",
     "clean": "npm prune --production"
   },
-  "author": "Xan",
+  "author": "Anthony Beaumont",
   "license": "LGPL-3.0-only",
   "devDependencies": {},
   "dependencies": {
@@ -15,6 +15,7 @@
     "content-disposition": "^0.5.3",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
+    "request-zero": "^0.2.0",
     "rimraf": "^2.7.1",
     "rwlock": "^5.0.0",
     "single-instance": "0.0.1",

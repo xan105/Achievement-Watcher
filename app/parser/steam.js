@@ -6,7 +6,7 @@ const glob = require("fast-glob");
 const ini = require("ini");
 const omit = require('lodash.omit');
 const moment = require('moment');
-const request = require(path.join(appPath,"util/request.js"));
+const request = require('request-zero');
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const htmlParser = require('node-html-parser').parse;
 const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
@@ -337,7 +337,7 @@ function getSteamData(cfg) {
 async function scrapSteamDB(appID){
   try {
     let data = await request(`https://steamdb.info/app/${appID}/`);
-    let html = htmlParser(data);
+    let html = htmlParser(data.body);
 
     let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
     

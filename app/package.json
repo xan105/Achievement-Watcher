@@ -9,7 +9,7 @@
     "clean": "npm prune --production",
     "prepare": "patch-package"
   },
-  "author": "Xan",
+  "author": "Anthony Beaumont",
   "license": "LGPL-3.0-only",
   "devDependencies": {
     "electron": "^5.0.8",
@@ -31,6 +31,7 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "node-html-parser": "^1.1.16",
+    "request-zero": "^0.2.0",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0",
     "steamid": "^1.1.3",

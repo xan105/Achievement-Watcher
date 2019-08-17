@@ -3,7 +3,7 @@
 const path = require('path');
 const htmlParser = require('node-html-parser').parse;
 const ffs = require("./util/feverFS.js");
-const request = require("./util/request.js");
+const request = require('request-zero');
 const steamLanguages = require("./steamLanguages.json");
 
 module.exports.loadSteamData = async (appID, lang, key) => {
@@ -108,7 +108,7 @@ function getSteamData (appID,lang,key) {
 async function scrapSteamDB(appid){
   try {
     let data = await request(`https://steamdb.info/app/${appid}/`);
-    let html = htmlParser(data);
+    let html = htmlParser(data.body);
 
     let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
     

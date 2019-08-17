@@ -5,10 +5,9 @@ const path = require('path');
 const { spawn } = require('child_process');
 const instance = new(require('single-instance'))('Achievement Updater');
 const tasklist = require('win-tasklist');
+const request = require('request-zero');
 const { semver } = require("./util/versionCompare.js");
 const ffs = require("./util/feverFS.js");
-const request = require("./util/request.js");
-const download = require("./util/download.js");
 const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/updater.log")
@@ -60,18 +59,18 @@ var updater = {
             
               debug.log(`Update Package '${asset.name}' found > Dowloading...`);
               
-              let file = await download(asset.browser_download_url,path.join(tempDir,github.name,github.tag_name));
+              let file = await request.download(asset.browser_download_url,path.join(tempDir,github.name,github.tag_name));
             
-              debug.log(`Update Package downloaded : "${file}"`);
+              debug.log(`Update Package downloaded : "${file.path}"`);
             
               let size = {
                     remote: asset.size,
-                    local: (await ffs.promises.stats(file)).size
+                    local: (await ffs.promises.stats(file.path)).size
               };
                 
               if (size.remote === size.local) {
                 debug.log("Expected file size");
-                this.upgrade(file);
+                this.upgrade(file.path);
               } else {
                 debug.log("Unexpected file size ! > Aborting");
               }
