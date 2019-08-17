@@ -6,7 +6,7 @@ const debug = new (require(require.resolve("./util/log.js")))({
 });
 
 const cache = require("./cache.json");
-const blacklist = path.join(cache.dir,"blacklist.json");
+const blacklist = path.join(cache.dir,"steam/blacklist.json");
 
 module.exports.add = async (appID) => {
 

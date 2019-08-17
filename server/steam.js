@@ -2,12 +2,12 @@
 
 const path = require('path');
 const htmlParser = require('node-html-parser').parse;
-const request = require(require.resolve("./util/request.js"));
+const request = require('request-zero');
 const aes = require("./util/aes.js");
 const ffs = require(require.resolve("./util/feverFS.js"));
 const debug = new (require(require.resolve("./util/log.js")))({
   console: true,
-  file: path.resolve("./log/ach.log")
+  file: path.resolve("./log/steam.log")
 });
 
 const keychain = require("./key.json");
@@ -30,7 +30,7 @@ module.exports.getSchema = async (appID,lang = "english") => {
   
     let result;
   
-    let filePath = path.join(`${cache.dir}`,"game",`${appID}.json`);
+    let filePath = path.join(`${cache.dir}`,"steam/game",`${appID}.json`);
     let header;
     if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: cache.data_retention.header})) {
         header = JSON.parse(await ffs.promises.readFile(filePath));
@@ -46,7 +46,7 @@ module.exports.getSchema = async (appID,lang = "english") => {
       lang = "english";
    }
    
-   filePath = path.join(`${cache.dir}`,`ach/${lang}`,`${appID}.json`);
+   filePath = path.join(`${cache.dir}`,`steam/ach/${lang}`,`${appID}.json`);
    let ach;
    if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: cache.data_retention.ach})) {
         ach = JSON.parse(await ffs.promises.readFile(filePath));
@@ -183,7 +183,7 @@ async function scrapSteamDB(appID){
 
   try {
     let data = await request(url);
-    let html = htmlParser(data);
+    let html = htmlParser(data.body);
 
     let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
     
