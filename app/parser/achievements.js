@@ -85,8 +85,16 @@ async function discover(legitSteamListingType) {
       debug.log(err);
     }
     
+    //Lumaplay
     try{
       data = data.concat(await uplay.scan());
+    }catch(err){
+      debug.log(err);
+    }
+    
+    //Uplay
+    try{
+      data = data.concat(await uplay.scanLegit());
     }catch(err){
       debug.log(err);
     }

@@ -81,6 +81,9 @@ module.exports.saveSharedCache = async (file) => {
       for (let entry of archiveEntries) {
             try{
                 if (entry.entryName.match(/^\d+.*$/) !== null) archive.extractEntryTo(entry.entryName, img_cache, true, true);
+                
+                if (["background","header","icon"].some(accepted => entry.entryName.includes(accepted))) archive.extractEntryTo(entry.entryName, img_cache, true, true);
+                
             }catch(err){
                 debug.log(`Failed to extract ${entry.entryName}`);
             }
@@ -91,6 +94,7 @@ module.exports.saveSharedCache = async (file) => {
     debug.log("...Generated!");
     
   }catch(err) {
+    ffs.promises.rm(file).catch(()=>{});
     debug.log(err);
     throw err
   }

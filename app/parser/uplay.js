@@ -50,21 +50,46 @@ module.exports.scan = () => { //LumaPlay
   }
 }
 
-module.exports.scanLegit = () => { //Uplay /*Unused function; As of writing there is no way to get legit user ach unlocked data*/
+module.exports.scanLegit = async ( onlyInstalled = false) => { //Uplay /*Unused function; As of writing there is no way to get legit user ach unlocked data*/
   try{
     const uplayPath = regedit.RegQueryStringValue("HKLM","Software/WOW6432Node/Ubisoft/Launcher","InstallDir");
     if (!uplayPath) throw "Uplay Path not found";
     
-    let installedList = regedit.RegListAllSubkeys("HKLM","SOFTWARE/WOW6432Node/Ubisoft/Launcher/Installs");
-    if (!installedList) throw "Uplay has no game installed";
-    
     let data = [];
     
-    for (let appid of installedList) {
-            data.push({appid: appid,
-                       data: {
-                          type: "uplay"}
-            });
+    if (onlyInstalled) {
+    
+        let installedList = regedit.RegListAllSubkeys("HKLM","SOFTWARE/WOW6432Node/Ubisoft/Launcher/Installs");
+        if (!installedList) throw "Uplay has no game installed";
+        
+        for (let appid of installedList) {
+                data.push({appid: appid,
+                           data: {
+                              type: "uplay"}
+                });
+        }
+        
+    } else {
+    
+        const ach_cache = path.join(uplayPath,"cache/achievements");
+        let list = (await glob("([0-9]+)_*",{cwd: ach_cache, onlyFiles: true, absolute: false})).map((filename) => {
+  
+            let col = filename.split("_");
+          
+            return {
+              appid: col[0],
+              index: col[1].replace(".zip","")
+            }
+          
+          });
+
+        for (let game of list) {
+                data.push({appid: game.appid,
+                           data: {
+                              type: "uplay"}
+                });
+        }
+        
     }
     
     return data;
