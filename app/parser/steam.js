@@ -46,7 +46,7 @@ module.exports.scan = async (additionalSearch = []) => {
   }
 }
 
-module.exports.scanLegit = async (listingType = 1) => {
+module.exports.scanLegit = async (listingType = 0) => {
   try {
   
   let data = [];

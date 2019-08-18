@@ -168,7 +168,7 @@ var app = {
         }
         
         if (self.options.achievement.legitSteam != 0 && self.options.achievement.legitSteam != 1 && self.options.achievement.legitSteam != 2){
-          self.options.achievement.legitSteam = 1;
+          self.options.achievement.legitSteam = 0;
           fixFile = true;
         }
         
@@ -215,7 +215,7 @@ var app = {
             showHidden: false,
             mergeDuplicate: true,
             notification: true,
-            legitSteam: 1,
+            legitSteam: 0,
             souvenir: true
           },
           notifier: {

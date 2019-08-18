@@ -42,7 +42,7 @@ module.exports.load = ()=>{
         }
         
         if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
-          options.achievement.legitSteam = 1;
+          options.achievement.legitSteam = 0;
         }
         
         if (typeof options.achievement.souvenir !== "boolean"){
@@ -79,7 +79,7 @@ module.exports.load = ()=>{
             mergeDuplicate: true,
             hideZero: false,
             notification: true,
-            legitSteam: 1,
+            legitSteam: 0,
             souvenir: true
           },
           notifier: {
