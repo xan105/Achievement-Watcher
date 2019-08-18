@@ -264,7 +264,7 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
         return game;
     
   }catch(err){
-    console.error(err);
+    debug.log(err);
     throw err;
   }
 }
@@ -294,8 +294,7 @@ function getUplayDataFromSRV(appID,lang = null){
 
 async function shareCache(schema){
 
-  //const url = `https://api.xan105.com/uplay/share/`;
-  const url = `http://127.0.0.1/uplay/share/`;
+  const url = "https://api.xan105.com/uplay/share/";
 
   try {
   
@@ -313,7 +312,7 @@ async function shareCache(schema){
                         });
   
   }catch(err){
-  console.error(err);
+    debug.log(err);
     throw err;
   }
 }
