@@ -41,6 +41,9 @@ Note that there might be a slight delay between the event and the display of the
 
 Game must be set to Window borderless for the notification to be rendered on top of it otherwise you'll just here the sound.<br />
 
+If you have enabled the *souvenir* option, a screenshot will be taken<br />
+and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
+
 🚑 Not seeing any notification ? Quick fix :
 - try to set your game to Window borderless.
 - try to disable the automatic game and fullscreen rule in focus assistant
@@ -118,7 +121,7 @@ Options
 =======
 Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but most of them are configurable via the GUI<br />
 
-[achievement]
+### [achievement]
 - lang<br />
   default to user locale<br />
   Both UI and data from Steam<br />
@@ -139,10 +142,11 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
 - souvenir<br />
-  default to true
-  Take a screenshot when you unlock an achievement (In "your pictures folder/game name/game name - ach name.png")
+  default to true<br />
+  Take a screenshot when you unlock an achievement in<br />
+  `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`
   
-[notifier]
+### [notifier]
 - timeTreshold<br />
   default to 5 (sec)<br />
   When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
