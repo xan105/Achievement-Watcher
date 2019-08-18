@@ -1,5 +1,5 @@
 A sexy achievement file parser with real-time notification.<br />
-View all the achievements earned on your PC whether it's coming from Steam or a Steam emulator, and more.
+View all the achievements earned on your PC whether it's coming from Steam, a Steam emulator, and more.<br />
 To see the full list of what this app can import please see the **Compatibility** section.
 
 <table >
@@ -9,7 +9,7 @@ To see the full list of what this app can import please see the **Compatibility*
 </tr>
 </table>
 
-The original idea was that some steam emulator generate a text file where all the achievements you have unlocked are stored.
+The original idea behind this app was that some steam emulator generate a text file where all the achievements you have unlocked are stored.
 But they aren't very friendly to know which is which, here is an example :
 ```ini
 [NEW_ACHIEVEMENT_1_1]
@@ -58,12 +58,12 @@ Compatibility :
 |Codex (Steam)| Yes | Yes | No | Yes |
 |RLD! (Steam) | Yes | No | No | No |
 |Skidrow (Steam) | Yes | No | No | No |
-|ALI213 (Steam) | Via custom dir, Yes | Yes | No | Yes |
-|Green Luma Reborn (Steam) | Yes | No | No | No |
-|SmartSteamEmu (Steam)| Via plugin, Yes | Yes | No | Yes |
-|Goldberg Steam Emu (Steam)| Via a custom build, Yes | Yes | No | Yes |
-|Legit Steam Client (Steam) | Your Steam profile must be public, Yes | Yes | No | Steam overlay does it already | 
-|RPCS3 (PS3) | Via custom dir, Yes | No | N/A | RPCS3 does it already|  
+|ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
+|GreenLumaReborn (Steam) | Yes | No | No | No |
+|SmartSteamEmu (Steam)| [Via this plugin](https://) | Yes | No | Yes |
+|Goldberg Steam Emu (Steam)| Via a [custom build](https://) | Yes | No | Yes |
+|Legit Steam Client (Steam) | Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
+|RPCS3 (PS3) | Via user custom dir | No | N/A | RPCS3 does it already|  
 |LumaPlay (Uplay) | Yes | No | No | No |
 
 
@@ -87,7 +87,7 @@ You can add your own folder in the app, just make sure that you select a folder 
 For ALI213 there is no default folder so choose the dir where the `AlI213.ini` or `valve.ini` file is; <br>
 The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
  
-⚠️ Green Luma Reborn: Parse ach. only if the reg key "SkipStatsAndAchievements" is set to dword:00000000 for that APPID.
+⚠️ Green Luma Reborn: only if the reg key `"SkipStatsAndAchievements"` is set to `dword:00000000` for that APPID.
 
 ### Legit Steam
 You can choose to view none (default) / only installed / all owned Steam games.<br/>
@@ -100,7 +100,7 @@ Ach. are updated based on files timestamp in `STEAM\appcache\stats`<br/>
 </p>
 
 Due to the server rate limit if you 've a huge Steam library it might not get all your games in one go.<br/>
-If you are using your own steam web api key (see section below), this doesn't concern you.
+If you are using your own steam web api key (see **Steam Web API Key** section below), this doesn't concern you.
 
 ### RPCS3 Playstation 3 Emulator
 Please add a folder in the app where `rpcs3.exe` is located. The app will then look for ~~achievement~~ trophies for every game and every ps3 user.<br/>
@@ -110,7 +110,7 @@ As of this writing there is no unlock time : the trophies unlocked in a PS3 that
 ### LumaPlay
 Since there is no public API to get a Uplay game achievements info as of this writing there are limitations: <br/>
 Uplay client must be installed in order to try to get the game's info from its cache.<br/> 
-To have the game info in the Uplay client cache you **don't** need to install the game but you need to at least have seen once the achievement listing page of the game in the Uplay client.<br/>
+To have the game info in the Uplay client cache you **don't** need to install the game but you need to have at least seen the achievement listing page of the game once in the Uplay client.<br/>
 This app will keep and send the data to a remote server to build its own cache, when the server has the game info Uplay client is no longer required as the app will fetch the data from said server. <br/>
 Therefore with time only newest game would require Uplay client in theory. <br/>
 
@@ -154,13 +154,12 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Both options are mainly there to mitigate false positive.
   
 - tick<br />
-  default to 600 (ms)
-  Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.
+  default to 600 (ms)<br />
+  Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.<br />
   Set it to 0 to disable this feature.
 
 - appID<br />
-  if not set, default to "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" if available <br />
-  otherwise to "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp"<br />
+  if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
   Example: 
   
