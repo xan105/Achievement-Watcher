@@ -63,8 +63,8 @@ Compatibility :
 |Skidrow (Steam) | Yes | No | No | No |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
 |GreenLumaReborn (Steam) | Yes | No | No | No |
-|SmartSteamEmu (Steam)| [Via this plugin](https://) | Yes | No | Yes |
-|Goldberg Steam Emu (Steam)| Via a [custom build](https://) | Yes | No | Yes |
+|SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
+|Goldberg Steam Emu (Steam)| Via a [custom build](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/Goldberg_Lan_Steam_Emu_v0.2.5_achievement.zip) | Yes | No | Yes |
 |Legit Steam Client (Steam) | Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
 |RPCS3 (PS3) | Via user custom dir | No | N/A | RPCS3 does it already|  
 |LumaPlay (Uplay) | Yes | No | No | No |
