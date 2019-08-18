@@ -1,5 +1,6 @@
 A sexy achievement file parser with real-time notification.<br />
 View all the achievements earned on your PC whether it's coming from Steam or a Steam emulator, and more.
+To see the full list of what this app can import please see the **Compatibility** section.
 
 <table >
 <tr>
@@ -8,7 +9,7 @@ View all the achievements earned on your PC whether it's coming from Steam or a 
 </tr>
 </table>
 
-Some steam emulator generate a text file where all the achievements you have unlocked are stored.
+The original idea was that some steam emulator generate a text file where all the achievements you have unlocked are stored.
 But they aren't very friendly to know which is which, here is an example :
 ```ini
 [NEW_ACHIEVEMENT_1_1]
@@ -42,7 +43,7 @@ Game must be set to Window borderless for the notification to be rendered on top
 
 🚑 Not seeing any notification ? Quick fix :
 - try to set your game to Window borderless.
-- try to disable the automatic game rule in focus assistant
+- try to disable the automatic game and fullscreen rule in focus assistant
 - try to set checkIfProcessIsRunning to false in `%appdata%/Achievement Watcher/options.ini`
 
 Oh and make sure `watchdog.exe` is running.<br />
@@ -52,16 +53,22 @@ Not all games are supported, please see below.<br />
 Compatibility :
 ================
 
-**From file:**<br/>
+|Emulator|Supported|Unlock Time|Ach Progress|Notification|
+|--------|---------|-----------|------------|------------|
+|Codex (Steam)| Yes | Yes | No | Yes |
+|RLD! (Steam) | Yes | No | No | No |
+|Skidrow (Steam) | Yes | No | No | No |
+|ALI213 (Steam) | Via custom dir, Yes | Yes | No | Yes |
+|Green Luma Reborn (Steam) | Yes | No | No | No |
+|SmartSteamEmu (Steam)| Via plugin, Yes | Yes | No | Yes |
+|Goldberg Steam Emu (Steam)| Via a custom build, Yes | Yes | No | Yes |
+|Legit Steam Client (Steam) | Your Steam profile must be public, Yes | Yes | No | Steam overlay does it already | 
+|RPCS3 (PS3) | Via custom dir, Yes | No | N/A | RPCS3 does it already|  
+|LumaPlay (Uplay) | Yes | No | No | No |
 
-|Steam Emulator|Unlock Time|Ach Progress|Notification|File|
-|--------------|-----------|------------|------------|----|
-|Codex| Yes | No (always set to zero by emu) | Yes | achievements.ini |
-|RLD!| No (Unknow hex time) | No (always set to zero by emu) | No | stats\achievements.ini |
-|Skidrow| No | No | No | achieve.dat |
-|ALI213| Yes | No | Yes | achievements.bin |
 
-By default the following location will be scanned for the above steam emu file :
+### Steam Emulator
+By default the following locations will be scanned for the files steam emulators generate :
 ```
 - %PUBLIC%\Documents\Steam\CODEX
 - %appdata%\Steam\CODEX
@@ -77,34 +84,13 @@ You can add your own folder in the app, just make sure that you select a folder 
       |___ 480 
       |___ 220 
  ```
-For ALI213 there is no default folder so choose the dir where the `AlI213.ini` file is; <br>
+For ALI213 there is no default folder so choose the dir where the `AlI213.ini` or `valve.ini` file is; <br>
 The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
+ 
+⚠️ Green Luma Reborn: Parse ach. only if the reg key "SkipStatsAndAchievements" is set to dword:00000000 for that APPID.
 
-⚠️ Please note that notification only works with CODEX or ALI213 emu file<br/>
-
-|Emulator|File|
-|--------------|-----------|
-|RPCS3| TROPUSR.DAT / TROPCONF.SFM |
-
-Please add a folder in the app where `rpcs3.exe` is located. The app will then look for ~~achievement~~ trophy for every game and every ps3 user.<br/>
-Note that `TROPCONF.SFM` is language specific; So for PS3 games, trophies will be in the language you are playing with.<br/>
-As of this writing there is no unlock time : the trophies unlocked in a PS3 that has never been connected online doesn't contains timestamps.
-
-**From Registry:**<br/>
-
-|Steam Emulator|Unlock Time|Ach Progress|Notification|Location|
-|--------------|-----------|------------|------------|----|
-|Green Luma Reborn| No | No | No | `HKCU\SOFTWARE\GLR\AppID\[APPID]` |
-
-⚠️ Parse GLR ach. only if the reg key "SkipStatsAndAchievements" is set to dword:00000000 for that APPID.
-
-**From Steam:**<br/>
-
-Unlock Time|Ach Progress|Location|
-|--------------|-----------|------------|
-| Yes | No | `STEAM\appcache\stats` |
-
-You can choose to view none / only installed (default) / all owned Steam games.<br/>
+### Legit Steam
+You can choose to view none (default) / only installed / all owned Steam games.<br/>
 Ach. are updated based on files timestamp in `STEAM\appcache\stats`<br/>
 
 ⚠️ This feature requires that your Steam Profile is set to `Public`.<br/>
@@ -114,27 +100,23 @@ Ach. are updated based on files timestamp in `STEAM\appcache\stats`<br/>
 </p>
 
 Due to the server rate limit if you 've a huge Steam library it might not get all your games in one go.<br/>
-If you are using your own steam web api key (see below), this doesn't concern you.
+If you are using your own steam web api key (see section below), this doesn't concern you.
 
-Steam Web API Key
-=================
-Some use of the Steam Web API to fetch data from Steam requires the use of an API Key.<br />
-If you leave the field blank in the settings section, it will automagically fetch said data.<br />
+### RPCS3 Playstation 3 Emulator
+Please add a folder in the app where `rpcs3.exe` is located. The app will then look for ~~achievement~~ trophies for every game and every ps3 user.<br/>
+Note that `TROPCONF.SFM` is language specific; So for PS3 games, trophies will be in the language you are playing with.<br/>
+As of this writing there is no unlock time : the trophies unlocked in a PS3 that has never been connected online doesn't contains timestamps.
 
-<p align="center">
-<img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/settings.png" width="600px">
-</p>
-
-An example of a server that feeds you the data is provided within this repo.<br />
-This service is not guarantee over time and is solely provided for your own convenience.<br />
-If you experience any issues please use your own Steam Web API key.<br />              
-                
-You can acquire one [by filling out this form](https://steamcommunity.com/dev/apikey).<br />
-Use of the APIs also requires that you agree to the [Steam API Terms of Use](https://steamcommunity.com/dev/apiterms).<br />
+### LumaPlay
+Since there is no public API to get a Uplay game achievements info as of this writing there are limitations: <br/>
+Uplay client must be installed in order to try to get the game's info from its cache.<br/> 
+To have the game info in the Uplay client cache you **don't** need to install the game but you need to at least have seen once the achievement listing page of the game in the Uplay client.<br/>
+This app will keep and send the data to a remote server to build its own cache, when the server has the game info Uplay client is no longer required as the app will fetch the data from said server. <br/>
+Therefore with time only newest game would require Uplay client in theory. <br/>
 
 Options
 =======
-Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini```<br />
+Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but most of them are configurable via the GUI<br />
 
 [achievement]
 - lang<br />
@@ -154,12 +136,15 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini```<br />
   Display or not a Windows toast notification on achievement unlocking. <br />
   (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
 - legitSteam<br />
-  default to 1<br />
+  default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
+- souvenir<br />
+  default to true
+  Take a screenshot when you unlock an achievement (In "your pictures folder/game name/game name - ach name.png")
   
 [notifier]
 - timeTreshold<br />
-  default to 5 sec<br />
+  default to 5 (sec)<br />
   When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
 
 - checkIfProcessIsRunning<br />
@@ -168,8 +153,14 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini```<br />
   <br />
   Both options are mainly there to mitigate false positive.
   
+- tick<br />
+  default to 600 (ms)
+  Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.
+  Set it to 0 to disable this feature.
+
 - appID<br />
-  if not set, default to "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp"<br />
+  if not set, default to "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" if available <br />
+  otherwise to "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp"<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
   Example: 
   
@@ -179,6 +170,22 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini```<br />
   |Xbox App| Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp |
   
   ⚠️ You need to use a UWP AppID otherwise you won't be able to remotely load ach. img.
+  
+Steam Web API Key
+=================
+Some use of the Steam Web API to fetch data from Steam requires the use of an API Key.<br />
+If you leave the field blank in the settings section, it will automagically fetch said data.<br />
+
+<p align="center">
+<img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/settings.png" width="600px">
+</p>
+
+An example of a server that feeds you the data is provided within this repo.<br />
+This service is not guarantee over time and is solely provided for your own convenience.<br />
+If you experience any issues please use your own Steam Web API key.<br />              
+                
+You can acquire one [by filling out this form](https://steamcommunity.com/dev/apikey).<br />
+Use of the APIs also requires that you agree to the [Steam API Terms of Use](https://steamcommunity.com/dev/apiterms).<br />
 
 Command Line Args | URI Scheme
 ==============================
@@ -229,6 +236,8 @@ And for anything that may occur as a result of your use, or inability to use the
 Software provided here is purely for informational purposes and does not provide nor encourage illegal access to copyrighted material.<br />
 
 Software provided here is not affiliated nor associated with Steam, © Valve Corporation and data from its API is provided as is without any express or implied warranty.<br />
+
+Software provided here is not affiliated nor associated with Uplay, © Ubisoft and data from its API is provided as is without any express or implied warranty.<br />
 
 Software provided here is not affiliated nor associated with any cracking scene groups.<br />
 
