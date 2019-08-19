@@ -91,8 +91,13 @@ var app = {
            if (dir.notify == true) {
 
              try {
-             let info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
-             dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`);
+                 let info;
+                 try{
+                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
+                 }catch(e){
+                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"valve.ini"),"utf8"));
+                 }
+                 dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`);
              }catch(err){/*continue*/}
              
              if (await ffs.promises.exists(dir.path,true)) {
