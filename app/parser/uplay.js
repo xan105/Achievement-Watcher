@@ -34,7 +34,7 @@ module.exports.scan = () => { //LumaPlay
                      data: {
                         type: "lumaplay",
                         root: "HKCU",
-                        path: `SOFTWARE/LumaPlay/${user}/${appid}`}
+                        path: `SOFTWARE/LumaPlay/${user}/${appid}/Achievements`}
           });
         
         }
@@ -42,6 +42,8 @@ module.exports.scan = () => { //LumaPlay
         debug.log(err);
       }
     }
+
+console.log(data);
 
     return data;
     
@@ -111,7 +113,7 @@ module.exports.getGameData = async (appid,lang) => {
         try {
           schema = await getUplayDataFromSRV(appid);
         }catch(err){
-          debug.log("Failed to get schema from server; Trying to generate from local Uplay installation ...");
+          debug.log(`Failed to get schema from server for ${appid}; Trying to generate from local Uplay installation ...`);
           
           let uplayPath = regedit.RegQueryStringValue("HKLM","Software/WOW6432Node/Ubisoft/Launcher","InstallDir");
           if (!uplayPath) throw "Uplay not found : can't generate schema if uplay is not installed.";
@@ -265,7 +267,7 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
     
   }catch(err){
     debug.log(err);
-    throw err;
+    throw `Failed to generate schema for ${appid} => ${err}`;
   }
 }
 
