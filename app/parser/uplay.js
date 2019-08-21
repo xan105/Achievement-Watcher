@@ -43,8 +43,6 @@ module.exports.scan = () => { //LumaPlay
       }
     }
 
-console.log(data);
-
     return data;
     
   }catch(err){

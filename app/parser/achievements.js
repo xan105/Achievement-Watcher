@@ -164,7 +164,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                        root = await steam.getAchievementsFromAPI({appID: appid.appid, user: user, path: appid.data.cachePath , key: option.key });
                        break;
                       }catch(e){
-                        debug.log(`trying with next public user if any for ${appid.appid}`);
+                        debug.log(`${e} => Trying with next public user if any for ${appid.appid}`);
                       }
                    }
 
