@@ -79,12 +79,12 @@ function getSteamData (appID,lang,key) {
           let steamdb = data[2];
 
           let result = {
-            name: appdetail.name,
+            name: (data[1][cfg.appID].success) ? appdetail.name : steamdb.name, //If the game is no longer available in the store fallback to steamdb
             appid: appID,
             binary: path.parse(steamdb.binary).base,
             img: {
-              header: appdetail.header_image.split("?")[0],
-              background: appdetail.background.split("?")[0],
+              header: (data[1][cfg.appID].success) ? appdetail.header_image.split("?")[0] : steamdb.header, //If the game is no longer available in the store fallback to steamdb
+              background: (data[1][cfg.appID].success) ? appdetail.background.split("?")[0] : null,
               icon: steamdb.icon
             },
             achievement: {
@@ -122,8 +122,10 @@ async function scrapSteamDB(appid){
     });
 
     let result = {
+      binary: binaries.find(binary => binary.windows).executable,
       icon: html.querySelector('.app-icon.avatar').attributes.src,
-      binary: binaries.find(binary => binary.windows).executable 
+      header: html.querySelector('.app-logo').attributes.src,
+      name: html.querySelector('.css-truncate').innerHTML       
     };
     
     return result

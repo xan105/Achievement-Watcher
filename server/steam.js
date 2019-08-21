@@ -116,12 +116,12 @@ function getSteamHeaderData(appID) {
               let steamdb = data[1];
 
                 let result = {
-                  name: appdetail[appID].data.name,
+                  name: (appdetail[appID].success) ? : appdetail[appID].data.name : steamdb.name, //If the game is no longer available in the store fallback to steamdb
                   appid: appID,
                   binary: path.parse(steamdb.binary).base,
                   img: {
-                    header: appdetail[appID].data.header_image.split("?")[0],
-                    background: appdetail[appID].data.background.split("?")[0],
+                    header: (appdetail[appID].success) ? : appdetail[appID].data.header_image.split("?")[0] : steamdb.header, //If the game is no longer available in the store fallback to steamdb
+                    background: (appdetail[appID].success) ? : appdetail[appID].data.background.split("?")[0] : null,
                     icon: steamdb.icon
                   },
                   game_lang: appdetail[appID].data.supported_languages.split("<br>")[0].replace(/<\/?[^>]+>\*<\/?[^>]+>/gi,"").split(", ").map((i)=>{ 
@@ -197,8 +197,10 @@ async function scrapSteamDB(appID){
     });
 
     let result = {
+      binary: binaries.find(binary => binary.windows).executable,
       icon: html.querySelector('.app-icon.avatar').attributes.src,
-      binary: binaries.find(binary => binary.windows).executable 
+      header: html.querySelector('.app-logo').attributes.src,
+      name: html.querySelector('.css-truncate').innerHTML
     };
     
     return result
