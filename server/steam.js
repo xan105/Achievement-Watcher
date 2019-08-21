@@ -115,20 +115,39 @@ function getSteamHeaderData(appID) {
               let appdetail = data[0];
               let steamdb = data[1];
 
-                let result = {
-                  name: (appdetail[appID].success) ? appdetail[appID].data.name : steamdb.name, //If the game is no longer available in the store fallback to steamdb
-                  appid: appID,
-                  binary: path.parse(steamdb.binary).base,
-                  img: {
-                    header: (appdetail[appID].success) ? appdetail[appID].data.header_image.split("?")[0] : steamdb.header, //If the game is no longer available in the store fallback to steamdb
-                    background: (appdetail[appID].success) ? appdetail[appID].data.background.split("?")[0] : null,
-                    icon: steamdb.icon
-                  },
-                  game_lang: appdetail[appID].data.supported_languages.split("<br>")[0].replace(/<\/?[^>]+>\*<\/?[^>]+>/gi,"").split(", ").map((i)=>{ 
-                                return i = steamLanguages.find( lang => lang.displayName === i)
-                             })
-                };
-
+                let result;
+                
+                if (appdetail[appID].success) {
+                
+                  result = {
+                      name: appdetail[appID].data.name,
+                      appid: appID,
+                      binary: path.parse(steamdb.binary).base,
+                      img: {
+                        header: appdetail[appID].data.header_image.split("?")[0],
+                        background: appdetail[appID].data.background.split("?")[0],
+                        icon: steamdb.icon
+                      },
+                      game_lang: appdetail[appID].data.supported_languages.split("<br>")[0].replace(/<\/?[^>]+>\*<\/?[^>]+>/gi,"").split(", ").map((i)=>{ 
+                                  return i = steamLanguages.find( lang => lang.displayName === i)
+                      })
+                  };
+                  
+                } else { //If the game is no longer available in the store fallback to steamdb
+                   result = {
+                      name: steamdb.name, 
+                      appid: appID,
+                      binary: path.parse(steamdb.binary).base,
+                      img: {
+                        header: steamdb.header,
+                        icon: steamdb.icon
+                      },
+                      game_lang: steamdb.lang.map((i)=>{ 
+                                return i = steamLanguages.find( lang => lang.api === i)
+                      })
+                  };                
+                }
+                
               return resolve(result); 
           
           }catch(err) {
@@ -195,12 +214,18 @@ async function scrapSteamDB(appID){
       };
     
     });
+    
+    let info = html.querySelector('#info table tbody').innerHTML.split("</tr>\n<tr>");
+    let lang = htmlParser(info.find(entry => entry.includes("Achievement Languages"))).querySelector('.app-json').innerHTML.split("</li><li>").map((tr) => {
+      return htmlParser(tr).querySelector('i').innerHTML.replace(":","");
+    });
 
     let result = {
       binary: binaries.find(binary => binary.windows).executable,
       icon: html.querySelector('.app-icon.avatar').attributes.src,
       header: html.querySelector('.app-logo').attributes.src,
-      name: html.querySelector('.css-truncate').innerHTML
+      name: html.querySelector('.css-truncate').innerHTML,
+      lang: lang
     };
     
     return result
