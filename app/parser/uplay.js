@@ -111,7 +111,7 @@ module.exports.getGameData = async (appid,lang) => {
         try {
           schema = await getUplayDataFromSRV(appid);
         }catch(err){
-          debug.log(`Failed to get schema from server for ${appid}; Trying to generate from local Uplay installation ...`);
+          debug.log(`Failed to get schema from server for UPLAY${appid}; Trying to generate from local Uplay installation ...`);
           
           let uplayPath = regedit.RegQueryStringValue("HKLM","Software/WOW6432Node/Ubisoft/Launcher","InstallDir");
           if (!uplayPath) throw "Uplay not found : can't generate schema if uplay is not installed.";
@@ -119,7 +119,7 @@ module.exports.getGameData = async (appid,lang) => {
           try{
             await shareCache(schema);
           }catch(err){
-            debug.log(`Failed to share ${appid} cache to server => ${err}`)
+            debug.log(`Failed to share UPLAY${appid} cache to server => ${err}`)
           }
         }
         ffs.promises.writeFile(cacheFile,JSON.stringify(schema, null, 2)).catch((err) => {});
@@ -160,9 +160,18 @@ module.exports.getAchievementsFromLumaPlay = (root,key) => {
 async function generateSchemaFromLocalCache(appid,uplayPath) {
   try{
 
-    let id = await availableID.get(uplayPath,appid);
+    let id; 
+    let index;
     
-    let index = await indexDB.get(uplayPath,id.index);
+    try {
+    
+      id = await availableID.get(uplayPath,appid);
+      index = await indexDB.get(uplayPath,id.index);
+      
+    }catch (e) { 
+      debug.log(e);
+      throw `${appid} not found in Uplay local cache`;
+    }
     
     debug.log(`${index.name} - ${id.appid}`);
         
@@ -265,7 +274,7 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
     
   }catch(err){
     debug.log(err);
-    throw `Failed to generate schema for ${appid} => ${err}`;
+    throw `Failed to generate schema for UPLAY${appid} => ${err}`;
   }
 }
 
