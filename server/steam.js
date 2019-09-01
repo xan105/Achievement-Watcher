@@ -215,19 +215,20 @@ async function scrapSteamDB(appID){
     
     });
     
-    let info = html.querySelector('#info table tbody').innerHTML.split("</tr>\n<tr>");
-    let lang = htmlParser(info.find(entry => entry.includes("Achievement Languages"))).querySelector('.app-json').innerHTML.split("</li><li>").map((tr) => {
-      return htmlParser(tr).querySelector('i').innerHTML.replace(":","");
-    });
-
     let result = {
       binary: binaries.find(binary => binary.windows).executable,
       icon: html.querySelector('.app-icon.avatar').attributes.src,
       header: html.querySelector('.app-logo').attributes.src,
-      name: html.querySelector('.css-truncate').innerHTML,
-      lang: lang
+      name: html.querySelector('.css-truncate').innerHTML
     };
     
+    try {
+      let info = html.querySelector('#info table tbody').innerHTML.split("</tr>\n<tr>");
+      result.lang = htmlParser(info.find(entry => entry.includes("Achievement Languages"))).querySelector('.app-json').innerHTML.split("</li><li>").map((tr) => {
+        return htmlParser(tr).querySelector('i').innerHTML.replace(":","");
+      }); 
+    }catch(e){}
+
     return result
     
   }catch( err) {
