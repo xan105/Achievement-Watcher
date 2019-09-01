@@ -30,6 +30,7 @@ Live notification on achievement unlocking
 Not as sexy as a directX Overlay but it's the next best thing.<br />
 Display a Windows toast notification when you unlock an achievement.<br />
 **Please verify your notification and focus assistant settings for this to work properly**.<br />
+You can test it in Settings > Advanced > Toast Notification Test
 
 <p align="center">
 <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
@@ -44,9 +45,10 @@ Game must be set to Window borderless for the notification to be rendered on top
 If you have enabled the *souvenir* option, a screenshot will be taken<br />
 and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
 
-🚑 Not seeing any notification ? Quick fix :
+### 🚑 Not seeing any notification ? Quick fix :
 - try to set your game to Window borderless.
-- try to disable the automatic game and fullscreen rule in focus assistant
+- try to disable the automatic game **and** fullscreen rule in focus assistant (Win10)<br/>
+  or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the two Xbox appID used are in it).
 - try to set checkIfProcessIsRunning to false in `%appdata%/Achievement Watcher/options.ini`
 
 Oh and make sure `watchdog.exe` is running.<br />
