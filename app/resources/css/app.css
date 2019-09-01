@@ -278,8 +278,9 @@ main {
 
 #game-list .game-box .header {
   background-color: #27374a;
-  background-size: contain !important;
+  background-size: cover !important;
   background-repeat: no-repeat !important;
+  background-position: center !important;
   width: 100%;
   height: 107.5px;
   transition: opacity .5s ease;
