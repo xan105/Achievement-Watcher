@@ -61,7 +61,6 @@ module.exports.has = async(search = {}) => { //search by string or {name: , id:}
         return false;
       }
       
-      cmd = `Get-StartApps | Where-Object {$_.AppID -match '.*${search}.*' } | format-table -HideTableHeaders`;
       let ps = await util.promisify(exec)(`powershell "${cmd}"`,{windowsHide: true});
       
       let output = ps.stdout.split("\r\n");
