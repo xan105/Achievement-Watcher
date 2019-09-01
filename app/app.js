@@ -5,6 +5,7 @@ const appPath = remote.app.getAppPath();
 const args_split = require('argv-split');
 const args = require('minimist');
 const moment = require('moment');
+const toast = require('powertoast');
 const settings = require(path.join(appPath,"settings.js"));
 const achievements = require(path.join(appPath,"parser/achievements.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
@@ -24,7 +25,7 @@ var app = {
        remote.app.quit();
   },
   onStart : function(){
-
+  
    let self = this;
    
    $("#win-settings").css("pointer-events","none");

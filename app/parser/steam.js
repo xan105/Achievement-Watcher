@@ -60,7 +60,7 @@ module.exports.scanLegit = async (listingType = 0) => {
 
          let steamCache = path.join(steamPath,"appcache/stats");
          let steamAppIDList = (await glob("UserGameStatsSchema_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map(filename => filename.match(/([0-9]+)/g)[0]);
-               
+     
          for (let appid of steamAppIDList) {
           
              let hasStatsSchema = await ffs.promises.exists(path.join(steamCache,`UserGameStatsSchema_${appid}.bin`));

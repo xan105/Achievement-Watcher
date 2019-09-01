@@ -219,6 +219,7 @@ main {
   font-family: "Raleway-bold";
   margin-bottom: 6px;
   text-align: center;
+  height: 18px;
 }
 
 #game-list .loading .progressBar {
@@ -1139,6 +1140,14 @@ main {
     display: inline-block;
     text-align: center;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#settings .content[data-view="advanced"] .btn {
+  margin: 4px 2px;
+}
+
+#settings .content[data-view="advanced"] a.btn {
+  text-decoration: none;
 }
 
 #settings .content[data-view="folder"] > .controls .btn:hover,
