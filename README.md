@@ -64,6 +64,7 @@ Compatibility :
 |RLD! (Steam) | Yes | No | No | No |
 |Skidrow (Steam) | Yes | No | No | No |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
+|Hoodlum (Steam) | Via user custom dir | Yes | No | Yes |
 |GreenLumaReborn (Steam) | Yes | No | No | No |
 |SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
 |Goldberg Steam Emu (Steam)| Via a [custom build](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/Goldberg_Lan_Steam_Emu_v0.2.5_achievement.zip) | Yes | No | Yes |
@@ -91,6 +92,9 @@ You can add your own folder in the app, just make sure that you select a folder 
  ```
 For ALI213 there is no default folder so choose the dir where the `AlI213.ini` or `valve.ini` file is; <br>
 The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
+
+For Hoodlum there is no default folder so choose the dir where the `hlm.ini` file is; <br>
+The app will then parse it and look for `\[UserDataFolder]\SteamEmu\stats.ini` from the chosen location.
  
 ⚠️ Green Luma Reborn: only if the reg key `"SkipStatsAndAchievements"` is set to `dword:00000000` for that APPID.
 
