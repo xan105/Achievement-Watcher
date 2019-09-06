@@ -126,7 +126,7 @@ module.exports.getGameData = async (cfg) => {
 module.exports.getAchievementsFromFile = async (filePath) => {
   try {
   
-  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat"];
+  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "stats.ini"];
   const filter = ["SteamAchievements","Steam64","Steam"];
   
   let local;                            
@@ -137,8 +137,20 @@ module.exports.getAchievementsFromFile = async (filePath) => {
      } catch (e) {}
   }              
   if(!local) throw "No achievement file found"; 
-              
-  let result = omit(local.ACHIEVE_DATA || local, filter);
+                          
+  let result = {};                     
+  
+  if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
+    
+    for (let i in local.Achievements) {
+        if (local.Achievements[i] == 1) {
+          result[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
+        }
+    }
+
+  } else {
+    result = omit(local.ACHIEVE_DATA || local, filter);
+  }
 
   return result;
   

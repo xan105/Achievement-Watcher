@@ -32,7 +32,7 @@ const folder = {
 const file = {
   config: path.join(folder.config,"options.ini"),
   userDir: path.join(folder.config,"userdir.db"),
-  achievement: ["achievements.ini","Achievements.Bin"]
+  achievement: ["achievements.ini","Achievements.Bin","stats.ini"]
 }
 
 var app = {
@@ -90,19 +90,30 @@ var app = {
            
            if (dir.notify == true) {
 
+             let info;
              try {
-                 let info;
                  try{
                     info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
                  }catch(e){
                     info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"valve.ini"),"utf8"));
                  }
-                 dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`);
-             }catch(err){/*continue*/}
-             
+                 dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats`);
+                 dir.appid = info.Settings.AppID;
+             }catch(e){
+                try{
+                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"hlm.ini"),"utf8"));
+                dir.path = path.join(dir.path,`${info.GameSettings.UserDataFolder}/SteamEmu`);
+                dir.appid = info.GameSettings.AppId;
+                }catch(e){}
+             }
+
              if (await ffs.promises.exists(dir.path,true)) {
                     try {
-                      self.watch(i,dir.path);
+                      if (dir.appid) {
+                        self.watch(i,dir.path,dir.appid);
+                      } else {
+                        self.watch(i,dir.path);
+                      }
                       i = i+1;
                     }catch(err){
                       debug.log(err);
@@ -249,13 +260,17 @@ var app = {
 
       }
   },
-  watch : function (i,dir){
+  watch : function (i,dir, _appid = null){
     
     let self = this;
     
     debug.log(`Monitoring ach change in "${dir}" ...`);
     
-    self.watcher[i] = watch(dir, { recursive: true, filter: /([0-9]+)/ }, async function(evt, name) {
+    let options = { recursive: true, filter: /([0-9]+)/ };
+    
+    if (_appid) options = { recursive: false };
+    
+    self.watcher[i] = watch(dir, options, async function(evt, name) {
     try {
         
         if (evt !== "update") return;
@@ -269,7 +284,7 @@ var app = {
         if (moment().diff(moment(self.tick)) <= self.options.notifier.tick) throw "Spamming protection is enabled > SKIPPING";
         self.tick = moment().valueOf();
         
-        let appID = filePath.dir.match(/([0-9]+$)/g)[0];
+        let appID = _appid || filePath.dir.match(/([0-9]+$)/g)[0];
         
         let game = await self.load(appID);
         
@@ -372,6 +387,16 @@ var app = {
     try {
   
       let local = ini.parse(await ffs.promises.readFile(filename,"utf8"));
+      
+      if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
+        let convert = {};
+        for (let i in local.Achievements) {
+            if (local.Achievements[i] == 1) {
+              convert[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
+            }
+        }
+        local = convert;
+      }
       
       let achievements = [];
 

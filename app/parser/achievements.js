@@ -30,9 +30,9 @@ async function discover(legitSteamListingType) {
           if (await ffs.promises.exists(path.join(dir.path,"rpcs3.exe"))) {
             temp[0] = temp[0].concat(await rpcs3.scan(dir.path));
           } else {
-          
+            let info;
             try { //ALI213
-              let info;
+              
               try {
                 info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
               }catch(e){
@@ -46,7 +46,18 @@ async function discover(legitSteamListingType) {
               });
               
             }catch(e){
-              temp[2].push(dir.path);
+              try{ //hoodlum
+                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"hlm.ini"),"utf8"));
+                temp[1].push({ appid: info.GameSettings.AppId,
+                            data: {
+                                  type: "file",
+                                  path: path.join(dir.path,`${info.GameSettings.UserDataFolder}/SteamEmu`)
+                            }
+                });  
+              
+              }catch(e){
+                temp[2].push(dir.path);
+              }
             }
           }
         }catch(e){
@@ -58,7 +69,7 @@ async function discover(legitSteamListingType) {
         data = data.concat(temp[0]);
       }  
       if (temp[1].length > 0) {
-        debug.log("Adding ALI213 from user custom dir");
+        debug.log("Adding ALI213 / hoodlum from user custom dir");
         data = data.concat(temp[1]);
       }   
     
