@@ -1009,8 +1009,8 @@ main {
 #dirlist {
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 210px;
-  max-height: 210px;
+  height: 200px;
+  max-height: 200px;
   font-size: 14px;
 }
 
@@ -1121,6 +1121,10 @@ main {
     color: #9ba0a5;
     width: 90%;
     margin: 0 auto 6px auto;
+}
+
+#settings .content[data-view="folder"] > .controls .info p{
+    padding: 0;
 }
 
 #settings .content[data-view="folder"] > .controls ul {
