@@ -20,7 +20,7 @@
     "moment": "^2.24.0",
     "multer": "^1.4.2",
     "node-html-parser": "^1.1.16",
-    "request-zero": "^0.2.2",
+    "request-zero": "^0.2.3",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0"
   }

@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher-Updater",
   "description": "Keep Achievement Watcher up-to-date",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "main": "updater.js",
   "scripts": {
     "start": "node updater.js",
@@ -15,7 +15,7 @@
     "content-disposition": "^0.5.3",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
-    "request-zero": "^0.2.2",
+    "request-zero": "^0.2.3",
     "rimraf": "^2.7.1",
     "rwlock": "^5.0.0",
     "single-instance": "0.0.1",
