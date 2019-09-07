@@ -230,6 +230,25 @@
          });
        }); 
        
+      $("#gntp_test").click(async function(){
+        let self = $(this);
+        self.css("pointer-events","none");
+        
+        try {
+        
+          if (await gntp.hasGrowl()) {
+            await gntp.send({title: "Achievement Watcher", message:"Hello world", icon: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg'});
+          } else {
+            throw "Inaccessible endpoint !";
+          }
+        
+        }catch(err){
+          remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: "GNTP Failure.", detail: `${err}`});
+        }
+        
+        self.css("pointer-events","initial");
+        
+      }); 
        
       $("#notify_test").click(function(){ 
          let self = $(this);

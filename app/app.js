@@ -11,6 +11,7 @@ const achievements = require(path.join(appPath,"parser/achievements.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
 const user = require(path.join(appPath,"util/user.js"));
+const gntp = require(path.join(appPath,"util/gntp.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: win.isDev || false,

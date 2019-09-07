@@ -994,7 +994,8 @@ main {
 }
 
 #settings .content[data-view="folder"] .title,
-#settings .content[data-view="advanced"] li:first-child {
+#settings .content[data-view="advanced"] li:first-child,
+#settings .content[data-view="debug"] li:first-child {
     font-family: "Raleway-bold";
     border-bottom: 1px solid white;
     padding-bottom: 5px;
@@ -1136,7 +1137,8 @@ main {
 }
 
 #settings .content[data-view="folder"] > .controls .btn,
-#settings .content[data-view="advanced"] .btn{
+#settings .content[data-view="advanced"] .btn,
+#settings .content[data-view="debug"] .btn{
     padding: 5px 10px;
     border: 1px solid white;
     background: #27374a;
@@ -1147,21 +1149,25 @@ main {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#settings .content[data-view="advanced"] .btn {
+#settings .content[data-view="advanced"] .btn,
+#settings .content[data-view="debug"] .btn  {
   margin: 4px 2px;
 }
 
-#settings .content[data-view="advanced"] a.btn {
+#settings .content[data-view="advanced"] a.btn,
+#settings .content[data-view="debug"] a.btn {
   text-decoration: none;
 }
 
 #settings .content[data-view="folder"] > .controls .btn:hover,
-#settings .content[data-view="advanced"] .btn:hover{
+#settings .content[data-view="advanced"] .btn:hover,
+#settings .content[data-view="debug"] .btn:hover{
     background: #1b2838;
 }
 
 #settings .content[data-view="folder"] > .controls .btn:active,
-#settings .content[data-view="advanced"] .btn:active {
+#settings .content[data-view="advanced"] .btn:active,
+#settings .content[data-view="debug"] .btn:active {
     transform: scale(0.9);
 }
 
