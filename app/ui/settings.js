@@ -234,14 +234,14 @@
       $("#notify_test").click(function(){ 
          let self = $(this);
          self.css("pointer-events","none");
-          
+
          let dummy = new remote.BrowserWindow({"frame": false, "backgroundColor": "#000000"});
          dummy.setFullScreen(true);
 
          setTimeout(()=>{
               
             toast({
-             appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+             appID: self.next("select").val(),
              title: "Achievement Watcher",
              message: "Hello World",
              icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",

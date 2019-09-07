@@ -1,5 +1,6 @@
 "use strict";
 
+const os = require('os');
 const path = require('path');
 const ini = require("ini");
 const moment = require("moment");
@@ -438,8 +439,21 @@ var app = {
          if (self.options.achievement.notification) {
            debug.log(notification);
 
+           let win_ver = os.release().split(".");
+           let appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
+            
+           if (self.options.notifier.appID && self.options.notifier.appID !== '') {
+              appID = self.options.notifier.appID;
+           } else if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) {
+              appID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
+           } else if (self.hasXboxOverlay === true){
+              appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
+           }
+ 
+           debug.log(`Using ${appID}`);
+ 
            await toast({
-                  appID: (self.options.notifier.appID && self.options.notifier.appID !== '') ? self.options.notifier.appID : (self.hasXboxOverlay === true) ? "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App" : "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
+                  appID: appID,
                   title: notification.title,
                   message: notification.message,
                   icon: notification.icon,

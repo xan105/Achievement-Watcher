@@ -1164,3 +1164,14 @@ main {
 #settings .content[data-view="advanced"] .btn:active {
     transform: scale(0.9);
 }
+
+#notify_test ~ select {
+  background: #d9dfe4;
+  font-family: "Open-sans";
+  border-top: 2px solid #9a9a9a;
+  border-left: 2px solid #9a9a9a;
+  border-right: 2px solid #eeeeee;
+  border-bottom: 2px solid #eeeeee;
+  font-size: 14px;
+  margin: 0 5px;
+}

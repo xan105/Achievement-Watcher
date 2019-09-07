@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com">
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-ITlhr575GKMgt7yuk1YX0ZjTozlvKJIPf/ioDkJB3gWaFcWH+7xsiUfsbH2cPyWA"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-RyyFf/QNHk3e09d8sjbICNyMVyZpdXu5l1TnMb84+0iKEdFdK+r3118BaIwX4pK9"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-Nb3XmGzva8AUtKVqD2TlLEa/yLHAzeABBDFOS2DpLZDFxMINc2lctXhb0cSlm3qe"/>
   </head>
   <body>
@@ -137,6 +137,11 @@
                 <li>Toast Notification Test</li>
                 <li>
                   <div id="notify_test" class="btn"><i class="fas fa-bread-slice"></i> <span>Toast Test</span></div> 
+                  <select autocomplete="off">
+                    <option value="Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp" selected>Xbox App (Win10)</option>
+                    <option value="Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App">Xbox Game Bar (Win10)</option>
+                    <option value="microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames">Xbox Games (Win8)</option>
+                  </select>
                   <span><a href="https://github.com/xan105/Achievement-Watcher#live-notification-on-achievement-unlocking" target="_blank">More info</a></span>
                </li>
                <li>
@@ -341,7 +346,7 @@
 <script src="../ui/window.js" type="text/javascript" integrity="sha384-GKKy2QeSRtNbou2qRrAEY3BmXx/Cr8bmYt7u48YdduF8F+m0cl8ASCsF3b3Zm7R6"></script>
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-usARRhiayw5ILzC8qs+56cmGzDe0AinRznbezpctAqzni0o+MHQTroxtrNyY+j1q"></script>
 <script src="../ui/sort.js" type="text/javascript" integrity="sha384-y+xUTLDE22ma9R+30fKsq+1n9+ahM04ICx+ZfhHWEr9+sceoe8kjJ+X7RhgnrodV"></script>
-<script src="../ui/settings.js" type="text/javascript" integrity="sha384-MlF40BddbA5jn/dma1C8fxutt9DLNCaN6TjGIkecKWNXS6mXCZlBOyb5DsszZtOw"></script>   
+<script src="../ui/settings.js" type="text/javascript" integrity="sha384-vbbhJXLKDS6ojz1ohQyaOKoiV2vlCSzLXyroLJwJWH+Iz1VreO64b4Rv5ISzrRW2"></script>   
 <script src="../app.js" type="text/javascript"></script>     
     
   </body>

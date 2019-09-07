@@ -116,6 +116,9 @@ Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueName: "URL Protocol"; Value
 Root: HKCR; Subkey: "ach\DefaultIcon"; ValueType: "string"; ValueData: "{#AppMain},0" ;Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach\shell\open\command"; ValueType: "string"; ValueData: """{#AppMain}"" ""%1""" ;Flags: uninsdeletekey
 
+;Windows 8 disable quiet hours for toast notification - ignored by Windows 10
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHours"; ValueType: "dword"; ValueName: "Enable"; ValueData: "0" ;Flags: uninsdeletekey; 
+
 [Code]
 
 function GetAppRoot(Param: String): String;
