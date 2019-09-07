@@ -9,6 +9,7 @@ rem npm i -g pkg
 cd "%~dp0src\watchdog"
 call npm prune --production
 call "%~dp0rcedit-watchdog.cmd"
+xcopy /Y "%~dp0\src\watchdog\icon.png" "%~dp0\build\" 
 call pkg --targets node12-win-x64 --output "%~dp0build/watchdog.exe" "%~dp0src/watchdog/watchdog.js"
 cd "%~dp0src\updater"
 call npm prune --production
