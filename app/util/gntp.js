@@ -1,3 +1,4 @@
+const { remote } = require('electron');
 const net = require('net');
 const path = require('path');
 const growly = require('growly');
@@ -48,7 +49,7 @@ module.exports.send = (option = {}) => {
           icon: option.icon || ''    
       }
       
-      growly.register('Achievement Watcher', path.resolve('resources/icon/icon.png'), [
+      growly.register('Achievement Watcher', path.join(remote.app.getAppPath(),'resources/icon/icon.png'), [
             { label: 'Achievement', dispname: 'Achievement', enabled: true }
         ], function(err) {
             if (err) return reject(err);
