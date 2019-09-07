@@ -15,6 +15,7 @@ const screenshot = require("./util/screenshot.js");
 const ffs = require("./util/feverFS.js");
 const achievement = require("./achievement.js");
 const aes = require("./util/aes.js");
+const gntp = require("./util/gntp.js");
 const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/watchdog.log")
@@ -449,7 +450,7 @@ var app = {
            } else if (self.hasXboxOverlay === true){
               appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
            }
- 
+           
            debug.log(`Using ${appID}`);
  
            await toast({
@@ -460,6 +461,14 @@ var app = {
                   attribution: "Achievement",
                   onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
            });
+           
+           gntp.hasGrowl().then((has)=>{
+              if (has) {
+                debug.log("Sending GNTP");
+                return gntp.send({title: notification.title, message: notification.message, icon: notification.icon});
+              }
+           }).catch((err)=>{debug.log(err)});
+           
          } else {
            debug.log("Notification is disabled > SKIPPING");
          }   

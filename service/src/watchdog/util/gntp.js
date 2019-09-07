@@ -47,7 +47,7 @@ module.exports.send = (option = {}) => {
           icon: option.icon || ''    
       }
       
-      growly.register('Achievement Watcher', './gntp-icon.png', [
+      growly.register('Achievement Watcher', './icon.png', [
             { label: 'Achievement', dispname: 'Achievement', enabled: true }
         ], function(err) {
             if (err) return reject(err);
