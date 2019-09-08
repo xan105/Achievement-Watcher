@@ -49,7 +49,7 @@ and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievem
 - try to set your game to Window borderless.
 - try to disable the automatic game **and** fullscreen rule in focus assistant (Win10)<br/>
   or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the two Xbox appID used are in it).
-- try to set checkIfProcessIsRunning to false in `%appdata%/Achievement Watcher/options.ini`
+- try to set checkIfProcessIsRunning to false in `%AppData%\Achievement Watcher\cfg\options.ini`
 
 Oh and make sure `watchdog.exe` is running.<br />
 <br />
