@@ -31,10 +31,21 @@
         })
         .catch( (err) => {
           //Do nothing
-          console.error(err)
+          debug.log(err)
         });
         
-        
+        try {
+          //The API used by windows-focus-assist can change/break at any time in the future.
+          //Show focus assist state for information
+          const { getFocusAssist } = require('windows-focus-assist');
+          const focusAssist = getFocusAssist();
+          $("#focus-assist-state span").attr("data-state",focusAssist.value).text(focusAssist.name);
+          $("#focus-assist-state span").show();
+        }catch(err){
+          $("#focus-assist-state span").hide();
+          debug.log(err)
+        }
+           
      });
      
      $("#btn-settings-cancel, #settings .overlay").click(function(){
@@ -64,7 +75,7 @@
                  app.config.achievement[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
              }
            }catch(e){
-            console.error("error while reading settings ui");
+            debug.log("error while reading settings ui");
            }
                         
         });
@@ -268,14 +279,14 @@
             }).then(()=>{
 
                 setTimeout(()=>{
+                  self.css("pointer-events","initial");
                   dummy.close();
                 },6000);
                        
             }).catch((err)=>{
+              self.css("pointer-events","initial");
               dummy.close();
               remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: "Notification Failure.", detail: `${err}`});
-            }).finally(()=>{
-              self.css("pointer-events","initial");
             });    
               
          },500);

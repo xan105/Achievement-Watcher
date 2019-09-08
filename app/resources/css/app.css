@@ -1190,3 +1190,22 @@ main {
   font-size: 14px;
   margin: 4px 0 4px 2px;
 }
+
+#focus-assist-state{
+  font-size: 14px;
+  margin: 4px 0 6px 2px;
+}
+
+#focus-assist-state span[data-state="-2"],
+#focus-assist-state span[data-state="-1"] {
+  color: #ff3838;
+}
+
+#focus-assist-state span[data-state="0"] {
+  color: #25c725;
+}
+
+#focus-assist-state span[data-state="1"],
+#focus-assist-state span[data-state="1"] {
+  color: #f3a20d;
+}
