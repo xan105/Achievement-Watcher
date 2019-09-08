@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com">
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-x0B8K1HVeKOEhgjUFfN8R//7EZjHTf0VNJnMlpL7N75eyGc6Cp9MX2bldJMCV+am"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-T2nTo5LKIPNCUWuj2Nqsxz//SBheuJyRnYrhgZoXNZlzkMvlRU/c5DVdHtH1H63Q"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-Nb3XmGzva8AUtKVqD2TlLEa/yLHAzeABBDFOS2DpLZDFxMINc2lctXhb0cSlm3qe"/>
   </head>
   <body>
@@ -144,10 +144,16 @@
                 <a href="ms-settings:quiethours" target="_blank" class="btn"><i class="fas fa-moon fa-flip-horizontal"></i> <span>Focus Assist</span></a>
                 <a href="ms-settings:notifications" target="_blank" class="btn"><i class="fas fa-comment"></i> <span>Notifications & actions</span></a>
                </li>
+               <li>
+                 <p>
+                  Windows 8.1 : Don't forget quiet hours.<br/>
+                  Windows 10 >= 1903 : New focus assist auto rule for fullscreen app set to alarm only by default prevents the notification from working out of the box.
+                 </p>
+               </li>
                </ul>
                
                <ul>
-                <li>Growl Network Transport Protocol Test</li>
+                <li>Growl Network Transport Protocol (GNTP) Test</li>
                 <li><div id="gntp_test" class="btn"><i class="fas fa-paw"></i> <span>Grrr !</span></div> <span>localhost</span>:<span>23053</span></li>
                </ul>             
              </section>  
@@ -155,7 +161,10 @@
              <section class="content" data-view="advanced">
                <ul>
                 <li>AppID Blacklist</li>
-                <li><div id="blacklist_reset" class="btn"><i class="fas fa-file-medical-alt"></i> <span>Reset blacklist</span></div></li>
+                <li>
+                  <div id="blacklist_reset" class="btn"><i class="fas fa-file-medical-alt"></i> <span>Reset blacklist</span></div>
+                  <div>Right click on a gamebox to add it to the blacklist.</div>
+                </li>
                </ul>
 
                <div id="options-steam-api">
