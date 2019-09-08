@@ -49,6 +49,8 @@ module.exports.send = (option = {}) => {
           icon: option.icon || ''    
       }
       
+      growly.setHost(options.host, options.port);
+      
       growly.register('Achievement Watcher', path.join(remote.app.getAppPath(),'resources/icon/icon.png'), [
             { label: 'Achievement', dispname: 'Achievement', enabled: true }
         ], function(err) {
