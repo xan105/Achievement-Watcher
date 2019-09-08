@@ -61,6 +61,14 @@ module.exports.load = ()=>{
           options.notifier.checkIfProcessIsRunning = true;
         }
         
+        if (typeof options.notifier.powershell !== "boolean"){
+          options.notifier.powershell = true;
+        }
+        
+        if (typeof options.notifier.gntp !== "boolean"){
+          options.notifier.gntp = true;
+        }        
+        
         if (options.steam) {
           if (options.steam.apiKey){
             if (options.steam.apiKey.includes(":")) {
@@ -85,7 +93,9 @@ module.exports.load = ()=>{
           notifier: {
             timeTreshold: 5,
             tick: 600,
-            checkIfProcessIsRunning: true
+            checkIfProcessIsRunning: true,
+            powershell: true,
+            gntp: true            
           },
           steam: {}
         };

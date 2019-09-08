@@ -210,6 +210,16 @@ var app = {
           fixFile = true;
         }
         
+        if (typeof self.options.notifier.powershell !== "boolean"){
+          self.options.notifier.powershell = true;
+          fixFile = true;
+        }
+        
+        if (typeof self.options.notifier.gntp !== "boolean"){
+          self.options.notifier.gntp = true;
+          fixFile = true;
+        }
+        
         if (self.options.steam) {
           if (self.options.steam.apiKey){
             if (self.options.steam.apiKey.includes(":")) {
@@ -239,7 +249,9 @@ var app = {
           notifier: {
             timeTreshold: 5,
             tick: 600,
-            checkIfProcessIsRunning: true
+            checkIfProcessIsRunning: true,
+            powershell: true,
+            gntp: true
           },
           steam: {}
         };
@@ -440,34 +452,47 @@ var app = {
          if (self.options.achievement.notification) {
            debug.log(notification);
 
-           let win_ver = os.release().split(".");
-           let appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
-            
-           if (self.options.notifier.appID && self.options.notifier.appID !== '') {
-              appID = self.options.notifier.appID;
-           } else if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) {
-              appID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
-           } else if (self.hasXboxOverlay === true){
-              appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
+          if (self.options.notifier.powershell) {
+          
+               let win_ver = os.release().split(".");
+               let appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
+                
+               if (self.options.notifier.appID && self.options.notifier.appID !== '') {
+                  appID = self.options.notifier.appID;
+               } else if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) {
+                  appID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
+               } else if (self.hasXboxOverlay === true){
+                  appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
+               }
+               
+               debug.log(`Using ${appID}`);
+     
+               await toast({
+                      appID: appID,
+                      title: notification.title,
+                      message: notification.message,
+                      icon: notification.icon,
+                      attribution: "Achievement",
+                      onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
+               });
+           
+           } else {
+            debug.log("Powershell toast notification is disabled > SKIPPING")
            }
            
-           debug.log(`Using ${appID}`);
- 
-           await toast({
-                  appID: appID,
-                  title: notification.title,
-                  message: notification.message,
-                  icon: notification.icon,
-                  attribution: "Achievement",
-                  onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
-           });
+           if (self.options.notifier.gntp) {
+               gntp.hasGrowl().then((has)=>{
+                  if (has) {
+                    debug.log("Sending GNTP Grrr!");
+                    return gntp.send({
+                                 title: notification.title, 
+                                 message: notification.message, 
+                                 icon: notification.icon
+                           });
+                  }
+               }).catch((err)=>{debug.log(err)});
            
-           gntp.hasGrowl().then((has)=>{
-              if (has) {
-                debug.log("Sending GNTP");
-                return gntp.send({title: notification.title, message: notification.message, icon: notification.icon});
-              }
-           }).catch((err)=>{debug.log(err)});
+           }
            
          } else {
            debug.log("Notification is disabled > SKIPPING");
