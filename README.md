@@ -28,7 +28,7 @@ Live notification on achievement unlocking
 ==========================================
 
 Not as sexy as a directX Overlay but it's the next best thing.<br />
-Display a Windows toast notification or/and a growl notification (gntp@localhost:23053) when you unlock an achievement.<br />
+Display a Windows toast notification and/or a growl notification (gntp@localhost:23053) when you unlock an achievement.<br />
 **Please verify your notification and focus assistant settings for the toast to work properly**.<br />
 You can test notification in Settings > Debug to make sure your system is correctly configured.
 
