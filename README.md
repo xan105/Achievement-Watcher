@@ -28,9 +28,9 @@ Live notification on achievement unlocking
 ==========================================
 
 Not as sexy as a directX Overlay but it's the next best thing.<br />
-Display a Windows toast notification when you unlock an achievement.<br />
-**Please verify your notification and focus assistant settings for this to work properly**.<br />
-You can test it in Settings > Advanced > Toast Notification Test
+Display a Windows toast notification or/and a growl notification (gntp@localhost:23053) when you unlock an achievement.<br />
+**Please verify your notification and focus assistant settings for the toast to work properly**.<br />
+You can test notification in Settings > Debug to make sure your system is correctly configured.
 
 <p align="center">
 <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
@@ -40,15 +40,15 @@ You can disable this feature in the settings section.<br />
 
 Note that there might be a slight delay between the event and the display of the notification as running powershell and loading a remote img resource can take a few seconds in some cases.<br />
 
-Game must be set to Window borderless for the notification to be rendered on top of it otherwise you'll just here the sound.<br />
+Game must be set to Window borderless for the notification to be rendered on top of it<br />
 
 If you have enabled the *souvenir* option, a screenshot will be taken<br />
 and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
 
-### 🚑 Not seeing any notification ? Quick fix :
+### 🚑 Not seeing any toast notification ? Quick fix :
 - try to set your game to Window borderless.
 - try to disable the automatic game **and** fullscreen rule in focus assistant (Win10)<br/>
-  or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the two Xbox appID used are in it).
+  or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the Xbox appID(s) used by this app are in it).
 - try to set checkIfProcessIsRunning to false in `%AppData%\Achievement Watcher\cfg\options.ini`
 
 Oh and make sure `watchdog.exe` is running.<br />
@@ -140,19 +140,55 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - hideZero<br />
   default to false<br />
   Hide 0% Game<br />
-- notification<br />
-  default to true<br />
-  Display or not a Windows toast notification on achievement unlocking. <br />
-  (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
 - legitSteam<br />
   default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
+  
+### [notification]
+
+- notify<br />
+  default to true<br />
+  Notify on achievement unlocking if possible. <br />
+  (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
+  
+- powershell <br />
+  default to true<br />
+  Use powershell to create a Windows 8-10 toast notification.
+  
+- gntp <br />
+  default to true<br />
+  Send a gntp@localhost:23053 if available.
+
 - souvenir<br />
   default to true<br />
   Take a screenshot when you unlock an achievement in<br />
   `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`
   
-### [notifier]
+- toastSouvenir<br />
+  default to 0<br />
+  Display souvenir screenshot inside the toast (Win10 only).<br />
+  (0) disable / (1) header (image crop) / (2) footer (image resized to fit) <br />
+  <br />
+  Example:
+  
+  <table >
+  <tr>
+  <td align="center">header</td>
+  <td align="center">footer</td>
+  </tr> 
+  <tr>
+  <td align="left"><img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/toastedSouvenir_header.gif" width="400px"></td>
+  <td align="left"><img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/toastedSouvenir_footer.gif" width="400px"></td>
+  </tr>
+  </table>
+  
+  Both will show the screenshot within their toast in the action center if there is enough space.<br />
+  Otherwise there will be an arrow to show/hide (collapse).<br />
+  
+### [notification_advanced]
+
+Change these values only if you know what you are doing.<br />
+
 - timeTreshold<br />
   default to 5 (sec)<br />
   When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
@@ -177,6 +213,7 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   |----|-------|
   |Xbox Game Bar|Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App |
   |Xbox App| Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp |
+  |Xbox App (Win 8)| microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames |
   
   ⚠️ You need to use a UWP AppID otherwise you won't be able to remotely load ach. img.
   
@@ -210,6 +247,8 @@ yyy is an optional steam ach id name<br />
 
 After the loading directly display the specified game.<br />
 And if specified highlight an achievement.
+
+NB: This is what the toast notification uses in order to be clickable and open the game page highlighting the unlocked achievement.
                     
 Windows compatibility
 =====================
