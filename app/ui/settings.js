@@ -47,9 +47,9 @@
           const { getFocusAssist } = require('windows-focus-assist');
           const focusAssist = getFocusAssist();
           $("#focus-assist-state span").attr("data-state",focusAssist.value).text(focusAssist.name);
-          $("#focus-assist-state span").show();
+          $("#focus-assist-state").show();
         }catch(err){
-          $("#focus-assist-state span").hide();
+          $("#focus-assist-state").hide();
           debug.log(err)
         }
            

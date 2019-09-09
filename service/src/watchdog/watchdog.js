@@ -142,27 +142,26 @@ var app = {
       try {
         
         let fixFile = false;
-        
         self.options = ini.parse(await ffs.promises.readFile(file.config,"utf8"));
         
         if (!steamLanguages.some(lang => lang.api == self.options.achievement.lang)) {
-        
-          try {
-            let locale = await osLocale();
-            locale = locale.replace("_","-");
+           try { 
+              let locale = await osLocale();
+              locale = locale.replace("_","-");
+              
+              let lang = steamLanguages.find(lang => lang.webapi == locale);
+              if (!lang) {
+                lang = steamLanguages.find(lang => lang.webapi.startsWith(locale.slice(0,2)));
+              }
+              
+              self.options.achievement.lang = lang.api
+              debug.log("defaulting to user locale");
             
-            let lang = steamLanguages.find(lang => lang.webapi == locale);
-            if (!lang) {
-              lang = steamLanguages.find(lang => lang.webapi.startsWith(locale.slice(0,2)));
-            }
-            
-            self.options.achievement.lang = lang.api
-            debug.log("defaulting to user locale");
-          }catch(err){
-            self.options.achievement.lang = "english";
-            debug.log("defaulting to english");
-          }
-          fixFile = true;  
+           }catch(err){
+                self.options.achievement.lang = "english";
+                debug.log("defaulting to english");
+           } 
+           fixFile = true;
         }
         
         if (typeof self.options.achievement.showHidden !== "boolean"){
@@ -500,6 +499,7 @@ var app = {
                  await toast(options);
                
               }catch(err){
+                debug.log(err);
                 debug.log("Fail to invoke toast notification");
               }
            

@@ -16,7 +16,7 @@
 #define Copyright "© 2019"
 
 ; xp, vista, win7, win8, win8.1, win10
-#define MinWin "win8"
+#define MinWin "win7"
 
 #define AppMain "{app}\AchievementWatcher.exe"
 #define AppWorkingDir "{app}"
@@ -115,20 +115,10 @@ Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueData: "URL:Custom Protocol"
 Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: "" ;Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach\DefaultIcon"; ValueType: "string"; ValueData: "{#AppMain},0" ;Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach\shell\open\command"; ValueType: "string"; ValueData: """{#AppMain}"" ""%1""" ;Flags: uninsdeletekey
-
-;Windows 8 disable quiet hours for toast notification - ignored by Windows 10
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHours"; ValueType: "dword"; ValueName: "Enable"; ValueData: "0" ;Flags: uninsdeletekey; 
+;Disable Windows 8.1 quiet hours
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHours"; ValueType: "dword"; ValueName: "Enable"; ValueData: "0" ;Flags: uninsdeletekey; Check: isWin('win8.1')
 
 [Code]
-
-function GetAppRoot(Param: String): String;
-var 
-  app : string;
-begin
-  app := ExpandConstant('{app}');
-  StringChangeEx(app, '\{#AppName}', '', True);
-  Result:= app;
-end;
 
 procedure GoToWebsite(Sender: TObject);
 var 
@@ -196,7 +186,7 @@ end;
 
 function IsWindowsEqualOrNewerThan( windows: string): boolean;
 var
-  version : TWindowsVersion;
+  Version : TWindowsVersion;
   major, minor : integer;
 begin
 
@@ -223,6 +213,38 @@ begin
   end;
 
   Result := (Version.Major > major) or ((Version.Major = major) and (Version.Minor >= minor));
+
+end;
+
+function isWin (windows: string) : boolean;
+var
+  Version : TWindowsVersion;
+  major, minor : integer;
+begin
+
+  GetWindowsVersionEx(Version);
+
+  if windows = 'xp' then begin
+     major := 5;
+     minor := 1;
+  end else if windows = 'vista' then begin
+     major := 6;
+     minor := 0;
+  end else if windows = 'win7' then begin
+     major := 6;
+     minor := 1;
+  end else if windows = 'win8' then begin
+     major := 6;
+     minor := 2;
+  end else if windows = 'win8.1' then begin
+     major := 6;
+     minor := 3;
+  end else if windows = 'win10' then begin
+     major := 10;
+     minor := 0;
+  end;
+
+  Result := (Version.Major = major) and (Version.Minor = minor);
 
 end;
 

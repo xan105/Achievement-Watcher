@@ -32,6 +32,8 @@ func RegQueryStringValue(root string, key string, name string) string { // REG_S
 	k, _ := registry.OpenKey(HKEY , key, registry.QUERY_VALUE)
 		 defer k.Close()
 		 result, _, _ = k.GetStringValue(name)
+		 
+	result, _ = registry.ExpandString(result)
  
 	return result
 }
