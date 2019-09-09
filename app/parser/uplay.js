@@ -30,7 +30,7 @@ module.exports.scan = () => { //LumaPlay
         
         for (let appid of appidList) {
         
-          data.push({appid: appid,
+          data.push({appid: `UPLAY${appid}`,
                      data: {
                         type: "lumaplay",
                         root: "HKCU",
@@ -63,7 +63,7 @@ module.exports.scanLegit = async ( onlyInstalled = false) => { //Uplay /*Unused 
         if (!installedList) throw "Uplay has no game installed";
         
         for (let appid of installedList) {
-                data.push({appid: appid,
+                data.push({appid: `UPLAY${appid}`,
                            data: {
                               type: "uplay"}
                 });
@@ -84,7 +84,7 @@ module.exports.scanLegit = async ( onlyInstalled = false) => { //Uplay /*Unused 
           });
 
         for (let game of list) {
-                data.push({appid: game.appid,
+                data.push({appid: `UPLAY${game.appid}`,
                            data: {
                               type: "uplay"}
                 });
@@ -100,6 +100,8 @@ module.exports.scanLegit = async ( onlyInstalled = false) => { //Uplay /*Unused 
 
 module.exports.getGameData = async (appid,lang) => {
   try {
+     
+     appid = appid.replace("UPLAY","");
      
      const cacheFile = path.join(remote.app.getPath('userData'),"uplay_cache/schema",`${appid}.db`); 
      
@@ -160,8 +162,7 @@ module.exports.getAchievementsFromLumaPlay = (root,key) => {
 async function generateSchemaFromLocalCache(appid,uplayPath) {
   try{
 
-    let id; 
-    let index;
+    let id, index;
     
     try {
     
