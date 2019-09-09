@@ -37,37 +37,41 @@ module.exports.load = ()=>{
           options.achievement.hideZero = false;
         }
         
-        if (typeof options.achievement.notification !== "boolean"){
-          options.achievement.notification = true;
-        }
-        
         if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
           options.achievement.legitSteam = 0;
         }
         
-        if (typeof options.achievement.souvenir !== "boolean"){
-          options.achievement.souvenir = true;
+        if (typeof options.notification.notify !== "boolean"){
+          options.notification.notify = true;
         }
         
-        if (isNaN(options.notifier.timeTreshold)){
-          options.notifier.timeTreshold = 5;
+        if (typeof options.notification.powershell !== "boolean"){
+          options.notification.powershell = true;
         }
         
-        if (isNaN(options.notifier.tick)){
-          options.notifier.tick = 600;
+        if (typeof options.notification.gntp !== "boolean"){
+          options.notification.gntp = true;
+        }   
+        
+        if (typeof options.notification.souvenir !== "boolean"){
+          options.notification.souvenir = true;
         }
         
-        if (typeof options.notifier.checkIfProcessIsRunning !== "boolean"){
-          options.notifier.checkIfProcessIsRunning = true;
+        if (options.notification.toastSouvenir != 0 && options.notification.toastSouvenir != 1 && options.notification.toastSouvenir != 2){
+          options.notification.toastSouvenir  = 0;
         }
         
-        if (typeof options.notifier.powershell !== "boolean"){
-          options.notifier.powershell = true;
+        if (isNaN(options.notification_advanced.timeTreshold)){
+          options.notification_advanced.timeTreshold = 5;
         }
         
-        if (typeof options.notifier.gntp !== "boolean"){
-          options.notifier.gntp = true;
-        }        
+        if (isNaN(options.notification_advanced.tick)){
+          options.notification_advanced.tick = 600;
+        }
+        
+        if (typeof options.notification_advanced.checkIfProcessIsRunning !== "boolean"){
+          options.notification_advanced.checkIfProcessIsRunning = true;
+        }     
         
         if (options.steam) {
           if (options.steam.apiKey){
@@ -86,16 +90,19 @@ module.exports.load = ()=>{
             showHidden: false,
             mergeDuplicate: true,
             hideZero: false,
-            notification: true,
-            legitSteam: 0,
-            souvenir: true
+            legitSteam: 0
           },
-          notifier: {
+          notification: {
+            notify: true,
+            powershell: true,
+            gntp: true,            
+            souvenir: true,
+            toastSouvenir: 0
+          },
+          notification_advanced: {
             timeTreshold: 5,
             tick: 600,
-            checkIfProcessIsRunning: true,
-            powershell: true,
-            gntp: true            
+            checkIfProcessIsRunning: true           
           },
           steam: {}
         };

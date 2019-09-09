@@ -180,46 +180,51 @@ var app = {
           fixFile = true;
         }
         
-        if (typeof self.options.achievement.notification !== "boolean"){
-          self.options.achievement.notification = true;
-          fixFile = true;
-        }
-        
         if (self.options.achievement.legitSteam != 0 && self.options.achievement.legitSteam != 1 && self.options.achievement.legitSteam != 2){
           self.options.achievement.legitSteam = 0;
           fixFile = true;
         }
-        
-        if (typeof self.options.achievement.souvenir !== "boolean"){
-          self.options.achievement.souvenir = true;
+             
+        if (typeof self.options.notification.notify !== "boolean"){
+          self.options.notification.notify = true;
+          fixFile = true;
+        }
+  
+        if (typeof self.options.notification.powershell !== "boolean"){
+          self.options.notification.powershell = true;
           fixFile = true;
         }
         
-        if (isNaN(self.options.notifier.timeTreshold)){
-          self.options.notifier.timeTreshold = 5;
+        if (typeof self.options.notification.gntp !== "boolean"){
+          self.options.notification.gntp = true;
           fixFile = true;
         }
         
-        if (isNaN(self.options.notifier.tick)){
-          self.options.notifier.tick = 600;
+        if (typeof self.options.notification.souvenir !== "boolean"){
+          self.options.notification.souvenir = true;
           fixFile = true;
         }
         
-        if (typeof self.options.notifier.checkIfProcessIsRunning !== "boolean"){
-          self.options.notifier.checkIfProcessIsRunning = true;
+        if (self.options.notification.toastSouvenir!= 0 && self.options.notification.toastSouvenir != 1 && self.options.notification.toastSouvenir != 2){
+          self.options.notification.toastSouvenir = 0;
           fixFile = true;
         }
         
-        if (typeof self.options.notifier.powershell !== "boolean"){
-          self.options.notifier.powershell = true;
+        if (isNaN(self.options.notification_advanced.timeTreshold)){
+          self.options.notification_advanced.timeTreshold = 5;
           fixFile = true;
         }
         
-        if (typeof self.options.notifier.gntp !== "boolean"){
-          self.options.notifier.gntp = true;
+        if (isNaN(self.options.notification_advanced.tick)){
+          self.options.notification_advanced.tick = 600;
           fixFile = true;
         }
         
+        if (typeof self.options.notification_advanced.checkIfProcessIsRunning !== "boolean"){
+          self.options.notification_advanced.checkIfProcessIsRunning = true;
+          fixFile = true;
+        }
+
         if (self.options.steam) {
           if (self.options.steam.apiKey){
             if (self.options.steam.apiKey.includes(":")) {
@@ -242,16 +247,19 @@ var app = {
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
-            notification: true,
-            legitSteam: 0,
-            souvenir: true
+            legitSteam: 0
           },
-          notifier: {
+          notification: {
+            notify: true,
+            powershell: true,
+            gntp: true,
+            souvenir: true,
+            toastSouvenir: 0          
+          },
+          notification_advanced: {
             timeTreshold: 5,
             tick: 600,
-            checkIfProcessIsRunning: true,
-            powershell: true,
-            gntp: true
+            checkIfProcessIsRunning: true
           },
           steam: {}
         };
@@ -295,14 +303,14 @@ var app = {
         
         debug.log("ach file change detected");
         
-        if (moment().diff(moment(self.tick)) <= self.options.notifier.tick) throw "Spamming protection is enabled > SKIPPING";
+        if (moment().diff(moment(self.tick)) <= self.options.notification_advanced.tick) throw "Spamming protection is enabled > SKIPPING";
         self.tick = moment().valueOf();
         
         let appID = _appid || filePath.dir.match(/([0-9]+$)/g)[0];
         
         let game = await self.load(appID);
         
-        let isRunning = (self.options.notifier.checkIfProcessIsRunning) ? await tasklist.isProcessRunning(game.binary).catch((err)=>{return false}) : true;
+        let isRunning = (self.options.notification_advanced.checkIfProcessIsRunning) ? await tasklist.isProcessRunning(game.binary).catch((err)=>{return false}) : true;
         
         if (isRunning) {
           
@@ -314,7 +322,7 @@ var app = {
             if (!localAchievements[0].UnlockTime) throw "Unvalid timestamp";
             let elapsedTime = moment().diff(moment.unix(localAchievements[0].UnlockTime), 'seconds');
               
-              if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notifier.timeTreshold) {
+              if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold) {
               
                   let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
                   
@@ -327,9 +335,7 @@ var app = {
                       message: ach.displayName,
                       icon: ach.icon
                     });
-                  
-                  if(self.options.achievement.souvenir) await screenshot(game.name,ach.displayName).catch((err)=>{debug.log(err)});
-                  
+
                   for (let i in localAchievements) { 
 
                     if ( i > 0) {
@@ -346,8 +352,6 @@ var app = {
                                 message: ach.displayName,
                                 icon: ach.icon
                               });
-
-                            if(self.options.achievement.souvenir) await screenshot(game.name,ach.displayName).catch((err)=>{debug.log(err)});
                             
                         }
                       }
@@ -448,39 +452,62 @@ var app = {
       try {
     
          let self = this;
+         
+         let souvenir;
+         if(self.options.notification.souvenir) {
+          try {
+            souvenir = await screenshot(notification.title,notification.message);
+          }catch(err){
+            debug.log(err);
+          }
+         }
 
-         if (self.options.achievement.notification) {
+         if (self.options.notification.notify) {
            debug.log(notification);
 
-          if (self.options.notifier.powershell) {
-          
-               let win_ver = os.release().split(".");
-               let appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
-                
-               if (self.options.notifier.appID && self.options.notifier.appID !== '') {
-                  appID = self.options.notifier.appID;
-               } else if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) {
-                  appID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
-               } else if (self.hasXboxOverlay === true){
-                  appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
-               }
+           if (self.options.notification.powershell) {
+              try{
+                 let win_ver = os.release().split(".");
+                 let appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
+                  
+                 if (self.options.notification_advanced.appID && self.options.notification_advanced.appID !== '') {
+                    appID = self.options.notification_advanced.appID;
+                 } else if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) {
+                    appID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
+                 } else if (self.hasXboxOverlay === true){
+                    appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
+                 }
+                 
+                 debug.log(`Using ${appID}`);
+
+                 let options = {
+                        appID: appID,
+                        title: notification.title,
+                        message: notification.message,
+                        icon: notification.icon,
+                        attribution: "Achievement",
+                        onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`               
+                 };
+                 
+                 if (self.options.notification.souvenir && self.options.notification.toastSouvenir > 0 && souvenir) {
+                    if (self.options.notification.toastSouvenir == 1) {
+                      options.headerImg = souvenir;
+                    } else if (self.options.notification.toastSouvenir == 2) {
+                      options.footerImg = souvenir;
+                    }
+                 }
+
+                 await toast(options);
                
-               debug.log(`Using ${appID}`);
-     
-               await toast({
-                      appID: appID,
-                      title: notification.title,
-                      message: notification.message,
-                      icon: notification.icon,
-                      attribution: "Achievement",
-                      onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`
-               });
+              }catch(err){
+                debug.log("Fail to invoke toast notification");
+              }
            
            } else {
             debug.log("Powershell toast notification is disabled > SKIPPING")
            }
            
-           if (self.options.notifier.gntp) {
+           if (self.options.notification.gntp) {
                gntp.hasGrowl().then((has)=>{
                   if (has) {
                     debug.log("Sending GNTP Grrr!");
@@ -489,9 +516,12 @@ var app = {
                                  message: notification.message, 
                                  icon: notification.icon
                            });
+                  } else {
+                    debug.log("GNTP endpoint unreachable!");
                   }
                }).catch((err)=>{debug.log(err)});
-           
+           } else{
+            debug.log("GNTP notification is disabled > SKIPPING")
            }
            
          } else {
@@ -499,7 +529,6 @@ var app = {
          }   
 
     }catch(err){
-      debug.log("Fail to invoke toast notification");
       throw err;
     }
   }

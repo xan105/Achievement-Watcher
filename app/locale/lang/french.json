@@ -37,8 +37,16 @@
   "none": "Aucun",
   "installed": "Installé(s)",
   "owned": "Possédé(s)",
-  "publicProfile": "Votre profil Steam doit être publique !",
+  "publicProfile": "Steam doit être installé et votre profil Steam publique !",
   "removeFromList": "Retirer de la liste",
   "souvenir": "Souvenir",
-  "souvenirDescription": "Prendre une capture d'écran lorsque vous débloquez un succès"
+  "souvenirDescription": "Prendre une capture d'écran lorsque vous débloquez un succès",
+  "powershell": "Utilisation de PowerShell",
+  "powershellDescription": "Windows 8-10 notification toast",
+  "gntp": "Utilisation de GNTP",
+  "toastSouvenir": "Souvenir à chaud",
+  "toastSouvenir_header" : "En haut",
+  "toastSouvenir_footer" : "En bas",
+  "toastSouvenirDescription": "Afficher la capture d'écran dans le toast (Win10 uniquement)",
+  "notificationDescription": "Informer si possible lorsque un succès est débloqué"
 }

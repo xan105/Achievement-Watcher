@@ -37,8 +37,16 @@
   "none": "None",
   "installed": "Installed",
   "owned": "Owned",
-  "publicProfile": "Your Steam profile must be public !",
+  "publicProfile": "Steam must be installed and your Steam profile public !",
   "removeFromList": "Remove from list",
   "souvenir": "Souvenir",
-  "souvenirDescription": "Take a screenshot when you unlock an achievement"
+  "souvenirDescription": "Take a screenshot when you unlock an achievement",
+  "powershell": "Use PowerShell",
+  "powershellDescription": "Windows 8-10 toast notification",
+  "gntp": "Use GNTP",
+  "toastSouvenir": "Toasted souvenir",
+  "toastSouvenir_header" : "Header",
+  "toastSouvenir_footer" : "Footer",
+  "toastSouvenirDescription": "Display souvenir screenshot inside the toast (Win10 only)",
+  "notificationDescription": "Notify on achievement unlock when possible"
 }

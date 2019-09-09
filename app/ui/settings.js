@@ -15,6 +15,13 @@
                }
         }
         
+        for (let option in app.config.notification) {
+               if ( $(`#option_${option} option[value="${app.config.notification[option]}"]`).length > 0 )
+               {
+                    $(`#option_${option}`).val(app.config.notification[option].toString()).change();
+               }
+        }
+        
         if (app.config.steam) {
           if (app.config.steam.apiKey) {
             $("#steamwebapikey").val(app.config.steam.apiKey);
@@ -73,6 +80,18 @@
            try {
              if ($(this)[0].id !== "" && $(this).val() !== "") {
                  app.config.achievement[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
+             }
+           }catch(e){
+            debug.log("error while reading settings ui");
+           }
+                        
+        });
+       
+        $("#options-notify .right").children("select").each(function(index) {
+                  
+           try {
+             if ($(this)[0].id !== "" && $(this).val() !== "") {
+                 app.config.notification[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
              }
            }catch(e){
             debug.log("error while reading settings ui");
@@ -157,13 +176,13 @@
 
      });
      
-     $("#options-ui .next").click(function(){
+     $("#settings .arrow-list .next").click(function(){
                      let sel = $(this).parent(".right").find("select")[0];
                      let i = sel.selectedIndex;
                      sel.options[++i%sel.options.length].selected = true;
      });
 
-     $("#options-ui .previous").click(function(){
+     $("#settings .arrow-list .previous").click(function(){
                      let sel = $(this).parent(".right").find("select")[0];
                      let i = sel.selectedIndex;
                      if (i <= 0) { i = sel.options.length }

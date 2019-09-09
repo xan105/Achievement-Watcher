@@ -6,7 +6,7 @@ const ffi = require('ffi-napi');
 const dll = path.join("./souvenir.dll");
 
 const screenshot = ffi.Library(dll, {
-   'souvenir': ["void", ["string", "string"]],
+   'souvenir': ["string", ["string", "string"]],
 });
 
 module.exports = function(gameName,achievementName) {
@@ -18,8 +18,12 @@ module.exports = function(gameName,achievementName) {
         
         if(err) return reject(err);
         
-        return resolve();
-    
+        try {
+          return resolve(path.normalize(res));
+        }catch(err){
+          return reject(err);
+        }
+     
     });
   });
 }
