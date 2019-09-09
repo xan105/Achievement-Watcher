@@ -56,7 +56,7 @@ Not all games are supported, please see below.<br />
 Compatibility :
 ================
 
-|Emulator|Supported|Unlock Time|Ach Progress|Notification|
+|Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
 |Codex (Steam)| Yes | Yes | No | Yes |
 |RLD! (Steam) | Yes | No | No | No |
@@ -130,16 +130,16 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 ### [achievement]
 - lang<br />
   default to user locale<br />
-  Both UI and data from Steam<br />
+  Both UI and data from Steam.<br />
 - showHidden<br />
   default to false<br />
-  Wether or not show hidden achievements if any<br />
+  Wether or not show hidden achievements if any.<br />
 - mergeDuplicate<br />
   default to true<br />
-  Try to merge multiple achievement files with the same steam appid<br />
+  Try to merge multiple achievement source for the same game.<br />
 - hideZero<br />
   default to false<br />
-  Hide 0% Game<br />
+  Hide 0% Game.<br />
 - legitSteam<br />
   default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
