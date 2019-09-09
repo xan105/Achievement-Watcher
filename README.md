@@ -36,11 +36,9 @@ You can test notification in Settings > Debug to make sure your system is correc
 <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
 </p>
 
-You can disable this feature in the settings section.<br />
-
 Note that there might be a slight delay between the event and the display of the notification as running powershell and loading a remote img resource can take a few seconds in some cases.<br />
 
-Game must be set to Window borderless for the notification to be rendered on top of it<br />
+Game must be set to Window borderless for the notification to be rendered on top of it.<br />
 
 If you have enabled the *souvenir* option, a screenshot will be taken<br />
 and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
@@ -90,6 +88,8 @@ You can add your own folder in the app, just make sure that you select a folder 
       |___ 480 
       |___ 220 
  ```
+NB: To enable notification on a custom folder you need to click the bell icon next to it. 
+ 
 For ALI213 there is no default folder so choose the dir where the `AlI213.ini` or `valve.ini` file is; <br>
 The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
 
@@ -187,7 +187,7 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   
 ### [notification_advanced]
 
-Change these values only if you know what you are doing.<br />
+👮 Change these values only if you know what you are doing.<br />
 
 - timeTreshold<br />
   default to 5 (sec)<br />
