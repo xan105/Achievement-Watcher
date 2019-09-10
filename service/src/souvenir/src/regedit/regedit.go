@@ -1,3 +1,5 @@
+//stripdown version of https://github.com/xan105/go-dll-regedit
+
 package regedit
 
 import (
@@ -24,16 +26,15 @@ func GetHKEY(root string) registry.Key {
 
 }
 
-func RegQueryStringValue(root string, key string, name string) string { // REG_SZ & REG_EXPAND_SZ
+func RegQueryStringValueAndExpand(root string, key string, name string) string { // REG_SZ & REG_EXPAND_SZ (expands environment-variable strings)
 
 	var result string
 	HKEY := GetHKEY(root)
 
 	k, _ := registry.OpenKey(HKEY , key, registry.QUERY_VALUE)
 		 defer k.Close()
-		 result, _, _ = k.GetStringValue(name)
-		 
-	result, _ = registry.ExpandString(result)
+		 s, _, _ := k.GetStringValue(name)
+		 result, _ = registry.ExpandString(s)
  
 	return result
 }

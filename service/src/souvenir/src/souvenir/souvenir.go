@@ -27,7 +27,7 @@ package main
  			log.Fatal(err)
  		}
  
-  dir := path.Join(regedit.RegQueryStringValue("HKCU","Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders","My Pictures"),game)
+  dir := path.Join(regedit.RegQueryStringValueAndExpand("HKCU","Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders","My Pictures"),game)
   err = os.MkdirAll(dir, os.ModePerm)
  		if err != nil {
  			log.Fatal(err)
