@@ -209,6 +209,11 @@ var app = {
           fixFile = true;
         }
         
+        if (typeof self.options.notification.souvenir !== "boolean"){
+          self.options.notification.showDesc = false;
+          fixFile = true;
+        }
+        
         if (isNaN(self.options.notification_advanced.timeTreshold)){
           self.options.notification_advanced.timeTreshold = 5;
           fixFile = true;
@@ -253,7 +258,8 @@ var app = {
             powershell: true,
             gntp: true,
             souvenir: true,
-            toastSouvenir: 0          
+            toastSouvenir: 0,
+            showDesc: false          
           },
           notification_advanced: {
             timeTreshold: 5,
@@ -326,12 +332,12 @@ var app = {
                   let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
                   
                   debug.log("Unlocked: "+ach.displayName);
-                  
+ 
                     await self.notify({
                       appid: game.appid,
                       title: game.name,
                       id: ach.name,
-                      message: ach.displayName,
+                      message: (self.options.notification.showDesc && ach.description) ? `${ach.displayName}\n${ach.description}` : `${ach.displayName}`,
                       icon: ach.icon
                     });
 
@@ -348,7 +354,7 @@ var app = {
                                 appid: game.appid,
                                 title: game.name,
                                 id: ach.name,
-                                message: ach.displayName,
+                                message: (self.options.notification.showDesc && ach.description) ? `${ach.displayName}\n${ach.description}` : `${ach.displayName}`,
                                 icon: ach.icon
                               });
                             

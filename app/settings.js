@@ -61,6 +61,10 @@ module.exports.load = ()=>{
           options.notification.toastSouvenir  = 0;
         }
         
+        if (typeof options.notification.showDesc !== "boolean"){
+          options.notification.showDesc = false;
+        }
+        
         if (isNaN(options.notification_advanced.timeTreshold)){
           options.notification_advanced.timeTreshold = 5;
         }
@@ -97,7 +101,8 @@ module.exports.load = ()=>{
             powershell: true,
             gntp: true,            
             souvenir: true,
-            toastSouvenir: 0
+            toastSouvenir: 0,
+            showDesc: false
           },
           notification_advanced: {
             timeTreshold: 5,

@@ -48,5 +48,7 @@
   "toastSouvenir_header" : "Header",
   "toastSouvenir_footer" : "Footer",
   "toastSouvenirDescription": "Display souvenir screenshot inside the toast (Win10 only)",
-  "notificationDescription": "Notify on achievement unlock when possible"
+  "notificationDescription": "Notify on achievement unlock when possible",
+  "showDesc":"Show description",
+  "showDescDescription":"Show achievement description if any"
 }

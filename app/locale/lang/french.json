@@ -48,5 +48,7 @@
   "toastSouvenir_header" : "En haut",
   "toastSouvenir_footer" : "En bas",
   "toastSouvenirDescription": "Afficher la capture d'écran dans le toast (Win10 uniquement)",
-  "notificationDescription": "Informer si possible lorsque un succès est débloqué"
+  "notificationDescription": "Informer si possible lorsque un succès est débloqué",
+  "showDesc":"Montrer la description",
+  "showDescDescription":"Montrer la description du succès s'il y en a une"
 }
