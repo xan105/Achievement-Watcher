@@ -155,7 +155,7 @@ module.exports.getAchievementsFromFile = async (filePath) => {
   for (let i in result) {
      if(result[i].State) { //RLD!
           try{  
-            result[i].State = new Uint32Array(Buffer.from(result[i].State.toString(),"hex"))[0]; //uint32 -> int
+            result[i].State = new DataView(new Uint32Array(Buffer.from(result[i].State.toString(),'hex')).buffer).getInt32(0, true); //uint32 little endian
             result[i].CurProgress = parseInt(result[i].CurProgress.toString(),16);
             result[i].MaxProgress = parseInt(result[i].CurProgress.toString(),16); 
             result[i].Time = parseInt(Buffer.from(Buffer.from(result[i].Time,'hex').slice(0,-1)).reverse().toString('hex'), 16) //ignore last byte -> reverse -> hex to int   
@@ -164,6 +164,9 @@ module.exports.getAchievementsFromFile = async (filePath) => {
         break;
      }  
   }
+  
+  //new DataView(binaryArrayBuffer).getInt32(0, true) // For little endian
+  //https://stackoverflow.com/questions/7869752/javascript-typed-arrays-and-endianness
 
   return result;
   
