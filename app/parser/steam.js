@@ -152,6 +152,19 @@ module.exports.getAchievementsFromFile = async (filePath) => {
     result = omit(local.ACHIEVE_DATA || local, filter);
   }
 
+  for (let i in result) {
+     if(result[i].State) { //RLD!
+          try{  
+            result[i].State = new Uint32Array(Buffer.from(result[i].State.toString(),"hex"))[0]; //uint32 -> int
+            result[i].CurProgress = parseInt(result[i].CurProgress.toString(),16);
+            result[i].MaxProgress = parseInt(result[i].CurProgress.toString(),16); 
+            result[i].Time = parseInt(Buffer.from(Buffer.from(result[i].Time,'hex').slice(0,-1)).reverse().toString('hex'), 16) //ignore last byte -> reverse -> hex to int   
+          }catch(e){} 
+     } else {
+        break;
+     }  
+  }
+
   return result;
   
   }catch(err){
@@ -337,7 +350,6 @@ function getSteamData(cfg) {
           return resolve(result);
           
         }catch(err) {
-            console.error(err);
             return reject(err);
         }
         

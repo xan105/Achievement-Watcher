@@ -197,18 +197,12 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                           
                           let achievement = game.achievement.list.find( elem => elem.name == id);
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
-                          
-                          if(root[i].State) { //RLD!
-                                root[i].State = new Uint32Array(Buffer.from(root[i].State.toString(),"hex"))[0]; //uint32 -> int
-                                root[i].CurProgress = parseInt(root[i].CurProgress.toString(),16);
-                                root[i].MaxProgress = parseInt(root[i].CurProgress.toString(),16); 
-                          }
-                                                       
+                        
                           let parsed = {
                                 Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i] == 1 ) ? true : false,
                                 CurProgress : root[i].CurProgress || 0,
                                 MaxProgress : root[i].MaxProgress || 0,
-                                UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || 0
+                                UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].Time || 0
                           };
 
                           if (isDuplicate) {
