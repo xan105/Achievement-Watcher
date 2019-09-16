@@ -59,7 +59,7 @@ Compatibility :
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
 |Codex (Steam)| Yes | Yes | No | Yes |
-|RLD! (Steam) | Yes | No | No | No |
+|RLD! (Steam) | Yes | Yes | No | Yes |
 |Skidrow (Steam) | Yes | No | No | No |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
 |Hoodlum (Steam) | Via user custom dir | Yes | No | Yes |

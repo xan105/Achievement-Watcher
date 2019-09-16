@@ -27,7 +27,8 @@ const folder = {
   config: path.join(process.env['APPDATA'],"Achievement Watcher/cfg"),
   achievement : [
     path.join(process.env['Public'],"Documents/Steam/CODEX"),
-    path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")
+    path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"),
+    path.join(process.env['PROGRAMDATA'],"Steam")
   ]
 }
 
@@ -311,7 +312,7 @@ var app = {
         if (moment().diff(moment(self.tick)) <= self.options.notification_advanced.tick) throw "Spamming protection is enabled > SKIPPING";
         self.tick = moment().valueOf();
         
-        let appID = _appid || filePath.dir.match(/([0-9]+$)/g)[0];
+        let appID = _appid || filePath.dir.replace(/(\\stats$)/g,"").match(/([0-9]+$)/g)[0];
         
         let game = await self.load(appID);
         
@@ -425,14 +426,22 @@ var app = {
 
       for (let achievement in local){
 
-            if (achievement !== "SteamAchievements") {
+            if (achievement !== "SteamAchievements" && achievement !== "Steam" && achievement !== "Steam64") {
                 try {
+                  
+                  if(local[achievement].State) { //RLD!
+                              local[achievement].State = new DataView(new Uint32Array(Buffer.from(local[achievement].State.toString(),'hex')).buffer).getUint32(0, true); //uint32 little endian
+                              local[achievement].CurProgress = parseInt(local[achievement].CurProgress.toString(),16);
+                              local[achievement].MaxProgress = parseInt(local[achievement].CurProgress.toString(),16); 
+                              local[achievement].Time = parseInt(Buffer.from(Buffer.from(local[achievement].Time,'hex').slice(0,-1)).reverse().toString('hex'), 16) //ignore last byte -> reverse -> hex to int   
+                  }                  
+
                   let result = {
                       name: achievement,
-                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1) ? true : false,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1 || local[achievement].State == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
-                      UnlockTime : local[achievement].UnlockTime || local[achievement].HaveAchievedTime || 0
+                      UnlockTime : local[achievement].UnlockTime || local[achievement].HaveAchievedTime || local[achievement].Time || 0
                   };
                   achievements.push(result);
                 }catch(e){}
