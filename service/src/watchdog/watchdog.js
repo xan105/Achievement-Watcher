@@ -430,10 +430,11 @@ var app = {
                 try {
                   
                   if(local[achievement].State) { //RLD!
-                              local[achievement].State = new DataView(new Uint32Array(Buffer.from(local[achievement].State.toString(),'hex')).buffer).getUint32(0, true); //uint32 little endian
-                              local[achievement].CurProgress = parseInt(local[achievement].CurProgress.toString(),16);
-                              local[achievement].MaxProgress = parseInt(local[achievement].CurProgress.toString(),16); 
-                              local[achievement].Time = parseInt(Buffer.from(Buffer.from(local[achievement].Time,'hex').slice(0,-1)).reverse().toString('hex'), 16) //ignore last byte -> reverse -> hex to int   
+                              //uint32 little endian
+                              local[achievement].State = new DataView(new Uint8Array(Buffer.from(local[achievement].State.toString(),'hex')).buffer).getUint32(0, true);
+                              local[achievement].CurProgress = new DataView(new Uint8Array(Buffer.from(local[achievement].CurProgress.toString(),'hex')).buffer).getUint32(0, true);
+                              local[achievement].MaxProgress = new DataView(new Uint8Array(Buffer.from(local[achievement].MaxProgress.toString(),'hex')).buffer).getUint32(0, true); 
+                              local[achievement].Time = new DataView(new Uint8Array(Buffer.from(local[achievement].Time.toString(),'hex')).buffer).getUint32(0, true);  
                   }                  
 
                   let result = {

@@ -155,10 +155,11 @@ module.exports.getAchievementsFromFile = async (filePath) => {
   for (let i in result) {
      if(result[i].State) { //RLD!
           try{  
-            result[i].State = new DataView(new Uint32Array(Buffer.from(result[i].State.toString(),'hex')).buffer).getUint32(0, true); //uint32 little endian
-            result[i].CurProgress = parseInt(result[i].CurProgress.toString(),16);
-            result[i].MaxProgress = parseInt(result[i].CurProgress.toString(),16); 
-            result[i].Time = parseInt(Buffer.from(Buffer.from(result[i].Time,'hex').slice(0,-1)).reverse().toString('hex'), 16) //ignore last byte -> reverse -> hex to int   
+            //uint32 little endian
+            result[i].State = new DataView(new Uint8Array(Buffer.from(result[i].State.toString(),'hex')).buffer).getUint32(0, true);
+            result[i].CurProgress = new DataView(new Uint8Array(Buffer.from(result[i].CurProgress.toString(),'hex')).buffer).getUint32(0, true);
+            result[i].MaxProgress = new DataView(new Uint8Array(Buffer.from(result[i].MaxProgress.toString(),'hex')).buffer).getUint32(0, true);
+            result[i].Time = new DataView(new Uint8Array(Buffer.from(result[i].Time.toString(),'hex')).buffer).getUint32(0, true);   
           }catch(e){} 
      } else {
         break;
