@@ -344,7 +344,8 @@ var app = {
                       appid: game.appid,
                       title: game.name,
                       id: ach.name,
-                      message: (self.options.notification.showDesc && ach.description) ? `${ach.displayName}\n${ach.description}` : `${ach.displayName}`,
+                      message: ach.displayName,
+                      description: ach.description, 
                       icon: ach.icon,
                       time: localAchievements[0].UnlockTime
                     });
@@ -362,7 +363,8 @@ var app = {
                                 appid: game.appid,
                                 title: game.name,
                                 id: ach.name,
-                                message: (self.options.notification.showDesc && ach.description) ? `${ach.displayName}\n${ach.description}` : `${ach.displayName}`,
+                                message: ach.displayName,
+                                description: ach.description, 
                                 icon: ach.icon,
                                 time: localAchievements[i].UnlockTime
                               });
@@ -507,7 +509,7 @@ var app = {
                         appID: appID,
                         timeStamp: notification.time,
                         title: notification.title,
-                        message: notification.message,
+                        message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`,
                         icon: notification.icon,
                         attribution: "Achievement",
                         onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`,
@@ -540,7 +542,7 @@ var app = {
                     debug.log("Sending GNTP Grrr!");
                     return gntp.send({
                                  title: notification.title, 
-                                 message: notification.message, 
+                                 message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`, 
                                  icon: notification.icon
                            });
                   } else {
