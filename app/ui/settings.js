@@ -249,21 +249,32 @@
       });
       
       $("#addCustomDir").click(function(){
+        
         let self = $(this);
         self.css("pointer-events","none");
-        
-        remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']},function(filePaths){
-          
-          if (filePaths){
-            debug.log(`${filePaths}`);
-            populateUserDirList(filePaths[0]);
-          }else{
-            debug.log("cancel");
-          }
-          
-          self.css("pointer-events","initial");
-        }); 
-        
+
+          remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
+            try {
+              if (filePaths){
+                debug.log(`Adding folder: ${filePaths}`);
+                
+                if (await userDir.check(filePaths[0]) ) {
+                    populateUserDirList(filePaths[0]);
+                    debug.log("-> Added");
+                } else {
+                  debug.log("-> Invalid folder");
+                  remote.dialog.showMessageBox({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
+                }
+
+              }else{
+                debug.log("Adding folder: User Cancel");
+              }
+            }catch(err){
+              remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error adding custom folder", detail: `${err}`});
+            }
+          });
+           
+        self.css("pointer-events","initial");
       });
       
       $("#blacklist_reset").click(function(){
@@ -394,23 +405,36 @@ function populateUserDirList(dirpath,notify = false){
             
               let path = elem.find(".path span").text();
             
-              remote.dialog.showOpenDialog(win,{defaultPath: path,properties : ['openDirectory','showHiddenFiles']},function(filePaths){
-              
+              remote.dialog.showOpenDialog(win,{defaultPath: path,properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
+
+               try {
                   if (filePaths){
-                    console.log(filePaths);
+                    debug.log(`Editing folder to: ${filePaths}`);
+ 
+                    if (await userDir.check(filePaths[0]) ) {
                     
-                    elem.find(".path span").text(filePaths[0]);
-                    elem.find(".path").removeClass("overflow");
-                    if ( elem.find(".path span").width() >= 350) {
-                      elem.find(".path").addClass("overflow");
+                        elem.find(".path span").text(filePaths[0]);
+                        elem.find(".path").removeClass("overflow");
+                        if ( elem.find(".path span").width() >= 350) {
+                          elem.find(".path").addClass("overflow");
+                        }
+                        debug.log("-> Edited");
+                        
+                    } else {
+                      debug.log("-> Invalid folder");
+                      remote.dialog.showMessageBox({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
                     }
 
                   }else{
-                    console.log("cancel");
+                    debug.log("Editing folder: User Cancel");
                   }
+                  
+               }catch(err){
+                  remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error editing custom folder", detail: `${err}`});
+               }   
+                  
               });
-            
-            
+
             });
 
 }
