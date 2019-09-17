@@ -345,7 +345,8 @@ var app = {
                       title: game.name,
                       id: ach.name,
                       message: (self.options.notification.showDesc && ach.description) ? `${ach.displayName}\n${ach.description}` : `${ach.displayName}`,
-                      icon: ach.icon
+                      icon: ach.icon,
+                      time: localAchievements[0].UnlockTime
                     });
 
                   for (let i in localAchievements) { 
@@ -362,7 +363,8 @@ var app = {
                                 title: game.name,
                                 id: ach.name,
                                 message: (self.options.notification.showDesc && ach.description) ? `${ach.displayName}\n${ach.description}` : `${ach.displayName}`,
-                                icon: ach.icon
+                                icon: ach.icon,
+                                time: localAchievements[i].UnlockTime
                               });
                             
                         }
@@ -503,11 +505,14 @@ var app = {
 
                  let options = {
                         appID: appID,
+                        timeStamp: notification.time,
                         title: notification.title,
                         message: notification.message,
                         icon: notification.icon,
                         attribution: "Achievement",
-                        onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`               
+                        onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`,
+                        silent: (self.options.notification.customToastAudio == 0) ? true : false,
+                        audio: (self.options.notification.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null               
                  };
                  
                  if (self.options.notification.souvenir && self.options.notification.toastSouvenir > 0 && souvenir) {
