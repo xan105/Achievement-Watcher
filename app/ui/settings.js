@@ -333,7 +333,9 @@
              title: "Achievement Watcher",
              message: "Hello World",
              icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
-             attribution: "Achievement"
+             attribution: "Achievement",
+             silent: (app.config.notification.customToastAudio == 0) ? true : false,
+             audio: (app.config.notification.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null
             }).then(()=>{
 
                 setTimeout(()=>{
