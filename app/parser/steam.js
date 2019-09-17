@@ -22,7 +22,8 @@ module.exports.scan = async (additionalSearch = []) => {
         path.join(process.env['APPDATA'],"Steam/CODEX")+"/([0-9]+)/",
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*/([0-9]+)/",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW")+"/([0-9]+)/",
-        path.join(process.env['APPDATA'],"SmartSteamEmu")+"/([0-9]+)/"
+        path.join(regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal"),"Skidrow")+"/([0-9]+)/",
+        path.join(process.env['APPDATA'],"SmartSteamEmu")+"/([0-9]+)/"  
     ];
     
     if(additionalSearch.length > 0) {

@@ -1015,22 +1015,29 @@ main {
   font-size: 14px;
 }
 
+#defaultdir::-webkit-scrollbar,
 #dirlist::-webkit-scrollbar {
   width: 10px;
 }
+#defaultdir::-webkit-scrollbar-track,
 #dirlist::-webkit-scrollbar-track {
   background: #27374a;
 }
+#defaultdir::-webkit-scrollbar-thumb,
 #dirlist::-webkit-scrollbar-thumb {
   background: #354b65;
 }
+#defaultdir::-webkit-scrollbar-thumb:hover,
 #dirlist::-webkit-scrollbar-thumb:hover{
   background: #415b79;
 }
 
 #defaultdir {
   font-size: 12px;
-  margin-right: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 88px;
+  max-height: 88px;
 }
 
 #dirlist > li,
