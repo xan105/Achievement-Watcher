@@ -22,12 +22,34 @@
                }
         }
         
+        $('#option_customToastAudio').find('option[value="1"]').attr("data-file",toastAudio.getDefault());
+        if ( $('#option_customToastAudio option:selected').val() == 2 ) {
+          $(`#option_customToastAudio option[data-file="${toastAudio.getCustom()}"]`).prop("selected", true);
+        }
+        $('#option_customToastAudio').on('change', function() {
+          try{
+          
+              let value = $(this).val();
+              if (value >= 1) {
+
+                let filename = $(this).find(':selected').data("file");
+                if (!filename || filename == '') return;
+                
+                let file = path.join(process.env['WINDIR'],"Media",filename);
+                $('#customToastAudio_sample').attr("src",file).get(0).play();   
+              }
+            
+          }catch(err){
+            debug.log(err);
+          }
+        });
+        
         if (app.config.steam) {
           if (app.config.steam.apiKey) {
             $("#steamwebapikey").val(app.config.steam.apiKey);
           }
         }
-        
+
         $("#dirlist").empty();
         userDir.get()
         .then( (userDirList) => {
@@ -67,11 +89,12 @@
             $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
             self.css("pointer-events","initial");
             $("#win-settings").css("pointer-events","initial");
+            $('#option_customToastAudio').off('change');
           });
        });
        
      $("#btn-settings-save").click(function(){
-     
+
      let self = $(this);
      self.css("pointer-events","none");
      
@@ -98,6 +121,9 @@
            }
                         
         });
+        
+        let customToastAudio = $('#option_customToastAudio').find(':selected');
+        if (customToastAudio.val() == 2) toastAudio.setCustom(customToastAudio.data("file"))
         
         let steamApiKey = $("#steamwebapikey").val().trim();
         if (steamApiKey.length > 0){
@@ -148,6 +174,7 @@
                 elem.addClass("active");
                 $("#settings .box section.content").removeClass("active");
                 $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
+                $('#option_customToastAudio').off('change');
                 console.clear();
                 if (app.args.appid) app.args.appid = null;
                 if (app.args.name) app.args.name = null;
@@ -176,10 +203,16 @@
 
      });
      
-     $("#settings .arrow-list .next").click(function(){
+    $("#settings .arrow-list .next").click(function(){
                      let sel = $(this).parent(".right").find("select")[0];
                      let i = sel.selectedIndex;
                      sel.options[++i%sel.options.length].selected = true;
+            
+                     if ("createEvent" in document) {
+                          let evt = document.createEvent("HTMLEvents");
+                          evt.initEvent("change", false, true);
+                          sel.dispatchEvent(evt);
+                     } else { sel.fireEvent("onchange"); }     
      });
 
      $("#settings .arrow-list .previous").click(function(){
@@ -187,7 +220,13 @@
                      let i = sel.selectedIndex;
                      if (i <= 0) { i = sel.options.length }
                      sel.options[--i%sel.options.length].selected = true;
-     });       
+                     
+                     if ("createEvent" in document) {
+                          let evt = document.createEvent("HTMLEvents");
+                          evt.initEvent("change", false, true);
+                          sel.dispatchEvent(evt);
+                     } else { sel.fireEvent("onchange"); }
+     });  
      
      $("#option_lang").mouseover(function() {
         let self = $(this);
@@ -314,7 +353,7 @@
             dummy = null
          }); 
       });
-
+      
   });
 }(window.jQuery, window, document)); 
 

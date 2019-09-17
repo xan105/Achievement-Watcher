@@ -15,6 +15,7 @@
   "allGamesBackButton" : "All Games",
   "settings": "Settings",
   "language": "Language",
+  "language": "Language",
   "hiddenAch": "Hidden Achievements",
   "mergeDuplicates": "Merge Duplicates",
   "hideZero": "Hide 0% Game",
@@ -50,5 +51,9 @@
   "toastSouvenirDescription": "Display souvenir screenshot inside the toast (Win10 only)",
   "notificationDescription": "Notify on achievement unlock when possible",
   "showDesc":"Show description",
-  "showDescDescription":"Show achievement description if any"
+  "showDescDescription":"Show achievement description if any",
+  "customToastAudio" : "Toast sound",
+  "customToastAudioDescription" : "Specifies the sound to play when a toast notification is displayed",
+  "systemDefault": "Default",
+  "muted": "Muted"
 }

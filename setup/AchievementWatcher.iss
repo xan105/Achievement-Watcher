@@ -89,7 +89,8 @@ Source: "resources\warning.bmp"; DestDir: "{tmp}" ;Flags: dontcopy;
 Source: "resources\curl.exe"; DestDir: "{tmp}" ; Flags: dontcopy;
 Source: "..\app\node_modules\electron\dist\*"; Excludes: "\electron.exe,\LICENSE,\version,\resources\default_app.asar"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;   
 Source: "..\service\build\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
-Source: "prod\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;       
+Source: "prod\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
+Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly       
     
 [Icons]
 Name: "{commondesktop}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}"; Check: GetOption('CreateDesktopIcon');
@@ -115,6 +116,10 @@ Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueData: "URL:Custom Protocol"
 Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: "" ;Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach\DefaultIcon"; ValueType: "string"; ValueData: "{#AppMain},0" ;Flags: uninsdeletekey
 Root: HKCR; Subkey: "ach\shell\open\command"; ValueType: "string"; ValueData: """{#AppMain}"" ""%1""" ;Flags: uninsdeletekey
+;Custom Sound Schema
+Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement"; ValueType: "string"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.Current"; ValueType: "string"; ValueData: "{win}\media\Achievement Windows 10 Notify System Generic.wav" ; Flags: uninsdeletekey createvalueifdoesntexist
+Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.Default"; ValueType: "string"; ValueData: "{win}\media\Achievement Windows 10 Notify System Generic.wav" ; Flags: uninsdeletekey createvalueifdoesntexist
 ;Disable Windows 8.1 quiet hours
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHours"; ValueType: "dword"; ValueName: "Enable"; ValueData: "0" ;Flags: uninsdeletekey; Check: isWin('win8.1')
 

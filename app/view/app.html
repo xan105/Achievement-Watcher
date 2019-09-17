@@ -4,7 +4,7 @@
     <title>Achievement Watcher</title>
     <meta charset="UTF-8">
     <meta name="author" content="Beaumont Anthony">  
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com";>
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
     <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-wson50WI+In09GrCDeGIti5fw2y3uacArrYmdk/KOSX/WUW8qCkdw0yU2TZeJeCG"/>
@@ -316,6 +316,27 @@
                       </li>
                       
                       <li class="hasHelper">
+                        <div class="left"><i class="fas fa-volume-up"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <audio id="customToastAudio_sample" >
+                            <source src="" type="audio/wav" />
+                          </audio>
+                          <select autocomplete="off" class="dropdown" id="option_customToastAudio">
+                            <option value="0"></option>
+                            <option value="1" data-file="" selected></option>
+                            <option value="2" data-file="Achievement Xbox.wav">Xbox</option>
+                            <option value="2" data-file="Achievement Xbox Rare.wav">Xbox (Rare)</option>
+                            <option value="2" data-file="Achievement Playstation.wav">Playstation</option>
+                            <option value="2" data-file="Achievement Windows 10 Notify System Generic.wav">Win 10</option>
+                            <option value="2" data-file="Achievement Windows 8 Notify System Generic.wav">Win 8</option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                      <li class="hasHelper">
                         <div class="left"><i class="fas fa-terminal"></i> <span></span></div>
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
@@ -340,7 +361,7 @@
                         </div>
                         <div class="help">Growl Notification Transport Protocol</div>
                       </li>
-             
+
                   </ul>
                 </div>
              </section>
@@ -436,7 +457,7 @@
 <script src="../ui/window.js" type="text/javascript" integrity="sha384-GKKy2QeSRtNbou2qRrAEY3BmXx/Cr8bmYt7u48YdduF8F+m0cl8ASCsF3b3Zm7R6"></script>
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-usARRhiayw5ILzC8qs+56cmGzDe0AinRznbezpctAqzni0o+MHQTroxtrNyY+j1q"></script>
 <script src="../ui/sort.js" type="text/javascript" integrity="sha384-y+xUTLDE22ma9R+30fKsq+1n9+ahM04ICx+ZfhHWEr9+sceoe8kjJ+X7RhgnrodV"></script> 
-<script src="../ui/settings.js" type="text/javascript" integrity="sha384-uPtbavLCzCm8OVUkCKBBYYC6R4VRexlbzlyYy47NJxgX8BnQrdX8WEQBVoBoS28V"></script>
+<script src="../ui/settings.js" type="text/javascript" integrity="sha384-AjnJGbj6FAMy/JYIcFZtYgmvS8ttho7SChvsku3B/2JCiyLk7n/m+iKvsDpvSYw3"></script>
 <script src="../app.js" type="text/javascript"></script>     
     
   </body>

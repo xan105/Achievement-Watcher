@@ -13,6 +13,7 @@ const userDir = require(path.join(appPath,"parser/userDir.js"));
 const user = require(path.join(appPath,"util/user.js"));
 const gntp = require(path.join(appPath,"util/gntp.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
+const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: win.isDev || false,
   file: path.join(remote.app.getPath('userData'),`logs/${remote.app.getName()}.log`)

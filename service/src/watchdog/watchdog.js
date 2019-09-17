@@ -215,6 +215,11 @@ var app = {
           fixFile = true;
         }
         
+        if (self.options.notification.customToastAudio != 0 && self.options.notification.customToastAudio != 1 && self.options.notification.customToastAudio != 2){
+          self.options.notification.customToastAudio = 1;
+          fixFile = true;
+        }
+        
         if (isNaN(self.options.notification_advanced.timeTreshold)){
           self.options.notification_advanced.timeTreshold = 5;
           fixFile = true;
@@ -260,7 +265,8 @@ var app = {
             gntp: true,
             souvenir: true,
             toastSouvenir: 0,
-            showDesc: false          
+            showDesc: false,
+            customToastAudio: 1          
           },
           notification_advanced: {
             timeTreshold: 5,

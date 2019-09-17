@@ -50,5 +50,9 @@
   "toastSouvenirDescription": "Afficher la capture d'écran dans le toast (Win10 uniquement)",
   "notificationDescription": "Informer si possible lorsque un succès est débloqué",
   "showDesc":"Montrer la description",
-  "showDescDescription":"Montrer la description du succès s'il y en a une"
+  "showDescDescription":"Montrer la description du succès s'il y en a une",
+  "customToastAudio" : "Effet sonore du toast",
+  "customToastAudioDescription" : "Spécifie le son à jouer lorsqu'une notification toast est affichée",
+  "systemDefault": "Défaut",
+  "muted": "Son coupé"
 }

@@ -58,11 +58,15 @@ module.exports.load = ()=>{
         }
         
         if (options.notification.toastSouvenir != 0 && options.notification.toastSouvenir != 1 && options.notification.toastSouvenir != 2){
-          options.notification.toastSouvenir  = 0;
+          options.notification.toastSouvenir = 0;
         }
         
         if (typeof options.notification.showDesc !== "boolean"){
           options.notification.showDesc = false;
+        }
+        
+        if (options.notification.customToastAudio != 0 && options.notification.customToastAudio != 1 && options.notification.customToastAudio != 2){
+          options.notification.customToastAudio = 1;
         }
         
         if (isNaN(options.notification_advanced.timeTreshold)){
@@ -102,7 +106,8 @@ module.exports.load = ()=>{
             gntp: true,            
             souvenir: true,
             toastSouvenir: 0,
-            showDesc: false
+            showDesc: false,
+            customToastAudio: 1
           },
           notification_advanced: {
             timeTreshold: 5,
