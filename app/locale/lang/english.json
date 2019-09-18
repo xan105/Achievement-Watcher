@@ -54,5 +54,13 @@
   "customToastAudio" : "Toast sound",
   "customToastAudioDescription" : "Specifies the sound to play when a toast notification is displayed",
   "systemDefault": "Default",
-  "muted": "Muted"
+  "muted": "Muted",
+  "customUserFolderInfo": [
+    "Select a folder which contains appid folder(s).",
+    "For ALI213, Hoodlum, RPCS3 please select a folder where the",
+    "ALI213.ini, valve.ini, hlm.ini or RPCS3.exe file is located."],
+  "blacklistTitle":"AppID Blacklist",
+  "blacklistButton":"Reset blacklist",
+  "blacklistInfo":"Right click on a gamebox to add it to the blacklist.",
+  "helpTranslate": ["Help the translation","here"]
 }

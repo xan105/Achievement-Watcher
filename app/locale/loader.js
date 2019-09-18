@@ -71,6 +71,8 @@ function translateUI(lang,locale,template){
         $("#settings .box .header span").text(clear(template.settings));
         selector = $("#options-ui");
         selector.find("li:nth-child(1) .left span").text(clear(template.language));
+        selector.find("li:nth-child(1) .help span").text(clear(template.helpTranslate[0]));
+        selector.find("li:nth-child(1) .help a").text(clear(template.helpTranslate[1]));
         selector.find("li:nth-child(2) .left span").text(clear(template.hiddenAch));
         selector.find("li:nth-child(2) .right select option[value='true']").text(clear(template.show));
         selector.find("li:nth-child(2) .right select option[value='false']").text(clear(template.hide));
@@ -113,7 +115,7 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(6) .help").text(clear(template.powershellDescription));
         selector.find("li:nth-child(7) .left span").text(clear(template.gntp));
         selector.find("li:nth-child(7) .right select option[value='true']").text(clear(template.enable));
-        selector.find("li:nth-child(7) .right select option[value='false']").text(clear(template.disable));        
+        selector.find("li:nth-child(7) .right select option[value='false']").text(clear(template.disable));   
         selector = $("#settings .box .footer .notice p:nth-child(1)");
         selector.find("span:eq(0)").text(clear(template.version));
         selector.find("span:eq(1)").text(clear(remote.app.getVersion()));
@@ -128,6 +130,10 @@ function translateUI(lang,locale,template){
         selector.find(".title:eq(0) span").text(clear(template.dirDefault));
         selector.find(".title:eq(1) span").text(clear(template.dirCustom));
         $("#addCustomDir span").text(clear(template.dirAdd));
+        $("#settings .content[data-view='folder'] > .controls .info p").html(clear(template.customUserFolderInfo.join("\n")).replace(/\n/g,"<br>")); 
+        $("#settings .content[data-view='advanced'] ul:first-child li:first-child").text(clear(template.blacklistTitle));
+        $("#blacklist_reset span").text(clear(template.blacklistButton));
+        $("#blacklist_reset ~ div").text(clear(template.blacklistInfo));
       });
    }(window.jQuery, window, document));  
 }
