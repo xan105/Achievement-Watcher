@@ -78,6 +78,7 @@ By default the following locations will be scanned for the files steam emulators
 - %appdata%\Steam\CODEX
 - %ProgramData%\Steam\*\
 - %localappdata%\SKIDROW
+- DOCUMENTS\SKIDROW
 - %appdata%\SmartSteamEmu
 - %appdata%\Goldberg SteamEmu Saves
 ```
@@ -184,6 +185,15 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   
   Both will show the screenshot within their toast in the action center if there is enough space.<br />
   Otherwise there will be an arrow to show/hide (collapse).<br />
+   
+- showDesc<br />
+  default to false<br />
+  Show achievement description if any.
+  
+- customToastAudio<br />
+  default to 1<br />
+  Specifies the sound to play when a toast notification is displayed.<br />
+  (0) disable-muted / (1) System default / (2) Custom sound specified by user
   
 ### [notification_advanced]
 
@@ -249,13 +259,6 @@ After the loading directly display the specified game.<br />
 And if specified highlight an achievement.
 
 NB: This is what the toast notification uses in order to be clickable and open the game page highlighting the unlocked achievement.
-                    
-Windows compatibility
-=====================
-Windows x64 only.<br />
-Windows 10 >= 1809 is recommended.<br />
-
-It should work starting with Windows 8 and above but keep in mind that this was mostly tested with Windows 10.<br />
 
 Translation Help
 ================
