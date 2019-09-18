@@ -52,15 +52,20 @@
 
         $("#dirlist").empty();
         userDir.get()
-        .then( (userDirList) => {
+        .then( async (userDirList) => {
           
           for (let dir of userDirList) {
-            populateUserDirList(dir.path,dir.notify);
+            try{
+              if (await userDir.check(dir.path)) populateUserDirList({dir: dir.path, notify: dir.notify, reverse: true});
+            }catch(err){
+              //Do nothing
+              debug.log(err);
+            }
           }
-        })
-        .catch( (err) => {
+          
+        }).catch( (err) => {
           //Do nothing
-          debug.log(err)
+          debug.log(err);
         });
         
         try {
@@ -259,7 +264,7 @@
                 debug.log(`Adding folder: ${filePaths}`);
                 
                 if (await userDir.check(filePaths[0]) ) {
-                    populateUserDirList(filePaths[0]);
+                    populateUserDirList({dir: filePaths[0]});
                     debug.log("-> Added");
                 } else {
                   debug.log("-> Invalid folder");
@@ -370,24 +375,34 @@
   });
 }(window.jQuery, window, document)); 
 
-function populateUserDirList(dirpath,notify = false){
+function populateUserDirList(option){
+
+            let options = {
+              dir: option.dir,
+              notify: option.notify || false,
+              reverse: option.reverse || false
+            }
 
             let template = `<li>
-                <div class="path"><span>${dirpath}</span></div>
+                <div class="path"><span>${options.dir}</span></div>
                 <div class="controls">
                   <ul>
                     <li class="edit"><i class="fas fa-pen"></i></li>
                     <li class="trash"><i class="fas fa-trash-alt"></i></li>
-                    ${(notify) ? '<li class="notify" data-notify="true"><i class="fas fa-bell"></i></li>' : '<li class="notify" data-notify="false"><i class="fas fa-bell-slash"></i></li>'}
+                    ${(options.notify) ? '<li class="notify" data-notify="true"><i class="fas fa-bell"></i></li>' : '<li class="notify" data-notify="false"><i class="fas fa-bell-slash"></i></li>'}
                   </ul>
                 </div>
               </li>`;
             
-            $("#dirlist").prepend(template);
+            if (options.reverse) {
+              $("#dirlist").append(template);
+            } else {
+              $("#dirlist").prepend(template);
+            }
 
-            let elem = $("#dirlist > li").first();
+            let elem = (options.reverse) ? $("#dirlist > li").last() : $("#dirlist > li").first();
 
-            if ( elem.find(".path span").width() >= 350 || dirpath.length > 42) {
+            if ( elem.find(".path span").width() >= 350 || options.dir.length > 42) {
               elem.find(".path").addClass("overflow");
             }
             
