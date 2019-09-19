@@ -59,10 +59,10 @@ Compatibility :
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
 |Codex (Steam)| Yes | Yes | No | Yes |
-|RLD! (Steam) | Yes | Yes | No | Yes |
+|RLD! (Steam) | Yes | Yes | No | [~~Yes~~ No*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#rld) |
 |Skidrow (Steam) | Yes | No | No | No |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
-|Hoodlum (Steam) | Via user custom dir | Yes | No | Yes |
+|Hoodlum (Steam) | Via user custom dir | Yes | No | [Yes*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#hoodlum) |
 |GreenLumaReborn (Steam) | Yes | No | No | No |
 |SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
 |Goldberg Steam Emu (Steam)| Via a [custom build](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/Goldberg_Lan_Steam_Emu_v0.2.5_achievement.zip) | Yes | No | Yes |
