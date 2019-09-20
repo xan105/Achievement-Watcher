@@ -94,7 +94,7 @@ var app = {
            if (dir.notify == true) {
 
              let info;
-             try {
+             try {//ALI213
                  try{
                     info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
                  }catch(e){
@@ -103,10 +103,14 @@ var app = {
                  dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats`);
                  dir.appid = info.Settings.AppID;
              }catch(e){
-                try{
-                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"hlm.ini"),"utf8"));
-                dir.path = path.join(dir.path,`${info.GameSettings.UserDataFolder}/SteamEmu`);
-                dir.appid = info.GameSettings.AppId;
+                try{//hoodlum //DARKSiDERS 
+                  try{
+                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"hlm.ini"),"utf8"));
+                  }catch(e){
+                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ds.ini"),"utf8"));
+                  }
+                  dir.path = (info.GameSettings.UserDataFolder === ".") ? path.join(dir.path,"SteamEmu") : path.join(info.GameSettings.UserDataFolder,"SteamEmu");
+                  dir.appid = info.GameSettings.AppId;
                 }catch(e){}
              }
 
@@ -172,6 +176,11 @@ var app = {
         
         if (typeof self.options.achievement.mergeDuplicate !== "boolean"){
           self.options.achievement.mergeDuplicate = true;
+          fixFile = true;
+        }
+        
+        if (typeof self.options.achievement.timeMergeRecentFirst !== "boolean"){
+          self.options.achievement.timeMergeRecentFirst = true;
           fixFile = true;
         }
         
@@ -257,6 +266,8 @@ var app = {
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
+            timeMergeRecentFirst: true,
+            hideZero: false,
             legitSteam: 0
           },
           notification: {

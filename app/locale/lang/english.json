@@ -62,5 +62,10 @@
   "blacklistTitle":"AppID Blacklist",
   "blacklistButton":"Reset blacklist",
   "blacklistInfo":"Right click on a gamebox to add it to the blacklist.",
-  "helpTranslate": ["Help the translation","here"]
+  "helpTranslate": ["Help the translation","here"],
+  "timeMergeRecentFirst": "Timestamp merge",
+  "timeMergeRecent": "Recent",
+  "timeMergeOldest": "Oldest",
+  "timeMergeRecentFirstDescription" : "When merging duplicates, which time value is preferred ?" 
+
 }

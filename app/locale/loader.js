@@ -51,14 +51,14 @@ function translateUI(lang,locale,template){
 
         $("html").attr("lang",`${locale.slice(0,2).toLowerCase()}`);
         
+        selector = $("#game-list");
+        selector.find(".loading .title").text(clear(template.loading));
+        selector.find(".isEmpty span").text(clear(template.emptyList));
+        selector.attr("data-contextMenu0",clear(template.removeFromList));
         selector = $("#user-info .info .stats");
         selector.find("li:nth-child(1) span:eq(1)").text(clear(template.achievements));
         selector.find("li:nth-child(2) span:eq(1)").text(clear(template.perfectGame));
         selector.find("li:nth-child(3) span:eq(1)").text(clear(template.completionRate));
-        selector = $("#game-list");
-        selector.attr("data-contextMenu0",clear(template.removeFromList));
-        selector.find(".isEmpty span").text(clear(template.emptyList));
-        selector.find(".loading .title").text(clear(template.loading));
         $("#btn-previous").text(clear(template.allGamesBackButton));
         $("#unlock .header .title span").text(clear(template.unlocked));
         $("#lock .header .title span").text(clear(template.locked));
@@ -79,14 +79,18 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(3) .left span").text(clear(template.mergeDuplicates));
         selector.find("li:nth-child(3) .right select option[value='true']").text(clear(template.enable));
         selector.find("li:nth-child(3) .right select option[value='false']").text(clear(template.disable));
-        selector.find("li:nth-child(4) .left span").text(clear(template.hideZero));
-        selector.find("li:nth-child(4) .right select option[value='true']").text(clear(template.enable));
-        selector.find("li:nth-child(4) .right select option[value='false']").text(clear(template.disable));
-        selector.find("li:nth-child(5) .left span").text(clear(template.legitSteam));
-        selector.find("li:nth-child(5) .right select option[value='0']").text(clear(template.none));
-        selector.find("li:nth-child(5) .right select option[value='1']").text(clear(template.installed));
-        selector.find("li:nth-child(5) .right select option[value='2']").text(clear(template.owned));
-        selector.find("li:nth-child(5) .help").text(clear(template.publicProfile));
+        selector.find("li:nth-child(4) .left span").text(clear(template.timeMergeRecentFirst));
+        selector.find("li:nth-child(4) .right select option[value='true']").text(clear(template.timeMergeRecent));
+        selector.find("li:nth-child(4) .right select option[value='false']").text(clear(template.timeMergeOldest));
+        selector.find("li:nth-child(4) .help").text(clear(template.timeMergeRecentFirstDescription));
+        selector.find("li:nth-child(5) .left span").text(clear(template.hideZero));
+        selector.find("li:nth-child(5) .right select option[value='true']").text(clear(template.enable));
+        selector.find("li:nth-child(5) .right select option[value='false']").text(clear(template.disable));
+        selector.find("li:nth-child(6) .left span").text(clear(template.legitSteam));
+        selector.find("li:nth-child(6) .right select option[value='0']").text(clear(template.none));
+        selector.find("li:nth-child(6) .right select option[value='1']").text(clear(template.installed));
+        selector.find("li:nth-child(6) .right select option[value='2']").text(clear(template.owned));
+        selector.find("li:nth-child(6) .help").text(clear(template.publicProfile));
         selector = $("#options-notify");
         selector.find("li:nth-child(1) .left span").text(clear(template.notification));
         selector.find("li:nth-child(1) .right select option[value='true']").text(clear(template.enable));

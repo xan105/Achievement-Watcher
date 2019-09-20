@@ -54,7 +54,8 @@ var app = {
       lang: self.config.achievement.lang, 
       merge: self.config.achievement.mergeDuplicate,
       steam: self.config.achievement.legitSteam,
-      key: self.config.steam.apiKey
+      key: self.config.steam.apiKey,
+      recent: self.config.achievement.timeMergeRecentFirst
    },(percent)=>{
    
       loadingElem.progress.attr("data-percent",percent);

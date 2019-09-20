@@ -33,6 +33,10 @@ module.exports.load = ()=>{
           options.achievement.mergeDuplicate = true;
         }
         
+        if (typeof options.achievement.timeMergeRecentFirst !== "boolean"){
+          options.achievement.timeMergeRecentFirst = true;
+        }
+        
         if (typeof options.achievement.hideZero !== "boolean"){
           options.achievement.hideZero = false;
         }
@@ -97,6 +101,7 @@ module.exports.load = ()=>{
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
+            timeMergeRecentFirst: true,
             hideZero: false,
             legitSteam: 0
           },

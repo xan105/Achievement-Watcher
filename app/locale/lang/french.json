@@ -62,5 +62,9 @@
   "blacklistTitle":"Liste noire d'AppID",
   "blacklistButton":"Réinitialiser la liste noire",
   "blacklistInfo":"Faites un clic droit sur une vignette de jeu pour l'ajouter à la liste noire.",
-  "helpTranslate": ["Aidez la traduction","ici"]
+  "helpTranslate": ["Aidez la traduction","ici"],
+  "timeMergeRecentFirst": "Fusion d'horodatage",
+  "timeMergeRecent": "Récente",
+  "timeMergeOldest": "Ancienne",
+  "timeMergeRecentFirstDescription" : "Lors de la fusion de doublons, quelle valeur de temps est préférable ?" 
 }
