@@ -16,12 +16,16 @@ const files = {
   userData: "TROPUSR.DAT"
 };
 
+const binary = "rpcs3.exe";
+
 module.exports.scan = async (dir) => {
+  
+  let data = [];
   
   try {
 
-    let data = [];
-    
+    if (await ffs.promises.exists(path.join(dir,binary))) {
+
     let users = await glob("([0-9])+",{cwd: path.join(dir,"dev_hdd0/home"), onlyDirectories: true, absolute: false});
             
             for (let user of users) {
@@ -44,12 +48,14 @@ module.exports.scan = async (dir) => {
                   //Do nothing => try with next user
                 }     
             }  
-            
-    return data;
+
+    }
   
   }catch(err){
-    throw err;
+    //Do nothing
   }
+  
+  return data;
   
 }
 

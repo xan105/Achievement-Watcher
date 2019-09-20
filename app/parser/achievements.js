@@ -2,7 +2,6 @@
 
 const { remote } = require('electron');
 const path = require("path");
-const ini = require("ini");
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const steam = require(path.join(appPath,"parser/steam.js"));
 const uplay = require(path.join(appPath,"parser/uplay.js"));
@@ -21,65 +20,36 @@ async function discover(legitSteamListingType) {
     let data = [];
     
     //UserCustomDir
-    let temp = [[],[],[]];
+    let additionalSearch = [];
     try{
-    
       for (let dir of await userDir.get()) {
-        try{//rpcs3
 
-          if (await ffs.promises.exists(path.join(dir.path,"rpcs3.exe"))) {
-            temp[0] = temp[0].concat(await rpcs3.scan(dir.path));
+          debug.log(`[userdir] ${dir.path}`);
+
+          let scanned = await rpcs3.scan(dir.path);
+          console.log(scanned)
+          if (scanned.length > 0) {
+              data = data.concat(scanned);
+              debug.log("-> RPCS3 data added");
           } else {
-            let info;
-            try { //ALI213
-              
-              try {
-                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
-              }catch(e){
-                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"valve.ini"),"utf8"));
+              scanned = await userDir.scan(dir.path);
+              if (scanned.length > 0) {
+                  data = data.concat(scanned);
+                  debug.log("-> Steam emu data added");
+              } else {
+                  additionalSearch.push(dir.path);
+                  debug.log("-> will be scanned for appid folder(s)"); 
               }
-              temp[1].push({ appid: info.Settings.AppID,
-                          data: {
-                                type: "file",
-                                path: path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats/`)
-                          }
-              });
-              
-            }catch(e){
-              try{ //hoodlum
-                info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"hlm.ini"),"utf8"));
-                temp[1].push({ appid: info.GameSettings.AppId,
-                            data: {
-                                  type: "file",
-                                  path: path.join(dir.path,`${info.GameSettings.UserDataFolder}/SteamEmu`)
-                            }
-                });  
-              
-              }catch(e){
-                temp[2].push(dir.path);
-              }
-            }
           }
-        }catch(e){
-          debug.log(e);
-        }
+          
       }
-      if (temp[0].length > 0) {
-        debug.log("Adding ps3 from user custom dir");
-        data = data.concat(temp[0]);
-      }  
-      if (temp[1].length > 0) {
-        debug.log("Adding ALI213 / hoodlum from user custom dir");
-        data = data.concat(temp[1]);
-      }   
-    
     }catch(err){
       debug.log(err);
     }
     
    //Non-Legit Steam
     try {
-      data = data.concat(await steam.scan(temp[2]));
+      data = data.concat(await steam.scan(additionalSearch));
     }catch(err){
       debug.log(err);
     } 
@@ -199,7 +169,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
                         
                           let parsed = {
-                                Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i] == 1 ) ? true : false,
+                                Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i].Unlocked == 1 || root[i] == 1) ? true : false,
                                 CurProgress : root[i].CurProgress || 0,
                                 MaxProgress : root[i].MaxProgress || 0,
                                 UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].Time || 0
@@ -218,8 +188,14 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                     achievement.MaxProgress = parsed.MaxProgress;
                               }
                                     
-                              if (!achievement.UnlockTime || parsed.UnlockTime > achievement.UnlockTime) {
-                                    achievement.UnlockTime = parsed.UnlockTime;
+                              if (option.recent) {
+                                if (!achievement.UnlockTime || parsed.UnlockTime > achievement.UnlockTime) { //More recent first
+                                      achievement.UnlockTime = parsed.UnlockTime;
+                                }
+                              } else {
+                                if (!achievement.UnlockTime || parsed.UnlockTime < achievement.UnlockTime) { //Oldest first
+                                      achievement.UnlockTime = parsed.UnlockTime;
+                                }
                               }
                           } else {
                               Object.assign(achievement,parsed);

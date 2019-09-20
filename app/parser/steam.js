@@ -15,32 +15,38 @@ const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
 module.exports.scan = async (additionalSearch = []) => {
   try {
-  
+
     let search = [
-        path.join(process.env['Public'],"Documents/Steam/CODEX")+"/([0-9]+)/", 
-        path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves")+"/([0-9]+)/",
-        path.join(process.env['APPDATA'],"Steam/CODEX")+"/([0-9]+)/",
-        path.join(process.env['PROGRAMDATA'],"Steam")+"/*/([0-9]+)/",
-        path.join(process.env['LOCALAPPDATA'],"SKIDROW")+"/([0-9]+)/",
-        path.join(regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal"),"Skidrow")+"/([0-9]+)/",
-        path.join(process.env['APPDATA'],"SmartSteamEmu")+"/([0-9]+)/"  
+        path.join(process.env['Public'],"Documents/Steam/CODEX"), 
+        path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"),
+        path.join(process.env['APPDATA'],"Steam/CODEX"),
+        path.join(process.env['PROGRAMDATA'],"Steam")+"/*",
+        path.join(process.env['LOCALAPPDATA'],"SKIDROW"),
+        path.join(process.env['APPDATA'],"SmartSteamEmu")
     ];
     
-    if(additionalSearch.length > 0) {
-      search = search.concat(additionalSearch.map((dir) => { return dir+"/([0-9]+)/" }));
+    let mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+    if (mydocs && mydocs != "") {
+      search = search.concat([
+        path.join(mydocs,"Skidrow"),
+        path.join(mydocs,"HLM"),
+        path.join(mydocs,"DARKSiDERS")
+      ]);
     }
     
-    let data = [];
+    if(additionalSearch.length > 0) search = search.concat(additionalSearch);
     
+    search = search.map((dir) => { return dir+"/([0-9]+)/" });
+    
+    let data = [];
     for (let dir of await glob(search,{onlyDirectories: true, absolute: true})) {
                 data.push({ appid: path.parse(dir).name, 
                            data: {
                            type: "file",
                            path: dir}
                 });
-    };     
-
-  return data;
+    };    
+    return data;
   
   }catch(err){
       throw err;
@@ -127,7 +133,7 @@ module.exports.getGameData = async (cfg) => {
 module.exports.getAchievementsFromFile = async (filePath) => {
   try {
   
-  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "stats.ini"];
+  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "stats.ini", "SteamEmu/stats.ini"];
   const filter = ["SteamAchievements","Steam64","Steam"];
   
   let local;                            
@@ -141,7 +147,7 @@ module.exports.getAchievementsFromFile = async (filePath) => {
                           
   let result = {};                     
   
-  if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
+  if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum DARKSiDERS
     
     for (let i in local.Achievements) {
         if (local.Achievements[i] == 1) {
