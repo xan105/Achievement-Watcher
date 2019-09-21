@@ -10,6 +10,7 @@ const tasklist = require('win-tasklist');
 const getStartApps = require('get-startapps');
 const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const osLocale = require('os-locale');
+const parentFind = require('find-up');
 
 const screenshot = require("./util/screenshot.js");
 const xinput = require("./util/xinput.js");
@@ -94,27 +95,63 @@ var app = {
            
            if (dir.notify == true) {
 
-             let info;
-             try {//ALI213
-                 try{
-                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ALI213.ini"),"utf8"));
-                 }catch(e){
-                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"valve.ini"),"utf8"));
-                 }
-                 dir.path = path.join(dir.path,`Profile/${info.Settings.PlayerName}/Stats`);
-                 dir.appid = info.Settings.AppID;
-             }catch(e){
-                try{//hoodlum //DARKSiDERS 
+             try{
+             
+              let info;
+              for (let file of ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]) {
                   try{
-                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"hlm.ini"),"utf8"));
-                  }catch(e){
-                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,"ds.ini"),"utf8"));
-                  }
-                  dir.path = (info.GameSettings.UserDataFolder === ".") ? path.join(dir.path,"SteamEmu") : path.join(info.GameSettings.UserDataFolder,"SteamEmu");
-                  dir.appid = info.GameSettings.AppId;
-                }catch(e){}
-             }
+                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,file),"utf8"));
+                  break;
+                  }catch(e){}
+              }
+              if(info) {
+              
+                  if (info.Settings && info.Option) { //ALI213
+                      if(info.Settings.AppID && info.Settings.PlayerName) {
+                          let dirpath = await parentFind(async (directory) => {
+                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, 'Achievements.Bin'));
+                                            return has && directory;
+                             }, {cwd: dir.path, type: 'directory'});
 
+                          if (dirpath){
+                              dir.path = path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`);
+                              dir.appid = info.Settings.AppID;                 
+                          }    
+                    }
+                  } else if (info.GameSettings) { //Hoodlum - DARKSiDERS
+                      if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
+
+                          let dirpath = await parentFind(async (directory) => {
+                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu','stats.ini'));
+                                          return has && directory;
+                                    }, {cwd: dir.path, type: 'directory'});
+
+                          if (dirpath){
+                              dir.path = path.join(dirpath,"SteamEmu");
+                              dir.appid = info.GameSettings.AppId;
+                          } 
+                  
+                      }
+                  } else if (info.Settings) { //Catherine
+                      if (info.Settings.AppId && info.Settings.SteamID) {
+
+                              let dirpath = await parentFind(async (directory) => {
+                                              let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`,'Achievements.ini'));
+                                              return has && directory;
+                                        }, {cwd: dir.path, type: 'directory'});
+
+                              if (dirpath){
+                                  dir.path = path.join(dirpath,`SteamProfile/${info.Settings.SteamID}`);
+                                  dir.appid = info.Settings.AppId;
+                              } 
+                      
+                      }
+
+                  }
+                    
+              }           
+             }catch(e){}
+             
              if (await ffs.promises.exists(dir.path,true)) {
                     try {
                       if (dir.appid) {
@@ -468,7 +505,7 @@ var app = {
 
                   let result = {
                       name: achievement,
-                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1 || local[achievement].State == 1) ? true : false,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1 || local[achievement].State == 1 || local[achievement].Unlocked == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
                       UnlockTime : local[achievement].UnlockTime || local[achievement].HaveAchievedTime || local[achievement].Time || 0
