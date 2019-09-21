@@ -78,9 +78,11 @@ By default the following locations will be scanned for the files steam emulators
 - %appdata%\Steam\CODEX
 - %ProgramData%\Steam\*\
 - %localappdata%\SKIDROW
-- DOCUMENTS\SKIDROW
+- %DOCUMENTS%\SKIDROW
 - %appdata%\SmartSteamEmu
 - %appdata%\Goldberg SteamEmu Saves
+- %DOCUMENTS%\HLM
+- %DOCUMENTS%\DARKSiDERS
 ```
 
 You can add your own folder in the app, just make sure that you select a folder which contains appid folder(s) :<br/>
@@ -132,18 +134,23 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - lang<br />
   default to user locale<br />
   Both UI and data from Steam.<br />
+  
 - showHidden<br />
   default to false<br />
   Wether or not show hidden achievements if any.<br />
+  
 - mergeDuplicate<br />
   default to true<br />
   Try to merge multiple achievement source for the same game.<br />
+  
 - timeMergeRecentFirst<br/>
-  default to false<br />
+  default to true<br />
   When merging duplicates, show the most recent timestamp (set to false for the oldest).
+  
 - hideZero<br />
   default to false<br />
   Hide 0% Game.<br />
+  
 - legitSteam<br />
   default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
@@ -154,16 +161,20 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to true<br />
   Notify on achievement unlocking if possible. <br />
   (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
+  
 - powershell <br />
   default to true<br />
   Use powershell to create a Windows 8-10 toast notification.<br />
+  
 - gntp <br />
   default to true<br />
   Send a gntp@localhost:23053 if available.<br />
+  
 - souvenir<br />
   default to true<br />
   Take a screenshot when you unlock an achievement in<br />
   `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
+  
 - toastSouvenir<br />
   default to 0<br />
   Display souvenir screenshot inside the toast (Win10 only).<br />
@@ -184,13 +195,16 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   
   Both will show the screenshot within their toast in the action center if there is enough space.<br />
   Otherwise there will be an arrow to show/hide (collapse).<br />
+  
 - showDesc<br />
   default to false<br />
   Show achievement description if any.<br />
+  
 - customToastAudio<br />
   default to 1<br />
   Specifies the sound to play when a toast notification is displayed.<br />
   (0) disable-muted / (1) System default / (2) Custom sound specified by user<br />
+  
 - rumble<br />
   default to true<br />
   Vibrates first xinput controller when unlocking an achievement.<br />
@@ -202,15 +216,18 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - timeTreshold<br />
   default to 5 (sec)<br />
   When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
+  
 - checkIfProcessIsRunning<br />
   default to true<br />
   When an achievement file is modified; Wether to check or not if the corresponding game is running and responding.<br />
   <br />
   Both options are mainly there to mitigate false positive.<br />
+  
 - tick<br />
   default to 600 (ms)<br />
   Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.<br />
   Set it to 0 to disable this feature.<br />
+  
 - appID<br />
   if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
