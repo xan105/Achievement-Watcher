@@ -66,5 +66,7 @@
   "timeMergeRecentFirst": "Fusion d'horodatage",
   "timeMergeRecent": "Récente",
   "timeMergeOldest": "Ancienne",
-  "timeMergeRecentFirstDescription" : "Lors de la fusion de doublons, quelle valeur de temps est préférable ?" 
+  "timeMergeRecentFirstDescription" : "Lors de la fusion de doublons, quelle valeur de temps est préférable ?",
+  "rumble": "Vibration de la manette (XInput)",
+  "rumbleDescription": "Faire vibrer la première manette lorsque un succès est débloqué" 
 }

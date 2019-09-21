@@ -73,6 +73,10 @@ module.exports.load = ()=>{
           options.notification.customToastAudio = 1;
         }
         
+        if (typeof options.notification.rumble !== "boolean"){
+          options.notification.rumble = true;
+        }
+        
         if (isNaN(options.notification_advanced.timeTreshold)){
           options.notification_advanced.timeTreshold = 5;
         }
@@ -112,7 +116,8 @@ module.exports.load = ()=>{
             souvenir: true,
             toastSouvenir: 0,
             showDesc: false,
-            customToastAudio: 1
+            customToastAudio: 1,
+            rumble: true
           },
           notification_advanced: {
             timeTreshold: 5,

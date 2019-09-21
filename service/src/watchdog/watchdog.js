@@ -12,6 +12,7 @@ const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const osLocale = require('os-locale');
 
 const screenshot = require("./util/screenshot.js");
+const xinput = require("./util/xinput.js");
 const ffs = require("./util/feverFS.js");
 const achievement = require("./achievement.js");
 const aes = require("./util/aes.js");
@@ -73,7 +74,7 @@ var app = {
       }catch(err){
         debug.log("No option file > settings live reloading disabled");
       }   
-      
+
       let i = 1;        
       for (let dir of folder.achievement) {
         try{
@@ -229,6 +230,11 @@ var app = {
           fixFile = true;
         }
         
+        if (typeof self.options.notification.rumble !== "boolean"){
+          self.options.notification.rumble = true;
+          fixFile = true;
+        }
+        
         if (isNaN(self.options.notification_advanced.timeTreshold)){
           self.options.notification_advanced.timeTreshold = 5;
           fixFile = true;
@@ -277,7 +283,8 @@ var app = {
             souvenir: true,
             toastSouvenir: 0,
             showDesc: false,
-            customToastAudio: 1          
+            customToastAudio: 1,
+            rumble: true          
           },
           notification_advanced: {
             timeTreshold: 5,
@@ -377,7 +384,8 @@ var app = {
                                 message: ach.displayName,
                                 description: ach.description, 
                                 icon: ach.icon,
-                                time: localAchievements[i].UnlockTime
+                                time: localAchievements[i].UnlockTime,
+                                delay: i
                               });
                             
                         }
@@ -537,7 +545,7 @@ var app = {
                  }
 
                  await toast(options);
-               
+
               }catch(err){
                 debug.log(err);
                 debug.log("Fail to invoke toast notification");
@@ -564,6 +572,11 @@ var app = {
             debug.log("GNTP notification is disabled > SKIPPING")
            }
            
+           if(self.options.notification.rumble){
+              if (!self.options.notification.powershell) notification.delay = 0; 
+              xinput.vibrate({delay: 6 * notification.delay || 0, duration: 1}).catch(()=>{});
+           }
+
          } else {
            debug.log("Notification is disabled > SKIPPING");
          }   

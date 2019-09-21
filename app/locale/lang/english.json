@@ -66,6 +66,7 @@
   "timeMergeRecentFirst": "Timestamp merge",
   "timeMergeRecent": "Recent",
   "timeMergeOldest": "Oldest",
-  "timeMergeRecentFirstDescription" : "When merging duplicates, which time value is preferred ?" 
-
+  "timeMergeRecentFirstDescription" : "When merging duplicates, which time value is preferred ?",
+  "rumble": "Gamepad Vibration (XInput)",
+  "rumbleDescription": "Vibrates first controller when unlocking an achievement"
 }
