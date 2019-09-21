@@ -11,9 +11,9 @@ const getStartApps = require('get-startapps');
 const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const osLocale = require('os-locale');
 const parentFind = require('find-up');
-
-const screenshot = require("./util/screenshot.js");
-const xinput = require("./util/xinput.js");
+const regedit = require("./native/regedit.js");
+const screenshot = require("./native/screenshot.js");
+const xinput = require("./native/xinput.js");
 const ffs = require("./util/feverFS.js");
 const achievement = require("./achievement.js");
 const aes = require("./util/aes.js");
@@ -25,12 +25,15 @@ const debug = new (require("./util/log.js"))({
 
 const steamLanguages = require("./steamLanguages.json");
 
+const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
 const folder = {
   config: path.join(process.env['APPDATA'],"Achievement Watcher/cfg"),
   achievement : [
     path.join(process.env['Public'],"Documents/Steam/CODEX"),
     path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"),
-    path.join(process.env['PROGRAMDATA'],"Steam")
+    path.join(process.env['PROGRAMDATA'],"Steam"),
+    path.join(mydocs,"HLM"),
+    path.join(mydocs,"DARKSiDERS")
   ]
 }
 
@@ -373,7 +376,7 @@ var app = {
         if (moment().diff(moment(self.tick)) <= self.options.notification_advanced.tick) throw "Spamming protection is enabled > SKIPPING";
         self.tick = moment().valueOf();
         
-        let appID = _appid || filePath.dir.replace(/(\\stats$)/g,"").match(/([0-9]+$)/g)[0];
+        let appID = _appid || filePath.dir.replace(/(\\stats$)|(\\SteamEmu$)/g,"").match(/([0-9]+$)/g)[0];
         
         let game = await self.load(appID);
         

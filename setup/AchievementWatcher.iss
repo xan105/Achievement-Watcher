@@ -90,7 +90,7 @@ Source: "resources\curl.exe"; DestDir: "{tmp}" ; Flags: dontcopy;
 Source: "..\app\node_modules\electron\dist\*"; Excludes: "\electron.exe,\LICENSE,\version,\resources\default_app.asar"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;   
 Source: "..\service\build\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "prod\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
-Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly       
+Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;       
     
 [Icons]
 Name: "{commondesktop}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}"; Check: GetOption('CreateDesktopIcon');
