@@ -62,7 +62,7 @@ Compatibility :
 |RLD! (Steam) | Yes | Yes | No | [~~Yes~~ No*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#rld) |
 |Skidrow (Steam) | Yes | No | No | No |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
-|Hoodlum (Steam) | Via user custom dir | Yes | No | [Yes*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#hoodlum) |
+|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Yes (*UserDataFolder=mydocs*) and<br>Via user custom dir| Yes | No | [Yes*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#hoodlum) |
 |GreenLumaReborn (Steam) | Yes | No | No | No |
 |SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
 |Goldberg Steam Emu (Steam)| Via a [custom build](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/Goldberg_Lan_Steam_Emu_v0.2.5_achievement.zip) | Yes | No | Yes |
@@ -138,6 +138,9 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - mergeDuplicate<br />
   default to true<br />
   Try to merge multiple achievement source for the same game.<br />
+- timeMergeRecentFirst<br/>
+  default to false<br />
+  When merging duplicates, show the most recent timestamp (set to false for the oldest).
 - hideZero<br />
   default to false<br />
   Hide 0% Game.<br />
@@ -151,20 +154,16 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to true<br />
   Notify on achievement unlocking if possible. <br />
   (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
-  
 - powershell <br />
   default to true<br />
-  Use powershell to create a Windows 8-10 toast notification.
-  
+  Use powershell to create a Windows 8-10 toast notification.<br />
 - gntp <br />
   default to true<br />
-  Send a gntp@localhost:23053 if available.
-
+  Send a gntp@localhost:23053 if available.<br />
 - souvenir<br />
   default to true<br />
   Take a screenshot when you unlock an achievement in<br />
-  `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`
-  
+  `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
 - toastSouvenir<br />
   default to 0<br />
   Display souvenir screenshot inside the toast (Win10 only).<br />
@@ -185,15 +184,16 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   
   Both will show the screenshot within their toast in the action center if there is enough space.<br />
   Otherwise there will be an arrow to show/hide (collapse).<br />
-   
 - showDesc<br />
   default to false<br />
-  Show achievement description if any.
-  
+  Show achievement description if any.<br />
 - customToastAudio<br />
   default to 1<br />
   Specifies the sound to play when a toast notification is displayed.<br />
-  (0) disable-muted / (1) System default / (2) Custom sound specified by user
+  (0) disable-muted / (1) System default / (2) Custom sound specified by user<br />
+- rumble<br />
+  default to true<br />
+  Vibrates first xinput controller when unlocking an achievement.<br />
   
 ### [notification_advanced]
 
@@ -202,18 +202,15 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - timeTreshold<br />
   default to 5 (sec)<br />
   When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
-
 - checkIfProcessIsRunning<br />
   default to true<br />
   When an achievement file is modified; Wether to check or not if the corresponding game is running and responding.<br />
   <br />
-  Both options are mainly there to mitigate false positive.
-  
+  Both options are mainly there to mitigate false positive.<br />
 - tick<br />
   default to 600 (ms)<br />
   Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.<br />
-  Set it to 0 to disable this feature.
-
+  Set it to 0 to disable this feature.<br />
 - appID<br />
   if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
