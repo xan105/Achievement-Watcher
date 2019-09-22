@@ -11,6 +11,7 @@ const getStartApps = require('get-startapps');
 const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const osLocale = require('os-locale');
 const parentFind = require('find-up');
+const track = require("./track.js");
 const regedit = require("./native/regedit.js");
 const screenshot = require("./native/screenshot.js");
 const xinput = require("./native/xinput.js");
@@ -56,7 +57,7 @@ var app = {
 
       let self = this;
       self.cache = [];
-    
+
       getStartApps.has({id:"GamingOverlay"}).then((has) => {
         if (has) { 
           self.hasXboxOverlay = true;
@@ -395,38 +396,56 @@ var app = {
               if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold) {
               
                   let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
-                  
-                  debug.log("Unlocked: "+ach.displayName);
  
-                    await self.notify({
-                      appid: game.appid,
-                      title: game.name,
-                      id: ach.name,
-                      message: ach.displayName,
-                      description: ach.description, 
-                      icon: ach.icon,
-                      time: localAchievements[0].UnlockTime
-                    });
+                  if ( await track.isAlreadyUnlocked(appID,localAchievements[0].name) ) {
+                    debug.log("already unlocked");
+                  } else {
+                    debug.log("Unlocked: "+ach.displayName);
+                    
+                      await self.notify({
+                        appid: game.appid,
+                        title: game.name,
+                        id: ach.name,
+                        message: ach.displayName,
+                        description: ach.description, 
+                        icon: ach.icon,
+                        time: localAchievements[0].UnlockTime
+                      });
+                      
+                      await track.keep(appID,localAchievements[0].name,localAchievements[0].UnlockTime);
 
+                  }
+
+                  let j = 0;
                   for (let i in localAchievements) { 
 
                     if ( i > 0) {
                       if (localAchievements[i].Achieved) {
                         if (localAchievements[i].UnlockTime === localAchievements[0].UnlockTime) {
+                        
                             let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[i].name);
                             
-                            debug.log("Unlocked (at the same time): "+ach.displayName);
+                            if ( await track.isAlreadyUnlocked(appID,localAchievements[i].name) ) {
+                              debug.log("already unlocked");
+                            } else {
+                              debug.log("Unlocked (at the same time): "+ach.displayName);
+
+                              j+=1;
 
                               await self.notify({
-                                appid: game.appid,
-                                title: game.name,
-                                id: ach.name,
-                                message: ach.displayName,
-                                description: ach.description, 
-                                icon: ach.icon,
-                                time: localAchievements[i].UnlockTime,
-                                delay: i
+                                    appid: game.appid,
+                                    title: game.name,
+                                    id: ach.name,
+                                    message: ach.displayName,
+                                    description: ach.description, 
+                                    icon: ach.icon,
+                                    time: localAchievements[i].UnlockTime,
+                                    delay: j
                               });
+                                  
+                              await track.keep(appID,localAchievements[i].name,localAchievements[i].UnlockTime);
+
+                            }
                             
                         }
                       }
@@ -534,9 +553,9 @@ var app = {
   notify : async function (notification = {}){
   
       try {
-    
+
          let self = this;
-         
+
          let souvenir;
          if(self.options.notification.souvenir) {
           try {
@@ -549,7 +568,7 @@ var app = {
          if (self.options.notification.notify) {
            debug.log(notification);
 
-           if (self.options.notification.powershell) {
+            if (self.options.notification.powershell) {
               try{
                  let win_ver = os.release().split(".");
                  let appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
@@ -584,7 +603,7 @@ var app = {
                     }
                  }
 
-                 await toast(options);
+                 await toast(options);            
 
               }catch(err){
                 debug.log(err);
@@ -613,16 +632,19 @@ var app = {
            }
            
            if(self.options.notification.rumble){
-              if (!self.options.notification.powershell) notification.delay = 0; 
-              xinput.vibrate({delay: 6 * notification.delay || 0, duration: 1}).catch(()=>{});
-           }
+               if (!self.options.notification.powershell) notification.delay = 0;
+              
+               setTimeout(function(){  
+                    xinput.vibrate({duration: 1}).catch(()=>{});
+               }, 7000 * notification.delay || 0);
+            }
 
          } else {
            debug.log("Notification is disabled > SKIPPING");
          }   
 
     }catch(err){
-      throw err;
+      debug.log(err);
     }
   }
 }
