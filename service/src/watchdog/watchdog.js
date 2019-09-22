@@ -290,6 +290,11 @@ var app = {
           self.options.notification_advanced.checkIfProcessIsRunning = true;
           fixFile = true;
         }
+        
+        if (typeof self.options.notification_advanced.keepTrack !== "boolean"){
+          self.options.notification_advanced.keepTrack = true;
+          fixFile = true;
+        }
 
         if (self.options.steam) {
           if (self.options.steam.apiKey){
@@ -330,7 +335,8 @@ var app = {
           notification_advanced: {
             timeTreshold: 5,
             tick: 600,
-            checkIfProcessIsRunning: true
+            checkIfProcessIsRunning: true,
+            keepTrack: true
           },
           steam: {}
         };
@@ -397,7 +403,7 @@ var app = {
               
                   let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
  
-                  if ( await track.isAlreadyUnlocked(appID,localAchievements[0].name) ) {
+                  if ( self.options.notification_advanced.keepTrack && await track.isAlreadyUnlocked(appID,localAchievements[0].name) ) {
                     debug.log("already unlocked");
                   } else {
                     debug.log("Unlocked: "+ach.displayName);
@@ -412,7 +418,7 @@ var app = {
                         time: localAchievements[0].UnlockTime
                       });
                       
-                      await track.keep(appID,localAchievements[0].name,localAchievements[0].UnlockTime);
+                      if (self.options.notification_advanced.keepTrack) await track.keep(appID,localAchievements[0].name,localAchievements[0].UnlockTime);
 
                   }
 
@@ -425,7 +431,7 @@ var app = {
                         
                             let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[i].name);
                             
-                            if ( await track.isAlreadyUnlocked(appID,localAchievements[i].name) ) {
+                            if ( self.options.notification_advanced.keepTrack && await track.isAlreadyUnlocked(appID,localAchievements[i].name) ) {
                               debug.log("already unlocked");
                             } else {
                               debug.log("Unlocked (at the same time): "+ach.displayName);
@@ -443,7 +449,7 @@ var app = {
                                     delay: j
                               });
                                   
-                              await track.keep(appID,localAchievements[i].name,localAchievements[i].UnlockTime);
+                              if (self.options.notification_advanced.keepTrack) await track.keep(appID,localAchievements[i].name,localAchievements[i].UnlockTime);
 
                             }
                             

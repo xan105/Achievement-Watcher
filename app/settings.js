@@ -87,8 +87,12 @@ module.exports.load = ()=>{
         
         if (typeof options.notification_advanced.checkIfProcessIsRunning !== "boolean"){
           options.notification_advanced.checkIfProcessIsRunning = true;
-        }     
+        }
         
+        if (typeof options.notification_advanced.keepTrack !== "boolean"){
+          options.notification_advanced.keepTrack = true;
+        }       
+
         if (options.steam) {
           if (options.steam.apiKey){
             if (options.steam.apiKey.includes(":")) {
@@ -122,7 +126,8 @@ module.exports.load = ()=>{
           notification_advanced: {
             timeTreshold: 5,
             tick: 600,
-            checkIfProcessIsRunning: true           
+            checkIfProcessIsRunning: true,
+            keepTrack: true           
           },
           steam: {}
         };
