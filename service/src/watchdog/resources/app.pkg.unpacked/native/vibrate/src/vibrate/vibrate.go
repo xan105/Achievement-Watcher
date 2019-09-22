@@ -8,12 +8,10 @@ import (
 )
 
 //export vibrate
-func vibrate(index C.int, delay C.int, duration C.int, percent C.int) {
+func vibrate(index C.int, duration C.int, percent C.int) {
 
   err := xinput.Load()
     if err == nil {
-        
-      time.Sleep(time.Duration(delay) * time.Second)
       
       force := uint16( (65535 / 100) * int(percent) )
       

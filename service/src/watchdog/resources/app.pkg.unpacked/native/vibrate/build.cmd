@@ -6,5 +6,3 @@ set GOPATH="%~dp0"
 go build -buildmode=c-shared -o "%~dp0build\vibrate.dll" vibrate
 del "%~dp0\build\vibrate.h"
 xcopy /Y "%~dp0build\vibrate.dll" "%~dp0\..\..\..\..\..\..\build\resources\app.pkg.unpacked\native\vibrate\build\"
-xcopy /Y "%~dp0xinput1_4.dll" "%~dp0build\"
-xcopy /Y "%~dp0xinput1_4.dll" "%~dp0\..\..\..\..\..\..\build\resources\app.pkg.unpacked\native\vibrate\build\"
