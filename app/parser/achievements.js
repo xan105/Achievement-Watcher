@@ -27,6 +27,7 @@ async function discover(legitSteamListingType) {
           debug.log(`[userdir] ${dir.path}`);
 
           let scanned = await rpcs3.scan(dir.path);
+          console.log(scanned)
           if (scanned.length > 0) {
               data = data.concat(scanned);
               debug.log("-> RPCS3 data added");

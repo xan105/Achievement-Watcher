@@ -23,14 +23,14 @@
 	{
 		"Comments": "",
 		"CompanyName": "Anthony Beaumont",
-		"FileDescription": "xinput rumble",
+		"FileDescription": "DS4 Exclusive Autostart",
 		"FileVersion": "1.0.0",
-		"InternalName": "xinput rumble",
+		"InternalName": "DS4 Exclusive Autostart",
 		"LegalCopyright": "Copyright 2019 Anthony Beaumont.",
 		"LegalTrademarks": "",
-		"OriginalFilename": "vibrate.dll",
+		"OriginalFilename": "DS4.exe",
 		"PrivateBuild": "",
-		"ProductName": "xinput rumble",
+		"ProductName": "DS4 Exclusive Autostart",
 		"ProductVersion": "1.0.0",
 		"SpecialBuild": ""
 	},
