@@ -228,6 +228,10 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.<br />
   Set it to 0 to disable this feature.<br />
   
+- keepTrack<br>
+  default to true<br>
+  Keep track of unlocked achievements to prevent notification of already unlocked achievement when the steam emu overwrites     previous timestamp.
+  
 - appID<br />
   if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
