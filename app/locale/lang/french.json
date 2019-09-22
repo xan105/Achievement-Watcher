@@ -58,7 +58,7 @@
   "customUserFolderInfo": [
     "Sélectionnez un dossier contenant des dossiers appid.",
     "Pour ALI213, Hoodlum, RPCS3, sélectionnez un dossier dans lequel",
-    "Le fichier ALI213.ini, valve.ini, hlm.ini ou RPCS3.exe est situé."],
+    "Le fichier ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe est situé."],
   "blacklistTitle":"Liste noire d'AppID",
   "blacklistButton":"Réinitialiser la liste noire",
   "blacklistInfo":"Faites un clic droit sur une vignette de jeu pour l'ajouter à la liste noire.",
