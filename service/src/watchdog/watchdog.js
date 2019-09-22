@@ -222,7 +222,7 @@ var app = {
         }
         
         if (typeof self.options.achievement.timeMergeRecentFirst !== "boolean"){
-          self.options.achievement.timeMergeRecentFirst = true;
+          self.options.achievement.timeMergeRecentFirst = false;
           fixFile = true;
         }
         
@@ -318,7 +318,7 @@ var app = {
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
-            timeMergeRecentFirst: true,
+            timeMergeRecentFirst: false,
             hideZero: false,
             legitSteam: 0
           },

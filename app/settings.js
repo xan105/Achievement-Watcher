@@ -34,7 +34,7 @@ module.exports.load = ()=>{
         }
         
         if (typeof options.achievement.timeMergeRecentFirst !== "boolean"){
-          options.achievement.timeMergeRecentFirst = true;
+          options.achievement.timeMergeRecentFirst = false;
         }
         
         if (typeof options.achievement.hideZero !== "boolean"){
@@ -109,7 +109,7 @@ module.exports.load = ()=>{
           achievement: {
             showHidden: false,
             mergeDuplicate: true,
-            timeMergeRecentFirst: true,
+            timeMergeRecentFirst: false,
             hideZero: false,
             legitSteam: 0
           },

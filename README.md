@@ -144,8 +144,8 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Try to merge multiple achievement source for the same game.<br />
   
 - timeMergeRecentFirst<br/>
-  default to true<br />
-  When merging duplicates, show the most recent timestamp (set to false for the oldest).
+  default to false<br />
+  When merging duplicates, show the most recent timestamp instead of the oldest.
   
 - hideZero<br />
   default to false<br />
