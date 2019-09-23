@@ -404,7 +404,7 @@ var app = {
                   let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
  
                   if ( self.options.notification_advanced.keepTrack && await track.isAlreadyUnlocked(appID,localAchievements[0].name) ) {
-                    debug.log("already unlocked");
+                    debug.log("already unlocked (tracking)");
                   } else {
                     debug.log("Unlocked: "+ach.displayName);
                     
@@ -459,7 +459,15 @@ var app = {
                   }
               
               } else {
-                debug.log("already unlocked");
+
+                  if (localAchievements[0].CurProgress > 0 && localAchievements[0].CurProgress != localAchievements[0].MaxProgress) {
+                    debug.log("progression update");
+                  } else if (localAchievements[0].UnlockTime == 0){
+                    debug.log("Unvalid timestamp")
+                  } else {
+                    debug.log("already unlocked (outatime)")
+                  }
+ 
               }
           }
         

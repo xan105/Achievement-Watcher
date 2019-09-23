@@ -173,6 +173,10 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                 MaxProgress : root[i].MaxProgress || 0,
                                 UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].Time || 0
                           };
+                          
+                          if (!parsed.Achieved && parsed.MaxProgress == 100 && parsed.CurProgress == 100) { //CODEX 09/2019 (Gears5)
+                            parsed.Achieved = true;
+                          }
 
                           if (isDuplicate) {
                               if (parsed.Achieved && !achievement.Achieved) {    
@@ -192,7 +196,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                       achievement.UnlockTime = parsed.UnlockTime;
                                 }
                               } else {
-                                if (!achievement.UnlockTime || parsed.UnlockTime < achievement.UnlockTime) { //Oldest first
+                                if (!achievement.UnlockTime || parsed.UnlockTime > 0 && parsed.UnlockTime < achievement.UnlockTime) { //Oldest first
                                       achievement.UnlockTime = parsed.UnlockTime;
                                 }
                               }

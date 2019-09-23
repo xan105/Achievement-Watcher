@@ -219,7 +219,8 @@ var app = {
                             <div class="content">
                                 <div class="title">${game.system === "playstation" ? `<i class="fas fa-trophy" data-type="${achievement.type}"></i> ${achievement.displayName}` : `${achievement.displayName}`}</div>
                                 <div class="description">${achievement.description || ''}</div>
-                                <div class="progressBar" data-current="${achievement.CurProgress || '0'}" data-max="${achievement.MaxProgress || '0'}"><span class="meter"></span></div>
+                                <div class="progressBar" data-current="${achievement.CurProgress || '0'}" data-max="${achievement.MaxProgress || '0'}">
+                                <span class="meter" style="width:${(achievement.MaxProgress > 0) ? `${Math.round((achievement.CurProgress / achievement.MaxProgress ) * 100)}` : '0'}%"></span></div>
                             </div>
                             <div class="stats">
                               <div class="time" data-time="${achievement.UnlockTime}"><i class="fas fa-clock"></i> 
@@ -244,7 +245,6 @@ var app = {
                   }
 
                 }
-            
             
             }
             

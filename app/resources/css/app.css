@@ -629,7 +629,7 @@ main {
 }
 
 .achievement .progressBar > .meter {
-    width: 50%;
+    width: 0%;
     display: block;
     height: 100%;
     position: relative;
@@ -649,6 +649,18 @@ main {
     color: #dedede;
     z-index: 1;
     text-shadow: rgba(0, 0, 0, .5) 3px 3px 3px;
+}
+
+.achievement .progressBar[data-max="100"]:before {
+    content: attr(data-current) "%";
+}
+
+.achievement .progressBar:not([data-max="0"]) {
+  display: block;
+} 
+
+#unlock .achievement .progressBar {
+    display: none !important;
 }
 
 .achievement .stats {
