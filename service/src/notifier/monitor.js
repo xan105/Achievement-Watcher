@@ -1,0 +1,161 @@
+"use strict";
+
+const path = require('path');
+const ini = require("ini");
+const parentFind = require('find-up');
+const ffs = require("./util/feverFS.js");
+const regedit = require("./native/regedit.js");
+
+const files = {
+  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini"],
+  steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
+}
+
+module.exports.getFolders = async (userDir_file) => {
+
+  let steamEmu = [
+    { 
+      dir: path.join(process.env['Public'],"Documents/Steam/CODEX"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
+    },
+    { 
+      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
+    },
+    { 
+      dir: path.join(process.env['PROGRAMDATA'],"Steam"), options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
+    }
+  ];
+
+  const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+  if (mydocs && mydocs != "") {
+      steamEmu = steamEmu.concat([
+        {
+          dir: path.join(mydocs,"HLM"), options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]] }
+        },
+        {
+          dir: path.join(mydocs,"DARKSiDERS"), options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]]}
+        }
+      ]);
+  }
+
+  try{
+    let list = JSON.parse(await ffs.promises.readFile(userDir_file,"utf8"));
+    for (let dir of list) {
+      if (dir.notify == true) {
+        try{
+        
+            let info;
+            for (let file of files.steamEmu) {
+                  try{
+                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,file),"utf8"));
+                    break;
+                  }catch(e){}
+            }
+            if(info) {
+              
+                  if (info.Settings && info.Option) { //ALI213
+                      if(info.Settings.AppID && info.Settings.PlayerName) {
+                          let dirpath = await parentFind(async (directory) => {
+                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, files.achievement[1]));
+                                            return has && directory;
+                             }, {cwd: dir.path, type: 'directory'});
+
+                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[1]]} });  
+                    }
+                  } else if (info.GameSettings) { //Hoodlum - DARKSiDERS
+                      if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
+
+                          let dirpath = await parentFind(async (directory) => {
+                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu',files.achievement[2]));
+                                          return has && directory;
+                                    }, {cwd: dir.path, type: 'directory'});
+
+                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
+                  
+                      }
+                  } else if (info.Settings) { //Catherine
+                      if (info.Settings.AppId && info.Settings.SteamID) {
+
+                          let dirpath = await parentFind(async (directory) => {
+                                              let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`,files.achievement[3]));
+                                              return has && directory;
+                                    }, {cwd: dir.path, type: 'directory'});
+
+                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`SteamProfile/${info.Settings.SteamID}`), options: { appid: info.Settings.AppId, recursive: false, file: [files.achievement[3]]} }); 
+                      
+                      }
+
+                  }
+             } else {
+                steamEmu.push({ dir: dir.path, options: {recursive: true, filter: /([0-9]+)/, file: files.achievement} }); 
+             }
+        
+        }catch(err){
+          /*Do nothing*/
+        }
+      }
+    }
+  }catch(err){
+    /*Do nothing*/
+  }
+
+  return steamEmu;
+  
+}
+
+module.exports.parse = async (file) => {
+    try {
+  
+      let local = ini.parse(await ffs.promises.readFile(file,"utf8"));
+      
+      if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
+        let convert = {};
+        for (let i in local.Achievements) {
+            if (local.Achievements[i] == 1) {
+              convert[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
+            }
+        }
+        local = convert;
+      }
+      
+      let achievements = [];
+
+      for (let achievement in local){
+
+            if (achievement !== "SteamAchievements" && achievement !== "Steam" && achievement !== "Steam64") {
+                try {
+                  
+                  if(local[achievement].State) { //RLD!
+                              //uint32 little endian
+                              local[achievement].State = new DataView(new Uint8Array(Buffer.from(local[achievement].State.toString(),'hex')).buffer).getUint32(0, true);
+                              local[achievement].CurProgress = new DataView(new Uint8Array(Buffer.from(local[achievement].CurProgress.toString(),'hex')).buffer).getUint32(0, true);
+                              local[achievement].MaxProgress = new DataView(new Uint8Array(Buffer.from(local[achievement].MaxProgress.toString(),'hex')).buffer).getUint32(0, true); 
+                              local[achievement].Time = new DataView(new Uint8Array(Buffer.from(local[achievement].Time.toString(),'hex')).buffer).getUint32(0, true);  
+                  }                  
+
+                  let result = {
+                      name: achievement,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1 || local[achievement].State == 1 || local[achievement].Unlocked == 1) ? true : false,
+                      CurProgress : local[achievement].CurProgress || 0,
+                      MaxProgress : local[achievement].MaxProgress || 0,
+                      UnlockTime : local[achievement].UnlockTime || local[achievement].HaveAchievedTime || local[achievement].Time || 0
+                  };
+                  
+                  if (!result.Achieved && result.MaxProgress == 100 && result.CurProgress == 100) { //CODEX 09/2019 (Gears5)
+                      result.Achieved = true;
+                  }
+                  
+                  achievements.push(result);
+                }catch(e){}
+            }
+      }
+
+      achievements.sort((a,b) => {
+        return b.UnlockTime - a.UnlockTime;
+      });
+      
+      return achievements;
+      
+    }catch(err) {
+      throw err;
+    }
+}

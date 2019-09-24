@@ -398,79 +398,50 @@ var app = {
             if (typeof localAchievements[0].Achieved !== "boolean") throw "Achieved Value is not a boolean";
             if (!localAchievements[0].UnlockTime) throw "Unvalid timestamp";
             let elapsedTime = moment().diff(moment.unix(localAchievements[0].UnlockTime), 'seconds');
-              
-              if (localAchievements[0].Achieved &&  elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold) {
-              
-                  let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[0].name);
- 
-                  if ( self.options.notification_advanced.keepTrack && await track.isAlreadyUnlocked(appID,localAchievements[0].name) ) {
-                    debug.log("already unlocked (tracking)");
-                  } else {
-                    debug.log("Unlocked: "+ach.displayName);
-                    
-                      await self.notify({
-                        appid: game.appid,
-                        title: game.name,
-                        id: ach.name,
-                        message: ach.displayName,
-                        description: ach.description, 
-                        icon: ach.icon,
-                        time: localAchievements[0].UnlockTime
-                      });
+
+            let j = 0;
+            for (let i in localAchievements) { 
+
+                      if ( localAchievements[i].Achieved && localAchievements[i].UnlockTime === localAchievements[0].UnlockTime) {
+                        if (i > 0 || elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold) {
                       
-                      if (self.options.notification_advanced.keepTrack) await track.keep(appID,localAchievements[0].name,localAchievements[0].UnlockTime);
-
-                  }
-
-                  let j = 0;
-                  for (let i in localAchievements) { 
-
-                    if ( i > 0) {
-                      if (localAchievements[i].Achieved) {
-                        if (localAchievements[i].UnlockTime === localAchievements[0].UnlockTime) {
-                        
-                            let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[i].name);
+                                let ach = game.achievement.list.find(achievement => achievement.name === localAchievements[i].name);
                             
-                            if ( self.options.notification_advanced.keepTrack && await track.isAlreadyUnlocked(appID,localAchievements[i].name) ) {
-                              debug.log("already unlocked");
-                            } else {
-                              debug.log("Unlocked (at the same time): "+ach.displayName);
+                                if ( self.options.notification_advanced.keepTrack && await track.isAlreadyUnlocked(appID,localAchievements[i].name) ) {
+                                  debug.log("already unlocked");
+                                } else {
+                                  debug.log("Unlocked (at the same time): "+ach.displayName);
 
-                              j+=1;
-
-                              await self.notify({
-                                    appid: game.appid,
-                                    title: game.name,
-                                    id: ach.name,
-                                    message: ach.displayName,
-                                    description: ach.description, 
-                                    icon: ach.icon,
-                                    time: localAchievements[i].UnlockTime,
-                                    delay: j
-                              });
+                                  await self.notify({
+                                        appid: game.appid,
+                                        title: game.name,
+                                        id: ach.name,
+                                        message: ach.displayName,
+                                        description: ach.description, 
+                                        icon: ach.icon,
+                                        time: localAchievements[i].UnlockTime,
+                                        delay: j
+                                  });
                                   
-                              if (self.options.notification_advanced.keepTrack) await track.keep(appID,localAchievements[i].name,localAchievements[i].UnlockTime);
-
-                            }
-                            
-                        }
-                      }
-                    }
-                  }
-              
-              } else {
-
-                  if (localAchievements[0].CurProgress > 0 && localAchievements[0].CurProgress != localAchievements[0].MaxProgress) {
-                    debug.log("progression update");
-                  } else if (localAchievements[0].UnlockTime == 0){
-                    debug.log("Unvalid timestamp")
-                  } else {
-                    debug.log("already unlocked (outatime)")
-                  }
- 
-              }
+                                  j+=1;
+                                      
+                                  if (self.options.notification_advanced.keepTrack) await track.keep(appID,localAchievements[i].name,localAchievements[i].UnlockTime);
+                                }
+                          
+                          } else {
+                              if (localAchievements[0].CurProgress > 0 && localAchievements[0].CurProgress != localAchievements[0].MaxProgress) {
+                                debug.log("progression update");
+                              } else if (localAchievements[0].UnlockTime == 0){
+                                debug.log("Unvalid timestamp")
+                              } else {
+                                debug.log("already unlocked (outatime)")
+                              }
+                              debug.log("breaking out of loop")
+                              break;
+                          }
+                       }
+            }
           }
-        
         } else {
           debug.log("binary not running");
         }
