@@ -67,76 +67,39 @@ function sort(elem, option = {}) {
 (function($, window, document) {
   $(function() {
 
-    $("#sort-box .sort.alpha").click(function(){
-        let self = $(this);
-        $("#sort-box .sort").css("pointer-events","none");
-        
-        let gamelist = $("#game-list ul");
-        let percent = $("#sort-box .sort.percentage").hasClass("active") ? true : false;
-        let time = $("#sort-box .sort.time").hasClass("active") ? true : false;
-        
-        gamelist.fadeOut(()=>{
-        
-          if (self.hasClass("active")) {
-            sort(gamelist,{alpha: false, percent: percent, time: time});
-            self.removeClass("active");
-            localStorage.sortByAlpha = "false";
-          } else {
-            sort(gamelist,{alpha: true, percent: percent, time: time});
-            self.addClass("active");
-            localStorage.sortByAlpha = "true";
-          }
-          gamelist.fadeIn(()=>{ $("#sort-box .sort").css("pointer-events","initial") });
-          
-        });
-    });
+    $("#sort-box .sort").click(function(){
     
-    $("#sort-box .sort.percentage").click(function(){
         let self = $(this);
         $("#sort-box .sort").css("pointer-events","none");
         
         let gamelist = $("#game-list ul");
-        let alpha = $("#sort-box .sort.alpha").hasClass("active") ? true : false;
-        let time = $("#sort-box .sort.time").hasClass("active") ? true : false;
+        let sortby = {
+          alpha : $("#sort-box .sort.alpha").hasClass("active") ? true : false,
+          percent: $("#sort-box .sort.percentage").hasClass("active") ? true : false,
+          time: $("#sort-box .sort.time").hasClass("active") ? true : false
+        }
         
         gamelist.fadeOut(()=>{
 
-          if (self.hasClass("active")) {
-            sort(gamelist,{alpha: alpha, percent: false, time: time});
-            self.removeClass("active");
-            localStorage.sortByPercent = "false";
-          } else {
-            sort(gamelist,{alpha: alpha, percent: true, time: time});
-            self.addClass("active");
-            localStorage.sortByPercent = "true";
+          if (self.hasClass("alpha")) {
+            localStorage.sortByAlpha = sortby.alpha = !sortby.alpha;
           }
-          gamelist.fadeIn(()=>{ $("#sort-box .sort").css("pointer-events","initial") });
+          else if (self.hasClass("percentage")) {
+            localStorage.sortByPercent = sortby.percent = !sortby.percent;
+          }
+          else if (self.hasClass("time")) {
+            localStorage.sortByTime = sortby.time = !sortby.time;
+            
+          }
           
-        });
-    });
+          sort(gamelist,{alpha: sortby.alpha, percent: sortby.percent, time: sortby.time});
+          
+          (self.hasClass("active")) ? self.removeClass("active") : self.addClass("active");
+          
+          gamelist.fadeIn(()=>{ $("#sort-box .sort").css("pointer-events","initial") });
     
-    $("#sort-box .sort.time").click(function(){
-        let self = $(this);
-        $("#sort-box .sort").css("pointer-events","none");
-        
-        let gamelist = $("#game-list ul");
-        let alpha = $("#sort-box .sort.alpha").hasClass("active") ? true : false;
-        let percent = $("#sort-box .sort.percentage").hasClass("active") ? true : false;
-        
-        gamelist.fadeOut(()=>{
-
-          if (self.hasClass("active")) {
-            sort(gamelist,{alpha: alpha, percent: percent, time: false});
-            self.removeClass("active");
-            localStorage.sortByTime = "false";
-          } else {
-            sort(gamelist,{alpha: alpha, percent: percent, time: true});
-            self.addClass("active");
-            localStorage.sortByTime = "true";
-          }
-          gamelist.fadeIn(()=>{ $("#sort-box .sort").css("pointer-events","initial") });
-          
         });
+        
     });
 
   });
