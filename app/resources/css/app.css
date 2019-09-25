@@ -165,16 +165,18 @@ main {
 #sort-box .sort.active {
   text-shadow: 0px 0px 20px white;
 }
-#sort-box .alpha{
-  
-}
 #sort-box .percentage > i.fa-percent{
     font-size: 12px;
     line-height: 18px;
     vertical-align: top;
     padding-left: 3px;
 }
-
+#sort-box .time > i.fa-clock{
+    font-size: 14px;
+    line-height: 18px;
+    vertical-align: top;
+    padding-left: 3px;
+}
 
 #game-list {
     padding: 20px;

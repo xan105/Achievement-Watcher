@@ -83,10 +83,12 @@ var app = {
         let progress = Math.round((100 * list[game].achievement.unlocked) / list[game].achievement.total);
         
         progress_cache.push(progress);
-
+       
+        let timeMostRecent = Math.max.apply(Math,list[game].achievement.list.filter(ach => ach.Achieved && ach.UnlockTime > 0).map((ach) => { return ach.UnlockTime }));
+        
         let template = `
         <li>
-            <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
+            <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" data-time="${(timeMostRecent > 0) ? timeMostRecent : 0}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
               <div class="header" style="background: url('${list[game].img.header}');"></i></div>
               <div class="info">
                    <div class="title">${list[game].name}</div>
