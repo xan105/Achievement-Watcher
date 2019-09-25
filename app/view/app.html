@@ -221,9 +221,11 @@
                </li> 
                <li>
                   <div class="path"><span class="constant">%localappdata%</span>\SKIDROW</div>
+                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
                </li> 
                <li>
                   <div class="path"><span class="constant">%DOCUMENTS%</span>\SKIDROW</div>
+                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
                </li> 
                <li>
                   <div class="path"><span class="constant">%appdata%</span>\SmartSteamEmu</div>
@@ -338,6 +340,19 @@
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
                           <select autocomplete="off" id="option_rumble">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                     <li class="hasHelper">
+                        <div class="left"><i class="fas fa-tachometer-alt"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_notifyOnProgress">
                             <option value="true" selected></option>
                             <option value="false"></option>
                           </select>
