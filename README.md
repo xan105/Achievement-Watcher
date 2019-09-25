@@ -210,6 +210,10 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to true<br />
   Notify on achievement progress when possible.<br />
   
+  <p align="center">
+    <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/ach_progress.png" width="800px">
+  </p>
+  
 ### [notification_advanced]
 
 👮 Change these values only if you know what you are doing.<br />
