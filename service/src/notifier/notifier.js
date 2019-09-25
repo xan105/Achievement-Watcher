@@ -127,6 +127,7 @@ var app = {
         if (isRunning) {
         
           let achievements = await monitor.parse(name);
+          
           if (achievements.length > 0) {
             
             let cache = await track.load(appID);
@@ -144,7 +145,7 @@ var app = {
 
                    if (!previous.Achieved && achievements[i].Achieved) {
 
-                       if (!achievements[i].UnlockTime) achievements[i].UnlockTime = moment().valueOf();
+                       if (!achievements[i].UnlockTime) achievements[i].UnlockTime = moment().unix();
                        let elapsedTime = moment().diff(moment.unix(achievements[i].UnlockTime), 'seconds');
                        if (options.disableCheckTimestamp || (elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold)) {
                           

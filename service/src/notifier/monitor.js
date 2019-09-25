@@ -3,11 +3,12 @@
 const path = require('path');
 const ini = require("ini");
 const parentFind = require('find-up');
+const omit = require('lodash.omit');
 const ffs = require("./util/feverFS.js");
 const regedit = require("./native/regedit.js");
 
 const files = {
-  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini"],
+  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini","achieve.dat"],
   steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
 }
 
@@ -22,6 +23,9 @@ module.exports.getFolders = async (userDir_file) => {
     },
     { 
       dir: path.join(process.env['PROGRAMDATA'],"Steam"), options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
+    },
+    {
+      dir: path.join(process.env['LOCALAPPDATA'],"SKIDROW"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
     }
   ];
 
@@ -104,7 +108,9 @@ module.exports.getFolders = async (userDir_file) => {
 
 module.exports.parse = async (file) => {
     try {
-  
+    
+      const filter = ["SteamAchievements","Steam64","Steam"];
+      
       let local = ini.parse(await ffs.promises.readFile(file,"utf8"));
       
       if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
@@ -115,13 +121,14 @@ module.exports.parse = async (file) => {
             }
         }
         local = convert;
+      } else {
+        local = omit(local.ACHIEVE_DATA || local, filter);
       }
       
       let achievements = [];
 
       for (let achievement in local){
 
-            if (achievement !== "SteamAchievements" && achievement !== "Steam" && achievement !== "Steam64") {
                 try {
                   
                   if(local[achievement].State) { //RLD!
@@ -133,11 +140,11 @@ module.exports.parse = async (file) => {
                   }                  
 
                   let result = {
-                      name: achievement,
-                      Achieved : (local[achievement].Achieved == 1 || local[achievement].HaveAchieved == 1 || local[achievement].State == 1 || local[achievement].Unlocked == 1) ? true : false,
+                      name: local[achievement].id || local[achievement].apiname || achievement,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement] == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
-                      UnlockTime : local[achievement].UnlockTime || local[achievement].HaveAchievedTime || local[achievement].Time || 0
+                      UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].Time || 0
                   };
                   
                   if (!result.Achieved && result.MaxProgress == 100 && result.CurProgress == 100) { //CODEX 09/2019 (Gears5)
@@ -146,7 +153,6 @@ module.exports.parse = async (file) => {
                   
                   achievements.push(result);
                 }catch(e){}
-            }
       }
 
       achievements.sort((a,b) => {
