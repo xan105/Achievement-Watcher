@@ -145,7 +145,7 @@ var app = {
 
                    if (!previous.Achieved && achievements[i].Achieved) {
 
-                       if (!achievements[i].UnlockTime) achievements[i].UnlockTime = moment().unix();
+                       if (!achievements[i].UnlockTime || achievements[i].UnlockTime == 0) achievements[i].UnlockTime = moment().unix();
                        let elapsedTime = moment().diff(moment.unix(achievements[i].UnlockTime), 'seconds');
                        if (options.disableCheckTimestamp || (elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold)) {
                           
@@ -174,7 +174,7 @@ var app = {
                       
                       debug.log("Progress update:"+ ach.displayName);
 
-                      await notifyProgress({
+                      await self.notifyProgress({
                            appid: game.appid,
                            title: game.name,
                            id: ach.name,
