@@ -19,7 +19,7 @@ const xinput = require("./native/xinput.js");
 const gntp = require("./util/gntp.js");
 const debug = new (require("./util/log.js"))({
   console: true,
-  file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/notifier.log")
+  file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/notification.log")
 });
 
 const cfg_file = {
@@ -38,7 +38,7 @@ var app = {
      let self = this;
      self.cache = [];
       
-     debug.log("Achievement Notifier starting ...");
+     debug.log("Achievement Watchdog starting ...");
       
      debug.log("Loading Options ...");
      self.options = await settings.load(cfg_file.option);
