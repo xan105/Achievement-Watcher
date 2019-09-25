@@ -102,5 +102,32 @@ function sort(elem, option = {}) {
         
     });
 
+    $("#unlock > .header .sort-ach .sort.time").click(function(){
+    
+        let self = $(this);
+        self.css("pointer-events","none");
+        
+        let elem = $("#unlock > ul");
+        let li = elem.children("li");
+
+
+        li.detach().sort(function(a, b) {
+        
+              if (self.hasClass("active")) {
+                return $(a).find(".achievement").data("index") - $(b).find(".achievement").data("index");
+              } else {
+                return $(b).find(".achievement .stats .time").data("time") - $(a).find(".achievement .stats .time").data("time");
+              }
+        });
+          
+          
+        elem.append(li);
+        
+        (self.hasClass("active")) ? self.removeClass("active") : self.addClass("active");
+          
+        self.css("pointer-events","initial");
+
+    });
+
   });
 }(window.jQuery, window, document)); 

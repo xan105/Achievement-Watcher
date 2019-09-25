@@ -578,6 +578,33 @@ main {
   box-shadow: rgb(198, 212, 223) 0px 0px 8px 2px;
 }
 
+#unlock > .header .sort-ach {
+  display: block;
+  position: absolute;
+  right: 34px;
+  top: -3px;
+  margin-right: 15px;
+}
+
+#unlock > .header .sort-ach .sort {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+#unlock > .header .sort-ach .sort.time > i.fa-clock
+{
+    font-size: 14px;
+    line-height: 18px;
+    vertical-align: top;
+    padding-left: 3px;
+}
+
+#unlock > .header .sort-ach .sort.active {
+    text-shadow: 0px 0px 20px white;
+}
+
 .achievement {
   display: flex;
 }

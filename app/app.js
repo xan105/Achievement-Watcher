@@ -204,6 +204,7 @@ var app = {
               
             }
             
+            $("#unlock > .header .sort-ach .sort.time").removeClass("active");
             let unlock = $("#unlock ul");
             let lock = $("#lock ul");
             unlock.empty();
@@ -211,12 +212,13 @@ var app = {
             
             let hidden_counter = 0;
 
+            let i = 0;
             for (let achievement of game.achievement.list) {
 
                 let template = `
                 <li>
                       
-                         <div class="achievement" data-name="${achievement.name}">
+                         <div class="achievement" data-name="${achievement.name}" data-index="${i}">
                             <div class="icon" style="background: url('${achievement.Achieved ? achievement.icon : achievement.icongray}');"></div>
                             <div class="content">
                                 <div class="title">${game.system === "playstation" ? `<i class="fas fa-trophy" data-type="${achievement.type}"></i> ${achievement.displayName}` : `${achievement.displayName}`}</div>
@@ -238,6 +240,7 @@ var app = {
 
                 if (achievement.Achieved) {
                   unlock.append(template);
+                  i+=1;
                 } else {
                   
                   if(achievement.hidden == 1 && !app.config.achievement.showHidden) {
