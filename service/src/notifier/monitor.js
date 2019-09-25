@@ -37,6 +37,9 @@ module.exports.getFolders = async (userDir_file) => {
         },
         {
           dir: path.join(mydocs,"DARKSiDERS"), options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]]}
+        },
+        {
+          dir: path.join(mydocs,"SKIDROW"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
         }
       ]);
   }
