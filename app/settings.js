@@ -77,8 +77,12 @@ module.exports.load = ()=>{
           options.notification.rumble = true;
         }
         
+        if (typeof options.notification.notifyOnProgress !== "boolean"){
+          options.notification.notifyOnProgress = true;
+        }
+
         if (isNaN(options.notification_advanced.timeTreshold)){
-          options.notification_advanced.timeTreshold = 5;
+          options.notification_advanced.timeTreshold = 15;
         }
         
         if (isNaN(options.notification_advanced.tick)){
@@ -87,11 +91,7 @@ module.exports.load = ()=>{
         
         if (typeof options.notification_advanced.checkIfProcessIsRunning !== "boolean"){
           options.notification_advanced.checkIfProcessIsRunning = true;
-        }
-        
-        if (typeof options.notification_advanced.keepTrack !== "boolean"){
-          options.notification_advanced.keepTrack = true;
-        }       
+        }     
 
         if (options.steam) {
           if (options.steam.apiKey){
@@ -121,13 +121,13 @@ module.exports.load = ()=>{
             toastSouvenir: 0,
             showDesc: false,
             customToastAudio: 1,
-            rumble: true
+            rumble: true,
+            notifyOnProgress: true
           },
           notification_advanced: {
-            timeTreshold: 5,
+            timeTreshold: 15,
             tick: 600,
-            checkIfProcessIsRunning: true,
-            keepTrack: true           
+            checkIfProcessIsRunning: true          
           },
           steam: {}
         };
