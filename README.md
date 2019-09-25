@@ -58,11 +58,11 @@ Compatibility :
 
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
-|Codex (Steam)| Yes | Yes | No | Yes |
-|RLD! (Steam) | Yes | Yes | No | [~~Yes~~ No*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#rld) |
-|Skidrow (Steam) | Yes | No | No | No |
+|Codex (Steam)| Yes | Yes | Yes | Yes |
+|RLD! (Steam) | Yes | Yes | No | Yes (on game exit)
+|Skidrow (Steam) | Yes | No | No | Yes |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
-|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Yes (*UserDataFolder=mydocs*) and<br>Via user custom dir| Yes | No | [Yes*](https://github.com/xan105/Achievement-Watcher/tree/master/service/src/watchdog#hoodlum) |
+|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Yes (*UserDataFolder=mydocs*) and<br>Via user custom dir| Yes | No | Yes
 |GreenLumaReborn (Steam) | Yes | No | No | No |
 |SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
 |Goldberg Steam Emu (Steam)| Via a [custom build](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/Goldberg_Lan_Steam_Emu_v0.2.5_achievement.zip) | Yes | No | Yes |
@@ -93,11 +93,8 @@ You can add your own folder in the app, just make sure that you select a folder 
  ```
 NB: To enable notification on a custom folder you need to click the bell icon next to it. 
  
-For ALI213 there is no default folder so choose the dir where the `AlI213.ini` or `valve.ini` file is; <br>
-The app will then parse it and look for `\Profile\[EMUUSERNAME]\Stats\achievements.bin` from the chosen location.
-
-For Hoodlum there is no default folder so choose the dir where the `hlm.ini` file is; <br>
-The app will then parse it and look for `\[UserDataFolder]\SteamEmu\stats.ini` from the chosen location.
+For Steam emulators that don't have a default folder (eg: ALI213) choose the dir where their cfg .ini file is; <br>
+The app will then parse it and look for achievement data file from the chosen location.
  
 ⚠️ Green Luma Reborn: only if the reg key `"SkipStatsAndAchievements"` is set to `dword:00000000` for that APPID.
 
@@ -105,7 +102,7 @@ The app will then parse it and look for `\[UserDataFolder]\SteamEmu\stats.ini` f
 You can choose to view none (default) / only installed / all owned Steam games.<br/>
 Ach. are updated based on files timestamp in `STEAM\appcache\stats`<br/>
 
-⚠️ This feature requires that your Steam Profile is set to `Public`.<br/>
+⚠️ This feature requires that Steam is installed and your Steam Profile is set to `Public`.<br/>
 
 <p align="center">
 <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/steam_privacy.png">
@@ -209,13 +206,17 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to true<br />
   Vibrates first xinput controller when unlocking an achievement.<br />
   
+- notifyOnProgress<br />
+  default to true<br />
+  Notify on achievement progress when possible.<br />
+  
 ### [notification_advanced]
 
 👮 Change these values only if you know what you are doing.<br />
 
 - timeTreshold<br />
-  default to 5 (sec)<br />
-  When an achievement file is modified; Amount of sec `watchdog.exe` will consider the most recent achieved achievement (from its timestamp value) to be new.<br />
+  default to 10 (sec)<br />
+  Amount of sec an achievement is considered achieved from its timestamp value before being discarded.<br />
   
 - checkIfProcessIsRunning<br />
   default to true<br />
@@ -227,10 +228,6 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to 600 (ms)<br />
   Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.<br />
   Set it to 0 to disable this feature.<br />
-  
-- keepTrack<br>
-  default to true<br>
-  Keep track of unlocked achievements to prevent notification of already unlocked achievement when the steam emu overwrites     previous timestamp.
   
 - appID<br />
   if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
