@@ -9,6 +9,7 @@ const tasklist = require('win-tasklist');
 const moment = require("moment");
 const toast = require("powertoast");
 
+const processPriority = require("./util/priority.js");
 const ffs = require("./util/feverFS.js");
 const settings = require('./settings.js');
 const monitor = require('./monitor.js');
@@ -39,7 +40,13 @@ var app = {
      self.cache = [];
       
      debug.log("Achievement Watchdog starting ...");
-      
+     
+     processPriority.set("high priority").then(()=>{
+        debug.log("Process priority set to HIGH")
+     }).catch((err) => { 
+        debug.log("Fail to set process priority to HIGH");
+     }); 
+
      debug.log("Loading Options ...");
      self.options = await settings.load(cfg_file.option);
      debug.log(self.options);
