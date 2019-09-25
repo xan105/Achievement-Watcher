@@ -106,7 +106,7 @@ module.exports.load = async (cfg_file) => {
         }
         
         if (isNaN(options.notification_advanced.timeTreshold)){
-          options.notification_advanced.timeTreshold = 15;
+          options.notification_advanced.timeTreshold = 10;
           fixFile = true;
         }
         
@@ -159,7 +159,7 @@ module.exports.load = async (cfg_file) => {
             notifyOnProgress: true         
           },
           notification_advanced: {
-            timeTreshold: 15,
+            timeTreshold: 10,
             tick: 600,
             checkIfProcessIsRunning: true
           },

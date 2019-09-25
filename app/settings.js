@@ -82,7 +82,7 @@ module.exports.load = ()=>{
         }
 
         if (isNaN(options.notification_advanced.timeTreshold)){
-          options.notification_advanced.timeTreshold = 15;
+          options.notification_advanced.timeTreshold = 10;
         }
         
         if (isNaN(options.notification_advanced.tick)){
@@ -125,7 +125,7 @@ module.exports.load = ()=>{
             notifyOnProgress: true
           },
           notification_advanced: {
-            timeTreshold: 15,
+            timeTreshold: 10,
             tick: 600,
             checkIfProcessIsRunning: true          
           },
