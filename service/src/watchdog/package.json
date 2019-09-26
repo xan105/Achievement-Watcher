@@ -25,7 +25,7 @@
     "node-html-parser": "^1.1.16",
     "node-watch": "^0.6.2",
     "os-locale": "^3.1.0",
-    "powertoast": "^1.0.5",
+    "powertoast": "^1.0.6",
     "request-zero": "^0.2.3",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0",

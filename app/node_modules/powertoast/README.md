@@ -281,6 +281,41 @@ toast({
 
   ```
   
+- **progress**  
+
+  Add a progress bar to your toast.<br/>
+  ```
+  {
+    header : optional string,
+    footer: optional string,
+    percent : percent of the progress bar, default to zero if not specified,
+    custom : optional string to be displayed instead of the default percentage string
+  }
+  ```
+  
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/progress.png">
+</p>
+  
+  ```js
+  
+const toast = require('powertoast');
+
+toast({
+  title: "Dummy",
+  message: "Hello World",
+  icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+  progress:{
+    header: "Header",
+    footer: "Footer",
+    percent: 50,
+    custom: "10/20 Beers"
+  }
+}).catch(err => console.error(err));
+  
+  ```
+  
+  
 - **timeStamp**
 
   Unix epoch time in seconds.<br/>

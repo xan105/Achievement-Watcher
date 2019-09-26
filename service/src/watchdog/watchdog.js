@@ -350,12 +350,7 @@ var app = {
                        if (notification.progress.max != 100) {
                           options.progress.custom = `${notification.progress.current}/${notification.progress.max}`;
                        }
-                       
-                       let win_ver = os.release().split(".");
-                       if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) { //Win 8
-                          options.message = (self.options.notification.showDesc && notification.description) ? `[${notification.progress.current}/${notification.progress.max}]\n${notification.message}\n${notification.description}` : `[${notification.progress.current}/${notification.progress.max}]\n${notification.message}`;  
-                       }  
-                       
+
                        await toast(options); 
                        
                   }catch(err){

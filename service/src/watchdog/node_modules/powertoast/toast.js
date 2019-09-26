@@ -99,6 +99,9 @@ async function toast(option = {}){
     `;
 
     if (isWin8) { //old template fallback for Windows 8
+    
+      if (options.progress && !options.message) options.message = `[ ${(options.progress.custom) ? options.progress.custom : `${options.progress.percent*100}/100`} ]\n${options.progress.header}`;
+    
       template += `
         [xml]$template = @"
         <toast>
