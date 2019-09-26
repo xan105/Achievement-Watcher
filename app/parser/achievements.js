@@ -183,11 +183,11 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                     achievement.Achieved = true;
                               }
                                     
-                              if (!achievement.CurProgress || parsed.CurProgress > achievement.CurProgress) {
+                              if ((!achievement.CurProgress && parsed.CurProgress > 0) || (parsed.CurProgress > 0 && parsed.MaxProgress == achievement.MaxProgress && parsed.CurProgress > achievement.CurProgress)) {
                                     achievement.CurProgress = parsed.CurProgress;
                               }
                                     
-                              if (!achievement.MaxProgress || parsed.MaxProgress > achievement.MaxProgress) {
+                              if (!achievement.MaxProgress && parsed.MaxProgress > 0) {
                                     achievement.MaxProgress = parsed.MaxProgress;
                               }
                                     
