@@ -176,6 +176,7 @@ var app = {
                    } else if (previous.Achieved && achievements[i].Achieved){
                    
                       debug.log("Already unlocked:"+ ach.displayName);
+                      if (previous.UnlockTime > 0 && previous.UnlockTime != achievements[i].UnlockTime) achievements[i].UnlockTime = previous.UnlockTime;
                       
                    } else if (!achievements[i].Achieved && achievements[i].MaxProgress > 0 && previous.CurProgress < achievements[i].CurProgress ) {
                       
