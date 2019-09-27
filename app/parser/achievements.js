@@ -9,12 +9,13 @@ const rpcs3 = require(path.join(appPath,"parser/rpcs3.js"));
 const glr = require(path.join(appPath,"parser/glr.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
+const watchdog = require(path.join(appPath,"parser/watchdog.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,
   file: path.join(remote.app.getPath('userData'),"logs/parser.log")
 });
 
-async function discover(legitSteamListingType) {
+async function discover(legitSteamListingType,importCache) {
   try{
     
     let data = [];
@@ -79,6 +80,14 @@ async function discover(legitSteamListingType) {
       debug.log(err);
     }
     
+    if(importCache){
+      try{
+        data = data.concat(await watchdog.scan());
+      }catch(err){
+        debug.log(err);
+      }
+    }
+    
     //AppID Blacklisting
     try{  
         let exclude = await blacklist.get();
@@ -101,7 +110,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
       let result = [];
   
-      let appidList = await discover(option.steam);
+      let appidList = await discover(option.steam,option.importCache);
 
       if ( appidList.length > 0) {
         let count = 1;
@@ -158,13 +167,15 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                   
                    root = uplay.getAchievementsFromLumaPlay(appid.data.root,appid.data.path);
                    
+                 } else if (appid.data.type === "cached"){
+                   root = await watchdog.getAchievements(appid.appid);
                  }
 
                  for (let i in root){
 
                      try {
 
-                          let id = root[i].id || root[i].apiname || i;
+                          let id = root[i].id || root[i].apiname || root[i].name || i;
                           
                           let achievement = game.achievement.list.find( elem => elem.name == id);
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
@@ -194,11 +205,11 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                               }
                                     
                               if (option.recent) {
-                                if (!achievement.UnlockTime || parsed.UnlockTime > achievement.UnlockTime) { //More recent first
+                                if( (!achievement.UnlockTime || achievement.UnlockTime == 0) || parsed.UnlockTime > achievement.UnlockTime ){ //More recent first
                                       achievement.UnlockTime = parsed.UnlockTime;
                                 }
                               } else {
-                                if (!achievement.UnlockTime || parsed.UnlockTime > 0 && parsed.UnlockTime < achievement.UnlockTime) { //Oldest first
+                                if( (!achievement.UnlockTime || achievement.UnlockTime == 0) || (parsed.UnlockTime > 0 && parsed.UnlockTime < achievement.UnlockTime) ){ //Oldest first
                                       achievement.UnlockTime = parsed.UnlockTime;
                                 }
                               }

@@ -60,6 +60,11 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
              
+        if (typeof options.achievement.importCache !== "boolean"){
+          options.achievement.importCache = true;
+          fixFile = true;
+        }  
+             
         if (typeof options.notification.notify !== "boolean"){
           options.notification.notify = true;
           fixFile = true;
@@ -145,7 +150,8 @@ module.exports.load = async (cfg_file) => {
             mergeDuplicate: true,
             timeMergeRecentFirst: false,
             hideZero: false,
-            legitSteam: 0
+            legitSteam: 0,
+            importCache: true
           },
           notification: {
             notify: true,

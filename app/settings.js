@@ -45,6 +45,10 @@ module.exports.load = ()=>{
           options.achievement.legitSteam = 0;
         }
         
+        if (typeof options.achievement.importCache !== "boolean"){
+          options.achievement.importCache = true;
+        }
+        
         if (typeof options.notification.notify !== "boolean"){
           options.notification.notify = true;
         }
@@ -111,7 +115,8 @@ module.exports.load = ()=>{
             mergeDuplicate: true,
             timeMergeRecentFirst: false,
             hideZero: false,
-            legitSteam: 0
+            legitSteam: 0,
+            importCache: true
           },
           notification: {
             notify: true,

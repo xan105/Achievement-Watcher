@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com";>
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-g41MuMDftD9i4oWRy5+xu4S1w1gOHj9PmvY0e/KT+ehw01wJqJcemMgTqv0esER4"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-NcCC7aj0MKpLYk8eViFg5tnsaPrmnqSI1ENMO+kMKe1knc/hJUuWEIacJ4aKwh8W"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-Nb3XmGzva8AUtKVqD2TlLEa/yLHAzeABBDFOS2DpLZDFxMINc2lctXhb0cSlm3qe"/>
   </head>
   <body>
@@ -472,6 +472,19 @@
                         </div>
                         <div class="help"></div>
                       </li>
+                      
+                       <li class="hasHelper">
+                        <div class="left"><i class="fas fa-database"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_importCache">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>                     
 
                   </ul>
                 </div>

@@ -70,5 +70,7 @@
   "rumble": "Gamepad Vibration (XInput)",
   "rumbleDescription": "Vibrates first controller when unlocking an achievement",
   "notifyOnProgress" : "Progress report",
-  "notifyOnProgressDescription": "Notify on achievement progress when possible"
+  "notifyOnProgressDescription": "Notify on achievement progress when possible",
+  "importCache" : "Import notification cache",
+  "importCacheDescription" : "Import Watchdog's cache as another source of achievement"
 }

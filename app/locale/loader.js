@@ -90,7 +90,11 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(6) .right select option[value='0']").text(clear(template.none));
         selector.find("li:nth-child(6) .right select option[value='1']").text(clear(template.installed));
         selector.find("li:nth-child(6) .right select option[value='2']").text(clear(template.owned));
-        selector.find("li:nth-child(6) .help").text(clear(template.publicProfile));
+        selector.find("li:nth-child(6) .help").text(clear(template.publicProfile)); 
+        selector.find("li:nth-child(7) .left span").text(clear(template.importCache));
+        selector.find("li:nth-child(7) .right select option[value='true']").text(clear(template.enable));
+        selector.find("li:nth-child(7) .right select option[value='false']").text(clear(template.disable));
+        selector.find("li:nth-child(7) .help").text(clear(template.importCacheDescription));
         selector = $("#options-notify");
         selector.find("li:nth-child(1) .left span").text(clear(template.notification));
         selector.find("li:nth-child(1) .right select option[value='true']").text(clear(template.enable));

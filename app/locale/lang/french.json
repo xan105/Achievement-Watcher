@@ -70,5 +70,7 @@
   "rumble": "Vibration de la manette (XInput)",
   "rumbleDescription": "Faire vibrer la première manette lorsque un succès est débloqué",
   "notifyOnProgress" : "Rapport d'avancement",
-  "notifyOnProgressDescription": "Informer sur la progression quand c'est possible" 
+  "notifyOnProgressDescription": "Informer sur la progression quand c'est possible",
+  "importCache" : "Importer le cache de notification",
+  "importCacheDescription" : "Importer le cache de Watchdog comme une autre source de succès"   
 }
