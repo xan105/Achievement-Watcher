@@ -8,7 +8,7 @@ const ffs = require("./util/feverFS.js");
 const regedit = require("./native/regedit.js");
 
 const files = {
-  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini","achieve.dat"],
+  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini","achieve.dat", "achievements.json"],
   steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
 }
 
@@ -21,6 +21,9 @@ module.exports.getFolders = async (userDir_file) => {
     { 
       dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
     },
+    { 
+      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves","inventory"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] } 
+    },  
     { 
       dir: path.join(process.env['PROGRAMDATA'],"Steam"), options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
     },
@@ -114,7 +117,12 @@ module.exports.parse = async (file) => {
     
       const filter = ["SteamAchievements","Steam64","Steam"];
       
-      let local = ini.parse(await ffs.promises.readFile(file,"utf8"));
+      let local;
+      if (path.parse(file).ext == ".json") {
+        local = JSON.parse(await ffs.promises.readFile(file,"utf8"));
+      } else {
+        local = ini.parse(await ffs.promises.readFile(file,"utf8"));
+      }
       
       if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
         let convert = {};
@@ -144,10 +152,10 @@ module.exports.parse = async (file) => {
 
                   let result = {
                       name: local[achievement].id || local[achievement].apiname || achievement,
-                      Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement] == 1) ? true : false,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement].earned || local[achievement] == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
-                      UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].Time || 0
+                      UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].Time || local[achievement].earned_time || 0
                   };
                   
                   if (!result.Achieved && result.MaxProgress == 100 && result.CurProgress == 100) { //CODEX 09/2019 (Gears5)

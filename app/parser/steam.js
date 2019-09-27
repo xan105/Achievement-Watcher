@@ -19,6 +19,7 @@ module.exports.scan = async (additionalSearch = []) => {
     let search = [
         path.join(process.env['Public'],"Documents/Steam/CODEX"), 
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"),
+        path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves","inventory"),
         path.join(process.env['APPDATA'],"Steam/CODEX"),
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW"),
@@ -154,13 +155,18 @@ module.exports.getGameData = async (cfg) => {
 module.exports.getAchievementsFromFile = async (filePath) => {
   try {
   
-  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "stats.ini", "SteamEmu/stats.ini", "Achievements.ini"];
+  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "stats.ini", "SteamEmu/stats.ini", "Achievements.ini", "achievements.json"];
   const filter = ["SteamAchievements","Steam64","Steam"];
   
   let local;                            
   for (let file of files) {
      try {
-       local = ini.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
+     
+       if (path.parse(file).ext == ".json") {
+          local = JSON.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
+       } else {
+          local = ini.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
+       }
        break;
      } catch (e) {}
   }              
