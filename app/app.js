@@ -93,6 +93,7 @@ var app = {
               <div class="info">
                    <div class="title">${list[game].name}</div>
                    <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
+                   ${(list[game].source) ? `<div class="source">${list[game].source}</div>`: ''}
               </div>
             </div>
         </li>

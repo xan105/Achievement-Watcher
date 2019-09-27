@@ -35,6 +35,7 @@ module.exports.scan = async (dir) => {
                    for (let game of games) {
                       try{
                         data.push({appid: game,
+                             source: "RPCS3 Emulator",
                              data: {
                                 type: "rpcs3",
                                 path: path.join(dir,"dev_hdd0/home",user,"trophy",game)

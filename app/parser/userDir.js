@@ -83,6 +83,7 @@ module.exports.scan = async (dir) => {
 
             if (dirpath){
                       result.push({ appid: info.Settings.AppID,
+                                 source: "ALI213",
                                  data: {
                                    type: "file",
                                    path: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats/`)
@@ -103,6 +104,7 @@ module.exports.scan = async (dir) => {
 
                 if (dirpath){
                   result.push({ appid: info.GameSettings.AppId,
+                             source: "Hoodlum - DARKSiDERS",
                              data: {
                                type: "file",
                                path: path.join(dirpath,"SteamEmu")

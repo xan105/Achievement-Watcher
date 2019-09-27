@@ -17,6 +17,7 @@ module.exports.scan = () => {
                if(glr_ach_enable === 0) {
 
                  data.push({appid: key,
+                            source: "GreenLuma Reborn",
                              data: {
                                 type: "reg",
                                 root: "HKCU",

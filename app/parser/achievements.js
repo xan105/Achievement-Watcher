@@ -127,6 +127,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                   game = await steam.getGameData({appID: appid.appid, lang: option.lang, key: option.key });      
                 }
 
+                if(!option.merge && appid.source) game.source = appid.source;
+
                 let root;
                 
                 if (appid.data.type === "file") {

@@ -31,6 +31,7 @@ module.exports.scan = () => { //LumaPlay
         for (let appid of appidList) {
         
           data.push({appid: `UPLAY${appid}`,
+                     source: "Lumaplay",
                      data: {
                         type: "lumaplay",
                         root: "HKCU",

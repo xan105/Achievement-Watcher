@@ -40,11 +40,31 @@ module.exports.scan = async (additionalSearch = []) => {
     
     let data = [];
     for (let dir of await glob(search,{onlyDirectories: true, absolute: true})) {
-                data.push({ appid: path.parse(dir).name, 
-                           data: {
-                           type: "file",
-                           path: dir}
-                });
+    
+                let game = { 
+                    appid: path.parse(dir).name, 
+                    data: {
+                      type: "file",
+                      path: dir }
+                };
+                
+                if (dir.includes("CODEX")) {
+                  game.source = "Codex";
+                } else if (dir.includes("Goldberg")){
+                  game.source = "Goldberg";
+                } else if (dir.includes("SKIDROW")){
+                  game.source = "Skidrow";
+                } else if (dir.includes("SmartSteamEmu")){
+                  game.source = "SmartSteamEmu";
+                } else if (dir.includes("HLM")){
+                  game.source = "Hoodlum";
+                } else if (dir.includes("DARKSiDERS")){
+                  game.source = "DARKSiDERS";
+                } else if (dir.includes("ProgramData/Steam")){
+                  game.source = "Reloaded";
+                }
+
+                data.push(game);
     };    
     return data;
   
@@ -80,6 +100,7 @@ module.exports.scanLegit = async (listingType = 0) => {
              if ( hasStatsSchema && isInstalled) {
             
                   data.push({appid: appid,
+                             source: "Steam",
                              data: {
                                 type: "steamAPI",
                                 userID: userID,

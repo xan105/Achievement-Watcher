@@ -350,8 +350,14 @@ main {
     text-shadow: rgba(0, 0, 0, .5) 3px 3px 3px;
 }
 
-
-#home {}
+#game-list .game-box .info .source {
+  font-size: 12px;
+  padding: 6px 0 1px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
 
 #achievement {
   display: none;
@@ -583,7 +589,7 @@ main {
   position: absolute;
   right: 34px;
   top: -3px;
-  margin-right: 15px;
+  margin-right: 5px;
 }
 
 #unlock > .header .sort-ach .sort {
