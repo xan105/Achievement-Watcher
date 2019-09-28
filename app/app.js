@@ -137,9 +137,9 @@ var app = {
          let self = $(this);
          let appid = self.data("appid");
 
-         const { Menu, MenuItem } = remote;
+         const { Menu, MenuItem, nativeImage } = remote;
          const menu = new Menu();
-         menu.append(new MenuItem({ icon: 'resources/img/cross.png', label: $("#game-list").attr("data-contextMenu0"), click() { 
+         menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/cross.png")), label: $("#game-list").attr("data-contextMenu0"), click() { 
          
           try{
             blacklist.add(appid);
@@ -152,11 +152,12 @@ var app = {
           
           if (!self.data("system")) {
             menu.append(new MenuItem({type: 'separator'}));
-            menu.append(new MenuItem({ icon: 'resources/img/globe.png', label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
-            menu.append(new MenuItem({ icon: 'resources/img/globe.png', label: "SteamDB", click() {shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "SteamDB", click() {shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
           }
 
          menu.popup({ window: win });
+         
        });
       
       if (self.args.appid) $(`#game-list .game-box[data-appid="${self.args.appid.toString().replace(/[^\d]/g, '')}"]`).first().trigger("click");
