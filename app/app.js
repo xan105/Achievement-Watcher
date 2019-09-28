@@ -39,7 +39,7 @@ var app = {
       app.errorExit(err,"Error loading lang.");
    });
 
-   user.get().then((user) => {
+   user.get(true).then((user) => {
       if (user.avatar) $("#user-info .avatar").css("background",`url(${user.avatar})`);
       $("#user-info .info .name").text(user.name);
    }).catch((err)=>{});
@@ -134,11 +134,12 @@ var app = {
       
       $("#game-list .game-box").contextmenu(function(e) { 
          e.preventDefault();
-         let appid = $(this).data("appid");
+         let self = $(this);
+         let appid = self.data("appid");
 
          const { Menu, MenuItem } = remote;
          const menu = new Menu();
-         menu.append(new MenuItem({ label: $("#game-list").attr("data-contextMenu0"), click() { 
+         menu.append(new MenuItem({ icon: 'resources/img/cross.png', label: $("#game-list").attr("data-contextMenu0"), click() { 
          
           try{
             blacklist.add(appid);
@@ -148,6 +149,13 @@ var app = {
           }
          
           } }));
+          
+          if (!self.data("system")) {
+            menu.append(new MenuItem({type: 'separator'}));
+            menu.append(new MenuItem({ icon: 'resources/img/globe.png', label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
+            menu.append(new MenuItem({ icon: 'resources/img/globe.png', label: "SteamDB", click() {shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
+          }
+
          menu.popup({ window: win });
        });
       
