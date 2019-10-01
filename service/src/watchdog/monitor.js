@@ -16,19 +16,24 @@ module.exports.getFolders = async (userDir_file) => {
 
   let steamEmu = [
     { 
-      dir: path.join(process.env['Public'],"Documents/Steam/CODEX"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
+      dir: path.join(process.env['Public'],"Documents/Steam/CODEX"), 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
     },
     { 
-      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
+      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
     },
     { 
-      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves","inventory"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] } 
+      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves","inventory"), 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] } 
     },  
     { 
-      dir: path.join(process.env['PROGRAMDATA'],"Steam"), options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
+      dir: path.join(process.env['PROGRAMDATA'],"Steam"), 
+      options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
     },
     {
-      dir: path.join(process.env['LOCALAPPDATA'],"SKIDROW"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
+      dir: path.join(process.env['LOCALAPPDATA'],"SKIDROW"), 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
     }
   ];
 
@@ -36,13 +41,16 @@ module.exports.getFolders = async (userDir_file) => {
   if (mydocs && mydocs != "") {
       steamEmu = steamEmu.concat([
         {
-          dir: path.join(mydocs,"HLM"), options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]] }
+          dir: path.join(mydocs,"HLM"), 
+          options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]] }
         },
         {
-          dir: path.join(mydocs,"DARKSiDERS"), options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]]}
+          dir: path.join(mydocs,"DARKSiDERS"), 
+          options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]]}
         },
         {
-          dir: path.join(mydocs,"SKIDROW"), options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
+          dir: path.join(mydocs,"SKIDROW"), 
+          options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
         }
       ]);
   }
