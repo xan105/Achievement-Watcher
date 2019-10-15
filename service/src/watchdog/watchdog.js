@@ -114,7 +114,7 @@ var app = {
         
         let appID;
         try{
-          appID = (options.appid) ? options.appid : filePath.dir.replace(/(\\stats$)|(\\SteamEmu$)/g,"").match(/([0-9]+$)/g)[0];
+          appID = (options.appid) ? options.appid : filePath.dir.replace(/(\\stats$)|(\\SteamEmu$)|(\\SteamEmu\\UserStats$)/g,"").match(/([0-9]+$)/g)[0];
         }catch(err){
           throw "Unable to find game's appID";
         }

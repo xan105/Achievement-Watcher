@@ -8,7 +8,7 @@ const ffs = require("./util/feverFS.js");
 const regedit = require("./native/regedit.js");
 
 const files = {
-  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini","achieve.dat", "achievements.json"],
+  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini","achieve.dat", "achievements.json", "achiev.ini"],
   steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
 }
 
@@ -46,7 +46,7 @@ module.exports.getFolders = async (userDir_file) => {
         },
         {
           dir: path.join(mydocs,"DARKSiDERS"), 
-          options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]]}
+          options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[6],files.achievement[2]]}
         },
         {
           dir: path.join(mydocs,"SKIDROW"), 
@@ -83,11 +83,22 @@ module.exports.getFolders = async (userDir_file) => {
                       if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
                           let dirpath = await parentFind(async (directory) => {
-                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu',files.achievement[2]));
+                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats',files.achievement[6]));
                                           return has && directory;
                                     }, {cwd: dir.path, type: 'directory'});
 
-                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
+                          if (dirpath) {
+                            steamEmu.push({ dir: path.join(dirpath,"SteamEmu/UserStats"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[6]]} });
+                          } else {
+   
+                            dirpath = await parentFind(async (directory) => {
+                                            let has = await parentFind.exists(path.join(directory, 'SteamEmu',files.achievement[2]));
+                                            return has && directory;
+                                      }, {cwd: dir.path, type: 'directory'});
+
+                            if (dirpath) steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
+                          
+                          }
                   
                       }
                   } else if (info.Settings) { //Catherine

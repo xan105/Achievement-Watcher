@@ -155,7 +155,7 @@ module.exports.getGameData = async (cfg) => {
 module.exports.getAchievementsFromFile = async (filePath) => {
   try {
   
-  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "stats.ini", "SteamEmu/stats.ini", "Achievements.ini", "achievements.json"];
+  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "achiev.ini", "SteamEmu/UserStats/achiev.ini", "stats.ini", "SteamEmu/stats.ini", "Achievements.ini", "achievements.json"];
   const filter = ["SteamAchievements","Steam64","Steam"];
   
   let local;                            

@@ -97,21 +97,38 @@ module.exports.scan = async (dir) => {
     
         if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
+                
                 let dirpath = await parentFind(async (directory) => {
-                                let has = await parentFind.exists(path.join(directory, 'SteamEmu','stats.ini'));
+                                let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats','achiev.ini'));
                                 return has && directory;
-                          }, {cwd: dir, type: 'directory'});
+                            }, {cwd: dir, type: 'directory'});
 
                 if (dirpath){
                   result.push({ appid: info.GameSettings.AppId,
-                             source: "Hoodlum - DARKSiDERS",
+                             source: "DARKSiDERS",
                              data: {
                                type: "file",
-                               path: path.join(dirpath,"SteamEmu")
+                               path: path.join(dirpath,"SteamEmu/UserStats")
                              }
                            });
-                } 
-        
+                } else {
+                
+                   dirpath = await parentFind(async (directory) => {
+                                    let has = await parentFind.exists(path.join(directory, 'SteamEmu','stats.ini'));
+                                    return has && directory;
+                            }, {cwd: dir, type: 'directory'});
+
+                    if (dirpath){
+                      result.push({ appid: info.GameSettings.AppId,
+                                 source: "Hoodlum - DARKSiDERS",
+                                 data: {
+                                   type: "file",
+                                   path: path.join(dirpath,"SteamEmu")
+                                 }
+                               });
+                    } 
+                }
+                
         }
         
     } else if (info.Settings) { //Catherine
