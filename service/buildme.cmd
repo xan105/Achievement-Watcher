@@ -17,4 +17,3 @@ cd "%~dp0src\updater"
 call npm prune --production
 call "%~dp0rcedit-updater.cmd"
 call pkg --targets node12-win-x64 --output "%~dp0build/updater.exe" "%~dp0src/updater/updater.js"
-PAUSE
