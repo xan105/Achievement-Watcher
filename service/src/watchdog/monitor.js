@@ -21,12 +21,8 @@ module.exports.getFolders = async (userDir_file) => {
     },
     { 
       dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), 
-      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5],files.achievement[0]] } 
     },
-    { 
-      dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves","inventory"), 
-      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] } 
-    },  
     { 
       dir: path.join(process.env['PROGRAMDATA'],"Steam"), 
       options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 

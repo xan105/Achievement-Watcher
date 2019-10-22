@@ -19,7 +19,6 @@ module.exports.scan = async (additionalSearch = []) => {
     let search = [
         path.join(process.env['Public'],"Documents/Steam/CODEX"), 
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"),
-        path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves","inventory"),
         path.join(process.env['APPDATA'],"Steam/CODEX"),
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW"),
