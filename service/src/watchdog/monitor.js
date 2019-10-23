@@ -105,7 +105,7 @@ module.exports.getFolders = async (userDir_file) => {
 
                             let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
                             
-                            if (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini")) {
+                            if (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini"))) {
                               steamEmu.push({ dir: path.join(dirpath,"UserStats"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
                             } else {
                               steamEmu.push({ dir: dirpath, options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[3]]} });

@@ -62,7 +62,7 @@ Compatibility :
 |RLD! (Steam) | Yes | Yes | No | Yes (on game exit)
 |Skidrow (Steam) | Yes | No | No | Yes |
 |ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
-|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Yes, via user custom dir| Yes | No | Yes
+|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Via user custom dir| Yes | No | Yes
 |GreenLumaReborn (Steam) | Yes | No | No | No |
 |SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
 |Goldberg Steam Emu (Steam)| Yes | Yes | No | Yes |
