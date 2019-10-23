@@ -299,7 +299,7 @@ in ```%AppData%\Achievement Watcher```
 
 How to build
 ============
-You will node.js (>= 12.x), golang (>= 1.12) both with the same arch: in x86 **or** x64.<br/>
+You will need node.js (>= 12.x), golang (>= 1.12) both with the same arch: in x86 **or** x64.<br/>
 Innosetup 5 unicode with preprocessor and [Inno Download Plugin](http://www.jrsoftware.org/is3rdparty.php)<br/>
 Golang cgo requires a gcc compiler installed and set in PATH (recommended : http://tdm-gcc.tdragon.net/download).<br/>
 
