@@ -105,7 +105,7 @@ module.exports.scan = async (dir) => {
 
                 if (dirpath){
                   result.push({ appid: info.GameSettings.AppId,
-                             source: "DARKSiDERS",
+                             source: "Hoodlum - DARKSiDERS",
                              data: {
                                type: "file",
                                path: path.join(dirpath,"SteamEmu/UserStats")
@@ -129,6 +129,23 @@ module.exports.scan = async (dir) => {
                     } 
                 }
                 
+        } else if (info.GameSettings.UserDataFolder === "mydocs" && info.GameSettings.AppId && info.GameSettings.UserName && info.GameSettings.UserName !== ""){
+        
+            const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+            if (mydocs && mydocs != "") {
+
+              let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
+              
+              result.push({ appid: info.GameSettings.AppId,
+                               source: "Hoodlum - DARKSiDERS",
+                               data: {
+                                 type: "file",
+                                 path: (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini"))) ? path.join(dirpath,"UserStats") : dirpath
+                               }
+             });
+
+            }
+
         }
         
     } else if (info.Settings) { //Catherine

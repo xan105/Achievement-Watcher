@@ -8,7 +8,15 @@ const ffs = require("./util/feverFS.js");
 const regedit = require("./native/regedit.js");
 
 const files = {
-  achievement: ["achievements.ini","Achievements.Bin","stats.ini","Achievements.ini","achieve.dat", "achievements.json", "achiev.ini"],
+  achievement: [
+    "achievements.ini",
+    "achievements.json",
+    "achiev.ini",
+    "stats.ini",
+    "Achievements.Bin",
+    "achieve.dat",
+    "Achievements.ini" 
+  ],
   steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
 }
 
@@ -21,7 +29,7 @@ module.exports.getFolders = async (userDir_file) => {
     },
     { 
       dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), 
-      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5],files.achievement[0]] } 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[1],files.achievement[0]] } //keeping "achievements.ini" [0] for backward compatibility with custom goldberg emu build
     },
     { 
       dir: path.join(process.env['PROGRAMDATA'],"Steam"), 
@@ -29,7 +37,7 @@ module.exports.getFolders = async (userDir_file) => {
     },
     {
       dir: path.join(process.env['LOCALAPPDATA'],"SKIDROW"), 
-      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] }
     }
   ];
 
@@ -37,16 +45,8 @@ module.exports.getFolders = async (userDir_file) => {
   if (mydocs && mydocs != "") {
       steamEmu = steamEmu.concat([
         {
-          dir: path.join(mydocs,"HLM"), 
-          options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[2]] }
-        },
-        {
-          dir: path.join(mydocs,"DARKSiDERS"), 
-          options: { recursive: true, filter: /([0-9]+)\\SteamEmu/, file: [files.achievement[6],files.achievement[2]]}
-        },
-        {
           dir: path.join(mydocs,"SKIDROW"), 
-          options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[4]] }
+          options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] }
         }
       ]);
   }
@@ -69,43 +69,60 @@ module.exports.getFolders = async (userDir_file) => {
                   if (info.Settings && info.Option) { //ALI213
                       if(info.Settings.AppID && info.Settings.PlayerName) {
                           let dirpath = await parentFind(async (directory) => {
-                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, files.achievement[1]));
+                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, files.achievement[4]));
                                             return has && directory;
                              }, {cwd: dir.path, type: 'directory'});
 
-                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[1]]} });  
+                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });  
                     }
                   } else if (info.GameSettings) { //Hoodlum - DARKSiDERS
+                  
+                  
                       if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
                           let dirpath = await parentFind(async (directory) => {
-                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats',files.achievement[6]));
+                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats',files.achievement[2]));
                                           return has && directory;
                                     }, {cwd: dir.path, type: 'directory'});
 
                           if (dirpath) {
-                            steamEmu.push({ dir: path.join(dirpath,"SteamEmu/UserStats"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[6]]} });
+                            steamEmu.push({ dir: path.join(dirpath,"SteamEmu/UserStats"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
                           } else {
    
                             dirpath = await parentFind(async (directory) => {
-                                            let has = await parentFind.exists(path.join(directory, 'SteamEmu',files.achievement[2]));
+                                            let has = await parentFind.exists(path.join(directory, 'SteamEmu',files.achievement[3]));
                                             return has && directory;
                                       }, {cwd: dir.path, type: 'directory'});
 
-                            if (dirpath) steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
+                            if (dirpath) steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[3]]} });
                           
                           }
-                  
-                      }
+
+                      } else if (info.GameSettings.UserDataFolder === "mydocs" && info.GameSettings.AppId && info.GameSettings.UserName && info.GameSettings.UserName !== ""){
+        
+                          const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+                          if (mydocs && mydocs != "") {
+
+                            let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
+                            
+                            if (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini")) {
+                              steamEmu.push({ dir: path.join(dirpath,"UserStats"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
+                            } else {
+                              steamEmu.push({ dir: dirpath, options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[3]]} });
+                            }
+                          }
+                     }
+                     
+                      
                   } else if (info.Settings) { //Catherine
                       if (info.Settings.AppId && info.Settings.SteamID) {
 
                           let dirpath = await parentFind(async (directory) => {
-                                              let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`,files.achievement[3]));
+                                              let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`,files.achievement[6]));
                                               return has && directory;
                                     }, {cwd: dir.path, type: 'directory'});
 
-                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`SteamProfile/${info.Settings.SteamID}`), options: { appid: info.Settings.AppId, recursive: false, file: [files.achievement[3]]} }); 
+                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`SteamProfile/${info.Settings.SteamID}`), options: { appid: info.Settings.AppId, recursive: false, file: [files.achievement[6]]} }); 
                       
                       }
 

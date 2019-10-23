@@ -25,12 +25,10 @@ module.exports.scan = async (additionalSearch = []) => {
         path.join(process.env['APPDATA'],"SmartSteamEmu")
     ];
     
-    let mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+    const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
     if (mydocs && mydocs != "") {
       search = search.concat([
-        path.join(mydocs,"Skidrow"),
-        path.join(mydocs,"HLM"),
-        path.join(mydocs,"DARKSiDERS")
+        path.join(mydocs,"Skidrow")
       ]);
     }
     
@@ -56,10 +54,6 @@ module.exports.scan = async (additionalSearch = []) => {
                   game.source = "Skidrow";
                 } else if (dir.includes("SmartSteamEmu")){
                   game.source = "SmartSteamEmu";
-                } else if (dir.includes("HLM")){
-                  game.source = "Hoodlum";
-                } else if (dir.includes("DARKSiDERS")){
-                  game.source = "DARKSiDERS";
                 } else if (dir.includes("ProgramData/Steam")){
                   game.source = "Reloaded";
                 }
@@ -153,8 +147,18 @@ module.exports.getGameData = async (cfg) => {
 
 module.exports.getAchievementsFromFile = async (filePath) => {
   try {
+
+  const files = [
+    "achievements.ini",
+    "achievements.json",
+    "achiev.ini",
+    "stats.ini",
+    "Achievements.Bin",
+    "achieve.dat",
+    "Achievements.ini",
+    "stats/achievements.ini"
+  ];
   
-  const files = ["achievements.ini","stats/achievements.ini","Achievements.Bin" ,"achieve.dat", "achiev.ini", "SteamEmu/UserStats/achiev.ini", "stats.ini", "SteamEmu/stats.ini", "Achievements.ini", "achievements.json"];
   const filter = ["SteamAchievements","Steam64","Steam"];
   
   let local;                            
