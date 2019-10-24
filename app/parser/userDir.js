@@ -6,6 +6,7 @@ const ini = require("ini");
 const parentFind = require('find-up');
 const glob = require("fast-glob");
 const ffs = require(path.join(appPath,"util/feverFS.js"));
+const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
 
 const file = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
 
@@ -58,7 +59,7 @@ module.exports.scan = async (dir) => {
   try {
     
     let info;
-    for (let file of steam_emu_cfg_file_supported) {
+    for (var file of steam_emu_cfg_file_supported) {
       try{
         info = ini.parse(await ffs.promises.readFile(path.join(dir,file),"utf8"));
       break;
@@ -72,7 +73,7 @@ module.exports.scan = async (dir) => {
         Otherwise walk up parent directories and try to find the folder.
     */
     
-    if (info.Settings && info.Option) { //ALI213
+    if ( (file === "ALI213.ini" || file === "valve.ini") && info.Settings) { //ALI213
 
         if(info.Settings.AppID && info.Settings.PlayerName) {
 
@@ -93,11 +94,10 @@ module.exports.scan = async (dir) => {
         
       }
     
-    } else if (info.GameSettings) { //Hoodlum - DARKSiDERS
-    
+    } else if ( (file === "ds.ini" || file === "hlm.ini") && info.GameSettings) { //Hoodlum - DARKSiDERS
+              
         if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
-                
                 let dirpath = await parentFind(async (directory) => {
                                 let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats','achiev.ini'));
                                 return has && directory;
@@ -105,7 +105,7 @@ module.exports.scan = async (dir) => {
 
                 if (dirpath){
                   result.push({ appid: info.GameSettings.AppId,
-                             source: "Hoodlum - DARKSiDERS",
+                             source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Hoodlum - DARKSiDERS",
                              data: {
                                type: "file",
                                path: path.join(dirpath,"SteamEmu/UserStats")
@@ -120,7 +120,7 @@ module.exports.scan = async (dir) => {
 
                     if (dirpath){
                       result.push({ appid: info.GameSettings.AppId,
-                                 source: "Hoodlum - DARKSiDERS",
+                                 source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Hoodlum - DARKSiDERS",
                                  data: {
                                    type: "file",
                                    path: path.join(dirpath,"SteamEmu")
@@ -137,7 +137,7 @@ module.exports.scan = async (dir) => {
               let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
               
               result.push({ appid: info.GameSettings.AppId,
-                               source: "Hoodlum - DARKSiDERS",
+                               source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Hoodlum - DARKSiDERS",
                                data: {
                                  type: "file",
                                  path: (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini"))) ? path.join(dirpath,"UserStats") : dirpath
@@ -148,7 +148,7 @@ module.exports.scan = async (dir) => {
 
         }
         
-    } else if (info.Settings) { //Catherine
+    } else if (file === "steam_api.ini" && info.Settings) { //Catherine
     
         if (info.Settings.AppId && info.Settings.SteamID) {
 

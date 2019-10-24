@@ -58,15 +58,15 @@ module.exports.getFolders = async (userDir_file) => {
         try{
         
             let info;
-            for (let file of files.steamEmu) {
+            for (var file of files.steamEmu) {
                   try{
                     info = ini.parse(await ffs.promises.readFile(path.join(dir.path,file),"utf8"));
                     break;
                   }catch(e){}
             }
             if(info) {
-              
-                  if (info.Settings && info.Option) { //ALI213
+
+                  if ( (file === files.steamEmu[0] || file === files.steamEmu[1]) && info.Settings) { //ALI213
                       if(info.Settings.AppID && info.Settings.PlayerName) {
                           let dirpath = await parentFind(async (directory) => {
                                             let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, files.achievement[4]));
@@ -75,7 +75,7 @@ module.exports.getFolders = async (userDir_file) => {
 
                           if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });  
                     }
-                  } else if (info.GameSettings) { //Hoodlum - DARKSiDERS
+                  } else if ( (file === files.steamEmu[3] || file === files.steamEmu[2]) && info.GameSettings) { //Hoodlum - DARKSiDERS
                   
                   
                       if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
@@ -114,7 +114,7 @@ module.exports.getFolders = async (userDir_file) => {
                      }
                      
                       
-                  } else if (info.Settings) { //Catherine
+                  } else if (file === files.steamEmu[4] && info.Settings) { //Catherine
                       if (info.Settings.AppId && info.Settings.SteamID) {
 
                           let dirpath = await parentFind(async (directory) => {
