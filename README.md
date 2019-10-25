@@ -58,15 +58,16 @@ Compatibility :
 
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
-|Codex (Steam)| Yes | Yes | Yes, if available | Yes |
-|RLD! (Steam) | Yes | Yes | No | Yes (on game exit)
-|Skidrow (Steam) | Yes | No | No | Yes |
-|ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
-|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Via user custom dir| Yes | No | Yes
-|GreenLumaReborn (Steam) | Yes | No | No | No |
-|SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
-|Goldberg Steam Emu (Steam)| Yes | Yes | No | Yes |
-|Legit Steam Client (Steam) | Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
+|Codex| Yes | Yes | Yes, if available | Yes |
+|Goldberg Steam Emu| Yes | Yes | No | Yes |
+|Hoodlum| Via user custom dir| Yes | No | Yes
+|DARKSiDERS| Via user custom dir| Yes | No | Yes
+|Skidrow| Yes | No | No | Yes |
+|ALI213| Via user custom dir | Yes | No | Yes |
+|RLD!| Yes | Yes | No | Yes (on game exit)
+|GreenLumaReborn| Yes | No | No | No |
+|SmartSteamEmu| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
+|Legit Steam Client| Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
 |RPCS3 (PS3) | Via user custom dir | No | N/A | RPCS3 does it already|  
 |LumaPlay (Uplay) | Yes | No | No | No |
 
