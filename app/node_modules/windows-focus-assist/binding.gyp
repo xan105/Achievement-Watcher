@@ -8,7 +8,7 @@
       ],
       "conditions": [
         ['OS=="win"', {
-          "sources": [ "lib/focus-assist.cc" ],
+          "sources": [ "lib/focus-assist.cc", "lib/quiethours.idl", "lib/quiethours_h.h", "lib/quiethours_i.c" ],
         }]
       ]
     }

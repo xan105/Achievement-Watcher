@@ -154,7 +154,7 @@
 
         userDir.save(userDirList).catch((err)=>{
         
-          remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while saving user dir list", detail: `${err}`});
+          remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error while saving user dir list", detail: `${err}`});
         
         }).finally(()=>{
         settings.save(app.config).then(()=>{
@@ -198,7 +198,7 @@
               self.css("pointer-events","initial");
               $("#win-settings").css("pointer-events","initial");
               
-              remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while writing settings to file.", detail: `${err}`});
+              remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error while writing settings to file.", detail: `${err}`});
               
             });
 
@@ -258,7 +258,7 @@
         let self = $(this);
         self.css("pointer-events","none");
 
-          remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
+          remote.dialog.showOpenDialogSync(win,{properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
             try {
               if (filePaths){
                 debug.log(`Adding folder: ${filePaths}`);
@@ -268,14 +268,14 @@
                     debug.log("-> Added");
                 } else {
                   debug.log("-> Invalid folder");
-                  remote.dialog.showMessageBox({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
+                  remote.dialog.showMessageBoxSync({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
                 }
 
               }else{
                 debug.log("Adding folder: User Cancel");
               }
             }catch(err){
-              remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error adding custom folder", detail: `${err}`});
+              remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error adding custom folder", detail: `${err}`});
             }
           });
            
@@ -311,7 +311,7 @@
          })
          .catch((err)=>{  
             self.css("pointer-events","initial");
-            remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error while trying to reset user blacklist", detail: `${err}`});     
+            remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error while trying to reset user blacklist", detail: `${err}`});     
          });
        }); 
        
@@ -328,7 +328,7 @@
           }
         
         }catch(err){
-          remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: "GNTP Failure.", detail: `${err}`});
+          remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "GNTP Failure.", detail: `${err}`});
         }
         
         self.css("pointer-events","initial");
@@ -362,7 +362,7 @@
             }).catch((err)=>{
               self.css("pointer-events","initial");
               dummy.close();
-              remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: "Notification Failure.", detail: `${err}`});
+              remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Notification Failure.", detail: `${err}`});
             });    
               
          },500);
@@ -420,7 +420,7 @@ function populateUserDirList(option){
             
               let path = elem.find(".path span").text();
             
-              remote.dialog.showOpenDialog(win,{defaultPath: path,properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
+              remote.dialog.showOpenDialogSync(win,{defaultPath: path,properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
 
                try {
                   if (filePaths){
@@ -437,7 +437,7 @@ function populateUserDirList(option){
                         
                     } else {
                       debug.log("-> Invalid folder");
-                      remote.dialog.showMessageBox({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
+                      remote.dialog.showMessageBoxSync({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
                     }
 
                   }else{
@@ -445,7 +445,7 @@ function populateUserDirList(option){
                   }
                   
                }catch(err){
-                  remote.dialog.showMessageBox({type: "error",title: "Unexpected Error", message: "Error editing custom folder", detail: `${err}`});
+                  remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error editing custom folder", detail: `${err}`});
                }   
                   
               });

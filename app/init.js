@@ -29,8 +29,8 @@ try {
     };
 
     let win = new BrowserWindow(options);
-    
-    win.webContents.setUserAgent(manifest.config["user-agent"]);
+
+    win.webContents.userAgent = manifest.config["user-agent"];
     
     session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
       details.requestHeaders['User-Agent'] = manifest.config["user-agent"];
@@ -43,7 +43,7 @@ try {
       try {
         const contextMenu = require('electron-context-menu')();
       }catch(err){
-        dialog.showMessageBox({type: "warning",title: "Debug Mode Failure", message: "Failed to initialize context menu.", detail: `${err}`});
+        dialog.showMessageBoxSync({type: "warning",title: "Debug Mode Failure", message: "Failed to initialize context menu.", detail: `${err}`});
       }
     }
     

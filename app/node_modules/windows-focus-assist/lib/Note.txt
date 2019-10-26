@@ -1,0 +1,1 @@
+Important: If the quiethours.idl file needs to be updated, compile once then copy generated quiethours_h.h and quiethours_i.c files from \build\Release folder back to \lib folder.

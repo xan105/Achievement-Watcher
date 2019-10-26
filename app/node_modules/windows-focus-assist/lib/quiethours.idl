@@ -1,0 +1,41 @@
+// © Rafael Rivera
+// License: MIT
+
+import "oaidl.idl";
+
+[uuid(e0b5ef8b-a9b4-497a-8f71-08dd5c8ab2bf)]
+library QuietHours
+{
+	[uuid(f53321fa-34f8-4b7f-b9a3-361877cb94cf)]
+	coclass QuietHoursSettings
+	{
+		[default] interface IQuietHoursSettings;
+	}
+
+	[uuid(e813fe81-62b6-417d-b951-9d2e08486ac1)]
+	interface IQuietHoursProfile : IUnknown
+	{
+		[propget] HRESULT DisplayName([out, string, retval] LPWSTR* displayName);
+		[propget] HRESULT ProfileId([out, string, retval] LPWSTR* profileId);
+		HRESULT GetSetting(int setting, [out, retval] int* value);
+		HRESULT PutSetting(int setting, int value);
+		[propget] HRESULT IsCustomizable([out, retval] BOOL* result);
+		HRESULT GetAllowedContacts([out] UINT32* count, [out, retval] LPWSTR* allowedContacts);
+		HRESULT AddAllowedContact([in, string] LPWSTR allowedContact);
+		HRESULT RemoveAllowedContact([in, string] LPWSTR allowedContact);
+		HRESULT GetAllowedApps([out] UINT32* count, [out, retval] LPWSTR** allowedApps);
+		HRESULT AddAllowedApp([in, string] LPWSTR allowedApp);
+		HRESULT RemoveAllowedApp([in, string] LPWSTR allowedApp);
+		[propget] HRESULT Description([out, string, retval] LPWSTR* description);
+		[propget] HRESULT CustomizeLinkText([out, string, retval] LPWSTR* linkText);
+		[propget] HRESULT RestrictiveLevel([out, string, retval] LPWSTR* restrictiveLevel);
+	}
+
+	[uuid(6bff4732-81ec-4ffb-ae67-b6c1bc29631f)]
+	interface IQuietHoursSettings : IUnknown
+	{
+		[propget] HRESULT UserSelectedProfile([out, string, retval] LPWSTR* profileId);
+		[propput] HRESULT UserSelectedProfile([in] LPWSTR profileId);
+		HRESULT GetProfile([in, string] LPWSTR profileId, [out, retval] IQuietHoursProfile**);
+	}
+}

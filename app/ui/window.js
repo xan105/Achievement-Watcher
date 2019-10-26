@@ -20,7 +20,7 @@ const win = remote.getCurrentWindow();
     
     $(document).on('click', 'a[href]', function(event) {
       event.preventDefault();
-      shell.openExternal(this.href);
+      shell.openExternal(this.href).catch(()=>{});
     });
 
     remote.app.on('second-instance', (event, argv, cwd) => {

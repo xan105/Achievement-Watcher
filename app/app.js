@@ -16,14 +16,14 @@ const l10n = require(path.join(appPath,"locale/loader.js"));
 const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
   console: win.isDev || false,
-  file: path.join(remote.app.getPath('userData'),`logs/${remote.app.getName()}.log`)
+  file: path.join(remote.app.getPath('userData'),`logs/${remote.app.name}.log`)
 });
 
 var app = {
   args: getArgs(remote.process.argv),
   config : settings.load(),
   errorExit: function(err, message = "An unexpected error has occured"){
-       remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: `${message}`, detail: `${err}`});
+       remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: `${message}`, detail: `${err}`});
        remote.app.quit();
   },
   onStart : function(){
@@ -145,7 +145,7 @@ var app = {
             blacklist.add(appid);
             app.onStart();
           }catch(err){
-            remote.dialog.showMessageBox({type: "error", title: "Unexpected Error", message: `Failed to add item to user blacklist`, detail: `${err}`});
+            remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: `Failed to add item to user blacklist`, detail: `${err}`});
           }
          
           } }));
