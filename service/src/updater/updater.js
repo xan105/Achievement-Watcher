@@ -4,6 +4,7 @@ const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
 const instance = new(require('single-instance'))('Achievement Updater');
+const toast = require('powertoast');
 const tasklist = require('win-tasklist');
 const request = require('request-zero');
 const { semver } = require("./util/versionCompare.js");
@@ -70,6 +71,21 @@ var updater = {
                 
               if (size.remote === size.local) {
                 debug.log("Expected file size");
+                try{
+                  await toast({
+                    appID: manifest.config.appid,
+                    title: "New version available",
+                    message: `Upgrading to ${github.tag_name} ...`,
+                    icon: path.join(__dirname,"icon.png"),
+                    button: [
+                      { text: "Changelog", 
+                        onClick: github.html_url || `https://github.com/${manifest.config.update.github}/releases/latest`
+                      }
+                    ]                  
+                  });
+                 }catch(err){
+                  debug.log(err);
+                 }
                 this.upgrade(file.path);
               } else {
                 debug.log("Unexpected file size ! > Aborting");
