@@ -1,4 +1,3 @@
 temp/
 todo.txt
 server/start.sh
-app/node_modules/electron/dist/electron.exe
