@@ -58,15 +58,16 @@ Compatibility :
 
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
-|Codex (Steam)| Yes | Yes | Yes, if available | Yes |
-|RLD! (Steam) | Yes | Yes | No | Yes (on game exit)
-|Skidrow (Steam) | Yes | No | No | Yes |
-|ALI213 (Steam) | Via user custom dir | Yes | No | Yes |
-|Hoodlum (Steam)<br>DARKSiDERS (Steam)| Via user custom dir| Yes | No | Yes
-|GreenLumaReborn (Steam) | Yes | No | No | No |
-|SmartSteamEmu (Steam)| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
-|Goldberg Steam Emu (Steam)| Yes | Yes | No | Yes |
-|Legit Steam Client (Steam) | Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
+|Codex| Yes | Yes | Yes, if available | Yes |
+|Goldberg Steam Emu| Yes | Yes | No | Yes |
+|Hoodlum| Via user custom dir| Yes | No | Yes
+|DARKSiDERS| Via user custom dir| Yes | No | Yes
+|Skidrow| Yes | No | No | Yes |
+|ALI213| Via user custom dir | Yes | No | Yes |
+|RLD!| Yes | Yes | No | Yes (on game exit)
+|GreenLumaReborn| Yes | No | No | No |
+|SmartSteamEmu| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
+|Legit Steam Client| Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
 |RPCS3 (PS3) | Via user custom dir | No | N/A | RPCS3 does it already|  
 |LumaPlay (Uplay) | Yes | No | No | No |
 
@@ -298,7 +299,7 @@ in ```%AppData%\Achievement Watcher```
 How to build
 ============
 You will need node.js (>= 12.x), golang (>= 1.12) both with the same arch: in x86 **or** x64.<br/>
-Innosetup 5 unicode with preprocessor and [Inno Download Plugin](http://www.jrsoftware.org/is3rdparty.php)<br/>
+Innosetup 5 unicode with preprocessor and [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/)<br/>
 Golang cgo requires a gcc compiler installed and set in PATH (recommended : http://tdm-gcc.tdragon.net/download).<br/>
 
 For node you globally need asar, json and pkg :<br/>
