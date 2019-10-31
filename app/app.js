@@ -190,7 +190,7 @@ var app = {
               }
               
             } else {
-              $("body").fadeIn();
+              $("body").fadeIn().css("background",`url('../resources/img/ach_background.jpg')`);
             }
             
             if (game.system) {
