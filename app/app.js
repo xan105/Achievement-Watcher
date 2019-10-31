@@ -230,7 +230,13 @@ var app = {
                 <li>
                       
                          <div class="achievement" data-name="${achievement.name}" data-index="${i}">
-                            <div class="icon" style="background: url('${achievement.Achieved ? achievement.icon : achievement.icongray}');"></div>
+                            <div class="icon" style="background: url('${achievement.Achieved ? achievement.icon : achievement.icongray}');">
+                              <div class="glow mask contain">
+                                  <div class="glow mask ray ">
+                                    <div class="glow fx"></div>
+                                  </div>
+                              </div>
+                            </div>
                             <div class="content">
                                 <div class="title">${game.system === "playstation" ? `<i class="fas fa-trophy" data-type="${achievement.type}"></i> ${achievement.displayName}` : `${achievement.displayName}`}</div>
                                 <div class="description">${achievement.description || ''}</div>

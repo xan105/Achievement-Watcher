@@ -16,7 +16,12 @@ function getSteamGlobalStat(appid) {
            let percent = Math.round(globalStat.percent);
            if(percent > 100) percent = 100;
         
-           $(`#achievement li .achievement[data-name="${globalStat.name}"] .stats .community span.data`).text(percent);
+           let elem = $(`#achievement li .achievement[data-name="${globalStat.name}"]`);
+           
+           elem.find(".stats .community span.data").text(percent);
+           
+           if(percent >= 0 && percent <= 10) { elem.addClass("rare") }
+ 
         }
       },
       error: ()=>{},
