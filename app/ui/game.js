@@ -23,6 +23,7 @@ function getSteamGlobalStat(appid) {
            if(percent >= 0 && percent <= 10) { elem.addClass("rare") }
  
         }
+        $(".achievement-list > .header .sort-ach .sort.percentage").addClass("show");
       },
       error: ()=>{},
       complete: ()=>{}
@@ -50,6 +51,7 @@ function getSteamGlobalStat(appid) {
         $("#achievement").fadeOut(500,function() {
             setTimeout(()=>{  
               $("body").removeAttr("style");
+              $(".achievement-list > .header .sort-ach .sort").removeClass("show active");
               $("#home").fadeIn(500,function() {
                   self.css("pointer-events","initial");
               });

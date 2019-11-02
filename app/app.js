@@ -178,6 +178,8 @@ var app = {
 
         let game = list.find( elem => elem.appid == self.data("appid") && list.indexOf(elem) == self.data("index"));
 
+        if (self.data('time') > 0) $("#unlock > .header .sort-ach .sort.time").addClass("show");
+        
         $("#home").fadeOut(function() {
             
             if(game.img.background) {
@@ -265,6 +267,7 @@ var app = {
                     hidden_counter = hidden_counter +1;
                   } else {
                     lock.append(template);
+                    i+=1;
                   }
 
                 }

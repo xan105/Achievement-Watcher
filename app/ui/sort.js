@@ -102,26 +102,42 @@ function sort(elem, option = {}) {
         
     });
 
-    $("#unlock > .header .sort-ach .sort.time").click(function(){
+    $(".achievement-list > .header .sort-ach .sort").click(function(){
     
         let self = $(this);
         self.css("pointer-events","none");
         
-        let elem = $("#unlock > ul");
-        let li = elem.children("li");
+        let root = self.closest(".achievement-list");
+        let elem = root.children("ul");
+        let li = elem.children("li:not('#hidden-disclaimer')");
 
+        let sortby = {
+          percent: root.find(".header .sort-ach .sort.percentage").hasClass("active") ? true : false,
+          time: root.find(".header .sort-ach .sort.time").hasClass("active") ? true : false
+        }
+        
+        if (self.hasClass("percentage")) {
+            sortby.percent = !sortby.percent;
+        }
+        else if (self.hasClass("time")) {
+            sortby.time = !sortby.time; 
+        }
 
         li.detach().sort(function(a, b) {
         
-              if (self.hasClass("active")) {
-                return $(a).find(".achievement").data("index") - $(b).find(".achievement").data("index");
+              if (sortby.percent) {
+                let result = parseInt($(a).find(".achievement .stats .community .data").text()||0) - parseInt($(b).find(".achievement .stats .community .data").text()||0);
+                if (result != 0) return result;
+              }  
+              if (sortby.time) {
+                let result = $(b).find(".achievement .stats .time").data("time") - $(a).find(".achievement .stats .time").data("time");
+                if (result != 0) return result;
               } else {
-                return $(b).find(".achievement .stats .time").data("time") - $(a).find(".achievement .stats .time").data("time");
+                return $(a).find(".achievement").data("index") - $(b).find(".achievement").data("index");
               }
         });
-          
-          
-        elem.append(li);
+           
+        elem.prepend(li);
         
         (self.hasClass("active")) ? self.removeClass("active") : self.addClass("active");
           
