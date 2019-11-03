@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "init.js",
   "scripts": {
     "start": "electron .",
@@ -12,7 +12,7 @@
   "author": "Anthony Beaumont",
   "license": "LGPL-3.0-only",
   "devDependencies": {
-    "electron": "^7.0.0",
+    "electron": "^7.0.1",
     "electron-context-menu": "^0.11.0",
     "electron-rebuild": "^1.8.6",
     "patch-package": "^6.1.2"
