@@ -169,6 +169,7 @@ var app = {
    }).finally(() => {
       $("#user-info").fadeTo('fast', 1).css("pointer-events","initial");
       $("#sort-box").fadeTo('fast', 1).css("pointer-events","initial");
+      $("#search-bar").fadeTo('fast', 1).css("pointer-events","initial");
       $("#win-settings").css("pointer-events","initial");
    });
 

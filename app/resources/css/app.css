@@ -1337,3 +1337,57 @@ main {
 #focus-assist-state span[data-state="1"] {
   color: #f3a20d;
 }
+
+#search-bar {
+  position: absolute;
+  top: 105px;
+  left: calc( ( 100% - 91.85% ) / 2 );
+  z-index: 1;
+  opacity: 0;
+}
+
+#search-bar .wrapper {
+  position: relative;
+}
+
+#search-bar .wrapper > i {
+  position: absolute;
+  top: 7px;
+  left: 11px;
+  pointer-events: none;
+}
+
+#search-bar input[type=search] {
+    outline: none;
+    box-sizing: content-box;
+    font-family: inherit;
+    font-size: 100%;
+    background: #15202d;
+    border: solid #24374c 1px;
+    padding: 9px 10px;
+    transition: all .5s;
+    width: 15px;
+    height: 10px;
+    color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Open-Sans";
+    text-transform: capitalize;
+}
+
+#search-bar input[type=search]:focus {
+	width: 130px;
+	box-shadow: rgba(198, 212, 223, 0.5) 0px 0px 8px 2px;
+	padding-left: 32px;
+	color: #d9dfe4;
+	cursor: auto;
+}
+
+#search-bar input::-webkit-search-decoration,
+#search-bar input::-webkit-search-cancel-button {
+	display: none; 
+}
+
+#search-bar input::-webkit-input-placeholder {
+	color: transparent;
+}
