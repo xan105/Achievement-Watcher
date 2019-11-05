@@ -8,7 +8,7 @@
         let self = $(this);
         let gamelist = $("#game-list ul");
         let li = gamelist.children("li");
-        let filter = self.val().toUpperCase();
+        let filter = self.val().replace(/<\/?[^>]+>/gi, '').toUpperCase();
       
         li.each( (index,elem) => {
         
