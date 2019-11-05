@@ -1,5 +1,5 @@
 A sexy achievement file parser with real-time notification.<br />
-View all the achievements earned on your PC whether it's coming from Steam, a Steam emulator, and more.<br />
+View every achievement earned on your PC whether it's coming from Steam, a Steam emulator, and more.<br />
 To see the full list of what this app can import please see the [**Compatibility**](https://github.com/xan105/Achievement-Watcher#compatibility-) section.
 
 <table >
@@ -9,7 +9,7 @@ To see the full list of what this app can import please see the [**Compatibility
 </tr>
 </table>
 
-The original idea behind this app was that some steam emulator generate a text file where all the achievements you have unlocked are stored.
+The original idea behind this app was that some steam emulators generate a text file where your unlocked achievements are stored. 
 But they aren't very friendly to know which is which, here is an example :
 ```ini
 [NEW_ACHIEVEMENT_1_1]
@@ -24,7 +24,7 @@ Count=1
 So which achievement is NEW_ACHIEVEMENT_1_1 ? You'll have to ask the steam API or look online in a site like the steamdb to find out.
 So let's just do that automagically :)
 
-Live notification on achievement unlocking
+Notification on achievement unlocking
 ==========================================
 
 Not as sexy as a directX Overlay but it's the next best thing.<br />
