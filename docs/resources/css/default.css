@@ -207,6 +207,7 @@ h2 {
   width: 50%;
   padding: 10px 20px;
   box-sizing: border-box;
+  pointer-events: none;
 }
 
 .details .img img {
