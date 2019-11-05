@@ -8,7 +8,7 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LC+Ho6N6eSIe3bQWCtxjxYBAd+LGeU+HBMin7z6w1Qc=';" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://api.github.com;" />
 
         <link rel="apple-touch-icon" sizes="180x180" href="resources/icon/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="resources/icon/favicon-32x32.png">
@@ -160,8 +160,6 @@
     </footer>
 
   </body>
-  <script type="text/javascript">
-    [...(document.querySelectorAll('.contextmenu'))].forEach((el)=>{ el.oncontextmenu=(e)=>{e.preventDefault()}; });
-    document.querySelector('#back-to-top').addEventListener('click', ()=>{ window.scroll({top: 0, left: 0, behavior: 'smooth'}) });
-  </script>
+  <script src="request-fetch.js" type="text/javascript"></script>
+  <script src="main.js" type="text/javascript"></script>
 </html>
