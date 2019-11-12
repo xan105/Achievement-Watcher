@@ -173,7 +173,7 @@ module.exports.getAchievementsFromFile = async (filePath) => {
        break;
      } catch (e) {}
   }              
-  if(!local) throw "No achievement file found"; 
+  if(!local) throw `No achievement file found in '${filePath}'`; 
                           
   let result = {};                     
   

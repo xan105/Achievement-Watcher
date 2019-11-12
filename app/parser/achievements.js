@@ -143,6 +143,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                 if (appid.data.type === "file") {
  
                     root = await steam.getAchievementsFromFile(appid.data.path);
+                    if(Object.entries(root).length === 0 && root.constructor === Object) throw `file in '${appid.data.path}' is probably empty`;
 
                  } else if (appid.data.type === "reg") {
                        
@@ -170,11 +171,11 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                  } else if (appid.data.type === "cached"){
                    root = await watchdog.getAchievements(appid.appid);
                  }
-
+                
                  for (let i in root){
 
                      try {
-
+                     
                           let id = root[i].id || root[i].apiname || root[i].name || i;
                           
                           let achievement = game.achievement.list.find( elem => elem.name == id);
