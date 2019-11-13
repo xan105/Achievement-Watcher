@@ -57,7 +57,7 @@
   "muted": "静音",
   "customUserFolderInfo": [
     "选择一个包含 appid 文件夹的目录。",
-	  "对于ALI213、Hoodlum、RPCS3，请选择",
+    "对于ALI213、Hoodlum、RPCS3，请选择",
     "ALI213.ini、valve.ini、hlm.ini、ds.ini 或 RPCS3.exe 文件所在的目录。"
   ],
   "blacklistTitle": "AppID 黑名单",
