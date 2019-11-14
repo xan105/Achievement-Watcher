@@ -254,33 +254,35 @@
         self.css("pointer-events","initial");
       });
       
-      $("#addCustomDir").click(function(){
+      $("#addCustomDir").click(async function(){
         
         let self = $(this);
         self.css("pointer-events","none");
+        
+        try {
+        
+          let dialog = await remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']});
+  
+          if (dialog.filePaths.length > 0){
+              debug.log(`Adding folder: ${dialog.filePaths}`);
 
-          remote.dialog.showOpenDialogSync(win,{properties : ['openDirectory','showHiddenFiles']},async function(filePaths){
-            try {
-              if (filePaths){
-                debug.log(`Adding folder: ${filePaths}`);
-                
-                if (await userDir.check(filePaths[0]) ) {
-                    populateUserDirList({dir: filePaths[0]});
-                    debug.log("-> Added");
-                } else {
+              if(await userDir.check(dialog.filePaths[0])) {
+                  populateUserDirList({dir: dialog.filePaths[0]});
+                  debug.log("-> Added");
+               } else {
                   debug.log("-> Invalid folder");
                   remote.dialog.showMessageBoxSync({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
-                }
+               }
+          }else{
+              debug.log("Adding folder: User Cancel");
+          }
 
-              }else{
-                debug.log("Adding folder: User Cancel");
-              }
-            }catch(err){
-              remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error adding custom folder", detail: `${err}`});
-            }
-          });
-           
+        }catch(err){
+          remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error adding custom folder", detail: `${err}`});
+        };
+        
         self.css("pointer-events","initial");
+
       });
       
       $("#blacklist_reset").click(function(){

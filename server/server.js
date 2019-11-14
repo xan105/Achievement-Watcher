@@ -95,6 +95,10 @@ app.get("/steam/ach/:appid", async (req, res) => {
       result.status = 504;
       result.response.error = "Gateway Time-out";
       debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
+    } else if (err.code == 503) {
+      result.status = 503;
+      result.response.error = "Service Temporarily Unavailable";
+      debug.log("An error has occurred in API: 'Steam/achievement/GetSchema':\n" + err);
     }else {
       result.status = 500;
       result.response.error = "Internal Server Error";
