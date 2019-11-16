@@ -30,6 +30,7 @@
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0",
     "single-instance": "0.0.1",
-    "win-tasklist": "^1.0.0"
+    "win-tasklist": "^1.0.0",
+    "ws": "^7.2.0"
   }
 }

@@ -8,6 +8,7 @@ const watch = require('node-watch');
 const tasklist = require('win-tasklist');
 const moment = require("moment");
 const toast = require("powertoast");
+const WebSocket = new (require('ws')).Server({ port: 8082 }); 
 
 const processPriority = require("./util/priority.js");
 const ffs = require("./util/feverFS.js");
@@ -255,6 +256,22 @@ var app = {
          if (self.options.notification.notify) {
            debug.log(notification);
 
+            if (WebSocket.clients.size > 0) {
+              try {
+                WebSocket.clients.forEach( client => client.send(JSON.stringify({
+                   appID: notification.appid,
+                   title: notification.title,
+                   id: notification.id,
+                   message: notification.message,
+                   description: notification.description,
+                   icon: notification.icon,
+                   time: notification.time
+                })));
+              }catch(err){
+                debug.log(`[WebSocket] error: ${err}`);
+              }
+            }
+
             if (self.options.notification.powershell) {
               try{
               
@@ -329,6 +346,26 @@ var app = {
       
       if (self.options.notification.notifyOnProgress) {
           debug.log(notification);
+
+             if (WebSocket.clients.size > 0) {
+                  try {
+                    WebSocket.clients.forEach( client => client.send(JSON.stringify({
+                       appID: notification.appid,
+                       title: notification.title,
+                       id: notification.id,
+                       message: notification.message,
+                       description: notification.description,
+                       icon: notification.icon,
+                       time: notification.time,
+                       progress: {
+                        current: notification.progress.current,
+                        max: notification.progress.max
+                       }
+                    })));
+                  }catch(err){
+                    debug.log(`[WebSocket] error: ${err}`);
+                  }
+             }
           
              if (self.options.notification.powershell) {
                   try{
@@ -392,6 +429,24 @@ singleInstance.lock().then(() => {
   app.start().catch((err) => { 
     debug.log(err); 
   });
+  
+  WebSocket.on('connection', (client) => {
+     debug.log("[WebSocket] client connected");
+     client.isAlive = true;
+     client.on('pong', function(){ this.isAlive = true }); //heartbeat
+  });
+  
+  setInterval(()=>{
+    WebSocket.clients.forEach((client) => {
+      if (client.isAlive === false) {
+        debug.log("[WebSocket] closing broken connection");
+        return client.terminate();
+      }
+      client.isAlive = false;
+      client.ping(()=>{}); //noop
+    });
+  }, 30000);
+  
 })
 .catch((err) => {
   debug.log(err);
