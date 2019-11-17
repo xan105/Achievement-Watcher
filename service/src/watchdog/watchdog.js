@@ -434,6 +434,25 @@ singleInstance.lock().then(() => {
      debug.log("[WebSocket] client connected");
      client.isAlive = true;
      client.on('pong', function(){ this.isAlive = true }); //heartbeat
+     
+     client.on('message', function(message){
+        if (message === "test") {
+            debug.log("[WebSocket] received request for a dummy notification > sending...");
+            try {
+                this.send(JSON.stringify({
+                   appID: 480,
+                   title: "Achievement Watcher",
+                   id: "achievement_00",
+                   message: "Hello World",
+                   description: "beep boop",
+                   icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+                   time: moment().valueOf()
+                }));
+            }catch(err){
+                debug.log(`[WebSocket] error: ${err}`);
+            }
+        }
+     });
   });
   
   setInterval(()=>{
