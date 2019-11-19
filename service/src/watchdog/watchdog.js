@@ -8,8 +8,7 @@ const watch = require('node-watch');
 const tasklist = require('win-tasklist');
 const moment = require("moment");
 const toast = require("powertoast");
-const WebSocket = new (require('ws')).Server({ port: 8082 }); 
-
+const websocket = require("./websocket.js");
 const processPriority = require("./util/priority.js");
 const ffs = require("./util/feverFS.js");
 const settings = require('./settings.js');
@@ -254,23 +253,17 @@ var app = {
          }
 
          if (self.options.notification.notify) {
-           debug.log(notification);
+            debug.log(notification);
 
-            if (WebSocket.clients.size > 0) {
-              try {
-                WebSocket.clients.forEach( client => client.send(JSON.stringify({
-                   appID: notification.appid,
-                   title: notification.title,
-                   id: notification.id,
-                   message: notification.message,
-                   description: notification.description,
-                   icon: notification.icon,
-                   time: notification.time
-                })));
-              }catch(err){
-                debug.log(`[WebSocket] error: ${err}`);
-              }
-            }
+            websocket.broadcast({
+                     appID: notification.appid,
+                     title: notification.title,
+                     id: notification.id,
+                     message: notification.message,
+                     description: notification.description,
+                     icon: notification.icon,
+                     time: notification.time
+            });
 
             if (self.options.notification.powershell) {
               try{
@@ -345,11 +338,9 @@ var app = {
       let self = this; 
       
       if (self.options.notification.notifyOnProgress) {
-          debug.log(notification);
+             debug.log(notification);
 
-             if (WebSocket.clients.size > 0) {
-                  try {
-                    WebSocket.clients.forEach( client => client.send(JSON.stringify({
+             websocket.broadcast({
                        appID: notification.appid,
                        title: notification.title,
                        id: notification.id,
@@ -361,12 +352,8 @@ var app = {
                         current: notification.progress.current,
                         max: notification.progress.max
                        }
-                    })));
-                  }catch(err){
-                    debug.log(`[WebSocket] error: ${err}`);
-                  }
-             }
-          
+             });
+
              if (self.options.notification.powershell) {
                   try{
 
@@ -430,41 +417,7 @@ singleInstance.lock().then(() => {
     debug.log(err); 
   });
   
-  WebSocket.on('connection', (client) => {
-     debug.log("[WebSocket] client connected");
-     client.isAlive = true;
-     client.on('pong', function(){ this.isAlive = true }); //heartbeat
-     
-     client.on('message', function(message){
-        if (message === "test") {
-            debug.log("[WebSocket] received request for a dummy notification > sending...");
-            try {
-                this.send(JSON.stringify({
-                   appID: 480,
-                   title: "Achievement Watcher",
-                   id: "achievement_00",
-                   message: "Hello World",
-                   description: "beep boop",
-                   icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
-                   time: moment().valueOf()
-                }));
-            }catch(err){
-                debug.log(`[WebSocket] error: ${err}`);
-            }
-        }
-     });
-  });
-  
-  setInterval(()=>{
-    WebSocket.clients.forEach((client) => {
-      if (client.isAlive === false) {
-        debug.log("[WebSocket] closing broken connection");
-        return client.terminate();
-      }
-      client.isAlive = false;
-      client.ping(()=>{}); //noop
-    });
-  }, 30000);
+  websocket.init();
   
 })
 .catch((err) => {
