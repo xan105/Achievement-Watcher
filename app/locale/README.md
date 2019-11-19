@@ -21,14 +21,14 @@ Available/Supported langs (based on [steam](https://partner.steamgames.com/doc/s
 
 Translation Status
 ==================
-As of 17/07/2019
+As of 19/11/2019
 
 - Arabic (ar) | العربية
 - Bulgarian (bg) | български език
 - Chinese: Simplified  (zh-CN) | 简体中文
-    <br/>Incomplete <br/>
+    <br/>Complete <br/>
     No css override <br/>
-    Steam UI + Google Translate   
+    [fiyeck](https://github.com/fiyeck)
 - Chinese: Traditional (zh-TW) | 繁體中文	
 - Czech (cs) | čeština	
 - Danish (da) | Dansk	
@@ -36,22 +36,22 @@ As of 17/07/2019
 - English (en) | English
     <br/>Complete <br/>
     No css override <br/>
-    By Anthony Beaumont
+    Anthony Beaumont
 - Finnish (fi) | Suomi	
 - French (fr) | Français
     <br/>Complete <br/>
     No css override <br/>
-    By Anthony Beaumont
+    Anthony Beaumont
 - German (de) | Deutsch
     <br/>Incomplete <br/>
     No css override <br/>
-    By Anthony Beaumont
+    Anthony Beaumont
 - Greek (el) | Ελληνικά	
 - Hungarian (hu) | Magyar
 - Italian (it) | Italiano
     <br/>Incomplete <br/>
     css override <br/>
-    By pollolollo9001
+    pollolollo9001
 - Japanese (ja) | 日本語	
     <br/>Incomplete <br/>
     css override <br/>
@@ -64,8 +64,8 @@ As of 17/07/2019
 - Romanian (ro) | Română	
 - Russian (ru) | Русский	
     <br/>Incomplete <br/>
-    No css override <br/>
-    Steam UI + Google Translate
+    css override <br/>
+    [hugmouse](https://github.com/hugmouse)
 - Spanish (es) | Español-España
     <br/>Incomplete <br/>
     css override <br/>
@@ -76,7 +76,7 @@ As of 17/07/2019
 - Thai (th) | ไทย
     <br/>Incomplete <br/>
     No css override <br/>
-    By Anthony Beaumont
+    Anthony Beaumont
 - Turkish (tr) | Türkçe
 - Ukrainian (uk) | Українська	
 - Vietnamese (vn) | Tiếng Việt
