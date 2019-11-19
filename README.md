@@ -27,31 +27,105 @@ So let's just do that automagically :)
 Notification on achievement unlocking
 ==========================================
 
-Not as sexy as a directX Overlay but it's the next best thing.<br />
-Display a Windows toast notification and/or a growl notification (gntp@localhost:23053) when you unlock an achievement.<br />
-**Please verify your notification and focus assistant settings for the toast to work properly**.<br />
-You can test notification in Settings > Debug to make sure your system is correctly configured.
-
 <p align="center">
-<img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
+  <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
 </p>
 
-Note that there might be a slight delay between the event and the display of the notification as running powershell and loading a remote img resource can take a few seconds in some cases.<br />
+Not as sexy as a directX Overlay but it's the next best thing.<br />
+You can display a notification when you unlock an achievement with:
+  - Windows toast notification (Win8/Win8.1/Win10)
+  - Websocket
+  - Growl Notification Transport Protocol (GNTP)
+  
+### Windows toast notification
+
+⚠️ **Please verify your Windows notification and focus assistant settings for the toast to work properly**.<br />
+You can test notification in Settings > Debug to make sure your system is correctly configured.
+
+There might be a slight delay between the event and the display of the notification as running powershell and loading a remote image can take a few seconds in some cases.<br />
 
 Game must be set to Window borderless for the notification to be rendered on top of it.<br />
 
-If you have enabled the *souvenir* option, a screenshot will be taken<br />
+🚑 Not seeing any toast notification ? Quick fix :
+- Try to set your game to Window borderless.
+- Try to disable the automatic game **and** fullscreen rule in focus assistant (Win10)<br/>
+  or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the Xbox appID(s) used by this app are in it).
+- Try to set checkIfProcessIsRunning to false in `%AppData%\Achievement Watcher\cfg\options.ini`
+
+Windows 8.1 : Don't forget quiet hours.<br />
+Windows 10 >= 1903 : New focus assist auto rule for fullscreen app set to alarm only by default prevents the notification from working out of the box.
+    
+### Websocket
+
+Endpoint: `ws://localhost:8082`
+
+You can for example use this to create your own notification in an OBS browser source and the like for your streaming needs.
+
+Achievement data are broadcasted to all connected websocket clients.<br />
+There is a 30sec ping/pong but normally it's handled by the browser so you shouldn't have to add code for it.<br />
+
+To help you there is a test command to send a dummy valid notification.
+```js
+//Example
+
+const ws = new WebSocket("ws://localhost:8082");
+ws.onopen = (evt) => { 
+  ws.send(JSON.stringify({cmd:"test"})); //dummy is only send to the client making the request
+  
+  ws.send(JSON.stringify({
+    cmd:"test",
+    broadcast: true
+ })); //use broadcast option if you need to send the dummy to all connected clients
+  
+};
+ws.onmessage = (evt) => {
+  console.log(JSON.parse(evt.data)); //JSON string
+  /* Output:
+    {
+      appID: steam appID,
+      title: game name,
+      id: achievement id,
+      message: achievement title,
+      description: achievement description if any,
+      icon: unlocked icon url,
+      time: timestamp from the Steam emu,
+      progress: //if it's a progress and not an unlocked achievement; 
+                //Otherwise this property is not sent at all
+      { 
+          current: current progress,
+          max: max progress value
+      }
+    }  
+  */
+  ws.close();
+};
+
+```
+
+💡 Yes ! You could use this to create a DirectX Overlay by using a DirectX hook which will use Chromium Embedded Framework (such as [momo5502/gameoverlay](https://github.com/momo5502/gameoverlay)) to load some js code to consume data from this websocket.<br />
+I successfully done it but only a few DirectX 9 games weren't crashing and since my C++ skills are not up for the task.<br />
+I wouldn't mind some help if you know your stuff.    
+    
+### GNTP
+
+Endpoint: `localhost:23053`
+
+Recommended gntp client is Growl for Windows (despite it being discontinued) [Mirror download link](https://github.com/xan105/Achievement-Watcher/releases/download/1.2.3/Growl.7z)
+
+Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification.<br />
+Game must be set to Window borderless for the notification to be rendered on top of it.
+
+To customize the look of the toast please kindly see your gntp client's options.<br />
+If you are looking for the Achievement Watcher notification sounds there are in `%windir%\Media` (Achievement___.wav)
+
+### Notification miscellaneous
+
+If you have enabled the *souvenir* option a screenshot will be taken<br />
 and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
 
-### 🚑 Not seeing any toast notification ? Quick fix :
-- try to set your game to Window borderless.
-- try to disable the automatic game **and** fullscreen rule in focus assistant (Win10)<br/>
-  or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the Xbox appID(s) used by this app are in it).
-- try to set checkIfProcessIsRunning to false in `%AppData%\Achievement Watcher\cfg\options.ini`
+The process `watchdog.exe` is the one doing all the work so make sure it is running.
 
-Oh and make sure `watchdog.exe` is running.<br />
-<br />
-Not all games are supported, please see below.<br />
+Not all games are supported, please see the compatibility chart below.
   
 Compatibility :
 ================
