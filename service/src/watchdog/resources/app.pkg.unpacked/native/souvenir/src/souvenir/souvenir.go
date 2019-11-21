@@ -8,6 +8,7 @@ package main
   "path"
   "screenshot"
   "regedit"
+  "image"
  	"image/png"
  	"os"
  	"fmt"
@@ -22,7 +23,18 @@ package main
   game := clean(C.GoString(gameName),filter)
   achievement := clean(C.GoString(achievementName),filter)
   
-  bounds := screenshot.GetDisplayBounds(0)
+  n := screenshot.NumActiveDisplays()
+  
+  var bounds image.Rectangle
+  
+  for i := 0; i < n; i++ {
+    bounds = screenshot.GetDisplayBounds(i)
+  
+    if (bounds.Min.X == 0 && bounds.Min.Y == 0) { //The primary display device is supposed to be always located at coordinates (0,0)
+      break
+    }
+
+  }
 
  	img, err := screenshot.CaptureRect(bounds)
  		if err != nil {
