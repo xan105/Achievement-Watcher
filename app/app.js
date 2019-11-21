@@ -27,7 +27,7 @@ var app = {
        remote.app.quit();
   },
   onStart : function(){
-  
+
    let self = this;
    
    $("#win-settings").css("pointer-events","none");
