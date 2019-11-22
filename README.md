@@ -43,7 +43,7 @@ Game must be set to Window borderless for the notification to be rendered on top
 If you have enabled the *souvenir* option a screenshot will be taken<br />
 and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
 
-🚑 Not seeing any toast notification ? Quick fix :
+### 🚑 Not seeing any toast notification ? Quick fix :
 - Try to set your game to Window borderless.
 - Try to disable the automatic game **and** fullscreen rule in focus assistant (Win10)<br/>
   or set them to priority and make sure that the UWP appID you are using is in your priority list (By default the Xbox appID(s) used by this app are in it).
@@ -55,6 +55,8 @@ Windows 10 >= 1903 : New focus assist auto rule for fullscreen app set to alarm 
 The process `watchdog.exe` is the one doing all the work so make sure it is running.
 
 Not all games are supported, please see the [**compatibility**](https://github.com/xan105/Achievement-Watcher#compatibility-) section below.
+
+<hr>
 
 You can also display a notification with:
   - Websocket
@@ -117,7 +119,7 @@ Endpoint: `localhost:23053`
 
 Recommended gntp client is Growl for Windows (despite it being discontinued) [Mirror download link](https://github.com/xan105/Achievement-Watcher/releases/download/1.2.3/Growl.7z)
 
-Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification.<br />
+**Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification**.<br />
 
 To customize the look of the toast please kindly see your gntp client's options.<br />
 If you are looking for the Achievement Watcher notification sounds there are in `%windir%\Media` (Achievement___.wav)
