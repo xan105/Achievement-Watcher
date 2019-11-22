@@ -27,24 +27,21 @@ So let's just do that automagically :)
 Notification on achievement unlocking
 ==========================================
 
+Not as sexy as a directX Overlay but it's the next best thing.<br />
+Display a Windows toast notification when you unlock an achievement.<br />
+⚠️ **Please verify your Windows notification and focus assistant settings for the toast to work properly**.<br />
+You can test notification in Settings > Debug to make sure your system is correctly configured.
+
 <p align="center">
   <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
 </p>
 
-Not as sexy as a directX Overlay but it's the next best thing.<br />
-You can display a notification when you unlock an achievement with:
-  - Windows toast notification (Win8/Win8.1/Win10)
-  - Websocket
-  - Growl Notification Transport Protocol (GNTP)
-  
-### Windows toast notification
-
-⚠️ **Please verify your Windows notification and focus assistant settings for the toast to work properly**.<br />
-You can test notification in Settings > Debug to make sure your system is correctly configured.
-
 There might be a slight delay between the event and the display of the notification as running powershell and loading a remote image can take a few seconds in some cases.<br />
 
 Game must be set to Window borderless for the notification to be rendered on top of it.<br />
+
+If you have enabled the *souvenir* option a screenshot will be taken<br />
+and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
 
 🚑 Not seeing any toast notification ? Quick fix :
 - Try to set your game to Window borderless.
@@ -54,7 +51,15 @@ Game must be set to Window borderless for the notification to be rendered on top
 
 Windows 8.1 : Don't forget quiet hours.<br />
 Windows 10 >= 1903 : New focus assist auto rule for fullscreen app set to alarm only by default prevents the notification from working out of the box.
-    
+
+The process `watchdog.exe` is the one doing all the work so make sure it is running.
+
+Not all games are supported, please see the [**compatibility**](https://github.com/xan105/Achievement-Watcher#compatibility-) section below.
+
+You can also display a notification with:
+  - Websocket
+  - Growl Notification Transport Protocol (GNTP)
+
 ### Websocket
 
 Endpoint: `ws://localhost:8082`
@@ -113,19 +118,9 @@ Endpoint: `localhost:23053`
 Recommended gntp client is Growl for Windows (despite it being discontinued) [Mirror download link](https://github.com/xan105/Achievement-Watcher/releases/download/1.2.3/Growl.7z)
 
 Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification.<br />
-Game must be set to Window borderless for the notification to be rendered on top of it.
 
 To customize the look of the toast please kindly see your gntp client's options.<br />
 If you are looking for the Achievement Watcher notification sounds there are in `%windir%\Media` (Achievement___.wav)
-
-### Notification miscellaneous
-
-If you have enabled the *souvenir* option a screenshot will be taken<br />
-and saved in your pictures folder `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
-
-The process `watchdog.exe` is the one doing all the work so make sure it is running.
-
-Not all games are supported, please see the compatibility chart below.
   
 Compatibility :
 ================
