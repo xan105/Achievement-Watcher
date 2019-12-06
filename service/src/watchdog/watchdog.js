@@ -126,7 +126,12 @@ var app = {
         if (options.disableCheckIfProcessIsRunning === true) {
           isRunning = true;
         } else if (self.options.notification_advanced.checkIfProcessIsRunning) {
-          isRunning = await tasklist.isProcessRunning(game.binary).catch((err) => {return false});
+          if (game.binary) {
+            isRunning = await tasklist.isProcessRunning(game.binary).catch((err) => {return false});
+          } else {
+            debug.log(`Warning! Missing "${game.name}" (${game.appid}) binary name > Overriding user choice to check if process is running`);
+            isRunning = true;
+          }
         } else {
           isRunning = true;
         }
@@ -141,62 +146,71 @@ var app = {
             
             let j = 0;
             for (let i in achievements) {
-          
-                    let ach = game.achievement.list.find(achievement => achievement.name === achievements[i].name);
-                    let previous = cache.find(achievement => achievement.name === achievements[i].name) || {
-                         Achieved : false,
-                         CurProgress : 0,
-                         MaxProgress : 0,
-                         UnlockTime : 0              
-                    };
+                    try{
+                        let ach = game.achievement.list.find(achievement => achievement.name === achievements[i].name);
+                        if (!ach) throw "ACH_NOT_FOUND_IN_SCHEMA";
+                        
+                        let previous = cache.find(achievement => achievement.name === achievements[i].name) || {
+                             Achieved : false,
+                             CurProgress : 0,
+                             MaxProgress : 0,
+                             UnlockTime : 0              
+                        };
 
-                   if (!previous.Achieved && achievements[i].Achieved) {
+                       if (!previous.Achieved && achievements[i].Achieved) {
 
-                       if (!achievements[i].UnlockTime || achievements[i].UnlockTime == 0) achievements[i].UnlockTime = moment().unix();
-                       let elapsedTime = moment().diff(moment.unix(achievements[i].UnlockTime), 'seconds');
-                       if (options.disableCheckTimestamp || (elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold)) {
-                          
-                          debug.log("Unlocked:"+ ach.displayName);
-                          
-                          await self.notify({
-                             appid: game.appid,
-                             title: game.name,
-                             id: ach.name,
-                             message: ach.displayName,
-                             description: ach.description, 
-                             icon: ach.icon,
-                             time: achievements[i].UnlockTime,
-                             delay: j
-                          });
-                                  
-                          j+=1;
-                       } else {
-                          debug.log("Outatime:"+ ach.displayName)
-                       }
-                   } else if (previous.Achieved && achievements[i].Achieved){
-                   
-                      debug.log("Already unlocked:"+ ach.displayName);
-                      if (previous.UnlockTime > 0 && previous.UnlockTime != achievements[i].UnlockTime) achievements[i].UnlockTime = previous.UnlockTime;
-                      
-                   } else if (!achievements[i].Achieved && achievements[i].MaxProgress > 0 && previous.CurProgress < achievements[i].CurProgress ) {
-                      
-                      debug.log("Progress update:"+ ach.displayName);
-
-                      await self.notifyProgress({
-                           appid: game.appid,
-                           title: game.name,
-                           id: ach.name,
-                           message: ach.displayName,
-                           description: ach.description, 
-                           icon: ach.icongray,
-                           progress: {
-                            current: achievements[i].CurProgress,
-                            max: achievements[i].MaxProgress
+                           if (!achievements[i].UnlockTime || achievements[i].UnlockTime == 0) achievements[i].UnlockTime = moment().unix();
+                           let elapsedTime = moment().diff(moment.unix(achievements[i].UnlockTime), 'seconds');
+                           if (options.disableCheckTimestamp || (elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold)) {
+                              
+                              debug.log("Unlocked:"+ ach.displayName);
+                              
+                              await self.notify({
+                                 appid: game.appid,
+                                 title: game.name,
+                                 id: ach.name,
+                                 message: ach.displayName,
+                                 description: ach.description, 
+                                 icon: ach.icon,
+                                 time: achievements[i].UnlockTime,
+                                 delay: j
+                              });
+                                      
+                              j+=1;
+                           } else {
+                              debug.log("Outatime:"+ ach.displayName)
                            }
-                      });
-                      
+                       } else if (previous.Achieved && achievements[i].Achieved){
+                       
+                          debug.log("Already unlocked:"+ ach.displayName);
+                          if (previous.UnlockTime > 0 && previous.UnlockTime != achievements[i].UnlockTime) achievements[i].UnlockTime = previous.UnlockTime;
+                          
+                       } else if (!achievements[i].Achieved && achievements[i].MaxProgress > 0 && previous.CurProgress < achievements[i].CurProgress ) {
+                          
+                          debug.log("Progress update:"+ ach.displayName);
+
+                          await self.notifyProgress({
+                               appid: game.appid,
+                               title: game.name,
+                               id: ach.name,
+                               message: ach.displayName,
+                               description: ach.description, 
+                               icon: ach.icongray,
+                               progress: {
+                                current: achievements[i].CurProgress,
+                                max: achievements[i].MaxProgress
+                               }
+                          });
+                          
+                       }
+              
+                }catch(err){
+                   if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
+                      debug.log(`"${achievements[i].name}" not found in game schema data ?! ... Achievement was probably deleted or renamed over time > SKIPPING`);
+                   }else {
+                      debug.log(`Unexpected Error for achievement "${achievements[i].name}": ${err}`);
                    }
-          
+                }
             }
           
             await track.save(appID,achievements);
@@ -204,7 +218,7 @@ var app = {
           }
         }
         else {
-          debug.log("binary not running");
+          debug.log(`binary "${game.binary}" not running`);
         }
           
       }catch(err){
