@@ -74,9 +74,7 @@ module.exports.scanLegit = async (listingType = 0) => {
   
   if (regedit.RegKeyExists("HKCU","Software/Valve/Steam") && listingType > 0){ 
   
-        const steamPath = regedit.RegQueryStringValue("HKCU","Software/Valve/Steam","SteamPath");
-        if (!steamPath) throw "Steam Path not found";
-        
+         let steamPath = await getSteamPath();
          let userID = await getSteamUsers(steamPath);
 
          let steamCache = path.join(steamPath,"appcache/stats");
@@ -258,6 +256,40 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
  
 }
 
+async function getSteamPath(){
+  try {
+  
+     /*
+       Some SteamEmu change HKCU/Software/Valve/Steam/SteamPath to the game's dir
+       Fallback to Software/WOW6432Node/Valve/Steam/InstallPath in this case 
+       NB: Steam client correct the key on startup
+     */
+
+     const regHives = [
+        {root: "HKCU", key: "Software/Valve/Steam", name: "SteamPath"},
+        {root: "HKLM", key: "Software/WOW6432Node/Valve/Steam", name: "InstallPath"} 
+     ];
+
+     let steamPath;
+
+     for (let regHive of regHives) {
+          
+        steamPath = regedit.RegQueryStringValue(regHive.root,regHive.key,regHive.name);
+        if (steamPath) {
+           if (await ffs.promises.exists(path.join(steamPath,"steam.exe"))){
+             break;
+           }
+        }  
+     }
+  
+     if (!steamPath) throw "Steam Path not found";
+     return steamPath;
+    
+   }catch(err){
+      throw err;
+   }
+}
+
 async function getSteamUsers(steamPath) {
      try {
             
@@ -265,6 +297,9 @@ async function getSteamUsers(steamPath) {
        
         let users = regedit.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
         if (!users) users = await glob("*([0-9])/",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
+     
+        console.log(path.join(steamPath,"userdata"));
+        console.log(users);
      
         if (users.length == 0) throw "No Steam User ID found";
             for (let user of users) {
