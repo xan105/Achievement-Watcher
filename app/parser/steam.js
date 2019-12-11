@@ -75,27 +75,31 @@ module.exports.scanLegit = async (listingType = 0) => {
   if (regedit.RegKeyExists("HKCU","Software/Valve/Steam") && listingType > 0){ 
   
          let steamPath = await getSteamPath();
-         let userID = await getSteamUsers(steamPath);
+         let publicUsers = await getSteamUsers(steamPath);
 
          let steamCache = path.join(steamPath,"appcache/stats");
-         let steamAppIDList = (await glob("UserGameStatsSchema_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map(filename => filename.match(/([0-9]+)/g)[0]);
+         let list = (await glob("UserGameStats_*([0-9])_*([0-9]).bin",{cwd: steamCache, onlyFiles: true, absolute: false})).map((filename) => {
+            let matches = filename.match(/([0-9]+)/g);
+            return {
+              userID : matches[0],
+              appID: matches[1]
+            };
+         });
      
-         for (let appid of steamAppIDList) {
-          
-             let hasStatsSchema = await ffs.promises.exists(path.join(steamCache,`UserGameStatsSchema_${appid}.bin`));
+         for (let stats of list) {
 
              let isInstalled = true;
-             if (listingType == 1) {
-                isInstalled = (regedit.RegQueryIntegerValue("HKCU",`Software/Valve/Steam/Apps/${appid}`,"Installed") === "1") ? true : false;
-             }
+             if (listingType == 1) isInstalled = (regedit.RegQueryIntegerValue("HKCU",`Software/Valve/Steam/Apps/${stats.appID}`,"Installed") === "1") ? true : false;
                                  
-             if ( hasStatsSchema && isInstalled) {
+             let user = publicUsers.find(user => user.user == stats.userID);
+             
+             if ( user && isInstalled) {
             
-                  data.push({appid: appid,
+                  data.push({appid: stats.appID,
                              source: "Steam",
                              data: {
                                 type: "steamAPI",
-                                userID: userID,
+                                userID: user,
                                 cachePath: steamCache
                              }
                   });
@@ -297,9 +301,6 @@ async function getSteamUsers(steamPath) {
        
         let users = regedit.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
         if (!users) users = await glob("*([0-9])/",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
-     
-        console.log(path.join(steamPath,"userdata"));
-        console.log(users);
      
         if (users.length == 0) throw "No Steam User ID found";
             for (let user of users) {
