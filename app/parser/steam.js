@@ -96,7 +96,7 @@ module.exports.scanLegit = async (listingType = 0) => {
              if ( user && isInstalled) {
             
                   data.push({appid: stats.appID,
-                             source: "Steam",
+                             source: `Steam (${user.name})`,
                              data: {
                                 type: "steamAPI",
                                 userID: user,
@@ -305,14 +305,17 @@ async function getSteamUsers(steamPath) {
         if (users.length == 0) throw "No Steam User ID found";
             for (let user of users) {
                let id = steamID.to64(user);
-               if (await steamID.isPublic(id)) { 
-                   debug.log(`${user} - ${id} is public`);
+               let data = await steamID.whoIs(id);
+               
+               if (data.privacyState === "public") {
+                   debug.log(`${user} - ${id} (${data.steamID}) is public`);
                    result.push({
                       user: user,
-                      id: id
+                      id: id,
+                      name: data.steamID
                    }); 
                 } else {
-                   debug.log(`${user} - ${id} is not public`);
+                   debug.log(`${user} - ${id} (${data.steamID}) is not public`);
                 }
              }
                 
