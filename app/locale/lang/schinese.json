@@ -76,5 +76,8 @@
   "notifyOnProgress": "进度报告",
   "notifyOnProgressDescription": "尽可能通知成就进度",
   "importCache": "导入通知缓存",
-  "importCacheDescription": "导入 Watchdog 的缓存作为成就的另一个来源"
+  "importCacheDescription": "导入 Watchdog 的缓存作为成就的另一个来源",
+  "thumbnailPortrait": "缩略图方向",
+  "portrait": "纵向",
+  "landscape": "横向"
 }
