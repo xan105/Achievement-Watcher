@@ -87,20 +87,25 @@ var app = {
        
         let timeMostRecent = Math.max.apply(Math,list[game].achievement.list.filter(ach => ach.Achieved && ach.UnlockTime > 0).map((ach) => { return ach.UnlockTime }));
         
-        let template = `
-        <li>
-            <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" data-time="${(timeMostRecent > 0) ? timeMostRecent : 0}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
-              <div class="header" style="background: url('${list[game].img.header}');"></i></div>
-              <div class="info">
-                   <div class="title">${list[game].name}</div>
-                   <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
-                   ${(list[game].source) ? `<div class="source">${list[game].source}</div>`: ''}
-              </div>
-            </div>
-        </li>
-        `;
+        let portrait = self.config.achievement.thumbnailPortrait;
 
-         elem.append(template);
+        (portrait) ? $("#game-list").addClass("view-portrait") : $("#game-list").removeClass("view-portrait");
+             
+        let template = `
+            <li>
+                <div class="game-box" data-index="${game}" data-appid="${list.data[game].appid}" data-time="${(timeMostRecent > 0) ? timeMostRecent : 0}" ${(list.data[game].system) ? `data-system="${list.data[game].system}"` : ''}>
+                  ${(portrait && list.data[game].img.portrait) ? `<div class="header glow" style="background: url('${list.data[game].img.portrait}');">` : `<div class="header" style="background: url('${list.data[game].img.header}');">`}
+                  </div>
+                  <div class="info">
+                       <div class="title">${list.data[game].name}</div>
+                       <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
+                       ${(list.data[game].source) ? `<div class="source">${list.data[game].source}</div>`: ''}
+                  </div>
+                </div>
+            </li>
+            `;
+
+         elem.append(template); 
          
          }
 
@@ -154,6 +159,8 @@ var app = {
             menu.append(new MenuItem({type: 'separator'}));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "SteamDB", click() {shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "PCGamingWiki", click() {shell.openExternal(`https://pcgamingwiki.com/api/appid.php?appid=${appid}`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "API", click() {shell.openExternal(`https://api.xan105.com/steam/ach/${appid}?lang=${app.config.achievement.lang}`)} }));
           }
 
          menu.popup({ window: win });

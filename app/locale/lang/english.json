@@ -72,5 +72,8 @@
   "notifyOnProgress" : "Progress report",
   "notifyOnProgressDescription": "Notify on achievement progress when possible",
   "importCache" : "Import notification cache",
-  "importCacheDescription" : "Import Watchdog's cache as another source of achievement"
+  "importCacheDescription" : "Import Watchdog's cache as another source of achievement",
+  "thumbnailPortrait": "Thumbnail orientation",
+  "portrait": "Portrait",
+  "landscape": "Landscape"
 }

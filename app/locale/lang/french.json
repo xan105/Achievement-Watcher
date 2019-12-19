@@ -72,5 +72,8 @@
   "notifyOnProgress" : "Rapport d'avancement",
   "notifyOnProgressDescription": "Informer sur la progression quand c'est possible",
   "importCache" : "Importer le cache de notification",
-  "importCacheDescription" : "Importer le cache de Watchdog comme une autre source de succès"   
+  "importCacheDescription" : "Importer le cache de Watchdog comme une autre source de succès",
+  "thumbnailPortrait": "Orientation des vignettes",
+  "portrait": "Portrait",
+  "landscape": "Paysage"   
 }

@@ -24,6 +24,10 @@ module.exports.load = ()=>{
             options.achievement.lang = "english";
           }
         }
+
+        if (typeof options.achievement.thumbnailPortrait !== "boolean"){
+          options.achievement.thumbnailPortrait = false;
+        }
         
         if (typeof options.achievement.showHidden !== "boolean"){
           options.achievement.showHidden = false;
@@ -111,6 +115,7 @@ module.exports.load = ()=>{
 
         options = {
           achievement: {
+            thumbnailPortrait: false,
             showHidden: false,
             mergeDuplicate: true,
             timeMergeRecentFirst: false,
