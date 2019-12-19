@@ -93,13 +93,13 @@ var app = {
              
         let template = `
             <li>
-                <div class="game-box" data-index="${game}" data-appid="${list.data[game].appid}" data-time="${(timeMostRecent > 0) ? timeMostRecent : 0}" ${(list.data[game].system) ? `data-system="${list.data[game].system}"` : ''}>
-                  ${(portrait && list.data[game].img.portrait) ? `<div class="header glow" style="background: url('${list.data[game].img.portrait}');">` : `<div class="header" style="background: url('${list.data[game].img.header}');">`}
+                <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" data-time="${(timeMostRecent > 0) ? timeMostRecent : 0}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
+                  ${(portrait && list[game].img.portrait) ? `<div class="header glow" style="background: url('${list[game].img.portrait}');">` : `<div class="header" style="background: url('${list[game].img.header}');">`}
                   </div>
                   <div class="info">
-                       <div class="title">${list.data[game].name}</div>
+                       <div class="title">${list[game].name}</div>
                        <div class="progressBar" data-percent="${progress}"><span class="meter" style="width:${progress}%"></span></div>
-                       ${(list.data[game].source) ? `<div class="source">${list.data[game].source}</div>`: ''}
+                       ${(list[game].source) ? `<div class="source">${list[game].source}</div>`: ''}
                   </div>
                 </div>
             </li>
