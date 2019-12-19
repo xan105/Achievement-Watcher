@@ -35,6 +35,10 @@ module.exports.load = async (cfg_file) => {
            fixFile = true;
         }
         
+        if (typeof options.achievement.thumbnailPortrait !== "boolean"){
+          options.achievement.thumbnailPortrait = false;
+        }
+        
         if (typeof options.achievement.showHidden !== "boolean"){
           options.achievement.showHidden = false;
           fixFile = true;
@@ -146,6 +150,7 @@ module.exports.load = async (cfg_file) => {
 
         options = {
           achievement: {
+            thumbnailPortrait: false,
             showHidden: false,
             mergeDuplicate: true,
             timeMergeRecentFirst: false,
