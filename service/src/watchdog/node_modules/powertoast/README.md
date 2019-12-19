@@ -276,7 +276,10 @@ const toast = require('powertoast');
 toast({
   title: "Browser",
   message: "Choose your favorite",
-  buttons: [{text: "Firefox", onClick:"https://www.mozilla.org/en/firefox/new/"},{text: "Chrome", onClick:"https://www.google.com/chrome/"}]
+  button: [
+    {text: "Firefox", onClick:"https://www.mozilla.org/en/firefox/new/"},
+    {text: "Chrome", onClick:"https://www.google.com/chrome/"}
+  ]
 }).catch(err => console.error(err));
 
   ```
