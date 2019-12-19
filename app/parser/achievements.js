@@ -18,6 +18,8 @@ const debug = new (require(path.join(appPath,"util/log.js")))({
 async function discover(legitSteamListingType,importCache) {
   try{
     
+    debug.log("Scanning for games ...");
+    
     let data = [];
     
     //UserCustomDir
@@ -151,14 +153,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                  } else if (appid.data.type === "steamAPI") {
                  
-                   for (let user of appid.data.userID)  {
-                      try {
-                       root = await steam.getAchievementsFromAPI({appID: appid.appid, user: user, path: appid.data.cachePath , key: option.key });
-                       break;
-                      }catch(e){
-                        debug.log(`${e} => Trying with next public user if any for ${appid.appid}`);
-                      }
-                   }
+                   root = await steam.getAchievementsFromAPI({appID: appid.appid, user: appid.data.userID, path: appid.data.cachePath , key: option.key });
 
                  } else if (appid.data.type === "rpcs3"){
                   

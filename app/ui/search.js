@@ -25,6 +25,6 @@
         });
       
       });
-    
+
   });
 }(window.jQuery, window, document)); 

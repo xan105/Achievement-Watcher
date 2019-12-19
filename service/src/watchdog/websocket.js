@@ -66,6 +66,7 @@ function incoming(message){
             req = JSON.parse(message);
           }catch(err){
             debug.log(`[${this.id}] request is not a valid JSON: ${err}`);
+            return;
           }
 
           if (req.cmd === "test") {
