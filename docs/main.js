@@ -1,3 +1,7 @@
+'use strict';
+
+import request from './request-fetch.js';
+
 function ready(fn) {
   if (document.readyState != 'loading'){
     fn();
@@ -16,6 +20,7 @@ ready(()=>{
     let github = {};
     try{
       github = JSON.parse(data.body);
+      
       let asset = github.assets.find( asset => asset.name === name);
       
       document.getElementById("btn-download").href = asset.browser_download_url;

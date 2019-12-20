@@ -1,19 +1,9 @@
 //Anthony Beaumont 2019
-//This is a work in progress based on [https://www.npmjs.com/package/request-zero]
+//This is a work in progress based on [https://www.npmjs.com/package/request-zero
+
 "use strict";
 
-function parseHeaders(headers){
-  
-  let response = {};
-  
-  headers.forEach((value, name)=>{
-      response[name] = value;
-  });
-
-  return response;
-}
-
-function request(href,option = {}){
+export default function request(href,option = {}){
 
   let options = {
     method: option.method || "GET",
@@ -145,4 +135,15 @@ function request(href,option = {}){
     }
   
   });
+}
+
+function parseHeaders(headers){
+  
+  let response = {};
+  
+  headers.forEach((value, name)=>{
+      response[name] = value;
+  });
+
+  return response;
 }
