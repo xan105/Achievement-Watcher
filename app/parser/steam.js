@@ -12,6 +12,7 @@ const htmlParser = require('node-html-parser').parse;
 const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
 const steamID = require(path.join(appPath,"util/steamID.js"));
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
+const sse = require(path.join(appPath,"parser/sse.js"));
 
 module.exports.scan = async (additionalSearch = []) => {
   try {
@@ -158,7 +159,8 @@ module.exports.getAchievementsFromFile = async (filePath) => {
     "Achievements.Bin",
     "achieve.dat",
     "Achievements.ini",
-    "stats/achievements.ini"
+    "stats/achievements.ini",
+    "stats.bin"
   ];
   
   const filter = ["SteamAchievements","Steam64","Steam"];
@@ -166,9 +168,11 @@ module.exports.getAchievementsFromFile = async (filePath) => {
   let local;                            
   for (let file of files) {
      try {
-     
+
        if (path.parse(file).ext == ".json") {
           local = JSON.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
+       } else if (file === "stats.bin"){
+          local = sse.parse(await ffs.promises.readFile(path.join(filePath,file)));
        } else {
           local = ini.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
        }

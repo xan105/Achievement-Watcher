@@ -21,6 +21,7 @@
     "accountpicture-ms-extractor": "^1.1.0",
     "adm-zip": "^0.4.13",
     "argv-split": "^2.0.1",
+    "crc": "^3.8.0",
     "fast-glob": "^2.2.7",
     "ffi-napi": "^2.4.5",
     "find-up": "^4.1.0",

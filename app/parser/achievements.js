@@ -14,6 +14,7 @@ const debug = new (require(path.join(appPath,"util/log.js")))({
   console: remote.getCurrentWindow().isDev || false,
   file: path.join(remote.app.getPath('userData'),"logs/parser.log")
 });
+const { crc32 } = require('crc');
 
 async function discover(legitSteamListingType,importCache) {
   try{
@@ -170,10 +171,9 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                  for (let i in root){
 
                      try {
-                     
-                          let id = root[i].id || root[i].apiname || root[i].name || i;
                           
-                          let achievement = game.achievement.list.find( elem => elem.name == id);
+                          let id = root[i].id || root[i].apiname || root[i].name || i;
+                          let achievement = (root[i].crc) ? game.achievement.list.find( elem => crc32(elem.name).toString(16) == root[i].crc) : game.achievement.list.find( elem => elem.name == id)
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
                         
                           let parsed = {
@@ -214,11 +214,10 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                           }
      
                        }catch(err){
-                       
                           if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
-                            debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
+                            debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement is a stat or was probably deleted/renamed over time`);
                            }else {
-                            debug.log(`Unexpected Error: ${err}`);
+                            debug.log(`[${appid.appid}] Unexpected Error: ${err}`);
                            }
                        }          
                     }
