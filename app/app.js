@@ -295,6 +295,8 @@ var app = {
                 <div class="notice">${$("#unlock").data("lang-noneUnlocked")} <i class="fas fa-frown-open"></i> ${$("#unlock").data("lang-play")}</div>
               </li>`;
               unlock.append(template);
+            } else if ( count_locked == 0 ) {
+               $("#lock").hide();
             }
             
             let hidden_template = `
