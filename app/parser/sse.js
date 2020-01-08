@@ -12,12 +12,26 @@ module.exports.parse = (buffer) => {
     let result = [];
     
     for (let entry of data) 
-    {
-        result.push({
-          crc: entry.slice(0, 4).reverse().toString('hex'),
-          Achieved : 1,
-          UnlockTime: parseInt(entry.slice(8, 12).reverse().toString('hex'),16)
-        });
+    {  
+        try{
+        
+          let value = parseInt(entry.slice(20,21).toString('hex'),16);
+
+          if ( value === 1 ) {
+          
+            result.push({
+                crc: entry.slice(0,4).reverse().toString('hex'),
+                Achieved : value,
+                UnlockTime: parseInt(entry.slice(8, 12).reverse().toString('hex'),16)
+            });
+          
+          } else {
+            throw "Not an achievement but a stat";
+          }
+          
+        }catch(err){
+          //Do nothing
+        }
     }
     
     return result;

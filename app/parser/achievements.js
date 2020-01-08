@@ -174,7 +174,13 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                           
                           let id = root[i].id || root[i].apiname || root[i].name || i;
                           let achievement = (root[i].crc) ? game.achievement.list.find( elem => crc32(elem.name).toString(16) == root[i].crc) : game.achievement.list.find( elem => elem.name == id)
-                          if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
+                          if(!achievement) {
+                            if (root[i].crc) {
+                              throw "ACH_CRC_NO_MATCH";
+                            } else {
+                              throw "ACH_NOT_FOUND_IN_SCHEMA";
+                            }
+                          }
                         
                           let parsed = {
                                 Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i].Unlocked == 1 || root[i].earned || root[i] == 1) ? true : false,
@@ -215,10 +221,12 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
      
                        }catch(err){
                           if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
-                            debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement is a stat or was probably deleted/renamed over time`);
-                           }else {
+                            debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
+                          } else if (err === "ACH_CRC_NO_MATCH") {
+                            //SSE's stats.bin contains only unlocked achievements (and stats)
+                          } else {
                             debug.log(`[${appid.appid}] Unexpected Error: ${err}`);
-                           }
+                          }
                        }          
                     }
 
