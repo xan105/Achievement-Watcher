@@ -118,7 +118,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
       if ( appidList.length > 0) {
         let count = 1;
 
-        for (let appid of appidList) {
+        for (let appid of appidList) 
+        {
 
             let percent = Math.floor((count/appidList.length)*100);
 
@@ -168,19 +169,13 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                    root = await watchdog.getAchievements(appid.appid);
                  }
                 
-                 for (let i in root){
+                 for (let i in root)
+                 {
 
                      try {
                           
-                          let id = root[i].id || root[i].apiname || root[i].name || i;
-                          let achievement = (root[i].crc) ? game.achievement.list.find( elem => crc32(elem.name).toString(16) == root[i].crc) : game.achievement.list.find( elem => elem.name == id)
-                          if(!achievement) {
-                            if (root[i].crc) {
-                              throw "ACH_CRC_NO_MATCH";
-                            } else {
-                              throw "ACH_NOT_FOUND_IN_SCHEMA";
-                            }
-                          }
+                          let achievement = game.achievement.list.find( elem => (root[i].crc) ? crc32(elem.name).toString(16) == root[i].crc : elem.name == (root[i].id || root[i].apiname || root[i].name || i) );
+                          if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
                         
                           let parsed = {
                                 Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i].Unlocked == 1 || root[i].earned || root[i] == 1) ? true : false,
@@ -222,16 +217,14 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                        }catch(err){
                           if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
                             debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
-                          } else if (err === "ACH_CRC_NO_MATCH") {
-                            //SSE's stats.bin contains only unlocked achievements (and stats)
                           } else {
                             debug.log(`[${appid.appid}] Unexpected Error: ${err}`);
                           }
                        }          
-                    }
+                 }
 
-                   game.achievement.unlocked = game.achievement.list.filter(ach => ach.Achieved == 1).length;
-                   if (!isDuplicate) result.push(game);
+                 game.achievement.unlocked = game.achievement.list.filter(ach => ach.Achieved == 1).length;
+                 if (!isDuplicate) result.push(game);
 
             //loop appid
             } catch(err) {
