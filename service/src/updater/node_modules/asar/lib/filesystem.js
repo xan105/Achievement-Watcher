@@ -1,13 +1,16 @@
 'use strict'
-const fs = process.versions.electron ? require('original-fs') : require('fs')
+
+const fs = require('./wrapped-fs')
 const path = require('path')
-const tmp = require('tmp')
+const tmp = require('tmp-promise')
 const UINT64 = require('cuint').UINT64
+
+const UINT32_MAX = 4294967295
 
 class Filesystem {
   constructor (src) {
     this.src = path.resolve(src)
-    this.header = {files: {}}
+    this.header = { files: {} }
     this.offset = UINT64(0)
   }
 
@@ -45,22 +48,26 @@ class Filesystem {
     return node.files
   }
 
-  insertFile (p, shouldUnpack, file, options, callback) {
+  async insertFile (p, shouldUnpack, file, options) {
     const dirNode = this.searchNodeFromPath(path.dirname(p))
     const node = this.searchNodeFromPath(p)
     if (shouldUnpack || dirNode.unpacked) {
       node.size = file.stat.size
       node.unpacked = true
-      process.nextTick(callback)
-      return
+      return Promise.resolve()
     }
 
-    const handler = () => {
+    const handler = (resolve, reject) => {
       const size = file.transformed ? file.transformed.stat.size : file.stat.size
 
       // JavaScript can not precisely present integers >= UINT32_MAX.
-      if (size > 4294967295) {
-        throw new Error(`${p}: file size can not be larger than 4.2GB`)
+      if (size > UINT32_MAX) {
+        const error = new Error(`${p}: file size can not be larger than 4.2GB`)
+        if (reject) {
+          return reject(error)
+        } else {
+          throw error
+        }
       }
 
       node.size = size
@@ -70,27 +77,27 @@ class Filesystem {
       }
       this.offset.add(UINT64(size))
 
-      return callback()
+      return resolve ? resolve() : Promise.resolve()
     }
 
-    const tr = options.transform && options.transform(p)
-    if (tr) {
-      return tmp.file(function (err, path) {
-        if (err) { return handler() }
-        const out = fs.createWriteStream(path)
+    const transformed = options.transform && options.transform(p)
+    if (transformed) {
+      const tmpfile = await tmp.file()
+      return new Promise((resolve, reject) => {
+        const out = fs.createWriteStream(tmpfile.path)
         const stream = fs.createReadStream(p)
 
-        stream.pipe(tr).pipe(out)
-        return out.on('close', function () {
+        stream.pipe(transformed).pipe(out)
+        return out.on('close', async () => {
           file.transformed = {
-            path,
-            stat: fs.lstatSync(path)
+            path: tmpfile.path,
+            stat: await fs.lstat(tmpfile.path)
           }
-          return handler()
+          return handler(resolve, reject)
         })
       })
     } else {
-      return process.nextTick(handler)
+      return handler()
     }
   }
 

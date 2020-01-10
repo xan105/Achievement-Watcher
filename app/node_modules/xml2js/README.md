@@ -104,6 +104,33 @@ not, we got you covered! Starting with 0.2.8 you can also leave it out, in
 which case `xml2js` will helpfully add it for you, no bad surprises and
 inexplicable bugs!
 
+Promise usage
+-------------
+
+```javascript
+var xml2js = require('xml2js');
+var xml = '<foo></foo>';
+
+// With parser
+var parser = new xml2js.Parser(/* options */);
+parser.parseStringPromise(data).then(function (result) {
+  console.dir(result);
+  console.log('Done');
+})
+.catch(function (err) {
+  // Failed
+});
+
+// Without parser
+xml2js.parseStringPromise(data /*, options */).then(function (result) {
+  console.dir(result);
+  console.log('Done');
+})
+.catch(function (err) {
+  // Failed
+});
+```
+
 Parsing multiple files
 ----------------------
 
@@ -146,8 +173,7 @@ XML builder usage
 Since 0.4.0, objects can be also be used to build XML:
 
 ```javascript
-var fs = require('fs'),
-    xml2js = require('xml2js');
+var xml2js = require('xml2js');
 
 var obj = {name: "Super", Surname: "Man", age: 23};
 
@@ -159,6 +185,58 @@ At the moment, a one to one bi-directional conversion is guaranteed only for
 default configuration, except for `attrkey`, `charkey` and `explicitArray` options
 you can redefine to your taste. Writing CDATA is supported via setting the `cdata`
 option to `true`.
+
+To specify attributes:
+```javascript
+var xml2js = require('xml2js');
+
+var obj = {root: {$: {id: "my id"}, _: "my inner text"}};
+
+var builder = new xml2js.Builder();
+var xml = builder.buildObject(obj);
+```
+
+### Adding xmlns attributes
+
+You can generate XML that declares XML namespace prefix / URI pairs with xmlns attributes.
+
+Example declaring a default namespace on the root element:
+
+```javascript
+let obj = { 
+  Foo: {
+    $: {
+      "xmlns": "http://foo.com"
+    }   
+  }
+};  
+```
+Result of `buildObject(obj)`:
+```xml
+<Foo xmlns="http://foo.com"/>
+```
+Example declaring non-default namespaces on non-root elements:
+```javascript
+let obj = {
+  'foo:Foo': {
+    $: {
+      'xmlns:foo': 'http://foo.com'
+    },
+    'bar:Bar': {
+      $: {
+        'xmlns:bar': 'http://bar.com'
+      }
+    }
+  }
+}
+```
+Result of `buildObject(obj)`:
+```xml
+<foo:Foo xmlns:foo="http://foo.com">
+  <bar:Bar xmlns:bar="http://bar.com"/>
+</foo:Foo>
+```
+
 
 Processing attribute, tag names and values
 ------------------------------------------
@@ -245,7 +323,7 @@ value})``. Possible options are:
     text nodes.
   * `mergeAttrs` (default: `false`): Merge attributes and child elements as
     properties of the parent, instead of keying attributes off a child
-    attribute object. This option is ignored if `ignoreAttrs` is `false`.
+    attribute object. This option is ignored if `ignoreAttrs` is `true`.
   * `validator` (default `null`): You can specify a callable that validates
     the resulting structure somehow, however you want. See unit tests
     for an example.
@@ -290,7 +368,7 @@ value})``. Possible options are:
     value processing functions. Accepts an `Array` of functions with following
     signature:
     ```javascript
-    function (name){
+    function (value, name){
       //do something with `name`
       return name
     }
@@ -310,7 +388,7 @@ value})``. Possible options are:
     processing functions. Accepts an `Array` of functions with following
     signature:
     ```javascript
-    function (name){
+    function (value, name){
       //do something with `name`
       return name
     }
@@ -322,6 +400,10 @@ Options for the `Builder` class
 These options are specified by ``new Builder({optionName: value})``.
 Possible options are:
 
+  * `attrkey` (default: `$`): Prefix that is used to access the attributes.
+    Version 0.1 default was `@`.
+  * `charkey` (default: `_`): Prefix that is used to access the character
+    content. Version 0.1 default was `#`.
   * `rootName` (default `root` or the root key name): root element name to be used in case
      `explicitRoot` is `false` or to override the root element name.
   * `renderOpts` (default `{ 'pretty': true, 'indent': '  ', 'newline': '\n' }`):

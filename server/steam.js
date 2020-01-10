@@ -27,39 +27,31 @@ module.exports.getSchema = async (appID,lang = "english") => {
     if (!steamLanguages.some( language => language.api === lang )) {
         throw "Unsupported API language code";
     }
-  
-    let result;
-  
-    let filePath = path.join(`${cache.dir}`,"steam/game",`${appID}.json`);
-    let header;
-    if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: cache.data_retention.header})) {
-        header = JSON.parse(await ffs.promises.readFile(filePath));
-        debug.log("Loading header from cache");
+
+    let filePath = path.join(`${cache.dir}`,`steam/ach/${lang}`,`${appID}.json`);
+    let ach;
+    if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: 1})) {
+       ach = JSON.parse(await ffs.promises.readFile(filePath));
+       debug.log("Loading achievements list from cache");
     } else {
-        header = await getSteamHeaderData(appID);
-        debug.log("Loading header from remote");
-        ffs.promises.writeFile(filePath,JSON.stringify(header, null, 2)).catch((err) => { debug.log(err) });                 
-   }
-   
-   if (!header.game_lang.some( language => language.api === lang )) {
-      debug.log("Game doesnt support language; Switching back to English");
-      lang = "english";
-   }
-   
-   filePath = path.join(`${cache.dir}`,`steam/ach/${lang}`,`${appID}.json`);
-   let ach;
-   if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: cache.data_retention.ach})) {
-        ach = JSON.parse(await ffs.promises.readFile(filePath));
-        debug.log("Loading achievements list from cache");
-   } else {
-        ach = await getSteamAchData(appID,lang);
-        debug.log("Loading achievements list from remote");
-        ffs.promises.writeFile(filePath,JSON.stringify(ach, null, 2)).catch((err) => { debug.log(err) });                 
-   } 
- 
-   result = Object.assign(header,ach);
-  
-   return result;
+      try{
+         ach = await getSteamAchData(appID,lang);
+         debug.log("Loading achievements list from remote");
+         ffs.promises.writeFile(filePath,JSON.stringify(ach, null, 2)).catch((err) => { debug.log(err) });    
+      }catch(err){
+         if (await ffs.promises.exists(filePath)){
+          debug.log(err);
+          ach = JSON.parse(await ffs.promises.readFile(filePath));
+          debug.log("Falling back to cached data");
+         } else {
+          throw err;
+         }
+      }             
+    } 
+    
+    let header = await getSteamHeaderData(appID);
+
+    return Object.assign(header,ach);
     
   }catch(err) {
     debug.log(err);
@@ -102,65 +94,81 @@ module.exports.getUserOwnedGames = async (user) => {
 
 };
 
-function getSteamHeaderData(appID) {
-
-  const url = `https://store.steampowered.com/api/appdetails?appids=${appID}`;
-
-  return new Promise((resolve, reject) => {
+async function getSteamHeaderData(appID) {
+  try{
   
-   return Promise.all([request.getJson(url,{headers: {"Accept-Language" : "en-US;q=1.0"}}), scrapSteamDB(appID)]).then(function(data) {  
-
-          try {
-          
-              let appdetail = data[0];
-              let steamdb = data[1];
-
-                let result;
-                
-                if (appdetail[appID].success) {
-                
-                  result = {
-                      name: appdetail[appID].data.name,
-                      appid: appID,
-                      binary: path.parse(steamdb.binary).base,
-                      img: {
-                        header: appdetail[appID].data.header_image.split("?")[0],
-                        background: appdetail[appID].data.background.split("?")[0],
-                        icon: steamdb.icon
-                      },
-                      game_lang: appdetail[appID].data.supported_languages.split("<br>")[0].replace(/<\/?[^>]+>\*<\/?[^>]+>/gi,"").split(", ").map((i)=>{ 
-                                  return i = steamLanguages.find( lang => lang.displayName === i)
-                      })
-                  };
-                  
-                } else { //If the game is no longer available in the store fallback to steamdb
-                   result = {
-                      name: steamdb.name, 
-                      appid: appID,
-                      binary: path.parse(steamdb.binary).base,
-                      img: {
-                        header: steamdb.header,
-                        icon: steamdb.icon
-                      },
-                      game_lang: steamdb.lang.map((i)=>{ 
-                                return i = steamLanguages.find( lang => lang.api === i)
-                      })
-                  };                
-                }
-                
-              return resolve(result); 
-          
-          }catch(err) {
-            debug.log(err);
-            return reject(err);
-          }   
+    const urls = {
+      store: `https://store.steampowered.com/app/${appID}`,
+      cdn: `https://steamcdn-a.akamaihd.net` 
+    };
+  
+    let save = false;
+    let filePath = path.join(`${cache.dir}`,"steam/game",`${appID}.json`);
     
-   }).catch((err) => {
-          debug.log(err);
-          return reject(err);
-   });
+    let result = {
+      name: null,
+      appid : appID,
+      binary: null,
+      img: {}
+    };
+    
+    if (await ffs.promises.exists(filePath)) {
+      result = JSON.parse(await ffs.promises.readFile(filePath));
+      debug.log("Loading header from cache");
+    } else {
+      save = true;
+    }
+    
+    if (!result.img) result.img = {};
+    if (!result.img.header || !result.img.background || !result.img.portrait || !result.img.hero) {
+      save = true;
+      if (!result.img.header) result.img.header = `${urls.cdn}/steam/apps/${appID}/header.jpg`;
+      if (!result.img.background) result.img.background = `${urls.cdn}/steam/apps/${appID}/page_bg_generated_v6b.jpg`;
+      try{
+        if (!result.img.portrait && (await request.head(`${urls.cdn}/steam/apps/${appID}/library_600x900.jpg`, {maxRetry: 0})).code == 200 ) result.img.portrait = `${urls.cdn}/steam/apps/${appID}/library_600x900.jpg`;
+        if (!result.img.hero && (await request.head(`${urls.cdn}/steam/apps/${appID}/library_hero.jpg`, {maxRetry: 0})).code == 200) result.img.hero = `${urls.cdn}/steam/apps/${appID}/library_hero.jpg`;
+      }catch(err){
+        debug.log(err);
+      }
+    }
 
-  });
+    if (!result.name || !result.img.icon) {
+          debug.log("Loading header from remote");
+          
+          let data = await request(urls.store,{headers: {'Cookie': "birthtime=662716801; mature_content=1; path=/; domain=store.steampowered.com", "Accept-Language" : "en-US;q=1.0"}});
+          let html = htmlParser(data.body);
+          let name = html.querySelector('.apphub_AppName').innerHTML;
+          let icon_URL = html.querySelector('.apphub_AppIcon img').attributes.src;
+          save = true;
+          
+          if (!result.name) result.name = name
+          if (!result.img.icon) result.img.icon = icon_URL.replace("https://%CDN_HOST_MEDIA_SSL%",urls.cdn);
+            
+   }
+    
+   //if (!result.binary || !result.name || !result.img.icon) {
+   if (!result.binary) {
+      try{
+        let data = await scrapSteamDB(appID);
+        save = true;
+        //if (!result.name) result.name = data.name;
+        //if (!result.img.icon) result.img.icon = data.icon;
+        //if (!result.binary) result.binary = path.parse(data.binary).base;
+        if (!result.binary) result.binary = data;
+        debug.log("Loading info from SteamDB");
+      }catch(err){
+        debug.log(err);
+      }
+   }
+
+   if (save) ffs.promises.writeFile(filePath,JSON.stringify(result, null, 2)).catch((err) => { debug.log(err) }); 
+   
+   return result;
+    
+  }catch(err){
+    debug.log(err);
+    throw err;
+  }
 }
 
 function getSteamAchData(appID,lang) {
@@ -198,13 +206,31 @@ function getSteamAchData(appID,lang) {
 
 async function scrapSteamDB(appID){
   
-  const url = `https://steamdb.info/app/${appID}/`;
+  //const url = `https://steamdb.info/app/${appID}/`;
+  const url = `https://steamdb.info/app/${appID}/config`;
 
   try {
-    let data = await request(url);
+
+    let options = { 
+      maxRetry: 0,
+      timeout: 5000,
+      headers: { 
+        'User-Agent': `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71) Gecko/20100101 Firefox/71`,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US;q=0.5,en;q=0.3',
+        'Accept-Encoding': '*',
+        'DNT': 1,
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': 1
+      }
+    };
+
+    //let data = await request(url);
+    let data = await request(`https://googleweblight.com/?lite_url=${url}`,options);    
+    
     let html = htmlParser(data.body);
 
-    let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
+    /*let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
     
       let data = tr.split("</td>\n");
 
@@ -229,7 +255,25 @@ async function scrapSteamDB(appID){
       }); 
     }catch(e){}
 
-    return result
+    return result*/
+    
+    let binaries = html.querySelector('#a-config table tbody').innerHTML.split("</tr><tr>").map((tr) => {
+    
+      let data = tr.split("</td>");
+
+      return {
+        executable: data[1].replace(/<\/?[^>]+>/gi, '').replace(/[\r\n]/g, ''),
+        windows: data[4].includes(`aria-label="windows"`) || (!data[4].includes(`aria-label="macOS"`) && !data[4].includes(`aria-label="Linux"`)) ? true : false,
+      };
+    
+    });
+
+    let binary = binaries.find(binary => binary.windows).executable;
+    binary = binary.match(/([^\\])+$/)[0];
+    
+    if (!binary) throw "No binary match";
+
+    return binary;    
     
   }catch( err) {
     debug.log(err);

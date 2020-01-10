@@ -51,8 +51,21 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
           destFile = options.filename;
         } else {
           try {
-            let matches = res.headers['content-disposition'].match(/.(?:filename=)(.*)/);
-            if (matches.length >= 2) destFile = matches[1]
+          
+            const regexp = [
+              /filename\*=UTF-8\'\'(.*)/,
+              /filename=\"(.*)\"/,
+              /filename=(.*)/
+            ];
+            
+            for (let exp of regexp) {
+              let matches = res.headers['content-disposition'].match(exp);
+              if (matches && matches.length >= 2 && matches[1]) {
+                destFile = matches[1];
+                break;
+              }
+            }
+            
             if (!destFile) throw "Unable to parse content-disposition";
           }catch(err){
             destFile = url.pathname.split('/').pop();
@@ -63,7 +76,7 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
         
           fs.mkdir(destDir, { recursive: true }, (err) => {
              if (err) { 
-               reject( {code: err.code, message: err.message} );
+               reject( {code: err.code, message: err.message, url: url.href} );
                req.abort(); 
              }
              else 
@@ -82,7 +95,7 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
                   let file = fs.createWriteStream(destPath);
 
                   file.on('error', (err) => {
-                    reject( {code: err.code, message: err.message} );
+                    reject( {code: err.code, message: err.message, url: url.href} );
                     file.end();
                     fs.unlink(destPath, () => {
                        req.abort();
@@ -116,13 +129,14 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
                             resolve({
                                 code: res.statusCode,
                                 message: res.statusMessage,
+                                url: url.href,
                                 headers: res.headers,
                                 path: destPath
                             });
                         } else {
                             option.maxRetry = options.maxRetry - 1;
                             if (option.maxRetry < 0) {
-                                reject( {code: 'EINTERRUPTED', message: 'The connection was terminated while the message was still being sent'} );
+                                reject( {code: 'EINTERRUPTED', message: 'The connection was terminated while the message was still being sent', url: url.href} );
                                 fs.unlink(destPath, () => {});
                             } else {
                                 return resolve(download(href, destDir, option, callbackProgress));
@@ -137,6 +151,7 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
                           reject({
                               code: err.code, 
                               message: err.message,
+                              url: url.href,
                               headers: res.headers
                           });
                           fs.unlink(destPath, () => {
@@ -167,6 +182,7 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
                  reject({
                     code: res.statusCode, 
                     message: res.statusMessage,
+                    url: url.href,
                     headers: res.headers
                  });
                  fs.unlink(destPath, () => {
@@ -185,7 +201,8 @@ const download = module.exports = (href, destDir, option, callbackProgress = ()=
              if (option.maxRetry < 0) {
                  reject({
                     code: err.code, 
-                    message: err.message
+                    message: err.message,
+                    url: url.href
                  });
                  fs.unlink(destPath, () => {
                     req.abort();

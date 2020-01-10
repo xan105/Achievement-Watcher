@@ -1,6 +1,6 @@
 # The MIT License
 
-Copyright (c) 2018 Toyobayashi <lifenglin314@outlook.com>
+Copyright (c) 2018-2020 Toyobayashi <lifenglin314@outlook.com>
 
 Permission is hereby granted, free of charge, to any
 person obtaining a copy of this software and associated

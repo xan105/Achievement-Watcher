@@ -29,7 +29,7 @@ const deferToConnect = (socket: Socket | TLSSocket, fn: Listeners | (() => void)
 		if (socket instanceof TLSSocket && hasSecureConnectListener) {
 			if (socket.authorized) {
 				listeners.secureConnect!();
-			} else {
+			} else if (!socket.authorizationError) {
 				socket.once('secureConnect', listeners.secureConnect!);
 			}
 		}

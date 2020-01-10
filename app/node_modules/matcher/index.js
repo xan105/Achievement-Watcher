@@ -64,7 +64,14 @@ module.exports = (inputs, patterns, options) => {
 };
 
 module.exports.isMatch = (input, pattern, options) => {
-	const regexp = makeRegexp(pattern, options);
-	const matches = regexp.test(input);
-	return regexp.negated ? !matches : matches;
+	const inputArray = Array.isArray(input) ? input : [input];
+	const patternArray = Array.isArray(pattern) ? pattern : [pattern];
+
+	return inputArray.some(input => {
+		return patternArray.every(pattern => {
+			const regexp = makeRegexp(pattern, options);
+			const matches = regexp.test(input);
+			return regexp.negated ? !matches : matches;
+		});
+	});
 };

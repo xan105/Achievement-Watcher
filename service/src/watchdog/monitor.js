@@ -6,6 +6,7 @@ const parentFind = require('find-up');
 const omit = require('lodash.omit');
 const ffs = require("./util/feverFS.js");
 const regedit = require("./native/regedit.js");
+const sse = require("./sse.js");
 
 const files = {
   achievement: [
@@ -15,7 +16,8 @@ const files = {
     "stats.ini",
     "Achievements.Bin",
     "achieve.dat",
-    "Achievements.ini" 
+    "Achievements.ini",
+    "stats.bin" 
   ],
   steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
 }
@@ -144,16 +146,19 @@ module.exports.getFolders = async (userDir_file) => {
   
 }
 
-module.exports.parse = async (file) => {
+module.exports.parse = async (filePath) => {
     try {
     
       const filter = ["SteamAchievements","Steam64","Steam"];
       
       let local;
-      if (path.parse(file).ext == ".json") {
-        local = JSON.parse(await ffs.promises.readFile(file,"utf8"));
+      let file = path.parse(filePath);
+      if (file.ext == ".json") {
+        local = JSON.parse(await ffs.promises.readFile(filePath,"utf8"));
+      } else if (file.base == "stats.bin"){
+        local = sse.parse(await ffs.promises.readFile(filePath));
       } else {
-        local = ini.parse(await ffs.promises.readFile(file,"utf8"));
+        local = ini.parse(await ffs.promises.readFile(filePath,"utf8"));
       }
       
       if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
@@ -192,6 +197,10 @@ module.exports.parse = async (file) => {
                   
                   if (!result.Achieved && result.MaxProgress == 100 && result.CurProgress == 100) { //CODEX 09/2019 (Gears5)
                       result.Achieved = true;
+                  }
+                  
+                  if(local[achievement].crc) {
+                    result.crc = local[achievement].crc;
                   }
                   
                   achievements.push(result);

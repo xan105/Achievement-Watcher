@@ -1,32 +1,27 @@
 /*!
  * Tmp
  *
- * Copyright (c) 2011-2015 KARASZI Istvan <github@spam.raszi.hu>
+ * Copyright (c) 2011-2017 KARASZI Istvan <github@spam.raszi.hu>
  *
  * MIT Licensed
  */
 
-/**
+/*
  * Module dependencies.
  */
-var
-  fs     = require('fs'),
-  path   = require('path'),
-  os     = require('os'),
-  crypto = require('crypto'),
-  exists = fs.exists || path.exists,
-  existsSync = fs.existsSync || path.existsSync,
-  tmpDir = require('os-tmpdir'),
-  _c     = require('constants');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const crypto = require('crypto');
+const _c = fs.constants && os.constants ?
+  { fs: fs.constants, os: os.constants } :
+  process.binding('constants');
+const rimraf = require('rimraf');
 
-
-/**
+/*
  * The working inner variables.
  */
-var
-  // store the actual TMP directory
-  _TMP = tmpDir(),
-
+const
   // the random characters to choose from
   RANDOM_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
 
@@ -34,24 +29,31 @@ var
 
   DEFAULT_TRIES = 3,
 
-  CREATE_FLAGS = _c.O_CREAT | _c.O_EXCL | _c.O_RDWR,
+  CREATE_FLAGS = (_c.O_CREAT || _c.fs.O_CREAT) | (_c.O_EXCL || _c.fs.O_EXCL) | (_c.O_RDWR || _c.fs.O_RDWR),
 
-  DIR_MODE = 448 /* 0700 */,
-  FILE_MODE = 384 /* 0600 */,
+  EBADF = _c.EBADF || _c.os.errno.EBADF,
+  ENOENT = _c.ENOENT || _c.os.errno.ENOENT,
+
+  DIR_MODE = 448 /* 0o700 */,
+  FILE_MODE = 384 /* 0o600 */,
+
+  EXIT = 'exit',
+
+  SIGINT = 'SIGINT',
 
   // this will hold the objects need to be removed on exit
-  _removeObjects = [],
+  _removeObjects = [];
 
-  _gracefulCleanup = false,
-  _uncaughtException = false;
+var
+  _gracefulCleanup = false;
 
 /**
  * Random name generator based on crypto.
  * Adapted from http://blog.tompawlak.org/how-to-generate-random-values-nodejs-javascript
  *
- * @param {Number} howMany
- * @return {String}
- * @api private
+ * @param {number} howMany
+ * @returns {string} the generated random name
+ * @private
  */
 function _randomChars(howMany) {
   var
@@ -76,8 +78,8 @@ function _randomChars(howMany) {
  * Checks whether the `obj` parameter is defined or not.
  *
  * @param {Object} obj
- * @return {Boolean}
- * @api private
+ * @returns {boolean} true if the object is undefined
+ * @private
  */
 function _isUndefined(obj) {
   return typeof obj === 'undefined';
@@ -88,18 +90,20 @@ function _isUndefined(obj) {
  *
  * This function helps to have optional arguments.
  *
- * @param {Object} options
+ * @param {(Options|Function)} options
  * @param {Function} callback
- * @api private
+ * @returns {Array} parsed arguments
+ * @private
  */
 function _parseArguments(options, callback) {
-  if (typeof options == 'function') {
-    var
-      tmp = options;
-      options = callback || {};
-      callback = tmp;
-  } else if (typeof options == 'undefined') {
-    options = {};
+  /* istanbul ignore else */
+  if (typeof options === 'function') {
+    return [{}, options];
+  }
+
+  /* istanbul ignore else */
+  if (_isUndefined(options)) {
+    return [{}, callback];
   }
 
   return [options, callback];
@@ -109,88 +113,115 @@ function _parseArguments(options, callback) {
  * Generates a new temporary name.
  *
  * @param {Object} opts
- * @returns {String}
- * @api private
+ * @returns {string} the new random name according to opts
+ * @private
  */
 function _generateTmpName(opts) {
-  if (opts.name) {
-    return path.join(opts.dir || _TMP, opts.name);
+
+  const tmpDir = _getTmpDir();
+
+  // fail early on missing tmp dir
+  if (isBlank(opts.dir) && isBlank(tmpDir)) {
+    throw new Error('No tmp dir specified');
+  }
+
+  /* istanbul ignore else */
+  if (!isBlank(opts.name)) {
+    return path.join(opts.dir || tmpDir, opts.name);
   }
 
   // mkstemps like template
+  // opts.template has already been guarded in tmpName() below
+  /* istanbul ignore else */
   if (opts.template) {
-    return opts.template.replace(TEMPLATE_PATTERN, _randomChars(6));
+    var template = opts.template;
+    // make sure that we prepend the tmp path if none was given
+    /* istanbul ignore else */
+    if (path.basename(template) === template)
+      template = path.join(opts.dir || tmpDir, template);
+    return template.replace(TEMPLATE_PATTERN, _randomChars(6));
   }
 
   // prefix and postfix
-  var name = [
-    opts.prefix || 'tmp-',
+  const name = [
+    (isBlank(opts.prefix) ? 'tmp-' : opts.prefix),
     process.pid,
     _randomChars(12),
-    opts.postfix || ''
+    (opts.postfix ? opts.postfix : '')
   ].join('');
 
-  return path.join(opts.dir || _TMP, name);
+  return path.join(opts.dir || tmpDir, name);
 }
 
 /**
  * Gets a temporary file name.
  *
- * @param {Object} options
- * @param {Function} callback
- * @api private
+ * @param {(Options|tmpNameCallback)} options options or callback
+ * @param {?tmpNameCallback} callback the callback function
  */
-function _getTmpName(options, callback) {
+function tmpName(options, callback) {
   var
     args = _parseArguments(options, callback),
     opts = args[0],
     cb = args[1],
-    tries = opts.tries || DEFAULT_TRIES;
+    tries = !isBlank(opts.name) ? 1 : opts.tries || DEFAULT_TRIES;
 
+  /* istanbul ignore else */
   if (isNaN(tries) || tries < 0)
     return cb(new Error('Invalid tries'));
 
+  /* istanbul ignore else */
   if (opts.template && !opts.template.match(TEMPLATE_PATTERN))
     return cb(new Error('Invalid template provided'));
 
   (function _getUniqueName() {
-    var name = _generateTmpName(opts);
+    try {
+      const name = _generateTmpName(opts);
 
-    // check whether the path exists then retry if needed
-    exists(name, function _pathExists(pathExists) {
-      if (pathExists) {
-        if (tries-- > 0) return _getUniqueName();
+      // check whether the path exists then retry if needed
+      fs.stat(name, function (err) {
+        /* istanbul ignore else */
+        if (!err) {
+          /* istanbul ignore else */
+          if (tries-- > 0) return _getUniqueName();
 
-        return cb(new Error('Could not get a unique tmp filename, max tries reached ' + name));
-      }
+          return cb(new Error('Could not get a unique tmp filename, max tries reached ' + name));
+        }
 
-      cb(null, name);
-    });
+        cb(null, name);
+      });
+    } catch (err) {
+      cb(err);
+    }
   }());
 }
 
 /**
- * Synchronous version of _getTmpName.
+ * Synchronous version of tmpName.
  *
  * @param {Object} options
- * @returns {String}
- * @api private
+ * @returns {string} the generated random name
+ * @throws {Error} if the options are invalid or could not generate a filename
  */
-function _getTmpNameSync(options) {
+function tmpNameSync(options) {
   var
     args = _parseArguments(options),
     opts = args[0],
-    tries = opts.tries || DEFAULT_TRIES;
+    tries = !isBlank(opts.name) ? 1 : opts.tries || DEFAULT_TRIES;
 
+  /* istanbul ignore else */
   if (isNaN(tries) || tries < 0)
     throw new Error('Invalid tries');
 
+  /* istanbul ignore else */
   if (opts.template && !opts.template.match(TEMPLATE_PATTERN))
     throw new Error('Invalid template provided');
 
   do {
-    var name = _generateTmpName(opts);
-    if (!existsSync(name)) {
+    const name = _generateTmpName(opts);
+    try {
+      fs.statSync(name);
+    } catch (e) {
       return name;
     }
   } while (tries-- > 0);
@@ -201,111 +232,102 @@ function _getTmpNameSync(options) {
 /**
  * Creates and opens a temporary file.
  *
- * @param {Object} options
- * @param {Function} callback
- * @api public
+ * @param {(Options|fileCallback)} options the config options or the callback function
+ * @param {?fileCallback} callback
  */
-function _createTmpFile(options, callback) {
+function file(options, callback) {
   var
     args = _parseArguments(options, callback),
     opts = args[0],
     cb = args[1];
 
-    opts.postfix = (_isUndefined(opts.postfix)) ? '.tmp' : opts.postfix;
-
   // gets a temporary filename
-  _getTmpName(opts, function _tmpNameCreated(err, name) {
+  tmpName(opts, function _tmpNameCreated(err, name) {
+    /* istanbul ignore else */
     if (err) return cb(err);
 
     // create and open the file
     fs.open(name, CREATE_FLAGS, opts.mode || FILE_MODE, function _fileCreated(err, fd) {
+      /* istanbul ignore else */
       if (err) return cb(err);
 
+      if (opts.discardDescriptor) {
+        return fs.close(fd, function _discardCallback(err) {
+          /* istanbul ignore else */
+          if (err) {
+            // Low probability, and the file exists, so this could be
+            // ignored.  If it isn't we certainly need to unlink the
+            // file, and if that fails too its error is more
+            // important.
+            try {
+              fs.unlinkSync(name);
+            } catch (e) {
+              if (!isENOENT(e)) {
+                err = e;
+              }
+            }
+            return cb(err);
+          }
+          cb(null, name, undefined, _prepareTmpFileRemoveCallback(name, -1, opts));
+        });
+      }
+      /* istanbul ignore else */
+      if (opts.detachDescriptor) {
+        return cb(null, name, fd, _prepareTmpFileRemoveCallback(name, -1, opts));
+      }
       cb(null, name, fd, _prepareTmpFileRemoveCallback(name, fd, opts));
     });
   });
 }
 
 /**
- * Synchronous version of _createTmpFile.
+ * Synchronous version of file.
  *
- * @param {Object} options
- * @returns {Object} object consists of name, fd and removeCallback
- * @api private
+ * @param {Options} options
+ * @returns {FileSyncObject} object consists of name, fd and removeCallback
+ * @throws {Error} if cannot create a file
  */
-function _createTmpFileSync(options) {
+function fileSync(options) {
   var
     args = _parseArguments(options),
     opts = args[0];
 
-    opts.postfix = opts.postfix || '.tmp';
-
-  var name = _getTmpNameSync(opts);
+  const discardOrDetachDescriptor = opts.discardDescriptor || opts.detachDescriptor;
+  const name = tmpNameSync(opts);
   var fd = fs.openSync(name, CREATE_FLAGS, opts.mode || FILE_MODE);
+  /* istanbul ignore else */
+  if (opts.discardDescriptor) {
+    fs.closeSync(fd);
+    fd = undefined;
+  }
 
   return {
-    name : name,
-    fd : fd,
-    removeCallback : _prepareTmpFileRemoveCallback(name, fd, opts)
+    name: name,
+    fd: fd,
+    removeCallback: _prepareTmpFileRemoveCallback(name, discardOrDetachDescriptor ? -1 : fd, opts)
   };
-}
-
-/**
- * Removes files and folders in a directory recursively.
- *
- * @param {String} root
- * @api private
- */
-function _rmdirRecursiveSync(root) {
-  var dirs = [root];
-
-  do {
-    var
-      dir = dirs.pop(),
-      deferred = false,
-      files = fs.readdirSync(dir);
-
-    for (var i = 0, length = files.length; i < length; i++) {
-      var
-        file = path.join(dir, files[i]),
-        stat = fs.lstatSync(file); // lstat so we don't recurse into symlinked directories
-
-      if (stat.isDirectory()) {
-        if (!deferred) {
-          deferred = true;
-          dirs.push(dir);
-        }  
-        dirs.push(file);
-      } else {
-        fs.unlinkSync(file);
-      }
-    }
-
-    if (!deferred) {
-      fs.rmdirSync(dir);
-    }
-  } while (dirs.length !== 0);
 }
 
 /**
  * Creates a temporary directory.
  *
- * @param {Object} options
- * @param {Function} callback
- * @api public
+ * @param {(Options|dirCallback)} options the options or the callback function
+ * @param {?dirCallback} callback
  */
-function _createTmpDir(options, callback) {
+function dir(options, callback) {
   var
     args = _parseArguments(options, callback),
     opts = args[0],
     cb = args[1];
 
   // gets a temporary filename
-  _getTmpName(opts, function _tmpNameCreated(err, name) {
+  tmpName(opts, function _tmpNameCreated(err, name) {
+    /* istanbul ignore else */
     if (err) return cb(err);
 
     // create the directory
     fs.mkdir(name, opts.mode || DIR_MODE, function _dirCreated(err) {
+      /* istanbul ignore else */
       if (err) return cb(err);
 
       cb(null, name, _prepareTmpDirRemoveCallback(name, opts));
@@ -314,74 +336,129 @@ function _createTmpDir(options, callback) {
 }
 
 /**
- * Synchronous version of _createTmpDir.
+ * Synchronous version of dir.
  *
- * @param {Object} options
- * @returns {Object} object consists of name and removeCallback
- * @api private
+ * @param {Options} options
+ * @returns {DirSyncObject} object consists of name and removeCallback
+ * @throws {Error} if it cannot create a directory
  */
-function _createTmpDirSync(options) {
+function dirSync(options) {
   var
     args = _parseArguments(options),
     opts = args[0];
 
-  var name = _getTmpNameSync(opts);
+  const name = tmpNameSync(opts);
   fs.mkdirSync(name, opts.mode || DIR_MODE);
 
   return {
-    name : name,
-    removeCallback : _prepareTmpDirRemoveCallback(name, opts)
+    name: name,
+    removeCallback: _prepareTmpDirRemoveCallback(name, opts)
   };
+}
+
+/**
+ * Removes files asynchronously.
+ *
+ * @param {Object} fdPath
+ * @param {Function} next
+ * @private
+ */
+function _removeFileAsync(fdPath, next) {
+  const _handler = function (err) {
+    if (err && !isENOENT(err)) {
+      // reraise any unanticipated error
+      return next(err);
+    }
+    next();
+  }
+
+  if (0 <= fdPath[0])
+    fs.close(fdPath[0], function (err) {
+      fs.unlink(fdPath[1], _handler);
+    });
+  else fs.unlink(fdPath[1], _handler);
+}
+
+/**
+ * Removes files synchronously.
+ *
+ * @param {Object} fdPath
+ * @private
+ */
+function _removeFileSync(fdPath) {
+  try {
+    if (0 <= fdPath[0]) fs.closeSync(fdPath[0]);
+  } catch (e) {
+    // reraise any unanticipated error
+    if (!isEBADF(e) && !isENOENT(e)) throw e;
+  } finally {
+    try {
+      fs.unlinkSync(fdPath[1]);
+    }
+    catch (e) {
+      // reraise any unanticipated error
+      if (!isENOENT(e)) throw e;
+    }
+  }
 }
 
 /**
  * Prepares the callback for removal of the temporary file.
  *
- * @param {String} name
- * @param {int} fd
+ * @param {string} name the path of the file
+ * @param {number} fd file descriptor
  * @param {Object} opts
- * @api private
- * @returns {Function} the callback
+ * @returns {fileCallback}
+ * @private
  */
 function _prepareTmpFileRemoveCallback(name, fd, opts) {
-  var removeCallback = _prepareRemoveCallback(function _removeCallback(fdPath) {
-    try {
-      fs.closeSync(fdPath[0]);
-    }
-    catch (e) {
-      // under some node/windows related circumstances, a temporary file 
-      // may have not be created as expected or the file was already closed
-      // by the user, in which case we will simply ignore the error
-      if (e.errno != -_c.EBADF && e.errno != -c.ENOENT) {
-        // reraise any unanticipated error
-        throw e;
-      }
-    }
-    fs.unlinkSync(fdPath[1]);
-  }, [fd, name]);
+  const removeCallbackSync = _prepareRemoveCallback(_removeFileSync, [fd, name]);
+  const removeCallback = _prepareRemoveCallback(_removeFileAsync, [fd, name], removeCallbackSync);
 
-  if (!opts.keep) {
-    _removeObjects.unshift(removeCallback);
-  }
+  if (!opts.keep) _removeObjects.unshift(removeCallbackSync);
 
   return removeCallback;
 }
 
 /**
+ * Simple wrapper for rimraf.
+ *
+ * @param {string} dirPath
+ * @param {Function} next
+ * @private
+ */
+function _rimrafRemoveDirWrapper(dirPath, next) {
+  rimraf(dirPath, next);
+}
+
+/**
+ * Simple wrapper for rimraf.sync.
+ *
+ * @param {string} dirPath
+ * @private
+ */
+function _rimrafRemoveDirSyncWrapper(dirPath, next) {
+  try {
+    return next(null, rimraf.sync(dirPath));
+  } catch (err) {
+    return next(err);
+  }
+}
+
+/**
  * Prepares the callback for removal of the temporary directory.
  *
- * @param {String} name
+ * @param {string} name
  * @param {Object} opts
  * @returns {Function} the callback
- * @api private
+ * @private
  */
 function _prepareTmpDirRemoveCallback(name, opts) {
-  var removeFunction = opts.unsafeCleanup ? _rmdirRecursiveSync : fs.rmdirSync.bind(fs);
-  var removeCallback = _prepareRemoveCallback(removeFunction, name);
-
-  if (!opts.keep) {
-    _removeObjects.unshift(removeCallback);
-  }
+  const removeFunction = opts.unsafeCleanup ? _rimrafRemoveDirWrapper : fs.rmdir.bind(fs);
+  const removeFunctionSync = opts.unsafeCleanup ? _rimrafRemoveDirSyncWrapper : fs.rmdirSync.bind(fs);
+  const removeCallbackSync = _prepareRemoveCallback(removeFunctionSync, name);
+  const removeCallback = _prepareRemoveCallback(removeFunction, name, removeCallbackSync);
+  if (!opts.keep) _removeObjects.unshift(removeCallbackSync);
 
   return removeCallback;
 }
@@ -392,71 +469,294 @@ function _prepareTmpDirRemoveCallback(name, opts) {
  * @param {Function} removeFunction
  * @param {Object} arg
  * @returns {Function}
- * @api private
+ * @private
  */
-function _prepareRemoveCallback(removeFunction, arg) {
+function _prepareRemoveCallback(removeFunction, arg, cleanupCallbackSync) {
   var called = false;
 
-  return function _cleanupCallback() {
-    if (called) return;
+  return function _cleanupCallback(next) {
+    next = next || function () {};
+    if (!called) {
+      const toRemove = cleanupCallbackSync || _cleanupCallback;
+      const index = _removeObjects.indexOf(toRemove);
+      /* istanbul ignore else */
+      if (index >= 0) _removeObjects.splice(index, 1);
 
-    var index = _removeObjects.indexOf(removeFunction);
-    if (index >= 0) {
-      _removeObjects.splice(index, 1);
-    }
-
-    called = true;
-    removeFunction(arg);
+      called = true;
+      // sync?
+      if (removeFunction.length === 1) {
+        try {
+          removeFunction(arg);
+          return next(null);
+        }
+        catch (err) {
+          // if no next is provided and since we are
+          // in silent cleanup mode on process exit,
+          // we will ignore the error
+          return next(err);
+        }
+      } else return removeFunction(arg, next);
+    } else return next(new Error('cleanup callback has already been called'));
   };
 }
 
 /**
  * The garbage collector.
  *
- * @api private
+ * @private
  */
 function _garbageCollector() {
-  if (_uncaughtException && !_gracefulCleanup) {
-    return;
-  }
+  /* istanbul ignore else */
+  if (!_gracefulCleanup) return;
 
-  for (var i = 0, length = _removeObjects.length; i < length; i++) {
+  // the function being called removes itself from _removeObjects,
+  // loop until _removeObjects is empty
+  while (_removeObjects.length) {
     try {
-      _removeObjects[i].call(null);
+      _removeObjects[0]();
     } catch (e) {
       // already removed?
     }
   }
 }
 
-function _setGracefulCleanup() {
+/**
+ * Helper for testing against EBADF to compensate changes made to Node 7.x under Windows.
+ */
+function isEBADF(error) {
+  return isExpectedError(error, -EBADF, 'EBADF');
+}
+
+/**
+ * Helper for testing against ENOENT to compensate changes made to Node 7.x under Windows.
+ */
+function isENOENT(error) {
+  return isExpectedError(error, -ENOENT, 'ENOENT');
+}
+
+/**
+ * Helper to determine whether the expected error code matches the actual code and errno,
+ * which will differ between the supported node versions.
+ *
+ * - Node >= 7.0:
+ *   error.code {string}
+ *   error.errno {string|number} any numerical value will be negated
+ *
+ * - Node >= 6.0 < 7.0:
+ *   error.code {string}
+ *   error.errno {number} negated
+ *
+ * - Node >= 4.0 < 6.0: introduces SystemError
+ *   error.code {string}
+ *   error.errno {number} negated
+ *
+ * - Node >= 0.10 < 4.0:
+ *   error.code {number} negated
+ *   error.errno n/a
+ */
+function isExpectedError(error, code, errno) {
+  return error.code === code || error.code === errno;
+}
+
+/**
+ * Helper which determines whether a string s is blank, that is undefined, or empty or null.
+ *
+ * @private
+ * @param {string} s
+ * @returns {Boolean} true whether the string s is blank, false otherwise
+ */
+function isBlank(s) {
+  return s === null || s === undefined || !s.trim();
+}
+
+/**
+ * Sets the graceful cleanup.
+ */
+function setGracefulCleanup() {
   _gracefulCleanup = true;
 }
 
-var version = process.versions.node.split('.').map(function (value) {
-  return parseInt(value, 10);
-});
+/**
+ * Returns the currently configured tmp dir from os.tmpdir().
+ *
+ * @private
+ * @returns {string} the currently configured tmp dir
+ */
+function _getTmpDir() {
+  return os.tmpdir();
+}
 
-if (version[0] === 0 && (version[1] < 9 || version[1] === 9 && version[2] < 5)) {
-  process.addListener('uncaughtException', function _uncaughtExceptionThrown(err) {
-    _uncaughtException = true;
-    _garbageCollector();
+/**
+ * If there are multiple different versions of tmp in place, make sure that
+ * we recognize the old listeners.
+ *
+ * @param {Function} listener
+ * @private
+ * @returns {Boolean} true whether listener is a legacy listener
+ */
+function _is_legacy_listener(listener) {
+  return (listener.name === '_exit' || listener.name === '_uncaughtExceptionThrown')
+    && listener.toString().indexOf('_garbageCollector();') > -1;
+}
 
-    throw err;
+/**
+ * Safely install SIGINT listener.
+ *
+ * NOTE: this will only work on OSX and Linux.
+ *
+ * @private
+ */
+function _safely_install_sigint_listener() {
+
+  const listeners = process.listeners(SIGINT);
+  const existingListeners = [];
+  for (let i = 0, length = listeners.length; i < length; i++) {
+    const lstnr = listeners[i];
+    /* istanbul ignore else */
+    if (lstnr.name === '_tmp$sigint_listener') {
+      existingListeners.push(lstnr);
+      process.removeListener(SIGINT, lstnr);
+    }
+  }
+  process.on(SIGINT, function _tmp$sigint_listener(doExit) {
+    for (let i = 0, length = existingListeners.length; i < length; i++) {
+      // let the existing listener do the garbage collection (e.g. jest sandbox)
+      try {
+        existingListeners[i](false);
+      } catch (err) {
+        // ignore
+      }
+    }
+    try {
+      // force the garbage collector even it is called again in the exit listener
+      _garbageCollector();
+    } finally {
+      if (!!doExit) {
+        process.exit(0);
+      }
+    }
   });
 }
 
-process.addListener('exit', function _exit(code) {
-  if (code) _uncaughtException = true;
-  _garbageCollector();
-});
+/**
+ * Safely install process exit listener.
+ *
+ * @private
+ */
+function _safely_install_exit_listener() {
+  const listeners = process.listeners(EXIT);
+
+  // collect any existing listeners
+  const existingListeners = [];
+  for (let i = 0, length = listeners.length; i < length; i++) {
+    const lstnr = listeners[i];
+    /* istanbul ignore else */
+    // TODO: remove support for legacy listeners once release 1.0.0 is out
+    if (lstnr.name === '_tmp$safe_listener' || _is_legacy_listener(lstnr)) {
+      // we must forget about the uncaughtException listener, hopefully it is ours
+      if (lstnr.name !== '_uncaughtExceptionThrown') {
+        existingListeners.push(lstnr);
+      }
+      process.removeListener(EXIT, lstnr);
+    }
+  }
+  // TODO: what was the data parameter good for?
+  process.addListener(EXIT, function _tmp$safe_listener(data) {
+    for (let i = 0, length = existingListeners.length; i < length; i++) {
+      // let the existing listener do the garbage collection (e.g. jest sandbox)
+      try {
+        existingListeners[i](data);
+      } catch (err) {
+        // ignore
+      }
+    }
+    _garbageCollector();
+  });
+}
+
+_safely_install_exit_listener();
+_safely_install_sigint_listener();
+
+/**
+ * Configuration options.
+ *
+ * @typedef {Object} Options
+ * @property {?number} tries the number of tries before give up the name generation
+ * @property {?string} template the "mkstemp" like filename template
+ * @property {?string} name fix name
+ * @property {?string} dir the tmp directory to use
+ * @property {?string} prefix prefix for the generated name
+ * @property {?string} postfix postfix for the generated name
+ * @property {?boolean} unsafeCleanup recursively removes the created temporary directory, even when it's not empty
+ */
+
+/**
+ * @typedef {Object} FileSyncObject
+ * @property {string} name the name of the file
+ * @property {string} fd the file descriptor
+ * @property {fileCallback} removeCallback the callback function to remove the file
+ */
+
+/**
+ * @typedef {Object} DirSyncObject
+ * @property {string} name the name of the directory
+ * @property {fileCallback} removeCallback the callback function to remove the directory
+ */
+
+/**
+ * @callback tmpNameCallback
+ * @param {?Error} err the error object if anything goes wrong
+ * @param {string} name the temporary file name
+ */
+
+/**
+ * @callback fileCallback
+ * @param {?Error} err the error object if anything goes wrong
+ * @param {string} name the temporary file name
+ * @param {number} fd the file descriptor
+ * @param {cleanupCallback} fn the cleanup callback function
+ */
+
+/**
+ * @callback dirCallback
+ * @param {?Error} err the error object if anything goes wrong
+ * @param {string} name the temporary file name
+ * @param {cleanupCallback} fn the cleanup callback function
+ */
+
+/**
+ * Removes the temporary created file or directory.
+ *
+ * @callback cleanupCallback
+ * @param {simpleCallback} [next] function to call after entry was removed
+ */
+
+/**
+ * Callback function for function composition.
+ * @see {@link https://github.com/raszi/node-tmp/issues/57|raszi/node-tmp#57}
+ *
+ * @callback simpleCallback
+ */
 
 // exporting all the needed methods
-module.exports.tmpdir = _TMP;
-module.exports.dir = _createTmpDir;
-module.exports.dirSync = _createTmpDirSync;
-module.exports.file = _createTmpFile;
-module.exports.fileSync = _createTmpFileSync;
-module.exports.tmpName = _getTmpName;
-module.exports.tmpNameSync = _getTmpNameSync;
-module.exports.setGracefulCleanup = _setGracefulCleanup;
+
+// evaluate os.tmpdir() lazily, mainly for simplifying testing but it also will
+// allow users to reconfigure the temporary directory
+Object.defineProperty(module.exports, 'tmpdir', {
+  enumerable: true,
+  configurable: false,
+  get: function () {
+    return _getTmpDir();
+  }
+});
+
+module.exports.dir = dir;
+module.exports.dirSync = dirSync;
+
+module.exports.file = file;
+module.exports.fileSync = fileSync;
+
+module.exports.tmpName = tmpName;
+module.exports.tmpNameSync = tmpNameSync;
+
+module.exports.setGracefulCleanup = setGracefulCleanup;

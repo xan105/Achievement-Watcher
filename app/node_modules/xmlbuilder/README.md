@@ -7,7 +7,8 @@ An XML builder for [node.js](https://nodejs.org/) similar to
 [![NPM Version](http://img.shields.io/npm/v/xmlbuilder.svg?style=flat-square)](https://npmjs.com/package/xmlbuilder)
 [![NPM Downloads](https://img.shields.io/npm/dm/xmlbuilder.svg?style=flat-square)](https://npmjs.com/package/xmlbuilder)
 
-[![Build Status](http://img.shields.io/travis/oozcitak/xmlbuilder-js.svg?style=flat-square)](http://travis-ci.org/oozcitak/xmlbuilder-js)
+[![Travis Build Status](http://img.shields.io/travis/oozcitak/xmlbuilder-js.svg?style=flat-square)](http://travis-ci.org/oozcitak/xmlbuilder-js)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/bf7odb20hj77isry?svg=true)](https://ci.appveyor.com/project/oozcitak/xmlbuilder-js)
 [![Dev Dependency Status](http://img.shields.io/david/dev/oozcitak/xmlbuilder-js.svg?style=flat-square)](https://david-dm.org/oozcitak/xmlbuilder-js)
 [![Code Coverage](https://img.shields.io/coveralls/oozcitak/xmlbuilder-js.svg?style=flat-square)](https://coveralls.io/github/oozcitak/xmlbuilder-js)
 

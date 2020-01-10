@@ -32,4 +32,4 @@ const boolean = function (value: any): boolean {
   return false;
 };
 
-export default boolean;
+export { boolean };

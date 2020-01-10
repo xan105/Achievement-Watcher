@@ -42,6 +42,7 @@ const request = module.exports = (href, payload, option = {}) => {
         resolve({
           code: res.statusCode,
           message: res.statusMessage,
+          url: url.href,
           headers: res.headers
         });
       }
@@ -55,13 +56,14 @@ const request = module.exports = (href, payload, option = {}) => {
                 resolve({
                     code: res.statusCode,
                     message: res.statusMessage,
+                    url: url.href,
                     headers: res.headers,
                     body: data.join('')
                 });
               }else{
                   option.maxRetry = options.maxRetry - 1;
                   if (option.maxRetry < 0) {
-                    reject( {code: 'EINTERRUPTED', message: 'The connection was terminated while the message was still being sent'} );
+                    reject( {code: 'EINTERRUPTED', message: 'The connection was terminated while the message was still being sent', url: url.href} );
                   } else {
                     return resolve(request(href, option));
                   } 
@@ -72,6 +74,7 @@ const request = module.exports = (href, payload, option = {}) => {
                 reject({
                   code: err.code, 
                   message: err.message,
+                  url: url.href,
                   headers: res.headers
                 });
                 req.abort();    
@@ -108,6 +111,7 @@ const request = module.exports = (href, payload, option = {}) => {
              reject({
               code: res.statusCode, 
               message: res.statusMessage,
+              url: url.href,
               headers: res.headers
              });
              req.abort();    
@@ -124,7 +128,8 @@ const request = module.exports = (href, payload, option = {}) => {
             if (option.maxRetry < 0) {
                reject({
                 code: err.code, 
-                message: err.message
+                message: err.message,
+                url: url.href,
                });
                req.abort();    
             } else {

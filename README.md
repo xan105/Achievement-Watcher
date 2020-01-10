@@ -59,70 +59,8 @@ Not all games are supported, please see the [**compatibility**](https://github.c
 <hr>
 
 You can also display a notification with:
-  - Websocket
-  - Growl Notification Transport Protocol (GNTP)
-
-### Websocket
-
-Endpoint: `ws://localhost:8082`
-
-You can for example use this to create your own notification in an OBS browser source and the like for your streaming needs.
-
-Achievement data are broadcasted to all connected websocket clients.<br />
-There is a 30sec ping/pong but normally it's handled by the browser so you shouldn't have to add code for it.<br />
-
-To help you there is a test command to send a dummy valid notification.
-```js
-//Example
-
-const ws = new WebSocket("ws://localhost:8082");
-ws.onopen = (evt) => { 
-  ws.send(JSON.stringify({cmd:"test"})); //dummy is only send to the client making the request
-  
-  ws.send(JSON.stringify({
-    cmd:"test",
-    broadcast: true
- })); //use broadcast option if you need to send the dummy to all connected clients
-  
-};
-ws.onmessage = (evt) => {
-  console.log(JSON.parse(evt.data)); //JSON string
-  /* Output:
-    {
-      appID: steam appID,
-      title: game name,
-      id: achievement id,
-      message: achievement title,
-      description: achievement description if any,
-      icon: unlocked icon url,
-      time: timestamp from the Steam emu,
-      progress: //if it's a progress and not an unlocked achievement; 
-                //Otherwise this property is not sent at all
-      { 
-          current: current progress,
-          max: max progress value
-      }
-    }  
-  */
-  ws.close();
-};
-
-```
-
-💡 Yes ! You could use this to create a DirectX Overlay by using a DirectX hook which will use Chromium Embedded Framework (such as [momo5502/gameoverlay](https://github.com/momo5502/gameoverlay)) to load some js code to consume data from this websocket.<br />
-I successfully done it but only a few DirectX 9 games weren't crashing and since my C++ skills are not up for the task.<br />
-I wouldn't mind some help if you know your stuff.    
-    
-### GNTP
-
-Endpoint: `localhost:23053`
-
-Recommended gntp client is Growl for Windows (despite it being discontinued) [Mirror download link](https://github.com/xan105/Achievement-Watcher/releases/download/1.2.3/Growl.7z)
-
-**Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification**.<br />
-
-To customize the look of the toast please kindly see your gntp client's options.<br />
-If you are looking for the Achievement Watcher notification sounds there are in `%windir%\Media` (Achievement___.wav)
+  - [Websocket](https://github.com/xan105/Achievement-Watcher#Websocket)
+  - [Growl Notification Transport Protocol](https://github.com/xan105/Achievement-Watcher#GNTP)
   
 Compatibility :
 ================
@@ -137,8 +75,9 @@ Compatibility :
 |ALI213| Via user custom dir | Yes | No | Yes |
 |RLD!| Yes | Yes | No | Yes (on game exit)
 |GreenLumaReborn| Yes | No | No | No |
-|SmartSteamEmu| [Via this plugin](https://github.com/xan105/Achievement-Watcher/releases/download/1.1.1/SSE_userstatswrapper.rar) | Yes | No | Yes |
-|Legit Steam Client| Yes but your Steam profile must be public | Yes | No | Steam overlay does it already | 
+|SmartSteamEmu| Yes | Yes | No | Yes |
+|SmartSteamEmu Reborn| Yes | Yes | No | Yes |
+|Legit Steam Client| Yes (Steam must be installed and your Steam profile must be public) | Yes | No | Steam overlay does it already | 
 |RPCS3 (PS3) | Via user custom dir | No | N/A | RPCS3 does it already|  
 |LumaPlay (Uplay) | Yes | No | No | No |
 
@@ -221,6 +160,15 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - legitSteam<br />
   default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
+  
+- importCache<br /> 
+  default to true<br />
+  Import Watchdog's (Notification) cache as another source of achievement
+  Use this(true) + mergeDuplicate(true) + timeMergeRecentFirst(false) to correct/fix most SteamEmu quirks 
+  
+- thumbnailPortrait<br />
+  default to false<br />
+  Game thumbnail orientation: classic or portrait mode (Like the new Steam UI)
   
 ### [notification]
 
@@ -331,6 +279,66 @@ If you experience any issues please use your own Steam Web API key.<br />
                 
 You can acquire one [by filling out this form](https://steamcommunity.com/dev/apikey).<br />
 Use of the APIs also requires that you agree to the [Steam API Terms of Use](https://steamcommunity.com/dev/apiterms).<br />
+
+Websocket
+=========
+
+Endpoint: `ws://localhost:8082`
+
+You can for example use this to create your own notification in an OBS browser source and the like for your streaming needs.
+
+Achievement data are broadcasted to all connected websocket clients.<br />
+There is a 30sec ping/pong but normally it's handled by the browser so you shouldn't have to add code for it.<br />
+
+To help you there is a test command to send a dummy valid notification.
+```js
+//Example
+
+const ws = new WebSocket("ws://localhost:8082");
+ws.onopen = (evt) => { 
+  ws.send(JSON.stringify({cmd:"test"})); //dummy is only send to the client making the request
+  
+  ws.send(JSON.stringify({
+    cmd:"test",
+    broadcast: true
+ })); //use broadcast option if you need to send the dummy to all connected clients
+  
+};
+ws.onmessage = (evt) => {
+  console.log(JSON.parse(evt.data)); //JSON string
+  /* Output:
+    {
+      appID: steam appID,
+      title: game name,
+      id: achievement id,
+      message: achievement title,
+      description: achievement description if any,
+      icon: unlocked icon url,
+      time: timestamp from the Steam emu,
+      progress: //if it's a progress and not an unlocked achievement; 
+                //Otherwise this property is not sent at all
+      { 
+          current: current progress,
+          max: max progress value
+      }
+    }  
+  */
+  ws.close();
+};
+
+```
+    
+GNTP
+====
+
+Endpoint: `localhost:23053`
+
+Recommended gntp client is Growl for Windows (despite it being discontinued) [Mirror download link](https://github.com/xan105/Achievement-Watcher/releases/download/1.2.3/Growl.7z)
+
+**Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification**.<br />
+
+To customize the look of the toast please kindly see your gntp client's options.<br />
+If you are looking for the Achievement Watcher notification sounds they are in `%windir%\Media` (Achievement___.wav)
 
 Command Line Args | URI Scheme
 ==============================

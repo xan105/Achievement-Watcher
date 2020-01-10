@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import sumchecker, { ChecksumParseError, ChecksumValidator } from '.';
+import * as sumchecker from '.';
+import { ChecksumParseError, ChecksumValidator } from '.';
 
 await sumchecker('sha256', 'test/fixture/example.sha256sum', 'test/fixture', 'example');
 await sumchecker('sha256', 'test/fixture/example.sha256sum', 'test/fixture', ['example']);

@@ -23,13 +23,13 @@ $ npm install boolean
 First you need to add a reference to boolean in your application:
 
 ```javascript
-const boolean = require('boolean').default;
+const { boolean } = require('boolean');
 ```
 
 If you use TypeScript, use the following code instead:
 
 ```typescript
-import boolean from 'boolean';
+import { boolean } from 'boolean';
 ```
 
 To verify a value for its boolean value, call the `boolean` function and provide the value in question as parameter.

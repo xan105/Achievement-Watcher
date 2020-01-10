@@ -20,7 +20,7 @@ class HttpsProxyAgent extends Agent {
   createConnection (configuration: ConnectionConfigurationType, callback: ConnectionCallbackType) {
     const socket = net.connect(
       configuration.proxy.port,
-      configuration.proxy.hostname
+      configuration.proxy.hostname,
     );
 
     socket.on('error', (error) => {

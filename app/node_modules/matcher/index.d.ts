@@ -33,9 +33,9 @@ declare const matcher: {
 	(inputs: readonly string[], patterns: readonly string[], options?: matcher.Options): string[];
 
 	/**
-	@param input - String to match.
-	@param pattern - Use `*` to match zero or more characters. A pattern starting with `!` will be negated.
-	@returns Whether the `input` matches the `pattern`.
+	@param input - String or array of strings to match.
+	@param pattern - String or array of string patterns. Use `*` to match zero or more characters. A pattern starting with `!` will be negated.
+	@returns Whether any given `input` matches every given `pattern`.
 
 	@example
 	```
@@ -64,9 +64,18 @@ declare const matcher: {
 
 	matcher.isMatch('UNICORN', 'unicorn', {caseSensitive: true});
 	//=> false
+
+	matcher.isMatch(['foo', 'bar'], 'f*');
+	//=> true
+
+	matcher.isMatch(['foo', 'bar'], ['a*', 'b*']);
+	//=> true
+
+	matcher.isMatch('unicorn', ['tri*', 'UNI*'], {caseSensitive: true});
+	//=> false
 	```
 	*/
-	isMatch(input: string, pattern: string, options?: matcher.Options): boolean;
+	isMatch(input: string | readonly string[], pattern: string | readonly string[], options?: matcher.Options): boolean;
 };
 
 export = matcher;

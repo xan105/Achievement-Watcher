@@ -1,5 +1,6 @@
 const fs = process.versions.electron ? require('original-fs') : require('fs')
 const asar = require('asar')
+const asarDisk = require('asar/lib/disk.js')
 const path = require('path')
 const pickle = require('chromium-pickle-js')
 const { splitPath } = require('./util.js')
@@ -111,7 +112,32 @@ const statSync = fs.statSync
 fs.statSync = function (p) {
   const [isAsar, asarPath, filePath] = splitPath(p)
   if (!isAsar || filePath === '') return statSync.apply(this, arguments)
+  return asarStatsToFsStats(asar.statFile(asarPath, filePath, true))
+}
+
+const lstatSync = fs.lstatSync
+fs.lstatSync = function (p) {
+  const [isAsar, asarPath, filePath] = splitPath(p)
+  if (!isAsar || filePath === '') return lstatSync.apply(this, arguments)
   return asarStatsToFsStats(asar.statFile(asarPath, filePath))
+}
+
+const readdirSync = fs.readdirSync
+fs.readdirSync = function (p) {
+  const [isAsar, asarPath, filePath] = splitPath(p)
+  if (!isAsar) return readdirSync.apply(this, arguments)
+  const filesystem = asarDisk.readFilesystemSync(asarPath)
+  let node
+  try {
+    node = filesystem.getNode(filePath)
+    if (!node) throw new Error()
+  } catch (_) {
+    throw new Error('ENOENT: no such file or directory, asar readdirSync \'' + p + '\'')
+  }
+  if (node.files) {
+    return Object.keys(node.files)
+  }
+  throw new Error('ENOTDIR: not a directory, asar readdirSync \'' + p + '\'')
 }
 
 const existsSync = fs.existsSync

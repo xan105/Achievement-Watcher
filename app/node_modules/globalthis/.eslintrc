@@ -3,6 +3,11 @@
 
 	"extends": "@ljharb",
 
+	"env": {
+		"browser": true,
+		"node": true,
+	},
+
 	"globals": {
 		"globalThis": false,
 	},

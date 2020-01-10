@@ -8,12 +8,12 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.2.4"
+#define OurVersion "1.2.5"
 #define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
 #define VersionURL "https://github.com/xan105/Achievement-Watcher/raw/master/setup/version.ini"
-#define Copyright "© 2019"
+#define Copyright "© 2019-2020"
 
 ; xp, vista, win7, win8, win8.1, win10
 #define MinWin "win7"

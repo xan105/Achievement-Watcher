@@ -88,9 +88,10 @@ via `downloadOptions`.
 
 ### Proxies
 
-Downstream packages should utilize the `initializeProxy` function to add HTTP(S) proxy support. A
-different proxy module is used, depending on the version of Node in use, and as such, there are
-slightly different ways to set the proxy environment variables. For Node 10 and above,
+Downstream packages should utilize the `initializeProxy` function to add HTTP(S) proxy support. If
+the environment variable `ELECTRON_GET_USE_PROXY` is set, it is called automatically. A different
+proxy module is used, depending on the version of Node in use, and as such, there are slightly
+different ways to set the proxy environment variables. For Node 10 and above,
 [`global-agent`](https://github.com/gajus/global-agent#environment-variables) is used. Otherwise,
 [`global-tunnel-ng`](https://github.com/np-maintain/global-tunnel#auto-config) is used. Refer to the
 appropriate linked module to determine how to configure proxy support.

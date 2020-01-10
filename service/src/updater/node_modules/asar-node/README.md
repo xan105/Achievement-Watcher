@@ -41,6 +41,8 @@ You can also pack `node_modules` into `node_modules.asar` instead of packing the
   * fs.readFileSync()
   * fs.createReadStream()
   * fs.statSync()
+  * fs.lstatSync()
+  * fs.readdirSync()
   * fs.existsSync()
   * fs.realpathSync()
 

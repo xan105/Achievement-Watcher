@@ -30,7 +30,7 @@ module.exports = function (theGlobal, t) {
 		/* eslint no-eval: 1 */
 		eval(key + ' = semaphore;');
 		st.equal(theGlobal[key], semaphore, 'global variable ends up on the global object');
-		delete theGlobal[key];
+		delete theGlobal[key]; // eslint-disable-line no-param-reassign
 		st.end();
 	});
 };

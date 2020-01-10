@@ -35,6 +35,7 @@
     extend(Parser, superClass);
 
     function Parser(opts) {
+      this.parseStringPromise = bind(this.parseStringPromise, this);
       this.parseString = bind(this.parseString, this);
       this.reset = bind(this.reset, this);
       this.assignOrPush = bind(this.assignOrPush, this);
@@ -331,9 +332,23 @@
       }
     };
 
+    Parser.prototype.parseStringPromise = function(str) {
+      return new Promise((function(_this) {
+        return function(resolve, reject) {
+          return _this.parseString(str, function(err, value) {
+            if (err) {
+              return reject(err);
+            } else {
+              return resolve(value);
+            }
+          });
+        };
+      })(this));
+    };
+
     return Parser;
 
-  })(events.EventEmitter);
+  })(events);
 
   exports.parseString = function(str, a, b) {
     var cb, options, parser;
@@ -352,6 +367,15 @@
     }
     parser = new exports.Parser(options);
     return parser.parseString(str, cb);
+  };
+
+  exports.parseStringPromise = function(str, a) {
+    var options, parser;
+    if (typeof a === 'object') {
+      options = a;
+    }
+    parser = new exports.Parser(options);
+    return parser.parseStringPromise(str);
   };
 
 }).call(this);

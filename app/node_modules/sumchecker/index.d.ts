@@ -14,34 +14,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export type ChecksumOptions = {
-  defaultTextEncoding?: string;
-};
+declare function sumchecker(algorithm: string, checksumFilename: string, baseDir: string, filesToCheck: string[] | string): Promise<void>;
 
-export default function sumchecker(algorithm: string, checksumFilename: string, baseDir: string, filesToCheck: string[] | string): Promise<void>;
+declare namespace sumchecker {
+  type ChecksumOptions = {
+    defaultTextEncoding?: string;
+  };
 
-export class ErrorWithFilename extends Error {
-  constructor(filename: string);
+  class ErrorWithFilename extends Error {
+    constructor(filename: string);
+  }
+
+  class ChecksumMismatchError extends ErrorWithFilename {
+    constructor(filename: string);
+  }
+
+  class ChecksumParseError extends Error {
+    constructor(lineNumber: number, line: string);
+  }
+
+  class NoChecksumFoundError extends ErrorWithFilename {
+    constructor(filename: string);
+  }
+
+  class ChecksumValidator {
+    constructor(algorithm: string, checksumFilename: string, options?: ChecksumOptions);
+    encoding(binary: boolean): string;
+    parseChecksumFile(data: string): void;
+    readFile(filename: string, binary: boolean): Promise<string>;
+    validate(baseDir: string, filesToCheck: string[] | string): Promise<void>;
+    validateFile(baseDir: string, filename: string): Promise<void>;
+    validateFiles(baseDir: string, filesToCheck: string[]): Promise<void>;
+  }
 }
 
-export class ChecksumMismatchError extends ErrorWithFilename {
-  constructor(filename: string);
-}
-
-export class ChecksumParseError extends Error {
-  constructor(lineNumber: number, line: string);
-}
-
-export class NoChecksumFoundError extends ErrorWithFilename {
-  constructor(filename: string);
-}
-
-export class ChecksumValidator {
-  constructor(algorithm: string, checksumFilename: string, options?: ChecksumOptions);
-  encoding(binary: boolean): string;
-  parseChecksumFile(data: string): void;
-  readFile(filename: string, binary: boolean): Promise<string>;
-  validate(baseDir: string, filesToCheck: string[] | string): Promise<void>;
-  validateFile(baseDir: string, filename: string): Promise<void>;
-  validateFiles(baseDir: string, filesToCheck: string[]): Promise<void>;
-}
+export = sumchecker

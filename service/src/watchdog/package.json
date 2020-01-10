@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watchdog",
   "description": "Sidekick to Achievement Watcher for live notification on achievement unlocking",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "main": "watchdog.js",
   "scripts": {
     "start": "node notifier.js",
@@ -14,6 +14,7 @@
     "patch-package": "^6.1.4"
   },
   "dependencies": {
+    "crc": "^3.8.0",
     "ffi-napi": "^2.4.5",
     "find-up": "^4.1.0",
     "get-startapps": "^1.0.1",
@@ -22,15 +23,15 @@
     "lodash.omit": "^4.5.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
-    "node-html-parser": "^1.1.16",
+    "node-html-parser": "^1.1.17",
     "node-watch": "^0.6.2",
     "os-locale": "^3.1.0",
     "powertoast": "^1.0.7",
-    "request-zero": "^0.2.3",
+    "request-zero": "^0.2.4",
     "rimraf": "^2.6.3",
     "rwlock": "^5.0.0",
     "single-instance": "0.0.1",
     "win-tasklist": "^1.0.0",
-    "ws": "^7.2.0"
+    "ws": "^7.2.1"
   }
 }

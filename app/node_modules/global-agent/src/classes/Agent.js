@@ -38,7 +38,7 @@ class Agent {
     mustUrlUseProxy: MustUrlUseProxyMethodType,
     getUrlProxy: GetUrlProxyMethodType,
     fallbackAgent: AgentType,
-    socketConnectionTimeout: number
+    socketConnectionTimeout: number,
   ) {
     this.fallbackAgent = fallbackAgent;
     this.isProxyConfigured = isProxyConfigured;
