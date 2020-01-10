@@ -375,6 +375,10 @@
          }); 
       });
       
+      $("#option_mergeDuplicate").parent(".right").find(".previous, .next").click(function(){
+         $("#option_importCache").val($("#option_mergeDuplicate").val())
+      });
+        
   });
 }(window.jQuery, window, document)); 
 
