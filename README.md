@@ -54,7 +54,7 @@ Windows 10 >= 1903 : New focus assist auto rule for fullscreen app set to alarm 
 
 The process `watchdog.exe` is the one doing all the work so make sure it is running.
 
-Not all games are supported, please see the [**compatibility**](https://github.com/xan105/Achievement-Watcher#compatibility-) section below.
+Not all games are supported, please see the compatibility section below.
 
 <hr>
 
@@ -163,7 +163,7 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   
 - importCache<br /> 
   default to true<br />
-  Import Watchdog's (Notification) cache as another source of achievement
+  Import Watchdog's (Notification) cache as another source of achievement<br />
   Use this(true) + mergeDuplicate(true) + timeMergeRecentFirst(false) to correct/fix most SteamEmu quirks 
   
 - thumbnailPortrait<br />
