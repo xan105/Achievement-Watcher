@@ -174,7 +174,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                      try {
                           
-                          let achievement = game.achievement.list.find( elem => (root[i].crc) ? crc32(elem.name).toString(16) == root[i].crc : elem.name == (root[i].id || root[i].apiname || root[i].name || i) );
+                          //(SSE) crc module removes leading 0 when dealing with anything below 0x1000 -.-'
+                          let achievement = game.achievement.list.find( elem => (root[i].crc) ? root[i].crc.includes(crc32(elem.name).toString(16)) : elem.name == (root[i].id || root[i].apiname || root[i].name || i) );
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
                         
                           let parsed = {

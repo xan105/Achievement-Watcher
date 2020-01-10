@@ -20,7 +20,7 @@ module.exports.parse = (buffer) => {
           if ( value === 1 ) { //if stat has a value of 1 well then ACH_NOT_FOUND_IN_SCHEMA will be triggered
           
             result.push({
-                crc: entry.slice(0,4).reverse().toString('hex'),
+                crc: entry.slice(0,4).reverse().toString('hex'), 
                 Achieved : value,
                 UnlockTime: parseInt(entry.slice(8, 12).reverse().toString('hex'),16)
             });

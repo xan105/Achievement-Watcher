@@ -22,6 +22,7 @@ const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/notification.log")
 });
+const { crc32 } = require('crc');
 
 const cfg_file = {
   option: path.join(process.env['APPDATA'],"Achievement Watcher/cfg","options.ini"),
@@ -147,10 +148,17 @@ var app = {
             let j = 0;
             for (let i in achievements) {
                     try{
-                        let ach = game.achievement.list.find(achievement => achievement.name === achievements[i].name);
+                    
+                        //(SSE) crc module removes leading 0 when dealing with anything below 0x1000 -.-'
+                        let ach = game.achievement.list.find(achievement => (achievements[i].crc) ? achievements[i].crc.includes(crc32(achievement.name).toString(16)) : achievement.name === achievements[i].name );
                         if (!ach) throw "ACH_NOT_FOUND_IN_SCHEMA";
-                        
-                        let previous = cache.find(achievement => achievement.name === achievements[i].name) || {
+                       
+                        if(achievements[i].crc) {
+                          achievements[i].name = ach.name;
+                          delete achievements[i].crc;
+                        }
+                       
+                        let previous = cache.find(achievement => achievement.name === ach.name) || {
                              Achieved : false,
                              CurProgress : 0,
                              MaxProgress : 0,
@@ -206,13 +214,13 @@ var app = {
               
                 }catch(err){
                    if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
-                      debug.log(`"${achievements[i].name}" not found in game schema data ?! ... Achievement was probably deleted or renamed over time > SKIPPING`);
+                     debug.log(`${(achievements[i].crc) ? "${achievements[i].crc} (CRC32)" : "${achievements[i].name}"} not found in game schema data ?! ... Achievement was probably deleted or renamed over time > SKIPPING`);
                    }else {
-                      debug.log(`Unexpected Error for achievement "${achievements[i].name}": ${err}`);
+                     debug.log(`Unexpected Error for achievement "${achievements[i].name}": ${err}`);
                    }
                 }
             }
-          
+            
             await track.save(appID,achievements);
           
           }
