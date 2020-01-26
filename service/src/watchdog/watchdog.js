@@ -214,7 +214,7 @@ var app = {
               
                 }catch(err){
                    if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
-                     debug.log(`${(achievements[i].crc) ? "${achievements[i].crc} (CRC32)" : "${achievements[i].name}"} not found in game schema data ?! ... Achievement was probably deleted or renamed over time > SKIPPING`);
+                     debug.log(`${(achievements[i].crc) ? `${achievements[i].crc} (CRC32)` : `${achievements[i].name}`} not found in game schema data ?! ... Achievement was probably deleted or renamed over time > SKIPPING`);
                    }else {
                      debug.log(`Unexpected Error for achievement "${achievements[i].name}": ${err}`);
                    }
