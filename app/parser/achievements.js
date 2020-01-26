@@ -147,7 +147,8 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                 if (appid.data.type === "file") {
  
                     root = await steam.getAchievementsFromFile(appid.data.path);
-                    if(Object.entries(root).length === 0 && root.constructor === Object) throw `file in '${appid.data.path}' is probably empty`;
+                    //Empty file should be considered as a 0% game -> do not throw an error just issue a warning
+                    if(Object.entries(root).length === 0 && root.constructor === Object) debug.log(`[${appid.appid}] Warning ! Achievement file in '${appid.data.path}' is probably empty`);
 
                  } else if (appid.data.type === "reg") {
                        
