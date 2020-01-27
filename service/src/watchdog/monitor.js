@@ -43,7 +43,7 @@ module.exports.getFolders = async (userDir_file) => {
     },
     { 
       dir: path.join(process.env['APPDATA'],"SmartSteamEmu"), 
-      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[7],files.achievement[0]] } //keeping "achievements.ini" [0] for backward compatibility with sse plugin
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[7]] }
     }
   ];
 
