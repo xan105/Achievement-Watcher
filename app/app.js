@@ -177,7 +177,6 @@ var app = {
       sort(elem,sortOptions());
    
    }).catch((err) => {
-      debug.log(err);
       loadingElem.elem.hide();
       $("#game-list .isEmpty").show();
       remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Game list generation failure", detail: `${err}`});

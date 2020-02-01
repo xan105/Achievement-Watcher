@@ -237,6 +237,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
     return result;
       
   }catch(err) {
+    debug.log(err);
     throw err;
   }
 };
