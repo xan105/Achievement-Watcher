@@ -30,6 +30,8 @@ var app = {
 
    let self = this;
    
+   debug.log(`${remote.app.name} loading...`);
+   
    $("#win-settings").css("pointer-events","none");
    
    l10n.load(self.config.achievement.lang).then((locale)=>{
@@ -66,10 +68,13 @@ var app = {
 
       loadingElem.elem.hide();
 
-      if (!list || list.length == 0) {
+      if (list.length == 0) {
+        debug.log("No game found !");
         $("#game-list .isEmpty").show();
         return;
       }
+      
+      debug.log("Populating game list ...");
 
       let elem = $("#game-list ul");
       
@@ -173,6 +178,9 @@ var app = {
    
    }).catch((err) => {
       debug.log(err);
+      loadingElem.elem.hide();
+      $("#game-list .isEmpty").show();
+      remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Game list generation failure", detail: `${err}`});
    }).finally(() => {
       $("#user-info").fadeTo('fast', 1).css("pointer-events","initial");
       $("#sort-box").fadeTo('fast', 1).css("pointer-events","initial");

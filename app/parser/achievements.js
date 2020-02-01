@@ -17,8 +17,7 @@ const debug = new (require(path.join(appPath,"util/log.js")))({
 const { crc32 } = require('crc');
 
 async function discover(legitSteamListingType,importCache) {
-  try{
-    
+
     debug.log("Scanning for games ...");
     
     let data = [];
@@ -100,10 +99,6 @@ async function discover(legitSteamListingType,importCache) {
     }
 
     return data;
-
-  }catch(err){
-    debug.log(err);
-  }
 
 }
 
@@ -237,13 +232,11 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
         count = count + 1;
         }
 
-        return result;
-
-    } else {
-      return null;
     }
+    
+    return result;
       
   }catch(err) {
-    debug.log(err);
+    throw err;
   }
 };
