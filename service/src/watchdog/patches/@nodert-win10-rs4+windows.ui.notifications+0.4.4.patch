@@ -1,0 +1,17 @@
+diff --git a/node_modules/@nodert-win10-rs4/windows.ui.notifications/lib/main.js b/node_modules/@nodert-win10-rs4/windows.ui.notifications/lib/main.js
+index c876570..0427dd1 100644
+--- a/node_modules/@nodert-win10-rs4/windows.ui.notifications/lib/main.js
++++ b/node_modules/@nodert-win10-rs4/windows.ui.notifications/lib/main.js
+@@ -22,7 +22,11 @@ const npmScope = 'nodert-win10-rs4';
+ if (fs.existsSync(path.join(__dirname, 'NodeRT_Windows_UI_Notifications.d.js)'))) {
+   module.exports = require('./NodeRT_Windows_UI_Notifications.d.js');
+ } else {
+-  module.exports = require('../build/Release/binding.node');
++  try{
++    module.exports = require('../build/Release/binding.node');
++  }catch(err){
++    module.exports = require(path.join(__dirname,'windows.ui.notifications_bindings.node'));
++  }
+ }
+ 
+ var externalReferencedNamespaces = ['Windows.Foundation', 'Windows.System', 'Windows.Data.Xml.Dom', 'Windows.ApplicationModel'];

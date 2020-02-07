@@ -7,6 +7,10 @@ go build -ldflags "-H windowsgui" -o "%~dp0\build\nw.exe" nw
 call "%~dp0src\watchdog\resources\app.pkg.unpacked\native\souvenir\build.cmd"
 call "%~dp0src\watchdog\resources\app.pkg.unpacked\native\vibrate\build.cmd"
 call "%~dp0src\watchdog\resources\app.pkg.unpacked\native\regedit\build.cmd"
+xcopy /Y "%~dp0src\watchdog\node_modules\ffi-napi\build\Release\ffi_bindings.node" "%~dp0build\ffi_bindings.node"
+xcopy /Y "%~dp0src\watchdog\node_modules\ref-napi\build\Release\binding.node" "%~dp0build\ref_bindings.node"
+xcopy /Y "%~dp0src\watchdog\node_modules\@nodert-win10-rs4\windows.data.xml.dom\build\Release\binding.node" "%~dp0build\windows.data.xml.dom_bindings.node"
+xcopy /Y "%~dp0src\watchdog\node_modules\@nodert-win10-rs4\windows.ui.notifications\build\Release\binding.node" "%~dp0build\windows.ui.notifications_bindings.node"
 rem npm i -g pkg
 cd "%~dp0src\watchdog"
 call npm prune --production

@@ -1,0 +1,17 @@
+diff --git a/node_modules/@nodert-win10-rs4/windows.data.xml.dom/lib/main.js b/node_modules/@nodert-win10-rs4/windows.data.xml.dom/lib/main.js
+index 00b9d10..bbde049 100644
+--- a/node_modules/@nodert-win10-rs4/windows.data.xml.dom/lib/main.js
++++ b/node_modules/@nodert-win10-rs4/windows.data.xml.dom/lib/main.js
+@@ -22,7 +22,11 @@ const npmScope = 'nodert-win10-rs4';
+ if (fs.existsSync(path.join(__dirname, 'NodeRT_Windows_Data_Xml_Dom.d.js)'))) {
+   module.exports = require('./NodeRT_Windows_Data_Xml_Dom.d.js');
+ } else {
+-  module.exports = require('../build/Release/binding.node');
++  try{
++    module.exports = require('../build/Release/binding.node');
++  }catch(err){
++    module.exports = require(path.join(__dirname,'windows.data.xml.dom_bindings.node'));
++  }
+ }
+ 
+ var externalReferencedNamespaces = ['Windows.Foundation', 'Windows.Storage', 'Windows.Storage.Streams'];
