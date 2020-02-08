@@ -3,6 +3,7 @@
 const path = require('path');
 const moment = require("moment");
 const WebSocket = new (require('ws')).Server({ port: 8082 });
+const toast = require("powertoast");
 const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/websocket.log")
@@ -14,13 +15,13 @@ module.exports.init = () => {
 
   WebSocket.on('connection', (client, req) => {
      client.id = req.headers['sec-websocket-key'];
-     debug.log(`[${client.id}] client connected`);
+     debug.log(`WS[${client.id}] client connected`);
      client.isAlive = true;
      
      client.on('pong', function(){ this.isAlive = true }); //heartbeat
      client.on('message', incoming);
-     client.on('close', function(code, reason){ debug.log(`[${this.id}] connection close (${code}) ${reason}`) });
-     client.on('error', function(error){ debug.log(`[${this.id}] error: ${err}`) });
+     client.on('close', function(code, reason){ debug.log(`WS[${this.id}] connection close (${code}) ${reason}`) });
+     client.on('error', function(error){ debug.log(`WS[${this.id}] Error: ${err}`) });
   });
   
   WebSocket.on('error', (err) => {
@@ -30,7 +31,7 @@ module.exports.init = () => {
   setInterval(() => {
     WebSocket.clients.forEach( (client) => {
       if (client.isAlive === false) {
-        debug.log(`[${client.id}] closing broken connection`);
+        debug.log(`WS[${client.id}] closing broken connection`);
         return client.terminate();
       }
       client.isAlive = false;
@@ -39,7 +40,7 @@ module.exports.init = () => {
   }, timeout);
 }
 
-module.exports.broadcast = (message) => {
+const broadcast = module.exports.broadcast = (message) => {
   try {
     if (WebSocket.clients.size > 0) {
       
@@ -47,57 +48,88 @@ module.exports.broadcast = (message) => {
       
       WebSocket.clients.forEach( (client) => { 
           try{
-            debug.log(`[${client.id}] Sending notification`);
+            debug.log(`WS[${client.id}] Sending notification`);
             client.send(json);
           }catch(err){
-            debug.log(`[${client.id}] error: ${err}`);
+            debug.log(`WS[${client.id}] Error: ${err}`);
           }
       });
     }
    }catch(err){
-      debug.log(`error: ${err}`);
+      debug.log(`Error: ${err}`);
    }
 }
 
 function incoming(message){
-          let req = {};
-          
-          try {
-            req = JSON.parse(message);
-          }catch(err){
-            debug.log(`[${this.id}] request is not a valid JSON: ${err}`);
-            return;
-          }
+  try {
+     let req;
+     try{
+       req = JSON.parse(message);
+     }catch(err){
+       throw new Error(`request is not a valid JSON > ${err}`);
+     }
 
-          if (req.cmd === "test") {
-              try {
-              
-                const dummy = JSON.stringify({
-                         appID: 480,
-                         title: "Achievement Watcher",
-                         id: "achievement_00",
-                         message: "Hello World",
-                         description: "beep boop",
-                         icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
-                         time: moment().valueOf()
-                });
+     if (req.cmd === "test") 
+     {
+        debug.log(`WS[${this.id}] received command 'test'`);
                 
-                if (req.broadcast === true) {
-                    debug.log("[All] Sending dummy notification");
-                    WebSocket.clients.forEach( (client) => { 
-                      try{
-                        client.send(dummy);
-                      }catch(err){
-                        debug.log(`[${client.id}] error: ${err}`);
-                      }
-                    });
-                } else {
-                    debug.log(`[${this.id}] Sending dummy notification`);
-                    this.send(dummy);
-                }
-              
-             }catch(err){
-                debug.log(`[${this.id}] error: ${err}`);
-             }
-          }
+        const dummy = {
+           appID: 480,
+           title: "Achievement Watcher",
+           id: "achievement_00",
+           message: "Hello World",
+           description: "beep boop",
+           icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+           time: moment().valueOf()
+        };
+                
+        if (req.broadcast === true) {
+           broadcast(dummy);       
+        } else {
+           debug.log(`WS[${this.id}] Sending notification`);
+           this.send(JSON.stringify(dummy));
+        }
+     } 
+     else if (req.cmd === "toast-test")
+     {
+        debug.log(`WS[${this.id}] received command 'toast-test'`);
+        
+        if(!req.options) {
+          let error = new Error("command 'toast-test' requires a toast options payload");
+          this.send(JSON.stringify({
+              cmd: "toast-test",
+              success: false,
+              error: {
+                code: error.code, 
+                message: error.message,
+                stack: error.stack
+              }
+          }));
+          throw error; 
+        } else {
+          debug.log(req.options);
+        }
+        
+        toast(req.options)
+          .then(() => {
+             this.send(JSON.stringify({
+                cmd: "toast-test",
+                success: true
+             }));
+          })
+          .catch((err) => {
+             this.send(JSON.stringify({
+                 cmd: "toast-test",
+                 success: false,
+                 error: {
+                   code: err.code, 
+                   message: err.message,
+                   stack: err.stack
+                 }
+             }));
+          });
+      }
+  }catch(err){
+    debug.log(`WS[${this.id}] ${err}`);
+  }
 }
