@@ -1,57 +1,50 @@
 'use strict';
 
-const fs = require('fs');
 const os = require('os');
+const fs = require('fs');
 const path = require('path');
 const util = require('util'); 
 const { exec } = require('child_process');
-const lock = new (require("rwlock"))();
+const templateXml = require('./template.js');
 
-const temp = os.tmpdir() || process.env.TEMP;
-const bom = "\ufeff";
+let winRT;
+try {
+  winRT = {
+    xml : require('@nodert-win10-rs4/windows.data.xml.dom'),
+    notifications : require('@nodert-win10-rs4/windows.ui.notifications')
+  };
+  if (!winRT.xml || !winRT.notifications) winRT = null;
+} catch {}
 
-module.exports = (option = {}) => {
-      return new Promise((resolve,reject) => {
-        lock.writeLock((release) => { //Prevent Powershell script generation failure when multiple invoke at the same time
-            toast(option).then(()=>{
-              release();
-              return resolve();
-            }).catch((err)=>{
-              release();
-              return reject(err);
-            });
-        });
-      });
-}
+module.exports = async (option = {}) => {
 
-async function toast(option = {}){
-  
-  if (os.platform() !== 'win32') return;
-  
-  let script = path.join(temp,`${Date.now()}.ps1`);
-  
+  if (os.platform() !== 'win32') throw "API is only available in Windows.";
+
+  if (!winRT || (winRT && option.disableWinRT === true)) {
+    const temp = os.tmpdir() || process.env.TEMP;
+    const rng = function(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) ) + min;
+    };
+    var script = path.join(temp,`${Date.now()}${rng(0,1000)}.ps1`);
+  }
+
   try {
 
-    let isWin8 = false;
+    let legacyTemplate = false;
     
-    let version = os.release().split("."); 
-    version = { 
-              major: parseInt(version[0]), 
-              minor: parseInt(version[1]), 
-              build: parseInt(version[2]) 
-    }; 
+    const version = windowsGetVersion(); 
 
-    if (version.major == 6 && ( version.minor == 3 || version.minor == 2) ) { 
-      isWin8 = true; 
+    if (version.major == 6 && ( version.minor == 3 || version.minor == 2) ) { //Windows 8 && Windows 8.1
+      legacyTemplate = true; 
     }
     else if (version.major <= 6) {
       throw "Unsupported Windows version";
     }
 
-    const default_appID = (isWin8) ? "winstore_cw5n1h2txyewy!Windows.Store" : "Microsoft.WindowsStore_8wekyb3d8bbwe!App";
+    const defaultAppID = (legacyTemplate) ? "winstore_cw5n1h2txyewy!Windows.Store" : "Microsoft.WindowsStore_8wekyb3d8bbwe!App";
     
     let options = {
-      appID: option.appID || default_appID,
+      appID: option.appID || defaultAppID,
       title: option.title || "",
       message: option.message || "",
       attribution: option.attribution || "",
@@ -62,7 +55,8 @@ async function toast(option = {}){
       audio: option.audio || "",
       longTime: option.longTime || false,
       onClick: option.onClick || "",
-      button: option.button || []
+      button: option.button || [],
+      group: option.group || null
     };
     
     if(option.progress) {
@@ -71,124 +65,116 @@ async function toast(option = {}){
          percent : (option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : 0,
          custom : option.progress.custom || "",
          footer : option.progress.footer || "",
+         tag: option.progress.tag || null
       }
     }
     
     try{
-      
-      if (option.timeStamp && typeof (option.timeStamp) === "number") {
-        options.timeStamp = new Date(option.timeStamp *1000).toISOString();
-      }  
-      else if (option.timeStamp && typeof (option.timeStamp) === "string") {
-        options.timeStamp = new Date( parseInt(option.timeStamp) *1000 ).toISOString();
-      }
-      else {
+      if (option.timeStamp) {
+        options.timeStamp = new Date(+option.timeStamp *1000).toISOString();
+      } else {
         options.timeStamp = "";
       }
-
     }catch(err){
       options.timeStamp = "";
     }
 
-    let template = `
-      (Get-Process -Id $pid).PriorityClass = 'High'
+    let template;
     
-      [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-      [Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-      [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
-    
-      $APP_ID = '${options.appID}'
-    `;
+    if (!winRT || (winRT && option.disableWinRT === true)) {
+      template = `(Get-Process -Id $pid).PriorityClass = 'High'`+ os.EOL +
+                 `[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null` + os.EOL +
+                 `[Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null` + os.EOL +
+                 `[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null` + os.EOL +
+                 `$APP_ID = '${options.appID}'`+ os.EOL;
+    }
 
-    if (isWin8) { //old template fallback for Windows 8
-    
-      if (options.progress && !options.message) options.message = `[ ${(options.progress.custom) ? options.progress.custom : `${options.progress.percent*100}/100`} ]\n${options.progress.header}`;
-    
-      template += `
-        [xml]$template = @"
-        <toast>
-            <visual>
-                <binding template="ToastImageAndText02">
-                    <image id="1" src="${options.icon}" alt="image1"/>
-                    <text id="1">${options.title}</text>
-                    <text id="2">${options.message}</text>
-                </binding>  
-            </visual>
-            <audio silent="${options.silent}" ${(options.audio) ? `src="${options.audio}"` : ""}/>
-        </toast>        
-"@
-        $xml = New-Object Windows.Data.Xml.Dom.XmlDocument
-        $xml.LoadXml($template.OuterXml)
-        
-        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($xml)
-      `;
-      
-    } else {
-
-       template += `
-          $template = @"
-          <toast ${(options.timeStamp) ? `displayTimestamp="${options.timeStamp}" `:``}activationType="protocol" launch="${options.onClick}" duration="${options.longTime ? "Long" : "Short"}">
-            <visual>
-                <binding template="ToastGeneric">
-                    <image placement="appLogoOverride" src="${options.icon}" />
-                    <image placement="hero" src="${options.headerImg}"/>
-                    <text><![CDATA[${options.title}]]></text>
-                    <text><![CDATA[${options.message}]]></text>
-                    <text placement="attribution"><![CDATA[${options.attribution}]]></text>
-                    <image src="${options.footerImg}" />
-                    ${(options.progress) ? `<progress title="${options.progress.header}" value="${options.progress.percent}" valueStringOverride="${options.progress.custom}" status="${options.progress.footer}"/>` : ""} 
-                </binding>
-            </visual>
-            <actions>      
-       `;
-
-      try {    
-        for (let i in options.button) {
-          if ( i <= 4) { //You can only have up to 5 buttons; Ignoring after max button count reached 
-            if (options.button[i].text && options.button[i].onClick) {
-                  template += `
-              <action content="${options.button[i].text}" arguments="${options.button[i].onClick}" activationType="protocol"/>
-                  `;
-            } 
-          }
-        }
-      }catch(err){/*do nothing*/}  
-    
-        template += `
-            </actions>
-            <audio silent="${options.silent}" ${(options.audio) ? `src="${options.audio}"` : ""}/>
-          </toast>
-"@
-        $xml = New-Object Windows.Data.Xml.Dom.XmlDocument
-        $xml.LoadXml($template)
-        
-        $toast = New-Object Windows.UI.Notifications.ToastNotification $xml
-        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)
-        `;
-    
+    if (legacyTemplate) 
+    {
+      if (!winRT || (winRT && option.disableWinRT === true)) {
+        template += `[xml]$template = @"`+ os.EOL + templateXml.legacy(options) + os.EOL + `"@` + os.EOL +
+                    `$xml = New-Object Windows.Data.Xml.Dom.XmlDocument` + os.EOL +
+                    `$xml.LoadXml($template.OuterXml)` + os.EOL +
+                    `[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($xml)`;
+      } else {
+        template = templateXml.legacy(options);
+      }
+    } 
+    else 
+    {
+      if (!winRT || (winRT && option.disableWinRT === true)) {
+        template += `$template = @"`+ os.EOL + templateXml(options) + os.EOL + `"@` + os.EOL +
+                    `$xml = New-Object Windows.Data.Xml.Dom.XmlDocument`+ os.EOL +
+                    `$xml.LoadXml($template)` + os.EOL +
+                    `$toast = New-Object Windows.UI.Notifications.ToastNotification $xml` + os.EOL;
+            
+        if(options.progress && options.progress.tag) template += `$toast.tag = "${options.progress.tag}"` + os.EOL;
+            
+        template += `[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)`;
+      } else {
+        template = templateXml(options);
+      }
     }
     
-    await write(script,template);
-
-    let output = await util.promisify(exec)(`powershell -ExecutionPolicy Bypass -File "${script}"`,{windowsHide: true});
-    if (output.stderr) throw output.stderr;
+    if (!winRT || (winRT && option.disableWinRT === true))
+    {
     
-    fs.unlink(script, ()=>{});
+      const bom = "\ufeff";
+      await fs.promises.writeFile(script, bom+template, "utf8");
 
-  } catch (err) {
-    fs.unlink(script, ()=>{});
-    throw err;
+      const output = await util.promisify(exec)(`powershell -ExecutionPolicy Bypass -File "${script}"`,{windowsHide: true});
+      if (output.stderr) throw output.stderr;
+      
+      await fs.promises.unlink(script).catch(()=>{});
+    
+    } 
+    else 
+    {
+    
+      const xml = new winRT.xml.XmlDocument();
+      xml.loadXml(template);
+
+      let toast = new winRT.notifications.ToastNotification(xml);
+      
+      if (!toast) throw "Failed to create a new 'ToastNotification'";
+      
+      if(options.progress && options.progress.tag) toast.tag = options.progress.tag; 
+      
+      const toaster = winRT.notifications.ToastNotificationManager.createToastNotifier(options.appID);
+      
+      if (!toaster) throw "Failed to create a new 'ToastNotifier'";
+
+      if (toaster.setting === 1) {
+        throw "Notifications are disabled by app manifest";
+      } else if (toaster.setting === 2) {
+        throw "Notifications are disabled by Windows group policy"
+      } else if (toaster.setting === 3) {
+        throw "Notifications are disabled for this user (system-wide)"
+      } else if (toaster.setting === 4) {
+        throw "Notifications are disabled for this app only (Windows settings)"
+      }
+
+      return toaster.show(toast);
+      
+    }
+
+  }catch(err) {
+  
+    if (!winRT || (winRT && option.disableWinRT === true)) {
+      fs.unlink(script, function(){
+        throw err;
+      });
+    } else {
+      throw err;
+    }
+    
   }
 }
 
-function write(file, data){
-  return new Promise((resolve,reject) => {
-     fs.writeFile(file, bom+data, "utf8", function (err) {
-           if (err) {
-               return reject(err);
-           } else {
-               return resolve(file);
-           }
-     });    
-  });      
+function windowsGetVersion(){
+  const version = os.release().split("."); 
+  return { major: +version[0], 
+            minor: +version[1], 
+            build: +version[2]
+          };
 }

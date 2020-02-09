@@ -103,6 +103,8 @@ Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw.exe\"" updater"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\watchdog.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{app}\watchdog.exe"; WorkingDir: "{#AppWorkingDir}"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
+Filename: "{app}\updater.exe"; Parameters:"--notify"; WorkingDir: "{#AppWorkingDir}"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist skipifnotsilent; Check: CmdLineHasSwitch('/NOTIFY')
+;PostInstall Checkbox
 Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; Description: "{#AppName}"; Flags: runasoriginaluser postinstall nowait skipifsilent skipifdoesntexist unchecked
 
 [UninstallDelete]
@@ -125,6 +127,19 @@ Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.D
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHours"; ValueType: "dword"; ValueName: "Enable"; ValueData: "0" ;Flags: uninsdeletekey; Check: isWin('win8.1')
 
 [Code]
+
+function CmdLineHasSwitch(const Value: string): Boolean;
+var
+  I: Integer;  
+begin
+  Result := False;
+  for I := 1 to ParamCount do
+    if CompareText(ParamStr(I), Value) = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+end;
 
 procedure GoToWebsite(Sender: TObject);
 var 
