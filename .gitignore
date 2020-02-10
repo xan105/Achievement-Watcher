@@ -1,3 +1,7 @@
 temp/
 todo.txt
 server/start.sh
+app/node_modules/
+server/node_modules/
+service/src/updater/node_modules/
+service/src/watchdog/node_modules/
