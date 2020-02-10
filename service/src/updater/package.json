@@ -13,7 +13,7 @@
   "dependencies": {
     "asar-node": "^1.2.0",
     "minimist": "^1.2.0",
-    "powertoast": "^1.1.0",
+    "powertoast": "^1.1.2",
     "request-zero": "^0.2.5",
     "single-instance": "0.0.1",
     "win-tasklist": "^1.0.0"

@@ -377,7 +377,9 @@ in ```%AppData%\Achievement Watcher```
 
 How to build
 ============
-This repo uses [Git LFS](https://git-lfs.github.com/).<br/>
+
+### Prequisites:
+
 You will need node.js (>= 12.x), golang (>= 1.12) both with the same arch: in x86 **or** x64.<br/>
 Innosetup 5 unicode with preprocessor and [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/)<br/>
 Golang cgo requires a gcc compiler installed and set in PATH (recommended : http://tdm-gcc.tdragon.net/download).<br/>
@@ -386,18 +388,27 @@ For node you globally need asar, json and pkg :<br/>
 ```
 npm install -g asar json pkg
 ```
-NB: If pkg fetches a version different than `%userprofile%\.pkg-cache\v2.6\fetched-v12.2.0-win-x64` or you are building this in x86.<br/>
+
+There will be some native_module to compile so you'll need :<br/>
+VS2017, Python 2.7(node-gyp), and the Windows SDK 10.0.17134.0 (1803 Redstone 4)
+
+### Build:
+
+Install `node_modules` folders with `npm install.cmd`<br/>
+Use `buildme.cmd` in the root folder to build.
+
+### Notes: 
+
++ If pkg fetches a version different than `%userprofile%\.pkg-cache\v2.6\fetched-v12.2.0-win-x64` or you are building this in x86.<br/>
 You need to update `service\rcedit-updater.cmd` and `service\rcedit-watchdog.cmd` with the correct one.
 
-If you build this in x86 remove these lines in `setup\AchievementWatcher.iss`: <br/>
++ If you build this in x86 remove these lines in `setup\AchievementWatcher.iss`: <br/>
 ```
 60 ArchitecturesInstallIn64BitMode=x64
 61 ArchitecturesAllowed=x64
 ```
 
-Use `buildme.cmd` in the root folder to build.
-
-NB: Innosetup is expected to be installed in `C:\Program Files (x86)\Inno Setup 5` if that is not the case then update `buildme.cmd` with the correct path.
++ Innosetup is expected to be installed in `C:\Program Files (x86)\Inno Setup 5` if that is not the case then update `buildme.cmd` with the correct path.
 
 Legal
 =====
