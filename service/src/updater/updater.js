@@ -7,6 +7,7 @@ const { spawn } = require('child_process');
 const asar = require('asar-node');
 const tasklist = require('win-tasklist');
 const toast = require('powertoast');
+const balloon = require('powerballoon');
 const request = require('request-zero');
 const semver = require("./util/semver.js");
 const debug = new (require("./util/log.js"))({
@@ -25,19 +26,26 @@ var updater = {
     if (!this.manifest.config.update.github || !this.manifest.config.update.name) throw "Unvalid Updater Parameters";
     if (!this.manifest.config.update.github.includes("/")) throw "Unvalid Updater repo";
   },
-  notify: function(){
-    const notification = {
-      appID: this.manifest.config.appid,
-      title: "Achievement Watcher",
-      message: "Just got updated, check it out.",
-      icon: path.join(path.dirname(process.execPath),"icon.png"),
-      button: [
-        { text: "Changelog", 
-          onClick: `https://github.com/${this.manifest.config.update.github}/releases/latest`
-        }
-      ] 
-    };
-    return toast(notification);
+  notify: async function(){
+    try{
+      await toast({
+        appID: this.manifest.config.appid,
+        title: "Achievement Watcher",
+        message: "Just got updated, check it out.",
+        icon: path.join(path.dirname(process.execPath),"icon.png"),
+        button: [
+          { text: "Changelog", 
+            onClick: `https://github.com/${this.manifest.config.update.github}/releases/latest`
+          }
+        ] 
+      });
+    }catch{
+      await balloon({
+        title: "Achievement Watcher",
+        message: "Just got updated, check it out.",
+        ico: path.join(path.dirname(process.execPath),"icon.ico")
+      });
+    }
   },
   upgrade: function(file){
       debug.log("Executing upgrade package...");
