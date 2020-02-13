@@ -5,7 +5,7 @@ const ini = require("ini");
 const parentFind = require('find-up');
 const omit = require('lodash.omit');
 const ffs = require("./util/feverFS.js");
-const regedit = require("./native/regedit.js");
+const regedit = require('regodit');
 const sse = require("./sse.js");
 
 const files = {
@@ -47,17 +47,18 @@ module.exports.getFolders = async (userDir_file) => {
     }
   ];
 
-  const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
-  if (mydocs && mydocs != "") {
-      steamEmu = steamEmu.concat([
-        {
-          dir: path.join(mydocs,"SKIDROW"), 
-          options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] }
-        }
-      ]);
-  }
-
   try{
+  
+    const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+    if (mydocs) {
+        steamEmu = steamEmu.concat([
+          {
+            dir: path.join(mydocs,"SKIDROW"), 
+            options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[5]] }
+          }
+        ]);
+    }
+
     let list = JSON.parse(await ffs.promises.readFile(userDir_file,"utf8"));
     for (let dir of list) {
       if (dir.notify == true) {
@@ -106,8 +107,7 @@ module.exports.getFolders = async (userDir_file) => {
 
                       } else if (info.GameSettings.UserDataFolder === "mydocs" && info.GameSettings.AppId && info.GameSettings.UserName && info.GameSettings.UserName !== ""){
         
-                          const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
-                          if (mydocs && mydocs != "") {
+                          if (mydocs) {
 
                             let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
                             

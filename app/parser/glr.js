@@ -1,18 +1,18 @@
 "use strict";
 
-const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
+const regedit = require('regodit');
 
-module.exports.scan = () => {
+module.exports.scan = async() => {
   try {
   
     let data = [];
     
-    let glr = regedit.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID");
+    let glr = await regedit.promises.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID");
       if (glr) {
         for (let key of glr) {
             
             try {
-               let glr_ach_enable = parseInt(regedit.RegQueryIntegerValue("HKCU",`SOFTWARE/GLR/AppID/${key}`,"SkipStatsAndAchievements"));
+               let glr_ach_enable = parseInt(await regedit.promises.RegQueryIntegerValue("HKCU",`SOFTWARE/GLR/AppID/${key}`,"SkipStatsAndAchievements"));
 
                if(glr_ach_enable === 0) {
 
@@ -40,18 +40,22 @@ module.exports.scan = () => {
   }
 }
 
-module.exports.getAchievements = (root,key) => {
+module.exports.getAchievements = async (root,key) => {
   try {
   
-    let result = regedit.RegListAllValues(root,key);
-    if (!result) throw "No achievement found in registry";
-
-    return result.map((name) => {
-      return {
-        id: name,
-        Achieved: parseInt(regedit.RegQueryIntegerValue(root,key,name)) 
-      }
-    });
+    let achievements = await regedit.promises.RegListAllValues(root,key);
+    if (!achievements) throw "No achievement found in registry";
+    
+    let result = [];
+    
+    for (let achievement of achievements){
+      result.push({
+        id: achievement,
+        Achieved: parseInt(await regedit.promises.RegQueryIntegerValue(root,key,achievement)) 
+      });
+    }
+    
+    return result;   
   
   }catch(err){
       throw err;

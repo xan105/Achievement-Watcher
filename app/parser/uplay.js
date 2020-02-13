@@ -6,7 +6,7 @@ const yaml = require('js-yaml');
 const glob = require("fast-glob");
 const zip = require('adm-zip');
 const ffs = require(path.join(appPath,"util/feverFS.js"));
-const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
+const regedit = require('regodit');
 const request = require('request-zero');
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 

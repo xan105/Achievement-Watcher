@@ -147,7 +147,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                  } else if (appid.data.type === "reg") {
                        
-                    root = glr.getAchievements(appid.data.root,appid.data.path);
+                    root = await glr.getAchievements(appid.data.root,appid.data.path);
 
                  } else if (appid.data.type === "steamAPI") {
                  

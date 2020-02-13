@@ -9,7 +9,7 @@ const moment = require('moment');
 const request = require('request-zero');
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const htmlParser = require('node-html-parser').parse;
-const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
+const regedit = require('regodit');
 const steamID = require(path.join(appPath,"util/steamID.js"));
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 const sse = require(path.join(appPath,"parser/sse.js"));
@@ -26,8 +26,8 @@ module.exports.scan = async (additionalSearch = []) => {
         path.join(process.env['APPDATA'],"SmartSteamEmu")
     ];
     
-    const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
-    if (mydocs && mydocs != "") {
+    const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+    if (mydocs) {
       search = search.concat([
         path.join(mydocs,"Skidrow")
       ]);
@@ -90,7 +90,7 @@ module.exports.scanLegit = async (listingType = 0) => {
          for (let stats of list) {
 
              let isInstalled = true;
-             if (listingType == 1) isInstalled = (regedit.RegQueryIntegerValue("HKCU",`Software/Valve/Steam/Apps/${stats.appID}`,"Installed") === "1") ? true : false;
+             if (listingType == 1) isInstalled = (await regedit.promises.RegQueryIntegerValue("HKCU",`Software/Valve/Steam/Apps/${stats.appID}`,"Installed") === "1") ? true : false;
                                  
              let user = publicUsers.find(user => user.user == stats.userID);
              
@@ -282,7 +282,7 @@ async function getSteamPath(){
 
      for (let regHive of regHives) {
           
-        steamPath = regedit.RegQueryStringValue(regHive.root,regHive.key,regHive.name);
+        steamPath = await regedit.promises.RegQueryStringValue(regHive.root,regHive.key,regHive.name);
         if (steamPath) {
            if (await ffs.promises.exists(path.join(steamPath,"steam.exe"))){
              break;
@@ -303,7 +303,7 @@ async function getSteamUsers(steamPath) {
             
         let result = [];
        
-        let users = regedit.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
+        let users = await regedit.promises.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
         if (!users) users = await glob("*([0-9])/",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
      
         if (users.length == 0) throw "No Steam User ID found";

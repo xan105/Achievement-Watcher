@@ -6,7 +6,7 @@ const ini = require("ini");
 const parentFind = require('find-up');
 const glob = require("fast-glob");
 const ffs = require(path.join(appPath,"util/feverFS.js"));
-const regedit = require(path.join(appPath,"native/regedit/regedit.js"));
+const regedit = require('regodit');
 
 const file = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
 
@@ -131,8 +131,8 @@ module.exports.scan = async (dir) => {
                 
         } else if (info.GameSettings.UserDataFolder === "mydocs" && info.GameSettings.AppId && info.GameSettings.UserName && info.GameSettings.UserName !== ""){
         
-            const mydocs = regedit.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
-            if (mydocs && mydocs != "") {
+            const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+            if (mydocs) {
 
               let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
               

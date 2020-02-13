@@ -1,5 +1,5 @@
 const path = require('path');
-const regedit = require("../native/regedit/regedit.js");
+const regedit = require('regodit');
 
 module.exports.getDefault = () => {
 
