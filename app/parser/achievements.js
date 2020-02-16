@@ -6,7 +6,7 @@ const ffs = require(path.join(appPath,"util/feverFS.js"));
 const steam = require(path.join(appPath,"parser/steam.js"));
 const uplay = require(path.join(appPath,"parser/uplay.js"));
 const rpcs3 = require(path.join(appPath,"parser/rpcs3.js"));
-const glr = require(path.join(appPath,"parser/glr.js"));
+const greenluma = require(path.join(appPath,"parser/greenluma.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
 const watchdog = require(path.join(appPath,"parser/watchdog.js"));
@@ -57,7 +57,7 @@ async function discover(legitSteamListingType,importCache) {
     } 
     //GreenLuma Reborn
     try {
-      data = data.concat(await glr.scan());
+      data = data.concat(await greenluma.scan());
     }catch(err){
       debug.log(err);
     }
@@ -147,7 +147,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                  } else if (appid.data.type === "reg") {
                        
-                    root = await glr.getAchievements(appid.data.root,appid.data.path);
+                    root = await greenluma.getAchievements(appid.data.root,appid.data.path);
 
                  } else if (appid.data.type === "steamAPI") {
                  
