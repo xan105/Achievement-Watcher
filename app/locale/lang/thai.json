@@ -13,23 +13,41 @@
   "play": "ไปเล่น!",
   "scrollUp" : "เลื่อนขึ้น",
   "allGamesBackButton" : "เกมส์ทั้งหมด",
-  "settings": "การตั้งค่า",
-  "language": "ภาษา",
-  "hiddenAch": "รางวัลความสำเร็จลับ",
-  "mergeDuplicates": "รวมรายการที่ซ้ำกัน",
-  "hideZero": "ซ่อนเกม 0%",
-  "notification": "การแจ้งเตือน",
-  "show": "เอาสิ",
-  "hide": "ไม่เอา",
-  "enable": "เอาสิ",
-  "disable": "ไม่เอา",
-  "cancel": "ยกเลิก",
-  "save": "ตกลง",
-  "version": "รุ่น",
-  "general": "ทั่วไป",
-  "folder": "โฟลเดอร์",
-  "dirDisclaimer": "หาไฟล์รางวัลความสำเร็จได้ที่ไหน",
-  "dirAdd": "เพิ่มโฟลเดอร์",
-  "dirDefault": "โฟลเดอร์เริ่มต้น",
-  "dirCustom": "โฟลเดอร์ผู้ใช้" 
+  "settings" : {
+    "title": "การตั้งค่า",
+    "sideMenu":{
+      "general": "ทั่วไป",
+      "notification": "การแจ้งเตือน",
+      "folder": "โฟลเดอร์"
+    },
+    "common": {
+      "show": "เอาสิ",
+      "hide": "ไม่เอา",
+      "enable": "เอาสิ",
+      "disable": "ไม่เอา",
+      "cancel": "ยกเลิก",
+      "save": "ตกลง",
+      "version": "รุ่น"
+    },
+    "general": {
+      "language": {
+        "name": "ภาษา"
+      },
+      "hiddenAch": {
+        "name": "รางวัลความสำเร็จลับ"
+      },
+      "mergeDuplicates": {
+        "name": "รวมรายการที่ซ้ำกัน"
+      },
+      "hideZero": {
+        "name": "ซ่อนเกม 0%"
+      }
+    },
+    "folder": {
+      "headline": "หาไฟล์รางวัลความสำเร็จได้ที่ไหน",
+      "default": "โฟลเดอร์เริ่มต้น",
+      "custom": "โฟลเดอร์ผู้ใช้",
+      "add": "เพิ่มโฟลเดอร์"
+    }
+  } 
 }

@@ -10,9 +10,19 @@
   "hiddenRemain" : "logros ocultos restantes",
   "revealedOnceUnlocked" : "Los detalles de cada logro se revelarán una vez desbloqueado",
   "allGamesBackButton" : "Todos los juegos",
-  "settings": "Parámetros",
-  "language": "Idioma",
-  "hiddenAch": "Logros ocultos",
-  "cancel": "Cancelar",
-  "save": "aceptar"
+  "settings" : {
+    "title": "Parámetros",
+    "common": {
+      "cancel": "Cancelar",
+      "save": "aceptar"
+    },
+    "general": {
+      "language": {
+        "name": "Idioma"
+      },
+      "hiddenAch": {
+        "name": "Logros ocultos"
+      }
+    }
+  }
 }

@@ -27,3 +27,11 @@ html[lang="ru"] #achievement .achievements .achievement-list > .header
 {
   font-family: "Raleway-bold";
 }
+html[lang="ru"] #settingNav li {
+  width: 130px;
+}
+
+html[lang="fr"] #options-notify-transport li:nth-child(2).hasHelper 
+{
+  margin-bottom: 32px;
+}

@@ -13,67 +13,149 @@
   "play": "Démarrer une partie !",
   "scrollUp" : "Vers le haut",
   "allGamesBackButton" : "Tous les jeux",
-  "settings": "Paramètres",
-  "language": "Langue",
-  "hiddenAch": "Succès cachés",
-  "mergeDuplicates": "Fusionner les doublons",
-  "hideZero": "Masquer les jeux à 0%",
-  "notification": "Notification",
-  "show": "Montrer",
-  "hide": "Cacher",
-  "enable": "Activer",
-  "disable": "Désactiver",
-  "cancel": "Annuler",
-  "save": "Ok",
-  "version": "Version",
-  "general": "Général",
-  "folder": "Dossiers",
-  "dirDisclaimer": "Où chercher les données des succès:",
-  "dirAdd": "Ajouter un dossier",
-  "dirDefault": "Répertoire par défaut",
-  "dirCustom": "Répertoire de l'utilisateur",
-  "advanced": "Avancé",
-  "legitSteam": "Afficher les jeux Steam",
-  "none": "Aucun",
-  "installed": "Installé(s)",
-  "owned": "Possédé(s)",
-  "publicProfile": "Steam doit être installé et votre profil Steam publique !",
   "removeFromList": "Retirer de la liste",
-  "souvenir": "Souvenir",
-  "souvenirDescription": "Prendre une capture d'écran lorsque vous débloquez un succès",
-  "powershell": "Utilisation de PowerShell",
-  "powershellDescription": "Windows 8-10 notification toast",
-  "gntp": "Utilisation de GNTP",
-  "toastSouvenir": "Souvenir à chaud",
-  "toastSouvenir_header" : "En haut",
-  "toastSouvenir_footer" : "En bas",
-  "toastSouvenirDescription": "Afficher la capture d'écran dans le toast (Win10 uniquement)",
-  "notificationDescription": "Informer si possible lorsque un succès est débloqué",
-  "showDesc":"Montrer la description",
-  "showDescDescription":"Montrer la description du succès s'il y en a une",
-  "customToastAudio" : "Effet sonore du toast",
-  "customToastAudioDescription" : "Spécifie le son à jouer lorsqu'une notification toast est affichée",
-  "systemDefault": "Défaut",
-  "muted": "Son coupé",
-  "customUserFolderInfo": [
-    "Sélectionnez un dossier contenant des dossiers appid.",
-    "Pour ALI213, Hoodlum, RPCS3, sélectionnez un dossier dans lequel",
-    "Le fichier ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe est situé."],
-  "blacklistTitle":"Liste noire d'AppID",
-  "blacklistButton":"Réinitialiser la liste noire",
-  "blacklistInfo":"Faites un clic droit sur une vignette de jeu pour l'ajouter à la liste noire.",
-  "helpTranslate": ["Aidez la traduction","ici"],
-  "timeMergeRecentFirst": "Fusion d'horodatage",
-  "timeMergeRecent": "Récente",
-  "timeMergeOldest": "Ancienne",
-  "timeMergeRecentFirstDescription" : "Lors de la fusion de doublons, quelle valeur de temps est préférable ?",
-  "rumble": "Vibration de la manette (XInput)",
-  "rumbleDescription": "Faire vibrer la première manette lorsque un succès est débloqué",
-  "notifyOnProgress" : "Rapport d'avancement",
-  "notifyOnProgressDescription": "Informer sur la progression quand c'est possible",
-  "importCache" : "Importer le cache de notification",
-  "importCacheDescription" : "Importer le cache de Watchdog comme une autre source de succès",
-  "thumbnailPortrait": "Orientation des vignettes",
-  "portrait": "Portrait",
-  "landscape": "Paysage"   
+  "settings" : {
+    "title": "Paramètres",
+    "sideMenu":{
+      "general": "Général",
+      "notification": "Notification",
+      "folder": "Dossiers",
+      "advanced": "Avancé",
+      "debug": "Déboguer"
+    },
+    "common": {
+      "show": "Montrer",
+      "hide": "Cacher",
+      "enable": "Activer",
+      "disable": "Désactiver",
+      "cancel": "Annuler",
+      "save": "Ok",
+      "version": "Version"
+    },
+    "general": {
+      "language": {
+        "name": "Langue",
+        "description": ["Aidez la traduction","ici"]
+      },
+      "thumbnail": {
+        "name": "Orientation des vignettes",
+        "value": {
+          "portrait": "Portrait",
+          "landscape": "Paysage"
+        }
+      },
+      "hiddenAch": {
+        "name": "Succès cachés"
+      },
+      "mergeDuplicates": {
+        "name": "Fusionner les doublons"
+      },
+      "timeMerge": {
+        "name": "Fusion d'horodatage",
+        "description": "Lors de la fusion de doublons, quelle valeur de temps est préférable ?",
+        "value": {
+          "recent": "Récente",
+          "oldest": "Ancienne"
+        }
+      },
+      "hideZero": {
+        "name": "Masquer les jeux à 0%"
+      },
+      "legitSteam": {
+        "name": "Afficher les jeux Steam",
+        "description": "Steam doit être installé et votre profil Steam publique !",
+        "value": {
+          "none": "Aucun",
+          "installed": "Installé(s)",
+          "owned": "Possédé(s)"
+        }
+      },
+      "importCache": {
+        "name": "Importer le cache de notification",
+        "description": "Importer le cache de Watchdog comme une autre source de succès"
+      }
+    },
+    "notification" : {
+      "title": {
+        "common": "Commun",
+        "toast": "Notification toast",
+        "transport": "Transport"
+      },
+      "info" : {
+        "toast" : "Certaines fonctionnalités ne sont disponibles que sous Windows 10"
+      },
+      "option": {
+        "notification" : {
+          "name": "Notification",
+          "description": "Informer si possible lorsque un succès est débloqué"
+        },
+        "souvenir" : {
+          "name": "Souvenir",
+          "description": "Prendre une capture d'écran lorsque vous débloquez un succès"
+        },
+        "showDesc" : {
+          "name": "Montrer la description",
+          "description": "Montrer la description du succès s'il y en a une"
+        },
+        "rumble" : {
+          "name": "Vibration de la manette (XInput)",
+          "description": "Faire vibrer la première manette lorsque un succès est débloqué"
+        },
+        "notifyOnProgress" : {
+          "name": "Rapport d'avancement",
+          "description": "Informer sur la progression quand c'est possible"
+        },
+        "customToastAudio" : {
+          "name": "Effet sonore du toast",
+          "description": "Spécifie le son à jouer lorsqu'une notification toast est affichée",
+          "value": {
+            "systemDefault": "Défaut",
+            "muted": "Son coupé"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "Souvenir à chaud",
+          "description": "Afficher la capture d'écran dans le toast",
+          "value": {
+            "top" : "En haut",
+            "bottom" : "En bas"
+          }
+        },
+        "groupToast" : {
+          "name": "Grouper par jeu",
+          "description": "Groupez visuellement les toasts du même jeu dans l'Action Center"
+        },
+        "useToast" : {
+          "name": "Notification toast",
+          "description": "Windows 8-10 notification toast"
+        },
+        "useWinRT" : {
+          "name": "Windows 10 WinRT API",
+          "description": "Utilisez WinRT si disponible pour un toast plus rapide au lieu de PowerShell"
+        },
+        "useBalloon" : {
+          "name": "Info-bulle",
+          "description": "Utilisez une info-bulle quand un toast échoue"
+        },
+        "useWS" : {
+          "description": "Diffusion des succès à tous les clients connectés"
+        }
+      }
+    },
+    "folder": {
+      "headline": "Où chercher les données des succès:",
+      "default": "Répertoire par défaut",
+      "custom": "Répertoire de l'utilisateur",
+      "addInfo": [
+        "Sélectionnez un dossier contenant des dossiers appid.",
+        "Pour ALI213, Hoodlum, RPCS3, sélectionnez un dossier dans lequel",
+        "Le fichier ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe est situé."],
+      "add": "Ajouter un dossier"
+    },
+    "advanced": {
+      "blacklistTitle":"Liste noire d'AppID",
+      "blacklistButton":"Réinitialiser la liste noire",
+      "blacklistInfo":"Faites un clic droit sur une vignette de jeu pour l'ajouter à la liste noire."
+    } 
+  } 
 }

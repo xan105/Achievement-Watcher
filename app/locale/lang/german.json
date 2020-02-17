@@ -13,23 +13,48 @@
   "play": "Jetzt Spielen!",
   "scrollUp" : "Zurückscrollen",
   "allGamesBackButton" : "Alle Spiele",
-  "settings": "Einstellungen",
-  "language": "Sprache",
-  "hiddenAch": "Errungenschaften verbleibend",
-  "mergeDuplicates": "Duplikate zusammenführen",
-  "hideZero": "0% Spiele verstecken",
-  "notification": "Mitteilung",
-  "show": "Anzeigen",
-  "hide": "Verstecken",
-  "enable": "Aktivieren",
-  "disable": "Deaktivieren",
-  "cancel": "Abbrechen",
-  "save": "Speichern",
-  "version": "Version",
-  "general": "Allgemeine",
-  "folder": "Ordner",
-  "dirDisclaimer": "Wo nach Errungenschaften Daten gesucht werden soll :",
-  "dirAdd": "Ordner hinzufügen",
-  "dirDefault": "Standardverzeichnis",
-  "dirCustom": "Benutzerverzeichnis"
+  "settings" : {
+    "title": "Einstellungen",
+    "sideMenu":{
+      "general": "Allgemeine",
+      "notification": "Mitteilung",
+      "folder": "Ordner"
+    },
+    "common": {
+      "show": "Anzeigen",
+      "hide": "Verstecken",
+      "enable": "Aktivieren",
+      "disable": "Deaktivieren",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "version": "Version"
+    },
+    "general": {
+      "language": {
+        "name": "Sprache"
+      },
+      "hiddenAch": {
+        "name": "Errungenschaften verbleibend"
+      },
+      "mergeDuplicates": {
+        "name": "Duplikate zusammenführen"
+      },
+      "hideZero": {
+        "name": "0% Spiele verstecken"
+      }
+    },
+    "notification" : {
+      "option": {
+        "notification" : {
+          "name": "Mitteilung"
+        }
+      }
+    },
+    "folder": {
+      "headline": "Wo nach Errungenschaften Daten gesucht werden soll :",
+      "default": "Standardverzeichnis",
+      "custom": "Benutzerverzeichnis",
+      "add": "Ordner hinzufügen"
+    } 
+  } 
 }

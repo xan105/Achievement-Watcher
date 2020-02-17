@@ -13,67 +13,149 @@
   "play": "Start playing !",
   "scrollUp" : "Scroll up",
   "allGamesBackButton" : "All Games",
-  "settings": "Settings",
-  "language": "Language",
-  "hiddenAch": "Hidden Achievements",
-  "mergeDuplicates": "Merge Duplicates",
-  "hideZero": "Hide 0% Game",
-  "notification": "Notification",
-  "show": "Show",
-  "hide": "Hide",
-  "enable": "Enable",
-  "disable": "Disable",
-  "cancel": "Cancel",
-  "save": "Save",
-  "version": "Version",
-  "general": "General",
-  "folder": "Folders",
-  "dirDisclaimer": "Where to look for achievements files :",
-  "dirAdd": "Add a Folder",
-  "dirDefault": "Default Dir",
-  "dirCustom": "User Dir",
-  "advanced": "Advanced",
-  "legitSteam": "Display Steam Games",
-  "none": "None",
-  "installed": "Installed",
-  "owned": "Owned",
-  "publicProfile": "Steam must be installed and your Steam profile public !",
   "removeFromList": "Remove from list",
-  "souvenir": "Souvenir",
-  "souvenirDescription": "Take a screenshot when you unlock an achievement",
-  "powershell": "Use PowerShell",
-  "powershellDescription": "Windows 8-10 toast notification",
-  "gntp": "Use GNTP",
-  "toastSouvenir": "Toasted souvenir",
-  "toastSouvenir_header" : "Header",
-  "toastSouvenir_footer" : "Footer",
-  "toastSouvenirDescription": "Display souvenir screenshot inside the toast (Win10 only)",
-  "notificationDescription": "Notify on achievement unlock when possible",
-  "showDesc":"Show description",
-  "showDescDescription":"Show achievement description if any",
-  "customToastAudio" : "Toast sound",
-  "customToastAudioDescription" : "Specifies the sound to play when a toast notification is displayed",
-  "systemDefault": "Default",
-  "muted": "Muted",
-  "customUserFolderInfo": [
-    "Select a folder which contains appid folder(s).",
-    "For ALI213, Hoodlum, RPCS3 please select a folder where the",
-    "ALI213.ini, valve.ini, hlm.ini, ds.ini or RPCS3.exe file is located."],
-  "blacklistTitle":"AppID Blacklist",
-  "blacklistButton":"Reset blacklist",
-  "blacklistInfo":"Right click on a gamebox to add it to the blacklist.",
-  "helpTranslate": ["Help the translation","here"],
-  "timeMergeRecentFirst": "Timestamp merge",
-  "timeMergeRecent": "Recent",
-  "timeMergeOldest": "Oldest",
-  "timeMergeRecentFirstDescription" : "When merging duplicates, which time value is preferred ?",
-  "rumble": "Gamepad Vibration (XInput)",
-  "rumbleDescription": "Vibrates first controller when unlocking an achievement",
-  "notifyOnProgress" : "Progress report",
-  "notifyOnProgressDescription": "Notify on achievement progress when possible",
-  "importCache" : "Import notification cache",
-  "importCacheDescription" : "Import Watchdog's cache as another source of achievement",
-  "thumbnailPortrait": "Thumbnail orientation",
-  "portrait": "Portrait",
-  "landscape": "Landscape"
+  "settings" : {
+    "title": "Settings",
+    "sideMenu":{
+      "general": "General",
+      "notification": "Notification",
+      "folder": "Folders",
+      "advanced": "Advanced",
+      "debug": "Debug"
+    },
+    "common": {
+      "show": "Show",
+      "hide": "Hide",
+      "enable": "Enable",
+      "disable": "Disable",
+      "cancel": "Cancel",
+      "save": "Save",
+      "version": "Version"
+    },
+    "general": {
+      "language": {
+        "name": "Language",
+        "description": ["Help the translation","here"]
+      },
+      "thumbnail": {
+        "name": "Thumbnail orientation",
+        "value": {
+          "portrait": "Portrait",
+          "landscape": "Landscape"
+        }
+      },
+      "hiddenAch": {
+        "name": "Hidden Achievements"
+      },
+      "mergeDuplicates": {
+        "name": "Merge Duplicates"
+      },
+      "timeMerge": {
+        "name": "Timestamp merge",
+        "description": "When merging duplicates, which time value is preferred ?",
+        "value": {
+          "recent": "Recent",
+          "oldest": "Oldest"
+        }
+      },
+      "hideZero": {
+        "name": "Hide 0% Game"
+      },
+      "legitSteam": {
+        "name": "Display Steam Games",
+        "description": "Steam must be installed and your Steam profile public !",
+        "value": {
+          "none": "None",
+          "installed": "Installed",
+          "owned": "Owned"
+        }
+      },
+      "importCache": {
+        "name": "Import notification cache",
+        "description": "Import Watchdog's cache as another source of achievement"
+      }
+    },
+    "notification" : {
+      "title": {
+        "common": "Common",
+        "toast": "Toast notification",
+        "transport": "Transport"
+      },
+      "info" : {
+        "toast" : "Some features are only available in Windows 10"
+      },
+      "option": {
+        "notification" : {
+          "name": "Notification",
+          "description": "Notify on achievement unlock if possible"
+        },
+        "souvenir" : {
+          "name": "Souvenir",
+          "description": "Take a screenshot when you unlock an achievement"
+        },
+        "showDesc" : {
+          "name": "Show description",
+          "description": "Show achievement description if any"
+        },
+        "rumble" : {
+          "name": "Gamepad Vibration (XInput)",
+          "description": "Vibrates first controller when unlocking an achievement"
+        },
+        "notifyOnProgress" : {
+          "name": "Progress report",
+          "description": "Notify on achievement progress if possible"
+        },
+        "customToastAudio" : {
+          "name": "Toast sound",
+          "description": "Specifies the sound to play when a toast is displayed",
+          "value": {
+            "systemDefault": "Default",
+            "muted": "Muted"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "Toasted souvenir",
+          "description": "Display souvenir screenshot within the toast",
+          "value": {
+            "top" : "Top",
+            "bottom" : "Bottom"
+          }
+        },
+        "groupToast" : {
+          "name": "Group by game",
+          "description": "Visually group toast from the same game within Action Center"
+        },
+        "useToast" : {
+          "name": "Toast notification",
+          "description": "Windows 8-10 toast notification"
+        },
+        "useWinRT" : {
+          "name": "Windows 10 WinRT API",
+          "description": "Use WinRT if available for faster toast instead of PowerShell"
+        },
+        "useBalloon" : {
+          "name": "Balloon tooltip",
+          "description": "Fallback to balloon tooltip on toast notification failure"
+        },
+        "useWS" : {
+          "description": "Broadcast achievement to all connected clients"
+        }
+      }
+    },
+    "folder": {
+      "headline": "Where to look for achievements files :",
+      "default": "Default Dir",
+      "custom": "User Dir",
+      "addInfo": [
+        "Select a folder which contains appid folder(s).",
+        "For ALI213, Hoodlum, RPCS3 please select a folder where the",
+        "ALI213.ini, valve.ini, hlm.ini, ds.ini or RPCS3.exe file is located."],
+      "add": "Add a Folder"
+    },
+    "advanced": {
+      "blacklistTitle":"AppID Blacklist",
+      "blacklistButton":"Reset blacklist",
+      "blacklistInfo":"Right click on a gamebox to add it to the blacklist."
+    } 
+  } 
 }

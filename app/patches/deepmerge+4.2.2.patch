@@ -1,0 +1,79 @@
+diff --git a/node_modules/deepmerge/dist/cjs.js b/node_modules/deepmerge/dist/cjs.js
+index 8a6a517..db0ac53 100644
+--- a/node_modules/deepmerge/dist/cjs.js
++++ b/node_modules/deepmerge/dist/cjs.js
+@@ -88,8 +88,14 @@ function mergeObject(target, source, options) {
+ 			return
+ 		}
+ 
+-		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options);
++		if (propertyIsOnObject(target, key)) {
++			if (options.isEmpty && options.isEmpty(source[key])) {
++				destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
++			} else if (options.isMergeableObject(source[key])) {
++				destination[key] = getMergeFunction(key, options)(target[key], source[key], options);
++			} else {
++				destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
++			}
+ 		} else {
+ 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
+ 		}
+diff --git a/node_modules/deepmerge/dist/umd.js b/node_modules/deepmerge/dist/umd.js
+index 5d56acd..e9dcc06 100644
+--- a/node_modules/deepmerge/dist/umd.js
++++ b/node_modules/deepmerge/dist/umd.js
+@@ -2,7 +2,7 @@
+ 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+ 	typeof define === 'function' && define.amd ? define(factory) :
+ 	(global = global || self, global.deepmerge = factory());
+-}(this, function () { 'use strict';
++}(this, (function () { 'use strict';
+ 
+ 	var isMergeableObject = function isMergeableObject(value) {
+ 		return isNonNullObject(value)
+@@ -92,8 +92,14 @@
+ 				return
+ 			}
+ 
+-			if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+-				destination[key] = getMergeFunction(key, options)(target[key], source[key], options);
++			if (propertyIsOnObject(target, key)) {
++				if (options.isEmpty && options.isEmpty(source[key])) {
++					destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
++				} else if (options.isMergeableObject(source[key])) {
++					destination[key] = getMergeFunction(key, options)(target[key], source[key], options);
++				} else {
++					destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
++				}
+ 			} else {
+ 				destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
+ 			}
+@@ -136,4 +142,4 @@
+ 
+ 	return deepmerge_1;
+ 
+-}));
++})));
+\ No newline at end of file
+diff --git a/node_modules/deepmerge/index.js b/node_modules/deepmerge/index.js
+index 0ac71be..86d7fc6 100644
+--- a/node_modules/deepmerge/index.js
++++ b/node_modules/deepmerge/index.js
+@@ -63,8 +63,14 @@ function mergeObject(target, source, options) {
+ 			return
+ 		}
+ 
+-		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
++		if (propertyIsOnObject(target, key)) {
++			if (options.isEmpty && options.isEmpty(source[key])) {
++				destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
++			} else if (options.isMergeableObject(source[key])) {
++				destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
++			} else {
++				destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
++			}
+ 		} else {
+ 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
+ 		}

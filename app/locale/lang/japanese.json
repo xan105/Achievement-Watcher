@@ -9,9 +9,19 @@
   "hiddenRemain" : "個の秘密の実績が残っている",
   "revealedOnceUnlocked" : "各実績の詳細はアンロック時に明らかとなる",
   "allGamesBackButton" : "すべてのゲーム",
-  "settings": "設定",
-  "language": "言語",
-  "hiddenAch": "個の秘密の実績",
-  "cancel": "キャンセル",
-  "save": "OK"
+  "settings" : {
+    "title": "設定",
+    "common": {
+      "cancel": "キャンセル",
+      "save": "OK"
+    },
+    "general": {
+      "language": {
+        "name": "言語"
+      },
+      "hiddenAch": {
+        "name": "個の秘密の実績"
+      }
+    }
+  } 
 }

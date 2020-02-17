@@ -13,71 +13,148 @@
   "play": "快来玩吧！",
   "scrollUp": "向上滚动",
   "allGamesBackButton": "所有游戏",
-  "settings": "设置",
-  "language": "语言",
-  "hiddenAch": "隐藏成就",
-  "mergeDuplicates": "合并重复项",
-  "hideZero": "隐藏未解锁任何成就的游戏",
-  "notification": "通知",
-  "show": "显示",
-  "hide": "隐藏",
-  "enable": "启用",
-  "disable": "禁用",
-  "cancel": "取消",
-  "save": "保存",
-  "version": "版本",
-  "general": "通用",
-  "folder": "目录",
-  "dirDisclaimer": "在哪里查找成就文件：",
-  "dirAdd": "添加目录",
-  "dirDefault": "默认目录",
-  "dirCustom": "用户目录",
-  "advanced": "高级",
-  "legitSteam": "显示 Steam 游戏",
-  "none": "不显示",
-  "installed": "已安装",
-  "owned": "已拥有",
-  "publicProfile": "必须安装 Steam 并将您的 Steam 个人资料公开！",
   "removeFromList": "从列表中删除",
-  "souvenir": "纪念",
-  "souvenirDescription": "解锁成就时截图",
-  "powershell": "使用 PowerShell",
-  "powershellDescription": "Windows 8-10 Toast 通知",
-  "gntp": "使用 GNTP",
-  "toastSouvenir": "显示纪念",
-  "toastSouvenir_header": "顶部",
-  "toastSouvenir_footer": "底部",
-  "toastSouvenirDescription": "在通知里显示纪念截图（仅 Win10）",
-  "notificationDescription": "尽可能在成就解锁时通知",
-  "showDesc": "显示描述",
-  "showDescDescription": "显示成就描述（如果有）",
-  "customToastAudio": "通知音效",
-  "customToastAudioDescription": "指定显示 Toast 通知时播放的音效",
-  "systemDefault": "默认",
-  "muted": "静音",
-  "customUserFolderInfo": [
-    "选择一个包含 appid 文件夹的目录。",
-    "对于 ALI213、Hoodlum、RPCS3，请选择",
-    "ALI213.ini、valve.ini、hlm.ini、ds.ini 或 RPCS3.exe 文件所在的目录。"
-  ],
-  "blacklistTitle": "AppID 黑名单",
-  "blacklistButton": "重置黑名单",
-  "blacklistInfo": "右键点击一个游戏，将其添加到黑名单中。",
-  "helpTranslate": [
-    "帮助翻译",
-    "点击此处"
-  ],
-  "timeMergeRecentFirst": "时间戳合并",
-  "timeMergeRecent": "最近的",
-  "timeMergeOldest": "最早的",
-  "timeMergeRecentFirstDescription": "合并重复项时，首选哪个时间值？",
-  "rumble": "手柄震动（XInput）",
-  "rumbleDescription": "解锁成就时震动第一个手柄",
-  "notifyOnProgress": "进度报告",
-  "notifyOnProgressDescription": "尽可能通知成就进度",
-  "importCache": "导入通知缓存",
-  "importCacheDescription": "导入 Watchdog 的缓存作为成就的另一个来源",
-  "thumbnailPortrait": "缩略图方向",
-  "portrait": "纵向",
-  "landscape": "横向"
+  "settings" : {
+    "title": "设置",
+    "sideMenu":{
+      "general": "通用",
+      "notification": "通知",
+      "folder": "目录",
+      "advanced": "高级"
+    },
+    "common": {
+      "show": "显示",
+      "hide": "隐藏",
+      "enable": "启用",
+      "disable": "禁用",
+      "cancel": "取消",
+      "save": "保存",
+      "version": "版本"
+    },
+    "general": {
+      "language": {
+        "name": "语言",
+        "description": ["帮助翻译","点击此处"]
+      },
+      "thumbnail": {
+        "name": "缩略图方向",
+        "value": {
+          "portrait": "纵向",
+          "landscape": "横向"
+        }
+      },
+      "hiddenAch": {
+        "name": "隐藏成就"
+      },
+      "mergeDuplicates": {
+        "name": "合并重复项"
+      },
+      "timeMerge": {
+        "name": "时间戳合并",
+        "description": "合并重复项时，首选哪个时间值？",
+        "value": {
+          "recent": "最近的",
+          "oldest": "最早的"
+        }
+      },
+      "hideZero": {
+        "name": "隐藏未解锁任何成就的游戏"
+      },
+      "legitSteam": {
+        "name": "显示 Steam 游戏",
+        "description": "必须安装 Steam 并将您的 Steam 个人资料公开！",
+        "value": {
+          "none": "不显示",
+          "installed": "已安装",
+          "owned": "已拥有"
+        }
+      },
+      "importCache": {
+        "name": "导入通知缓存",
+        "description": "导入 Watchdog 的缓存作为成就的另一个来源"
+      }
+    },
+    "notification" : {
+      "title": {
+        "common": "",
+        "toast": "",
+        "transport": ""
+      },
+      "info" : {
+        "toast" : ""
+      },
+      "option": {
+        "notification" : {
+          "name": "通知",
+          "description": "尽可能在成就解锁时通知"
+        },
+        "souvenir" : {
+          "name": "纪念",
+          "description": "解锁成就时截图"
+        },
+        "showDesc" : {
+          "name": "显示描述",
+          "description": "显示成就描述（如果有）"
+        },
+        "rumble" : {
+          "name": "手柄震动（XInput）",
+          "description": "解锁成就时震动第一个手柄"
+        },
+        "notifyOnProgress" : {
+          "name": "进度报告",
+          "description": "尽可能通知成就进度"
+        },
+        "customToastAudio" : {
+          "name": "通知音效",
+          "description": "指定显示 Toast 通知时播放的音效",
+          "value": {
+            "systemDefault": "默认",
+            "muted": "静音"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "显示纪念",
+          "description": "在通知里显示纪念截图",
+          "value": {
+            "top" : "顶部",
+            "bottom" : "底部"
+          }
+        },
+        "groupToast" : {
+          "name": "",
+          "description": ""
+        },
+        "useToast" : {
+          "name": "",
+          "description": "Windows 8-10 Toast 通知"
+        },
+        "useWinRT" : {
+          "name": "",
+          "description": ""
+        },
+        "useBalloon" : {
+          "name": "",
+          "description": ""
+        },
+        "useWS" : {
+          "description": ""
+        }
+      }
+    },
+    "folder": {
+      "headline": "在哪里查找成就文件：",
+      "default": "默认目录",
+      "custom": "用户目录",
+      "addInfo": [
+        "选择一个包含 appid 文件夹的目录。",
+        "对于 ALI213、Hoodlum、RPCS3，请选择",
+        "ALI213.ini、valve.ini、hlm.ini、ds.ini 或 RPCS3.exe 文件所在的目录。"],
+      "add": "添加目录"
+    },
+    "advanced": {
+      "blacklistTitle": "AppID 黑名单",
+      "blacklistButton": "重置黑名单",
+      "blacklistInfo": "右键点击一个游戏，将其添加到黑名单中。"
+    } 
+  } 
 }

@@ -21,12 +21,12 @@ Available/Supported langs (based on [steam](https://partner.steamgames.com/doc/s
 
 Translation Status
 ==================
-As of 19/11/2019
+As of 17/02/2019
 
 - Arabic (ar) | العربية
 - Bulgarian (bg) | български език
 - Chinese: Simplified  (zh-CN) | 简体中文
-    <br/>Complete <br/>
+    <br/>Almost complete <br/>
     No css override <br/>
     [fiyeck](https://github.com/fiyeck)
 - Chinese: Traditional (zh-TW) | 繁體中文	
@@ -40,17 +40,17 @@ As of 19/11/2019
 - Finnish (fi) | Suomi	
 - French (fr) | Français
     <br/>Complete <br/>
-    No css override <br/>
+    Css override <br/>
     Anthony Beaumont
 - German (de) | Deutsch
     <br/>Incomplete <br/>
     No css override <br/>
-    Anthony Beaumont
+    Anthony Beaumont, [Shanas377](https://github.com/Shanas377)
 - Greek (el) | Ελληνικά	
 - Hungarian (hu) | Magyar
 - Italian (it) | Italiano
     <br/>Incomplete <br/>
-    css override <br/>
+    Css override <br/>
     pollolollo9001
 - Japanese (ja) | 日本語	
     <br/>Incomplete <br/>
@@ -64,11 +64,11 @@ As of 19/11/2019
 - Romanian (ro) | Română	
 - Russian (ru) | Русский	
     <br/>Incomplete <br/>
-    css override <br/>
+    Css override <br/>
     [hugmouse](https://github.com/hugmouse)
 - Spanish (es) | Español-España
     <br/>Incomplete <br/>
-    css override <br/>
+    Css override <br/>
     Steam UI + Google Translate	
 - Spanish: Latin America (es-419) | Español-Latinoamérica
     <br/>Inherit css override from Spanish (es) <br/>
