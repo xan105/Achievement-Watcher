@@ -3,6 +3,7 @@
 const os = require('os');
 const util = require('util');
 const fs = require('fs');
+const path = require('path');
 
 const code = {
   reset : "\x1b[0m",
@@ -38,6 +39,7 @@ class Logger {
       };
       
       if(this.options.file) {
+        fs.mkdirSync(path.parse(this.options.file).dir, { recursive: true });
         this.stream = fs.createWriteStream(this.options.file, 'utf-8')
         .on('error', function (err) {
             console.error(err);
