@@ -137,10 +137,6 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(3) .right select option[value='true']").text(clear(template.settings.common.enable));
         selector.find("li:nth-child(3) .right select option[value='false']").text(clear(template.settings.common.disable));
         selector.find("li:nth-child(3) .help").text(clear(template.settings.notification.option.groupToast.description));
-        selector = $("#options-notify-toast-system");
-        selector.find("li:nth-child(1) .left span").text(clear(template.settings.notification.option.toastDuration.name));
-        selector.find("li:nth-child(1) .right select option").each(function() { $(this).text($(this).val() + " " + clear(template.settings.common.time.sec)) });
-        selector.find("li:nth-child(1) .help").text(clear(template.settings.notification.option.toastDuration.description));
         selector = $("#options-notify-transport");
         selector.prev(".title").find("span").text(clear(template.settings.notification.title.transport));
         selector.find("li:nth-child(1) .left span").text(clear(template.settings.notification.option.useToast.name));

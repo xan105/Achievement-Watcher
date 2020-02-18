@@ -30,10 +30,7 @@
       "disable": "Désactiver",
       "cancel": "Annuler",
       "save": "Ok",
-      "version": "Version",
-      "time": {
-        "sec": "sec"
-      }
+      "version": "Version"
     },
     "general": {
       "language": {
@@ -127,10 +124,6 @@
         "groupToast" : {
           "name": "Grouper par jeu",
           "description": "Groupez visuellement les toasts du même jeu dans l'Action Center"
-        },
-        "toastDuration": {
-          "name": "Durée du toast",
-          "description": "Combien de temps un toast sera affiché (réglage système)"
         },
         "useToast" : {
           "name": "Notification toast",
