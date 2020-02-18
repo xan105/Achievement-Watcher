@@ -457,7 +457,7 @@ async function scrapSteamDB(appID){
     });
 
     let result = {
-      binary: binaries.find(binary => binary.windows).executable, 
+      binary: binaries.find(binary => binary.windows).executable.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0], 
       icon: html.querySelector('.app-icon.avatar').attributes.src,
       header: html.querySelector('.app-logo').attributes.src,
       name: html.querySelector('.css-truncate').innerHTML

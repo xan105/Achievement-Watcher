@@ -269,7 +269,7 @@ async function scrapSteamDB(appID){
     });
 
     let binary = binaries.find(binary => binary.windows).executable;
-    binary = binary.match(/([^\\])+$/)[0];
+    binary = binary.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0];
     
     if (!binary) throw "No binary match";
 
