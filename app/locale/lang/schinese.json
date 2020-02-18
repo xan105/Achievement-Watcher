@@ -20,6 +20,7 @@
       "general": "通用",
       "notification": "通知",
       "folder": "目录",
+      "source": "",
       "advanced": "高级"
     },
     "common": {
@@ -59,19 +60,6 @@
       },
       "hideZero": {
         "name": "隐藏未解锁任何成就的游戏"
-      },
-      "legitSteam": {
-        "name": "显示 Steam 游戏",
-        "description": "必须安装 Steam 并将您的 Steam 个人资料公开！",
-        "value": {
-          "none": "不显示",
-          "installed": "已安装",
-          "owned": "已拥有"
-        }
-      },
-      "importCache": {
-        "name": "导入通知缓存",
-        "description": "导入 Watchdog 的缓存作为成就的另一个来源"
       }
     },
     "notification" : {
@@ -150,6 +138,33 @@
         "对于 ALI213、Hoodlum、RPCS3，请选择",
         "ALI213.ini、valve.ini、hlm.ini、ds.ini 或 RPCS3.exe 文件所在的目录。"],
       "add": "添加目录"
+    },
+    "source": {
+      "legitSteam": {
+        "name": "显示 Steam 游戏",
+        "description": "必须安装 Steam 并将您的 Steam 个人资料公开！",
+        "value": {
+          "none": "不显示",
+          "installed": "已安装",
+          "owned": "已拥有"
+        }
+      },
+      "steamEmu": {
+        "name": ""
+      },
+      "greenLuma": {
+        "description": ""
+      },
+      "rpcs3": {
+        "description": ""
+      },
+      "lumaPlay": {
+        "description": ""
+      },  
+      "importCache": {
+        "name": "导入通知缓存",
+        "description": "导入 Watchdog 的缓存作为成就的另一个来源"
+      }
     },
     "advanced": {
       "blacklistTitle": "AppID 黑名单",

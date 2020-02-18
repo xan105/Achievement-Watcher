@@ -20,6 +20,7 @@
       "general": "Général",
       "notification": "Notification",
       "folder": "Dossiers",
+      "source": "Source",
       "advanced": "Avancé",
       "debug": "Déboguer"
     },
@@ -60,19 +61,6 @@
       },
       "hideZero": {
         "name": "Masquer les jeux à 0%"
-      },
-      "legitSteam": {
-        "name": "Afficher les jeux Steam",
-        "description": "Steam doit être installé et votre profil Steam publique !",
-        "value": {
-          "none": "Aucun",
-          "installed": "Installé(s)",
-          "owned": "Possédé(s)"
-        }
-      },
-      "importCache": {
-        "name": "Importer le cache de notification",
-        "description": "Importer le cache de Watchdog comme une autre source de succès"
       }
     },
     "notification" : {
@@ -151,6 +139,33 @@
         "Pour ALI213, Hoodlum, RPCS3, sélectionnez un dossier dans lequel",
         "Le fichier ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe est situé."],
       "add": "Ajouter un dossier"
+    },
+    "source": {
+      "legitSteam": {
+        "name": "Afficher les jeux Steam",
+        "description": "Steam doit être installé et votre profil Steam publique !",
+        "value": {
+          "none": "Aucun",
+          "installed": "Installé(s)",
+          "owned": "Possédé(s)"
+        }
+      },
+      "steamEmu": {
+        "name": "Emulateur Steam"
+      },
+      "greenLuma": {
+        "description": "GreenLuma 2020 et Reborn"
+      },
+      "rpcs3": {
+        "description": "Emulateur Playstation 3"
+      },
+      "lumaPlay": {
+        "description": "Emulateur Uplay"
+      },  
+      "importCache": {
+        "name": "Importer le cache de notification",
+        "description": "Importer le cache de Watchdog comme une autre source de succès"
+      }
     },
     "advanced": {
       "blacklistTitle":"Liste noire d'AppID",

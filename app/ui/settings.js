@@ -15,6 +15,13 @@
                }
         }
         
+        for (let option in app.config.achievement_source) {
+               if ( $(`#option_${option} option[value="${app.config.achievement_source[option]}"]`).length > 0 )
+               {
+                    $(`#option_${option}`).val(app.config.achievement_source[option].toString()).change();
+               }
+        }
+        
         for (let option in app.config.notification) {
                if ( $(`#option_${option} option[value="${app.config.notification[option]}"]`).length > 0 )
                {
@@ -126,6 +133,19 @@
            }catch(e){
             console.warn(e);
             debug.log("error while reading general settings ui");
+           }
+                        
+        });
+        
+        $("#options-source .right").children("select").each(function(index) {
+                  
+           try {
+             if ($(this)[0].id !== "" && $(this).val() !== "") {
+                 app.config.achievement_source[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
+             }
+           }catch(e){
+            console.warn(e);
+            debug.log("error while reading ach source settings ui");
            }
                         
         });

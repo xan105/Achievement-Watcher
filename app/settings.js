@@ -45,12 +45,30 @@ module.exports.load = ()=>{
           options.achievement.hideZero = false;
         }
         
-        if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
-          options.achievement.legitSteam = 0;
+        //Source
+        
+        if (options.achievement_source.legitSteam != 0 && options.achievement_source.legitSteam != 1 && options.achievement_source.legitSteam != 2){
+          options.achievement_source.legitSteam = 0;
         }
         
-        if (typeof options.achievement.importCache !== "boolean"){
-          options.achievement.importCache = true;
+        if (typeof options.achievement_source.steamEmu !== "boolean"){
+          options.achievement_source.steamEmu = true;
+        }
+        
+        if (typeof options.achievement_source.greenLuma !== "boolean"){
+          options.achievement_source.greenLuma = true;
+        }
+        
+        if (typeof options.achievement_source.rpcs3 !== "boolean"){
+          options.achievement_source.rpcs3 = true;
+        }
+        
+        if (typeof options.achievement_source.lumaPlay !== "boolean"){
+          options.achievement_source.lumaPlay = true;
+        }
+        
+        if (typeof options.achievement_source.importCache !== "boolean"){
+          options.achievement_source.importCache = true;
         }
         
         //Notification
@@ -145,8 +163,14 @@ module.exports.load = ()=>{
             showHidden: false,
             mergeDuplicate: true,
             timeMergeRecentFirst: false,
-            hideZero: false,
+            hideZero: false
+          },
+          achievement_source: {
             legitSteam: 0,
+            steamEmu: true,
+            greenLuma: true,
+            rpcs3: true,
+            lumaPlay: false,
             importCache: true
           },
           notification: {

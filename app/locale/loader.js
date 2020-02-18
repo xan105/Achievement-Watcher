@@ -35,7 +35,7 @@ module.exports.load = async (lang = "english") => {
       } else {
         throw("Unexpected Error");
       }
-      
+
       return locale;
       
     }catch(err){
@@ -90,15 +90,6 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(6) .left span").text(clear(template.settings.general.hideZero.name));
         selector.find("li:nth-child(6) .right select option[value='true']").text(clear(template.settings.common.enable));
         selector.find("li:nth-child(6) .right select option[value='false']").text(clear(template.settings.common.disable));
-        selector.find("li:nth-child(7) .left span").text(clear(template.settings.general.legitSteam.name));
-        selector.find("li:nth-child(7) .right select option[value='0']").text(clear(template.settings.general.legitSteam.value.none));
-        selector.find("li:nth-child(7) .right select option[value='1']").text(clear(template.settings.general.legitSteam.value.installed));
-        selector.find("li:nth-child(7) .right select option[value='2']").text(clear(template.settings.general.legitSteam.value.owned));
-        selector.find("li:nth-child(7) .help").text(clear(template.settings.general.legitSteam.description)); 
-        selector.find("li:nth-child(8) .left span").text(clear(template.settings.general.importCache.name));
-        selector.find("li:nth-child(8) .right select option[value='true']").text(clear(template.settings.common.enable));
-        selector.find("li:nth-child(8) .right select option[value='false']").text(clear(template.settings.common.disable));
-        selector.find("li:nth-child(8) .help").text(clear(template.settings.general.importCache.description));
         selector = $("#options-notify-common");
         selector.prev(".title").find("span").text(clear(template.settings.notification.title.common));
         selector.find("li:nth-child(1) .left span").text(clear(template.settings.notification.option.notification.name));
@@ -162,6 +153,28 @@ function translateUI(lang,locale,template){
         selector.find(".title:eq(1) span").text(clear(template.settings.folder.custom));
         $("#addCustomDir span").text(clear(template.settings.folder.add));
         $("#settings .content[data-view='folder'] > .controls .info p").html(clear(template.settings.folder.addInfo.join("\n")).replace(/\n/g,"<br>")); 
+        selector = $("#options-source");
+        selector.find("li:nth-child(1) .left span").text(clear(template.settings.source.legitSteam.name));
+        selector.find("li:nth-child(1) .right select option[value='0']").text(clear(template.settings.source.legitSteam.value.none));
+        selector.find("li:nth-child(1) .right select option[value='1']").text(clear(template.settings.source.legitSteam.value.installed));
+        selector.find("li:nth-child(1) .right select option[value='2']").text(clear(template.settings.source.legitSteam.value.owned));
+        selector.find("li:nth-child(1) .help").text(clear(template.settings.source.legitSteam.description)); 
+        selector.find("li:nth-child(2) .left span").text(clear(template.settings.source.steamEmu.name));
+        selector.find("li:nth-child(2) .right select option[value='true']").text(clear(template.settings.common.enable));
+        selector.find("li:nth-child(2) .right select option[value='false']").text(clear(template.settings.common.disable)); 
+        selector.find("li:nth-child(3) .right select option[value='true']").text(clear(template.settings.common.enable));
+        selector.find("li:nth-child(3) .right select option[value='false']").text(clear(template.settings.common.disable));
+        selector.find("li:nth-child(3) .help").text(clear(template.settings.source.greenLuma.description));
+        selector.find("li:nth-child(4) .right select option[value='true']").text(clear(template.settings.common.enable));
+        selector.find("li:nth-child(4) .right select option[value='false']").text(clear(template.settings.common.disable));
+        selector.find("li:nth-child(4) .help").text(clear(template.settings.source.rpcs3.description));
+        selector.find("li:nth-child(5) .right select option[value='true']").text(clear(template.settings.common.enable));
+        selector.find("li:nth-child(5) .right select option[value='false']").text(clear(template.settings.common.disable));
+        selector.find("li:nth-child(5) .help").text(clear(template.settings.source.lumaPlay.description));
+        selector.find("li:nth-child(6) .left span").text(clear(template.settings.source.importCache.name));
+        selector.find("li:nth-child(6) .right select option[value='true']").text(clear(template.settings.common.enable));
+        selector.find("li:nth-child(6) .right select option[value='false']").text(clear(template.settings.common.disable));
+        selector.find("li:nth-child(6) .help").text(clear(template.settings.source.importCache.description));
         $("#settings .content[data-view='advanced'] ul:first-child li:first-child").text(clear(template.settings.advanced.blacklistTitle));
         $("#blacklist_reset span").text(clear(template.settings.advanced.blacklistButton));
         $("#blacklist_reset ~ div").text(clear(template.settings.advanced.blacklistInfo));
@@ -171,6 +184,7 @@ function translateUI(lang,locale,template){
         $("#settingNav li[data-view='general'] span").text(clear(template.settings.sideMenu.general));
         $("#settingNav li[data-view='notification'] span").text(clear(template.settings.sideMenu.notification));
         $("#settingNav li[data-view='folder'] span").text(clear(template.settings.sideMenu.folder));
+        $("#settingNav li[data-view='source'] span").text(clear(template.settings.sideMenu.source));
         $("#settingNav li[data-view='advanced'] span").text(clear(template.settings.sideMenu.advanced));
         $("#settingNav li[data-view='debug'] span").text(clear(template.settings.sideMenu.debug));
         $("#btn-settings-cancel").text(clear(template.settings.common.cancel));

@@ -16,7 +16,7 @@ const debug = new (require(path.join(appPath,"util/log.js")))({
 });
 const { crc32 } = require('crc');
 
-async function discover(legitSteamListingType,importCache) {
+async function discover(source) {
 
     debug.log("Scanning for games ...");
     
@@ -28,12 +28,13 @@ async function discover(legitSteamListingType,importCache) {
       for (let dir of await userDir.get()) {
 
           debug.log(`[userdir] ${dir.path}`);
-
-          let scanned = await rpcs3.scan(dir.path);
+          
+          let scanned = [];
+          if (source.rpcs3) scanned = await rpcs3.scan(dir.path);
           if (scanned.length > 0) {
               data = data.concat(scanned);
               debug.log("-> RPCS3 data added");
-          } else {
+          } else if(source.steamEmu) {
               scanned = await userDir.scan(dir.path);
               if (scanned.length > 0) {
                   data = data.concat(scanned);
@@ -50,39 +51,49 @@ async function discover(legitSteamListingType,importCache) {
     }
     
    //Non-Legit Steam
-    try {
-      data = data.concat(await steam.scan(additionalSearch));
-    }catch(err){
-      debug.log(err);
-    } 
-    //GreenLuma Reborn
-    try {
-      data = data.concat(await greenluma.scan());
-    }catch(err){
-      debug.log(err);
+   if (source.steamEmu){
+      try {
+        data = data.concat(await steam.scan(additionalSearch));
+      }catch(err){
+        debug.log(err);
+      } 
     }
+    
+    //GreenLuma
+    if (source.greenLuma){
+      try {
+        data = data.concat(await greenluma.scan());
+      }catch(err){
+        debug.log(err);
+      }
+    }
+    
     //Legit Steam
-    try {
-      data = data.concat(await steam.scanLegit(legitSteamListingType));
-    }catch(err){
-      debug.log(err);
+    if (source.legitSteam > 0) {
+      try {
+        data = data.concat(await steam.scanLegit(source.legitSteam));
+      }catch(err){
+        debug.log(err);
+      }
     }
     
-    //Lumaplay
-    try{
-      data = data.concat(await uplay.scan());
-    }catch(err){
-      debug.log(err);
+    if (source.lumaPlay){
+      //Lumaplay
+      try{
+        data = data.concat(await uplay.scan());
+      }catch(err){
+        debug.log(err);
+      }
+      
+      //Uplay
+      try{
+        data = data.concat(await uplay.scanLegit());
+      }catch(err){
+        debug.log(err);
+      }
     }
     
-    //Uplay
-    try{
-      data = data.concat(await uplay.scanLegit());
-    }catch(err){
-      debug.log(err);
-    }
-    
-    if(importCache){
+    if(source.importCache){
       try{
         data = data.concat(await watchdog.scan());
       }catch(err){
@@ -105,10 +116,10 @@ async function discover(legitSteamListingType,importCache) {
 module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
   try {
-
+      
       let result = [];
   
-      let appidList = await discover(option.steam,option.importCache);
+      let appidList = await discover(option.achievement_source);
 
       if ( appidList.length > 0) {
         let count = 1;
@@ -123,19 +134,19 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
             try {
 
-                if (result.some( res => res.appid == appid.appid) && option.merge) {
+                if (result.some( res => res.appid == appid.appid) && option.achievement.mergeDuplicate) {
                   game = result.find( elem => elem.appid == appid.appid);
                   isDuplicate = true;
                 }
                 else if (appid.data.type === "rpcs3"){
                   game = await rpcs3.getGameData(appid.data.path);
                 }else if (appid.data.type === "uplay" || appid.data.type === "lumaplay"){
-                  game = await uplay.getGameData(appid.appid,option.lang);
+                  game = await uplay.getGameData(appid.appid,option.achievement.lang);
                 }else{
-                  game = await steam.getGameData({appID: appid.appid, lang: option.lang, key: option.key });      
+                  game = await steam.getGameData({appID: appid.appid, lang: option.achievement.lang, key: option.steam.apiKey });      
                 }
 
-                if(!option.merge && appid.source) game.source = appid.source;
+                if(!option.achievement.mergeDuplicate && appid.source) game.source = appid.source;
 
                 let root;
                 
@@ -151,7 +162,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                  } else if (appid.data.type === "steamAPI") {
                  
-                   root = await steam.getAchievementsFromAPI({appID: appid.appid, user: appid.data.userID, path: appid.data.cachePath , key: option.key });
+                   root = await steam.getAchievementsFromAPI({appID: appid.appid, user: appid.data.userID, path: appid.data.cachePath , key: option.steam.apiKey });
 
                  } else if (appid.data.type === "rpcs3"){
                   
@@ -198,7 +209,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                     achievement.MaxProgress = parsed.MaxProgress;
                               }
                                     
-                              if (option.recent) {
+                              if (option.achievement.timeMergeRecentFirst) {
                                 if( (!achievement.UnlockTime || achievement.UnlockTime == 0) || parsed.UnlockTime > achievement.UnlockTime ){ //More recent first
                                       achievement.UnlockTime = parsed.UnlockTime;
                                 }

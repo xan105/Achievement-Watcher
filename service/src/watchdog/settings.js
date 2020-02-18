@@ -60,13 +60,35 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
         
-        if (options.achievement.legitSteam != 0 && options.achievement.legitSteam != 1 && options.achievement.legitSteam != 2){
-          options.achievement.legitSteam = 0;
+        //Source
+        
+        if (options.achievement_source.legitSteam != 0 && options.achievement_source.legitSteam != 1 && options.achievement_source.legitSteam != 2){
+          options.achievement_source.legitSteam = 0;
           fixFile = true;
         }
         
-        if (typeof options.achievement.importCache !== "boolean"){
-          options.achievement.importCache = true;
+        if (typeof options.achievement_source.steamEmu !== "boolean"){
+          options.achievement_source.steamEmu = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.achievement_source.greenLuma !== "boolean"){
+          options.achievement_source.greenLuma = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.achievement_source.rpcs3 !== "boolean"){
+          options.achievement_source.rpcs3 = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.achievement_source.lumaPlay !== "boolean"){
+          options.achievement_source.lumaPlay = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.achievement_source.importCache !== "boolean"){
+          options.achievement_source.importCache = true;
           fixFile = true;
         }
         
@@ -185,8 +207,14 @@ module.exports.load = async (cfg_file) => {
             showHidden: false,
             mergeDuplicate: true,
             timeMergeRecentFirst: false,
-            hideZero: false,
+            hideZero: false
+          },
+          achievement_source: {
             legitSteam: 0,
+            steamEmu: true,
+            greenLuma: true,
+            rpcs3: true,
+            lumaPlay: false,
             importCache: true
           },
           notification: {
