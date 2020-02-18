@@ -28,8 +28,6 @@ module.exports.scan = async() => {
                }
          }catch{}
        }
-    } else {
-        throw "GLR No achievement found in registry";
     }
     
     if(keys.gl2020){
@@ -48,8 +46,6 @@ module.exports.scan = async() => {
                }
          }catch{}
        }
-    } else {
-        throw "GL2020 No achievement found in registry";
     }
     
     return data;
