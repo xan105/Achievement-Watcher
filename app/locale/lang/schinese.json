@@ -29,7 +29,10 @@
       "disable": "禁用",
       "cancel": "取消",
       "save": "保存",
-      "version": "版本"
+      "version": "版本",
+      "time": {
+        "sec": ""
+      }
     },
     "general": {
       "language": {
@@ -121,6 +124,10 @@
           }
         },
         "groupToast" : {
+          "name": "",
+          "description": ""
+        },
+        "toastDuration": {
           "name": "",
           "description": ""
         },
