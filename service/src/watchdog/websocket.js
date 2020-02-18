@@ -2,7 +2,7 @@
 
 const path = require('path');
 const moment = require("moment");
-const WebSocket = new (require('ws')).Server({ port: 8082 });
+const ws = require('ws');
 const toast = require("powertoast");
 const debug = new (require("./util/log.js"))({
   console: true,
@@ -11,7 +11,12 @@ const debug = new (require("./util/log.js"))({
 
 const timeout = 30000; //30sec 
 
+var WebSocket;
+
 module.exports.init = () => {
+
+  WebSocket = new ws.Server({ port: 8082 });
+  debug.log("Websocket listening ...");
 
   WebSocket.on('connection', (client, req) => {
      client.id = req.headers['sec-websocket-key'];

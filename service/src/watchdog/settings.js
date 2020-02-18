@@ -22,7 +22,7 @@ module.exports.load = async (cfg_file) => {
               let locale = await osLocale();
               locale = locale.replace("_","-");
               
-              let lang = steamLang.find(lang => lang.webapi == locale);
+              let lang = steamLang.find(lang => lang.iso == locale);
               if (!lang) {
                 lang = steamLang.find(lang => lang.webapi.startsWith(locale.slice(0,2)));
               }
@@ -37,6 +37,7 @@ module.exports.load = async (cfg_file) => {
         
         if (typeof options.achievement.thumbnailPortrait !== "boolean"){
           options.achievement.thumbnailPortrait = false;
+          fixFile = true;
         }
         
         if (typeof options.achievement.showHidden !== "boolean"){
@@ -63,47 +64,29 @@ module.exports.load = async (cfg_file) => {
           options.achievement.legitSteam = 0;
           fixFile = true;
         }
-             
+        
         if (typeof options.achievement.importCache !== "boolean"){
           options.achievement.importCache = true;
           fixFile = true;
-        }  
-             
+        }
+        
+        //Notification
+        
         if (typeof options.notification.notify !== "boolean"){
           options.notification.notify = true;
           fixFile = true;
         }
-  
-        if (typeof options.notification.powershell !== "boolean"){
-          options.notification.powershell = true;
-          fixFile = true;
-        }
-        
-        if (typeof options.notification.gntp !== "boolean"){
-          options.notification.gntp = true;
-          fixFile = true;
-        }
-        
+
         if (typeof options.notification.souvenir !== "boolean"){
           options.notification.souvenir = true;
           fixFile = true;
         }
-        
-        if (options.notification.toastSouvenir!= 0 && options.notification.toastSouvenir != 1 && options.notification.toastSouvenir != 2){
-          options.notification.toastSouvenir = 0;
-          fixFile = true;
-        }
-        
-        if (typeof options.notification.souvenir !== "boolean"){
+
+        if (typeof options.notification.showDesc !== "boolean"){
           options.notification.showDesc = false;
           fixFile = true;
         }
-        
-        if (options.notification.customToastAudio != 0 && options.notification.customToastAudio != 1 && options.notification.customToastAudio != 2){
-          options.notification.customToastAudio = 1;
-          fixFile = true;
-        }
-        
+
         if (typeof options.notification.rumble !== "boolean"){
           options.notification.rumble = true;
           fixFile = true;
@@ -114,6 +97,52 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
         
+        //Toast
+        
+        if (options.notification_toast.customToastAudio != 0 && options.notification_toast.customToastAudio != 1 && options.notification_toast.customToastAudio != 2){
+          options.notification_toast.customToastAudio = 1;
+          fixFile = true;
+        }
+        
+        if (options.notification_toast.toastSouvenir != 0 && options.notification_toast.toastSouvenir != 1 && options.notification_toast.toastSouvenir != 2){
+          options.notification_toast.toastSouvenir = 0;
+          fixFile = true;
+        }
+        
+        if (typeof options.notification_toast.groupToast !== "boolean"){
+          options.notification_toast.groupToast = false;
+          fixFile = true;
+        }
+
+        //Transport
+        
+        if (typeof options.notification_transport.toast !== "boolean"){
+          options.notification_transport.toast = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.notification_transport.winRT !== "boolean"){
+          options.notification_transport.winRT = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.notification_transport.balloon !== "boolean"){
+          options.notification_transport.balloon = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.notification_transport.websocket !== "boolean"){
+          options.notification_transport.websocket = true;
+          fixFile = true;
+        }
+        
+        if (typeof options.notification_transport.gntp !== "boolean"){
+          options.notification_transport.gntp = true;
+          fixFile = true;
+        }  
+
+        //Advanced
+
         if (isNaN(options.notification_advanced.timeTreshold)){
           options.notification_advanced.timeTreshold = 10;
           fixFile = true;
@@ -127,7 +156,9 @@ module.exports.load = async (cfg_file) => {
         if (typeof options.notification_advanced.checkIfProcessIsRunning !== "boolean"){
           options.notification_advanced.checkIfProcessIsRunning = true;
           fixFile = true;
-        }
+        } 
+        
+        //Steam Key  
 
         let steamKey;
         if (options.steam) {
@@ -159,20 +190,28 @@ module.exports.load = async (cfg_file) => {
             importCache: true
           },
           notification: {
-            notify: true,
-            powershell: true,
-            gntp: true,
+            notify: true,           
             souvenir: true,
-            toastSouvenir: 0,
             showDesc: false,
-            customToastAudio: 1,
             rumble: true,
-            notifyOnProgress: true         
+            notifyOnProgress: true
+          },
+          notification_toast: {
+            customToastAudio: 1,
+            toastSouvenir: 0,
+            groupToast: false 
+          },
+          notification_transport: {
+            toast: true,
+            winRT: true,
+            balloon: true,
+            websocket: true,
+            gntp: true
           },
           notification_advanced: {
             timeTreshold: 10,
             tick: 600,
-            checkIfProcessIsRunning: true
+            checkIfProcessIsRunning: true          
           },
           steam: {}
         };
@@ -181,7 +220,7 @@ module.exports.load = async (cfg_file) => {
           let locale = await osLocale();
           locale = locale.replace("_","-");
           
-          let lang = steamLang.find(lang => lang.webapi == locale);
+          let lang = steamLang.find(lang => lang.iso == locale);
           if (!lang) {
             lang = steamLang.find(lang => lang.webapi.startsWith(locale.slice(0,2)));
           }

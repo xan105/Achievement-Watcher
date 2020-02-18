@@ -53,34 +53,20 @@ module.exports.load = ()=>{
           options.achievement.importCache = true;
         }
         
+        //Notification
+        
         if (typeof options.notification.notify !== "boolean"){
           options.notification.notify = true;
         }
-        
-        if (typeof options.notification.powershell !== "boolean"){
-          options.notification.powershell = true;
-        }
-        
-        if (typeof options.notification.gntp !== "boolean"){
-          options.notification.gntp = true;
-        }   
-        
+
         if (typeof options.notification.souvenir !== "boolean"){
           options.notification.souvenir = true;
         }
-        
-        if (options.notification.toastSouvenir != 0 && options.notification.toastSouvenir != 1 && options.notification.toastSouvenir != 2){
-          options.notification.toastSouvenir = 0;
-        }
-        
+
         if (typeof options.notification.showDesc !== "boolean"){
           options.notification.showDesc = false;
         }
-        
-        if (options.notification.customToastAudio != 0 && options.notification.customToastAudio != 1 && options.notification.customToastAudio != 2){
-          options.notification.customToastAudio = 1;
-        }
-        
+
         if (typeof options.notification.rumble !== "boolean"){
           options.notification.rumble = true;
         }
@@ -88,6 +74,44 @@ module.exports.load = ()=>{
         if (typeof options.notification.notifyOnProgress !== "boolean"){
           options.notification.notifyOnProgress = true;
         }
+        
+        //Toast
+        
+        if (options.notification_toast.customToastAudio != 0 && options.notification_toast.customToastAudio != 1 && options.notification_toast.customToastAudio != 2){
+          options.notification_toast.customToastAudio = 1;
+        }
+        
+        if (options.notification_toast.toastSouvenir != 0 && options.notification_toast.toastSouvenir != 1 && options.notification_toast.toastSouvenir != 2){
+          options.notification_toast.toastSouvenir = 0;
+        }
+        
+        if (typeof options.notification_toast.groupToast !== "boolean"){
+          options.notification_toast.groupToast = false;
+        }
+
+        //Transport
+        
+        if (typeof options.notification_transport.toast !== "boolean"){
+          options.notification_transport.toast = true;
+        }
+        
+        if (typeof options.notification_transport.winRT !== "boolean"){
+          options.notification_transport.winRT = true;
+        }
+        
+        if (typeof options.notification_transport.balloon !== "boolean"){
+          options.notification_transport.balloon = true;
+        }
+        
+        if (typeof options.notification_transport.websocket !== "boolean"){
+          options.notification_transport.websocket = true;
+        }
+        
+        if (typeof options.notification_transport.gntp !== "boolean"){
+          options.notification_transport.gntp = true;
+        }  
+
+        //Advanced
 
         if (isNaN(options.notification_advanced.timeTreshold)){
           options.notification_advanced.timeTreshold = 10;
@@ -99,7 +123,9 @@ module.exports.load = ()=>{
         
         if (typeof options.notification_advanced.checkIfProcessIsRunning !== "boolean"){
           options.notification_advanced.checkIfProcessIsRunning = true;
-        }     
+        } 
+        
+        //Steam Key    
 
         if (options.steam) {
           if (options.steam.apiKey){
@@ -124,15 +150,23 @@ module.exports.load = ()=>{
             importCache: true
           },
           notification: {
-            notify: true,
-            powershell: true,
-            gntp: true,            
+            notify: true,           
             souvenir: true,
-            toastSouvenir: 0,
             showDesc: false,
-            customToastAudio: 1,
             rumble: true,
             notifyOnProgress: true
+          },
+          notification_toast: {
+            customToastAudio: 1,
+            toastSouvenir: 0,
+            groupToast: false 
+          },
+          notification_transport: {
+            toast: true,
+            winRT: true,
+            balloon: true,
+            websocket: true,
+            gntp: true
           },
           notification_advanced: {
             timeTreshold: 10,

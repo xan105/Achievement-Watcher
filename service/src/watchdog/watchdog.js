@@ -1,13 +1,14 @@
 "use strict";
 
+const instance = new (require('single-instance'))('Achievement Watchdog');
 const os = require('os');
 const path = require('path');
-const singleInstance = new (require('single-instance'))('Achievement Watchdog');
 const getStartApps = require('get-startapps');
 const watch = require('node-watch');
 const tasklist = require('win-tasklist');
 const moment = require("moment");
 const toast = require("powertoast");
+const balloon = require("powerballoon");
 const websocket = require("./websocket.js");
 const processPriority = require("./util/priority.js");
 const ffs = require("./util/feverFS.js");
@@ -28,6 +29,7 @@ const cfg_file = {
   option: path.join(process.env['APPDATA'],"Achievement Watcher/cfg","options.ini"),
   userDir: path.join(process.env['APPDATA'],"Achievement Watcher/cfg","userdir.db")
 }
+
 
 var app = { 
   cache : [],
@@ -93,7 +95,9 @@ var app = {
      }   
       
     }catch(err){
-      throw err;
+      debug.log(err);
+      instance.unlock();
+      process.exit();
     }
   },
   watch: function (i, dir, options) {
@@ -277,17 +281,19 @@ var app = {
          if (self.options.notification.notify) {
             debug.log(notification);
 
-            websocket.broadcast({
-                     appID: notification.appid,
-                     title: notification.title,
-                     id: notification.id,
-                     message: notification.message,
-                     description: notification.description,
-                     icon: notification.icon,
-                     time: notification.time
-            });
+            if (self.options.notification.transport.websocket) {
+              websocket.broadcast({
+                       appID: notification.appid,
+                       title: notification.title,
+                       id: notification.id,
+                       message: notification.message,
+                       description: notification.description,
+                       icon: notification.icon,
+                       time: notification.time
+              });
+            }
 
-            if (self.options.notification.powershell) {
+            if (self.options.notification.transport.toast) {
               try{
               
                  let options = {
@@ -298,30 +304,48 @@ var app = {
                         icon: notification.icon,
                         attribution: "Achievement",
                         onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`,
-                        silent: (self.options.notification.customToastAudio == 0) ? true : false,
-                        audio: (self.options.notification.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null               
+                        silent: (self.options.notification.toast.customToastAudio == 0) ? true : false,
+                        audio: (self.options.notification.toast.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null               
                  };
                  
-                 if (self.options.notification.souvenir && self.options.notification.toastSouvenir > 0 && souvenir) {
-                    if (self.options.notification.toastSouvenir == 1) {
+                 if (self.options.notification.souvenir && self.options.notification.toast.toastSouvenir > 0 && souvenir) {
+                    if (self.options.notification.toast.toastSouvenir == 1) {
                       options.headerImg = souvenir;
-                    } else if (self.options.notification.toastSouvenir == 2) {
+                    } else if (self.options.notification.toast.toastSouvenir == 2) {
                       options.footerImg = souvenir;
                     }
                  }
+
+                 if(self.options.notification.toast.groupToast) options.uniqueID = notification.appid; 
+                  
+                 if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
 
                  await toast(options);            
 
               }catch(err){
                 debug.log(err);
                 debug.log("Fail to invoke toast notification");
+                
+                if(self.options.notification_transport.balloon) {
+                  debug.log("Fallback to balloon-tooltip requested");
+                  try{
+                    await balloon({
+                      title: notification.title,
+                      message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`,
+                      ico: "./icon.ico"
+                    });
+                  }catch(err){
+                    debug.log(err);
+                  }
+                }
+                
               }
            
            } else {
-            debug.log("Powershell toast notification is disabled > SKIPPING")
+            debug.log("Toast notification is disabled > SKIPPING")
            }
            
-           if (self.options.notification.gntp) {
+           if (self.options.notification.transport.gntp) {
                gntp.hasGrowl().then((has)=>{
                   if (has) {
                     debug.log("Sending GNTP Grrr!");
@@ -339,11 +363,15 @@ var app = {
            }
            
            if(self.options.notification.rumble){
-               if (!self.options.notification.powershell) notification.delay = 0;
+               if (!self.options.notification.transport.toast) notification.delay = 0;
               
+               let toast_duration = 5;
+               let windows_toast_duration = await regedit.promises.RegQueryIntegerValue("HKCU","Control Panel/Accessibility","MessageDuration").catch(()=>{});
+               if(windows_toast_duration) toast_duration = +windows_toast_duration;
+               
                setTimeout(function(){  
                     xinput.vibrate({duration: 1}).catch(()=>{});
-               }, 7000 * notification.delay || 0);
+               }, (toast_duration * 1000) * notification.delay || 0);
             }
 
          } else {
@@ -362,21 +390,23 @@ var app = {
       if (self.options.notification.notifyOnProgress) {
              debug.log(notification);
 
-             websocket.broadcast({
-                       appID: notification.appid,
-                       title: notification.title,
-                       id: notification.id,
-                       message: notification.message,
-                       description: notification.description,
-                       icon: notification.icon,
-                       time: notification.time,
-                       progress: {
-                        current: notification.progress.current,
-                        max: notification.progress.max
-                       }
-             });
+             if (self.options.notification.transport.websocket) {
+               websocket.broadcast({
+                         appID: notification.appid,
+                         title: notification.title,
+                         id: notification.id,
+                         message: notification.message,
+                         description: notification.description,
+                         icon: notification.icon,
+                         time: notification.time,
+                         progress: {
+                          current: notification.progress.current,
+                          max: notification.progress.max
+                         }
+               });
+             }
 
-             if (self.options.notification.powershell) {
+             if (self.options.notification.transport.toast) {
                   try{
 
                        let options = {   
@@ -393,21 +423,36 @@ var app = {
                            }
                        };
                        
-                       if (notification.progress.max != 100) {
-                          options.progress.custom = `${notification.progress.current}/${notification.progress.max}`;
-                       }
+                       if (notification.progress.max != 100) options.progress.custom = `${notification.progress.current}/${notification.progress.max}`;
+                       
+                       if(self.options.notification.toast.groupToast) options.uniqueID = notification.appid; 
+                       
+                       if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
 
                        await toast(options); 
                        
                   }catch(err){
                        debug.lor(err);
                        debug.log("Fail to invoke toast notification");
+                       
+                       if(self.options.notification_transport.balloon) {
+                          debug.log("Fallback to balloon-tooltip requested");
+                          try{
+                            await balloon({
+                              title: notification.title,
+                              message: (self.options.notification.showDesc && notification.description) ? `[ ${notification.progress.current}/${notification.progress.max} ]\n${notification.message}\n${notification.description}` : `[ ${notification.progress.current}/${notification.progress.max} ]\n${notification.message}`,
+                              ico: "./icon.ico"
+                            });
+                          }catch(err){
+                            debug.log(err);
+                          }
+                        }
                   }  
              } else {
-                  debug.log("Powershell toast notification is disabled > SKIPPING")
+                  debug.log("Toast notification is disabled > SKIPPING")
              }
            
-             if (self.options.notification.gntp) {
+             if (self.options.notification.transport.gntp) {
                  gntp.hasGrowl().then((has)=>{
                     if (has) {
                       debug.log("Sending GNTP Grrr!");
@@ -434,13 +479,13 @@ var app = {
   }
 }
 
-singleInstance.lock().then(() => {
-  app.start().catch((err) => { 
+instance.lock().then(() => {
+  app.start().catch(()=>{});
+  try {
+    websocket.init();
+  }catch(err){
     debug.log(err); 
-  });
-  
-  websocket.init();
-  
+  }
 })
 .catch((err) => {
   debug.log(err);

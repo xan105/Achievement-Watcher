@@ -22,6 +22,20 @@
                }
         }
         
+        for (let option in app.config.notification_toast) {
+               if ( $(`#option_${option} option[value="${app.config.notification[option]}"]`).length > 0 )
+               {
+                    $(`#option_${option}`).val(app.config.notification_toast[option].toString()).change();
+               }
+        }
+        
+        for (let option in app.config.notification_transport) {
+               if ( $(`#option_${option} option[value="${app.config.notification[option]}"]`).length > 0 )
+               {
+                    $(`#option_${option}`).val(app.config.notification_transport[option].toString()).change();
+               }
+        }
+
         $('#option_customToastAudio').find('option[value="1"]').attr("data-file",toastAudio.getDefault());
         if ( $('#option_customToastAudio option:selected').val() == 2 ) {
           $(`#option_customToastAudio option[data-file="${toastAudio.getCustom()}"]`).prop("selected", true);
@@ -110,19 +124,47 @@
                  app.config.achievement[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
              }
            }catch(e){
-            debug.log("error while reading settings ui");
+            console.warn(e);
+            debug.log("error while reading general settings ui");
            }
                         
         });
        
-        $("#options-notify .right").children("select").each(function(index) {
+        $("#options-notify-common .right").children("select").each(function(index) {  
                   
            try {
              if ($(this)[0].id !== "" && $(this).val() !== "") {
                  app.config.notification[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
              }
            }catch(e){
-            debug.log("error while reading settings ui");
+            console.warn(e);
+            debug.log("error while reading notification common settings ui");
+           }
+                        
+        });
+        
+        $("#options-notify-toast .right").children("select").each(function(index) {  
+                  
+           try {
+             if ($(this)[0].id !== "" && $(this).val() !== "") {
+                 app.config.notification_toast[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
+             }
+           }catch(e){
+            console.warn(e);
+            debug.log("error while reading notification toast settings ui");
+           }
+                        
+        });
+        
+        $("#options-notify-transport .right").children("select").each(function(index) {  
+                  
+           try {
+             if ($(this)[0].id !== "" && $(this).val() !== "") {
+                 app.config.notification_transport[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
+             }
+           }catch(e){
+            console.warn(e);
+            debug.log("error while reading notification transport settings ui");
            }
                         
         });
@@ -343,36 +385,68 @@
          self.css("pointer-events","none");
 
          let dummy = new remote.BrowserWindow({"frame": false, "backgroundColor": "#000000"});
+         dummy.on('closed', () => {
+            dummy = null;
+            self.css("pointer-events","initial");
+         }); 
          dummy.setFullScreen(true);
 
          setTimeout(()=>{
-              
-            toast({
-             appID: self.next("select").val(),
-             title: "Achievement Watcher",
-             message: "Hello World",
-             icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
-             attribution: "Achievement",
-             silent: (app.config.notification.customToastAudio == 0) ? true : false,
-             audio: (app.config.notification.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null
-            }).then(()=>{
 
-                setTimeout(()=>{
-                  self.css("pointer-events","initial");
+              const ws = new WebSocket("ws://localhost:8082");
+              ws.onerror = (err) => {
+                ws.close();
+                dummy.close();
+                remote.dialog.showMessageBoxSync({type: "error", title: "WebSocket Connection Error", message: "Notification Test Failure.", detail: "Error in connection establishment: net::ERR_CONNECTION_REFUSED"});
+              }
+
+              ws.onopen = () => { 
+                  ws.onmessage = (evt) => {
+                    try {
+                      let res = JSON.parse(evt.data);
+                      if (res.cmd === 'toast-test') {
+                         if (res.success === true) {
+                            ws.close();
+                            setTimeout(()=>{
+                              dummy.close();
+                            },7000);
+                          }
+                          else if (res.success === false && res.error && res.error.message) {
+                            throw res.error.message;
+                          } else {
+                            throw "Unexpected response";
+                          }
+                      } else {
+                        throw "Unexpected response";
+                      }
+                    }catch(err){
+                       ws.close();
+                       dummy.close();
+                       remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Notification Test Failure.", detail: `${err}`});
+                    }      
+                  };
+               try {
+                 ws.send(JSON.stringify(
+                  {
+                   cmd: "toast-test",
+                   options: {
+                       appID: self.next("select").val(),
+                       title: "Achievement Watcher",
+                       message: "Hello World",
+                       icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+                       attribution: "Test",
+                       silent: (app.config.notification.customToastAudio == 0) ? true : false,
+                       audio: (app.config.notification.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null
+                     }
+                  }));
+               }catch(err){
+                  ws.close();
                   dummy.close();
-                },6000);
-                       
-            }).catch((err)=>{
-              self.css("pointer-events","initial");
-              dummy.close();
-              remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Notification Failure.", detail: `${err}`});
-            });    
-              
+                  remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Notification Test Failure.", detail: `${err}`});
+               }  
+              };
+ 
          },500);
-         
-         dummy.on('closed', () => {
-            dummy = null
-         }); 
       });
       
       $("#option_mergeDuplicate").parent(".right").find(".previous, .next").click(function(){
