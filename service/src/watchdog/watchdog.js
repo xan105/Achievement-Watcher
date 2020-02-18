@@ -298,6 +298,7 @@ var app = {
               
                  let options = {
                         appID: self.toastID,
+                        uniqueID: `${notification.appid}:${notification.id}`,
                         timeStamp: notification.time,
                         title: notification.title,
                         message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`,
@@ -316,8 +317,8 @@ var app = {
                     }
                  }
 
-                 if(self.options.notification.toast.groupToast) options.uniqueID = notification.appid; 
-                  
+                 if(self.options.notification.toast.groupToast) options.group = {id: notification.appid, title: notification.title};
+
                  if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
 
                  await toast(options);            
@@ -411,6 +412,7 @@ var app = {
 
                        let options = {   
                            appID: self.toastID,
+                           uniqueID: `${notification.appid}:${notification.id}`,
                            title: notification.title,
                            icon: notification.icon,
                            attribution: "Progress",
@@ -425,7 +427,7 @@ var app = {
                        
                        if (notification.progress.max != 100) options.progress.custom = `${notification.progress.current}/${notification.progress.max}`;
                        
-                       if(self.options.notification.toast.groupToast) options.uniqueID = notification.appid; 
+                       if(self.options.notification.toast.groupToast) options.group = {id: notification.appid, title: notification.title}; 
                        
                        if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
 
