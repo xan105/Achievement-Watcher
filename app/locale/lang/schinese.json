@@ -20,8 +20,9 @@
       "general": "通用",
       "notification": "通知",
       "folder": "目录",
-      "source": "",
-      "advanced": "高级"
+      "source": "来源",
+      "advanced": "高级",
+      "debug": "调试"
     },
     "common": {
       "show": "显示",
@@ -64,12 +65,12 @@
     },
     "notification" : {
       "title": {
-        "common": "",
-        "toast": "",
-        "transport": ""
+        "common": "通用",
+        "toast": "Toast 通知",
+        "transport": "传输"
       },
       "info" : {
-        "toast" : ""
+        "toast" : "某些功能仅 Windows 10 可用"
       },
       "option": {
         "notification" : {
@@ -109,23 +110,23 @@
           }
         },
         "groupToast" : {
-          "name": "",
-          "description": ""
+          "name": "按游戏分组",
+          "description": "将操作中心中相同游戏的 Toast 通知分为一组"
         },
         "useToast" : {
-          "name": "",
+          "name": "Toast 通知",
           "description": "Windows 8-10 Toast 通知"
         },
         "useWinRT" : {
-          "name": "",
-          "description": ""
+          "name": "Windows 10 WinRT API",
+          "description": "使用 WinRT 代替 PowerShell 来更快地显示 Toast 通知（如果可用）"
         },
         "useBalloon" : {
-          "name": "",
-          "description": ""
+          "name": "气球提示",
+          "description": "在 Toast 通知不可用时使用气球提示"
         },
         "useWS" : {
-          "description": ""
+          "description": "向所有连接的客户端广播成就"
         }
       }
     },
@@ -150,16 +151,16 @@
         }
       },
       "steamEmu": {
-        "name": ""
+        "name": "Steam 模拟器"
       },
       "greenLuma": {
-        "description": ""
+        "description": "GreenLuma 2020 与 Reborn"
       },
       "rpcs3": {
-        "description": ""
+        "description": "PS3 模拟器"
       },
       "lumaPlay": {
-        "description": ""
+        "description": "Uplay 模拟器"
       },  
       "importCache": {
         "name": "导入通知缓存",
