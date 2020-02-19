@@ -9,7 +9,7 @@ module.exports.scan = async() => {
 
     const keys = {
       glr: await regedit.promises.RegListAllSubkeys("HKCU","SOFTWARE/GLR/AppID"),
-      gl2020: await regedit.promises.RegListAllSubkeys("HKCU","SOFTWARE/GLR2020/AppID")
+      gl2020: await regedit.promises.RegListAllSubkeys("HKCU","SOFTWARE/GL2020/AppID")
     };
 
     if(keys.glr){
