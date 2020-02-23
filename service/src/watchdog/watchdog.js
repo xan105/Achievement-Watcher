@@ -9,6 +9,7 @@ const tasklist = require('win-tasklist');
 const moment = require("moment");
 const toast = require("powertoast");
 const balloon = require("powerballoon");
+const regedit = require('regodit');
 const websocket = require("./websocket.js");
 const processPriority = require("./util/priority.js");
 const ffs = require("./util/feverFS.js");
@@ -19,6 +20,7 @@ const track = require("./track.js");
 const screenshot = require("./native/screenshot.js");
 const xinput = require("./native/xinput.js");
 const gntp = require("./util/gntp.js");
+
 const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/notification.log")
@@ -281,7 +283,7 @@ var app = {
          if (self.options.notification.notify) {
             debug.log(notification);
 
-            if (self.options.notification.transport.websocket) {
+            if (self.options.notification_transport.websocket) {
               websocket.broadcast({
                        appID: notification.appid,
                        title: notification.title,
@@ -293,7 +295,7 @@ var app = {
               });
             }
 
-            if (self.options.notification.transport.toast) {
+            if (self.options.notification_transport.toast) {
               try{
               
                  let options = {
@@ -305,19 +307,19 @@ var app = {
                         icon: notification.icon,
                         attribution: "Achievement",
                         onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`,
-                        silent: (self.options.notification.toast.customToastAudio == 0) ? true : false,
-                        audio: (self.options.notification.toast.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null               
+                        silent: (self.options.notification_toast.customToastAudio == 0) ? true : false,
+                        audio: (self.options.notification_toast.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null               
                  };
                  
-                 if (self.options.notification.souvenir && self.options.notification.toast.toastSouvenir > 0 && souvenir) {
-                    if (self.options.notification.toast.toastSouvenir == 1) {
+                 if (self.options.notification.souvenir && self.options.notification_toast.toastSouvenir > 0 && souvenir) {
+                    if (self.options.notification_toast.toastSouvenir == 1) {
                       options.headerImg = souvenir;
-                    } else if (self.options.notification.toast.toastSouvenir == 2) {
+                    } else if (self.options.notification_toast.toastSouvenir == 2) {
                       options.footerImg = souvenir;
                     }
                  }
 
-                 if(self.options.notification.toast.groupToast) options.group = {id: notification.appid, title: notification.title};
+                 if(self.options.notification_toast.groupToast) options.group = {id: notification.appid, title: notification.title};
 
                  if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
 
@@ -346,7 +348,7 @@ var app = {
             debug.log("Toast notification is disabled > SKIPPING")
            }
            
-           if (self.options.notification.transport.gntp) {
+           if (self.options.notification_transport.gntp) {
                gntp.hasGrowl().then((has)=>{
                   if (has) {
                     debug.log("Sending GNTP Grrr!");
@@ -364,7 +366,7 @@ var app = {
            }
            
            if(self.options.notification.rumble){
-               if (!self.options.notification.transport.toast) notification.delay = 0;
+               if (!self.options.notification_transport.toast) notification.delay = 0;
               
                let toast_duration = 5;
                let windows_toast_duration = await regedit.promises.RegQueryIntegerValue("HKCU","Control Panel/Accessibility","MessageDuration").catch(()=>{});
@@ -391,7 +393,7 @@ var app = {
       if (self.options.notification.notifyOnProgress) {
              debug.log(notification);
 
-             if (self.options.notification.transport.websocket) {
+             if (self.options.notification_transport.websocket) {
                websocket.broadcast({
                          appID: notification.appid,
                          title: notification.title,
@@ -407,7 +409,7 @@ var app = {
                });
              }
 
-             if (self.options.notification.transport.toast) {
+             if (self.options.notification_transport.toast) {
                   try{
 
                        let options = {   
@@ -427,7 +429,7 @@ var app = {
                        
                        if (notification.progress.max != 100) options.progress.custom = `${notification.progress.current}/${notification.progress.max}`;
                        
-                       if(self.options.notification.toast.groupToast) options.group = {id: notification.appid, title: notification.title}; 
+                       if(self.options.notification_toast.groupToast) options.group = {id: notification.appid, title: notification.title}; 
                        
                        if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
 
@@ -454,7 +456,7 @@ var app = {
                   debug.log("Toast notification is disabled > SKIPPING")
              }
            
-             if (self.options.notification.transport.gntp) {
+             if (self.options.notification_transport.gntp) {
                  gntp.hasGrowl().then((has)=>{
                     if (has) {
                       debug.log("Sending GNTP Grrr!");
