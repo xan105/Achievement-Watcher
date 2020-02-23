@@ -13,8 +13,8 @@
   "dependencies": {
     "asar-node": "^1.2.0",
     "minimist": "^1.2.0",
-    "powerballoon": "^1.0.1",
-    "powertoast": "^1.1.2",
+    "powerballoon": "^1.0.2",
+    "powertoast": "^1.1.3",
     "request-zero": "^0.2.5",
     "single-instance": "0.0.1",
     "win-tasklist": "^1.0.0"
