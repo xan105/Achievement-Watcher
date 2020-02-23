@@ -30,6 +30,10 @@ module.exports.getFolders = async (userDir_file) => {
       options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
     },
     { 
+      dir: path.join(process.env['APPDATA'],"Steam/CODEX"), 
+      options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[0]] } 
+    },
+    { 
       dir: path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"), 
       options: { recursive: true, filter: /([0-9]+)/, file: [files.achievement[1],files.achievement[0]] } //keeping "achievements.ini" [0] for backward compatibility with custom goldberg emu build
     },
