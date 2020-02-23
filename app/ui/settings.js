@@ -30,14 +30,14 @@
         }
         
         for (let option in app.config.notification_toast) {
-               if ( $(`#option_${option} option[value="${app.config.notification[option]}"]`).length > 0 )
+               if ( $(`#option_${option} option[value="${app.config.notification_toast[option]}"]`).length > 0 )
                {
                     $(`#option_${option}`).val(app.config.notification_toast[option].toString()).change();
                }
         }
         
         for (let option in app.config.notification_transport) {
-               if ( $(`#option_${option} option[value="${app.config.notification[option]}"]`).length > 0 )
+               if ( $(`#option_${option} option[value="${app.config.notification_transport[option]}"]`).length > 0 )
                {
                     $(`#option_${option}`).val(app.config.notification_transport[option].toString()).change();
                }
