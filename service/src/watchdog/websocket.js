@@ -3,11 +3,11 @@
 const path = require('path');
 const moment = require("moment");
 const ws = require('ws');
-const toast = require("powertoast");
 const debug = new (require("./util/log.js"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/websocket.log")
 });
+const test = require("./notification-test.js");
 
 const timeout = 30000; //30sec 
 
@@ -98,24 +98,8 @@ function incoming(message){
      else if (req.cmd === "toast-test")
      {
         debug.log(`WS[${this.id}] received command 'toast-test'`);
-        
-        if(!req.options) {
-          let error = new Error("command 'toast-test' requires a toast options payload");
-          this.send(JSON.stringify({
-              cmd: "toast-test",
-              success: false,
-              error: {
-                code: error.code, 
-                message: error.message,
-                stack: error.stack
-              }
-          }));
-          throw error; 
-        } else {
-          debug.log(req.options);
-        }
-        
-        toast(req.options)
+
+        test.toast()
           .then(() => {
              this.send(JSON.stringify({
                 cmd: "toast-test",
@@ -126,11 +110,26 @@ function incoming(message){
              this.send(JSON.stringify({
                  cmd: "toast-test",
                  success: false,
-                 error: {
-                   code: err.code, 
-                   message: err.message,
-                   stack: err.stack
-                 }
+                 error: `${err}`
+             }));
+          });
+      }
+     else if (req.cmd === "gntp-test")
+     {
+        debug.log(`WS[${this.id}] received command 'gntp-test'`);
+
+        test.gntp()
+          .then(() => {
+             this.send(JSON.stringify({
+                cmd: "gntp-test",
+                success: true
+             }));
+          })
+          .catch((err) => {
+             this.send(JSON.stringify({
+                 cmd: "gntp-test",
+                 success: false,
+                 error: `${err}`
              }));
           });
       }

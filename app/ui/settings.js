@@ -384,20 +384,44 @@
         let self = $(this);
         self.css("pointer-events","none");
         
-        try {
-        
-          if (await gntp.hasGrowl()) {
-            await gntp.send({title: "Achievement Watcher", message:"Hello world", icon: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg'});
-          } else {
-            throw "Inaccessible endpoint !";
-          }
-        
-        }catch(err){
-          remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "GNTP Failure.", detail: `${err}`});
-        }
-        
-        self.css("pointer-events","initial");
-        
+            const ws = new WebSocket("ws://localhost:8082");
+              ws.onerror = (err) => {
+                ws.close();
+                remote.dialog.showMessageBoxSync({type: "error", title: "WebSocket Connection Error", message: "Notification Test Failure.", detail: "Error in connection establishment: net::ERR_CONNECTION_REFUSED\nIs Watchdog Running ?"});
+              }
+
+              ws.onopen = () => { 
+                  ws.onmessage = (evt) => {
+                    try {
+                      let res = JSON.parse(evt.data);
+                      if (res.cmd === 'gntp-test') {
+                         if (res.success === true) {
+                            ws.close();
+                            self.css("pointer-events","initial");
+                          }
+                          else if (res.success === false && res.error) {
+                            throw res.error;
+                          } else {
+                            throw "Unexpected response";
+                          }
+                      } else {
+                        throw "Unexpected response";
+                      }
+                    }catch(err){
+                       ws.close();
+                       self.css("pointer-events","initial");
+                       remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Notification Test Failure.", detail: `${err}`});
+                    }      
+                  };
+               try {
+                 ws.send(JSON.stringify({cmd: "gntp-test"}));
+               }catch(err){
+                  ws.close();
+                  self.css("pointer-events","initial");
+                  remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: "Notification Test Failure.", detail: `${err}`});
+               }  
+              };
+
       }); 
        
       $("#notify_test").click(function(){ 
@@ -417,7 +441,7 @@
               ws.onerror = (err) => {
                 ws.close();
                 dummy.close();
-                remote.dialog.showMessageBoxSync({type: "error", title: "WebSocket Connection Error", message: "Notification Test Failure.", detail: "Error in connection establishment: net::ERR_CONNECTION_REFUSED"});
+                remote.dialog.showMessageBoxSync({type: "error", title: "WebSocket Connection Error", message: "Notification Test Failure.", detail: "Error in connection establishment: net::ERR_CONNECTION_REFUSED\nIs Watchdog Running ?"});
               }
 
               ws.onopen = () => { 
@@ -431,8 +455,8 @@
                               dummy.close();
                             },7000);
                           }
-                          else if (res.success === false && res.error && res.error.message) {
-                            throw res.error.message;
+                          else if (res.success === false && res.error) {
+                            throw res.error;
                           } else {
                             throw "Unexpected response";
                           }
@@ -446,19 +470,7 @@
                     }      
                   };
                try {
-                 ws.send(JSON.stringify(
-                  {
-                   cmd: "toast-test",
-                   options: {
-                       appID: self.next("select").val(),
-                       title: "Achievement Watcher",
-                       message: "Hello World",
-                       icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
-                       attribution: "Test",
-                       silent: (app.config.notification.customToastAudio == 0) ? true : false,
-                       audio: (app.config.notification.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null
-                     }
-                  }));
+                 ws.send(JSON.stringify({cmd: "toast-test"}));
                }catch(err){
                   ws.close();
                   dummy.close();
