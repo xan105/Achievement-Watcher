@@ -5,13 +5,11 @@ const appPath = remote.app.getAppPath();
 const args_split = require('argv-split');
 const args = require('minimist');
 const moment = require('moment');
-const toast = require('powertoast');
 const settings = require(path.join(appPath,"settings.js"));
 const achievements = require(path.join(appPath,"parser/achievements.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
 const user = require(path.join(appPath,"util/user.js"));
-const gntp = require(path.join(appPath,"util/gntp.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
 const debug = new (require(path.join(appPath,"util/log.js")))({
@@ -273,6 +271,7 @@ var app = {
                   
                   if(achievement.hidden == 1 && !app.config.achievement.showHidden) {
                     hidden_counter = hidden_counter +1;
+                    $(`${template}`).appendTo(lock).addClass("hidden");
                   } else {
                     lock.append(template);
                     i+=1;
@@ -314,12 +313,20 @@ var app = {
                               <div class="title">${hidden_counter} ${$("#lock").data("lang-title")}</div>
                               <div class="description">${$("#lock").data("lang-message")}</div>
                           </div>
+                          <div class="show-hidden"><div id="btn-show-hidden">${$("#lock").data("lang-hidden")}</div></div>
                       </div> 
                  </li>
             `;
             
             if (hidden_counter > 0) {
               lock.append(hidden_template);
+              $("#btn-show-hidden").click(function(){
+                $(this).css("pointer-events", "none");
+                 $("#lock ul li.hidden").insertAfter("#hidden-disclaimer");
+                 $("#hidden-disclaimer").fadeOut(400,function(){
+                  $("#lock ul li:not(#hidden-disclaimer)").fadeIn(800);
+                 });
+              });
             }
 
             let elem = $("#achievement .achievement-list ul > li");

@@ -64,10 +64,11 @@ function translateUI(lang,locale,template){
         $("#unlock .header .title span").text(clear(template.unlocked));
         $("#lock .header .title span").text(clear(template.locked));
         $("#achievement .achievements").data("lang-globalStat",clear(template.globalStat));
-        $("#lock").data("lang-title",clear(template.hiddenRemain));
-        $("#lock").data("lang-message",clear(template.revealedOnceUnlocked));
         $("#unlock").data("lang-noneUnlocked",clear(template.noneUnlocked));
         $("#unlock").data("lang-play",clear(template.play));
+        $("#lock").data("lang-title",clear(template.hiddenRemain));
+        $("#lock").data("lang-message",clear(template.revealedOnceUnlocked));
+        $("#lock").data("lang-hidden",clear(template.settings.common.show));
         $("#btn-scrollup span").text(clear(template.scrollUp));
         $("#settings .box .header span").text(clear(template.settings.title));
         selector = $("#options-ui");
