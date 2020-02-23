@@ -4,11 +4,11 @@
     <title>Achievement Watcher</title>
     <meta charset="UTF-8">
     <meta name="author" content="Beaumont Anthony">  
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com";>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com ws://localhost:8082";>
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
     <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-0pgrT12HnYSyhOhhq6MyN5as+MI+1FkFaCmOmUQ8TjBgLXFkaQN7pyrVqXcBtJSB"/>
-    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-Nb3XmGzva8AUtKVqD2TlLEa/yLHAzeABBDFOS2DpLZDFxMINc2lctXhb0cSlm3qe"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-o4r8kxSkQL8bGMzj9RMla1G1iQiNjsQ2wp9evqZtt7EmxumALLxZyQfcYs93uSrW"/>
+    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-730Cr82bADNDhW3WisaRGrO+ADQmVg9Sj3V7Lu7W6RzTeFKHkwUuZR0h8H0hfpUY"/>
   </head>
   <body>
     
@@ -16,8 +16,8 @@
       <ul id="window-controls" class="button hover">
         <li id="win-close" data-closeAllWindow="false"><i class="fas fa-times"></i></li>
         <li id="win-maximize"><i class="far fa-window-maximize"></i></li>
-        <li id="win-minimize"><i class="far fa-window-minimize"></i></li>
         <li id="win-settings"><i class="fas fa-cog"></i></li>
+        <li id="win-minimize"><i class="far fa-window-minimize"></i></li>
       </ul>
     </header>
     
@@ -140,20 +140,16 @@
                 <li class="active" data-view="general"><i class="fas fa-tools"></i> <span></span></li>
                 <li data-view="notification"><i class="fas fa-bell"></i> <span></span></li>
                 <li data-view="folder"><i class="far fa-folder"></i> <span></span></li>
+                <li data-view="source"><i class="fas fa-file-import"></i> <span></span></li>
                 <li data-view="advanced"><i class="fas fa-flask"></i> <span></span></li>
-                <li data-view="debug"><i class="fas fa-bug"></i> <span>Debug</span></li>
+                <li data-view="debug"><i class="fas fa-bug"></i> <span></span></li>
              </nav>
                
              <section class="content" data-view="debug">
                <ul>
-                <li>Toast Notification Test</li>
+                <li class="title">Toast Notification Test</li>
                 <li>
                   <div id="notify_test" class="btn"><i class="fas fa-bread-slice"></i> <span>Toast Test</span></div> 
-                  <select autocomplete="off">
-                    <option value="Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp" selected>Xbox App (Win10)</option>
-                    <option value="Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App">Xbox Game Bar (Win10)</option>
-                    <option value="microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames">Xbox Games (Win8)</option>
-                  </select>
                   <span><a href="https://github.com/xan105/Achievement-Watcher#notification-on-achievement-unlocking" target="_blank">More info</a></span>
                </li>
                <li>
@@ -173,14 +169,14 @@
                </ul>
                
                <ul>
-                <li>Growl Network Transport Protocol (GNTP) Test</li>
+                <li class="title">Growl Network Transport Protocol (GNTP) Test</li>
                 <li><div id="gntp_test" class="btn"><i class="fas fa-paw"></i> <span>Grrr !</span></div> <span>localhost</span>:<span>23053</span></li>
                </ul>             
              </section>  
- 
+
              <section class="content" data-view="advanced">
                <ul>
-                <li></li>
+                <li class="title"></li>
                 <li>
                   <div id="blacklist_reset" class="btn"><i class="fas fa-file-medical-alt"></i> <span></span></div>
                   <div></div>
@@ -213,60 +209,146 @@
                </div>
              </section>
              
+             <section class="content" data-view="source">
+                <div class="arrow-list">
+                  
+                  <ul id="options-source">
+                  
+                      <li class="hasHelper">
+                        <div class="left"><i class="fab fa-steam"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" class="dropdown" id="option_legitSteam">
+                            <option value="0" selected></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                  
+                      <li>
+                        <div class="left"><i class="fas fa-skull-crossbones"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_steamEmu">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                      </li>
+                       
+                     <li class="hasHelper">
+                        <div class="left"><i class="fas fa-cubes"></i> <span>GreenLuma</span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_greenLuma">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                     
+                     <li class="hasHelper">
+                        <div class="left"><i class="fab fa-playstation"></i> <span>RPCS3</span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_rpcs3">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                     <li class="hasHelper">
+                        <div class="left"><i class="fas fa-file-alt"></i> <span>LumaPlay</span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_lumaPlay">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                       <li class="hasHelper">
+                        <div class="left"><i class="fas fa-database"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_importCache">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+             </section>
+             
              <section class="content" data-view="folder">
-             
-             <div class="disclaimer"><i class="fas fa-info-circle"></i> <span></span></div>
-             
-             <div class="title"><span></span></div>
-             <ul id="defaultdir">
-               <li>
-                  <div class="path"><span class="constant">%PUBLIC%</span>\Documents\Steam\CODEX</div>
-                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
-               </li>
-               <li>
-                  <div class="path"><span class="constant">%appdata%</span>\Goldberg SteamEmu Saves</div>
-                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
-               </li>
-               <li>
-                  <div class="path"><span class="constant">%appdata%</span>\Steam\CODEX</div>
-               </li> 
-               <li>
-                  <div class="path"><span class="constant">%ProgramData%</span>\Steam\*</div>
-                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
-               </li> 
-               <li>
-                  <div class="path"><span class="constant">%localappdata%</span>\SKIDROW</div>
-                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
-               </li> 
-               <li>
-                  <div class="path"><span class="constant">%DOCUMENTS%</span>\SKIDROW</div>
-                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
-               </li> 
-               <li>
-                  <div class="path"><span class="constant">%appdata%</span>\SmartSteamEmu</div>
-                  <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
-               </li>
-             </ul>
-             
-             <div class="title"><i class="fas fa-user-edit"></i> <span></span></div>
-             
-             <div class="controls">
-               <div class="info">
-                <p></p>
+               <div class="disclaimer"><i class="fas fa-info-circle"></i> <span></span></div>
+               
+               <div class="title"><span></span></div>
+               <ul id="defaultdir">
+                 <li>
+                    <div class="path"><span class="constant">%PUBLIC%</span>\Documents\Steam\CODEX</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li>
+                 <li>
+                    <div class="path"><span class="constant">%appdata%</span>\Goldberg SteamEmu Saves</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li>
+                 <li>
+                    <div class="path"><span class="constant">%appdata%</span>\Steam\CODEX</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li> 
+                 <li>
+                    <div class="path"><span class="constant">%ProgramData%</span>\Steam\*</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li> 
+                 <li>
+                    <div class="path"><span class="constant">%localappdata%</span>\SKIDROW</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li> 
+                 <li>
+                    <div class="path"><span class="constant">%DOCUMENTS%</span>\SKIDROW</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li> 
+                 <li>
+                    <div class="path"><span class="constant">%appdata%</span>\SmartSteamEmu</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li>
+               </ul>
+               
+               <div class="title"><i class="fas fa-user-edit"></i> <span></span></div>
+               
+               <div class="controls">
+                 <div class="info">
+                  <p></p>
+                 </div>
+                <ul>
+                <li><div id="addCustomDir" class="btn"><i class="fas fa-folder-plus"></i> <span></span></div></li>
+                </ul>
                </div>
-              <ul>
-              <li><div id="addCustomDir" class="btn"><i class="fas fa-folder-plus"></i> <span></span></div></li>
-              </ul>
-             </div>
-             
-             <ul id="dirlist"></ul>
+               
+               <ul id="dirlist"></ul>
 
              </section>
              
              <section class="content" data-view="notification">
                 <div id="options-notify" class="arrow-list">
-                  <ul>
                   
+                  <div class="title"><span></span></div>
+                  <ul id="options-notify-common">
                       <li class="hasHelper">
                         <div class="left"><i class="fas fa-bell"></i> <span></span></div>
                         <div class="right">
@@ -293,19 +375,6 @@
                         <div class="help"></div>
                       </li>
 
-                      <li class="hasHelper">
-                        <div class="left"><i class="fas fa-images"></i> <span></span></div>
-                        <div class="right">
-                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" class="dropdown" id="option_toastSouvenir">
-                            <option value="0" selected></option>
-                            <option value="1"></option>
-                            <option value="2"></option>
-                          </select>
-                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
-                        </div>
-                        <div class="help"></div>
-                      </li>
                       
                       <li class="hasHelper">
                         <div class="left"><i class="fas fa-comment-dots"></i> <span></span></div>
@@ -319,6 +388,37 @@
                         </div>
                         <div class="help"></div>
                       </li>
+                      
+                     <li class="hasHelper">
+                        <div class="left"><i class="fas fa-gamepad"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_rumble">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                     <li class="hasHelper expand">
+                        <div class="left"><i class="fas fa-tachometer-alt"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_notifyOnProgress">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                  </ul>
+                  
+                  <div class="title"><span></span></div>
+                    <div class="info"></div>
+                  <ul id="options-notify-toast">
                       
                       <li class="hasHelper">
                         <div class="left"><i class="fas fa-volume-up"></i> <span></span></div>
@@ -343,11 +443,42 @@
                         <div class="help"></div>
                       </li>
                       
-                     <li class="hasHelper">
-                        <div class="left"><i class="fas fa-gamepad"></i> <span></span></div>
+                      <li class="hasHelper">
+                        <div class="left"><i class="fas fa-images"></i> <span></span></div>
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" id="option_rumble">
+                          <select autocomplete="off" class="dropdown" id="option_toastSouvenir">
+                            <option value="0" selected></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+
+                      <li class="hasHelper expand">
+                        <div class="left"><i class="fas fa-layer-group"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_groupToast">
+                            <option value="false" selected></option>
+                            <option value="true"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                  
+                  </ul>
+
+                  <div class="title"><span></span></div>
+                  <ul id="options-notify-transport">
+                      <li class="hasHelper">
+                        <div class="left"><i class="fas fa-bread-slice"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_toast">
                             <option value="true" selected></option>
                             <option value="false"></option>
                           </select>
@@ -355,12 +486,12 @@
                         </div>
                         <div class="help"></div>
                       </li>
-                      
-                     <li class="hasHelper">
-                        <div class="left"><i class="fas fa-tachometer-alt"></i> <span></span></div>
+
+                      <li class="hasHelper">
+                        <div class="left"><i class="fab fa-windows"></i> <span></span></div>
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" id="option_notifyOnProgress">
+                          <select autocomplete="off" id="option_winRT">
                             <option value="true" selected></option>
                             <option value="false"></option>
                           </select>
@@ -370,10 +501,10 @@
                       </li>
                       
                       <li class="hasHelper">
-                        <div class="left"><i class="fas fa-terminal"></i> <span></span></div>
+                        <div class="left"><i class="far fa-comment"></i> <span></span></div>
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" id="option_powershell">
+                          <select autocomplete="off" id="option_balloon">
                             <option value="true" selected></option>
                             <option value="false"></option>
                           </select>
@@ -383,7 +514,20 @@
                       </li>
                       
                       <li class="hasHelper">
-                        <div class="left"><i class="fas fa-paw"></i> <span></span></div>
+                        <div class="left"><i class="fas fa-plug"></i> <span>Websocket @localhost:8082</span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_websocket">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                        <div class="help"></div>
+                      </li>
+                      
+                      <li class="hasHelper expand">
+                        <div class="left"><i class="fas fa-paw"></i> <span>GNTP @localhost:23053</span></div>
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
                           <select autocomplete="off" id="option_gntp">
@@ -473,33 +617,6 @@
                          <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
                         </div>
                       </li>
-                      
-                      <li class="hasHelper">
-                        <div class="left"><i class="fab fa-steam"></i> <span></span></div>
-                        <div class="right">
-                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" class="dropdown" id="option_legitSteam">
-                            <option value="0" selected></option>
-                            <option value="1"></option>
-                            <option value="2"></option>
-                          </select>
-                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
-                        </div>
-                        <div class="help"></div>
-                      </li>
-                      
-                       <li class="hasHelper">
-                        <div class="left"><i class="fas fa-database"></i> <span></span></div>
-                        <div class="right">
-                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" id="option_importCache">
-                            <option value="true" selected></option>
-                            <option value="false"></option>
-                          </select>
-                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
-                        </div>
-                        <div class="help"></div>
-                      </li> 
 
                   </ul>
                 </div>
@@ -527,8 +644,8 @@
 <script src="../ui/sort.js" type="text/javascript" integrity="sha384-HJoCpWC4LEU3aS56sRk9g9XLvY+CoQ/pwQGXBXzJzuJxRqrMrMdRdkeIpV4h1R1m"></script>
 <script src="../ui/search.js" type="text/javascript" integrity="sha384-bxUsg0pvXLhMFCMqUpwSwidXS+xOcFktyX8as5qAgzGyXpGvarbNjiM5p+zNHdta"></script> 
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-luz88vQqTBlH73dSdJ8kCBnt1JvWu60LD29t+0ZYIr+SJfgBWLaEk/JdGnRRSHek"></script>
-<script src="../ui/settings.js" type="text/javascript" integrity="sha384-ziQLHOIPlRx5PTWkncMz3CrBBFGN+1QARErvUqNoKGevSTDuPWGRpWYwgxbjsEXE"></script>
-<script src="../app.js" type="text/javascript" integrity="sha384-8jca1daIlWeIykdoXj0OKfdWrNkrN3sgP594Zs5pWq2WVqL6wvHJNYI6qKSGCp8a"></script>     
+<script src="../ui/settings.js" type="text/javascript" integrity="sha384-Hrxir3EFOL0+5OrMDUlB53VjwrALEFshXxH4CVaOQPXb+oxTbeAAPkL+ai2nAaDK"></script>
+<script src="../app.js" type="text/javascript" integrity="sha384-hg2SXrEsCSAAZ5H+wVkawuNun8P8wO2lN72VFo5Yjp7ymex/KrldPi3pdYhtfiBH"></script>     
     
   </body>
 </html>
