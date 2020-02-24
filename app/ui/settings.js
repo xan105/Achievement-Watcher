@@ -387,6 +387,7 @@
             const ws = new WebSocket("ws://localhost:8082");
               ws.onerror = (err) => {
                 ws.close();
+                self.css("pointer-events","initial");
                 remote.dialog.showMessageBoxSync({type: "error", title: "WebSocket Connection Error", message: "Notification Test Failure.", detail: "Error in connection establishment: net::ERR_CONNECTION_REFUSED\nIs Watchdog Running ?"});
               }
 
