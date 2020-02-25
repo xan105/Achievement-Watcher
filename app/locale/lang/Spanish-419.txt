@@ -1,0 +1,176 @@
+{
+  "achievements" : "Logros",
+  "perfectGame" : "Juegos perfectos",
+  "completionRate": "Tasa media de completado de juegos",
+  "emptyList": "Sin juegos",
+  "loading": "Cargando",
+  "unlocked" : "Desbloqueados",
+  "locked": "Bloqueados",
+  "globalStat" : "de jugadores tienen esto,
+  "hiddenRemain" : logros ocultos restantes",
+  "revealedOnceUnlocked" : "Los detalles de cada logro se revelarán una vez desbloqueados",
+  "noneUnlocked": "Ningún logro desbloqueado todavía",
+  "play": "¡Empezar a jugar!",
+  "scrollUp" : "Desplazarse hacia arriba",
+  "allGamesBackButton" : "Todos los juegos",
+  "removeFromList": "Quitar de la lista",
+  "settings" : {
+    "title": "Configuraciones",
+    "sideMenu":{
+      "general": "General",
+      "notification": "Notificación",
+      "folder": "Carpetas",
+      "source": "Fuente",
+      "advanced": "Avanzado",
+      "debug": "Depurar"
+    },
+    "common": {
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "enable": "Habilitar",
+      "disable": "Deshabilitar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "version": "Versión"
+    },
+    "general": {
+      "language": {
+        "name": "Idioma",
+        "description": ["Ayuda a la traducción","aquí"]
+      },
+      "thumbnail": {
+        "name": "Orientación de miniaturas",
+        "value": {
+          "portrait": "Retrato",
+          "landscape": "Paisaje"
+        }
+      },
+      "hiddenAch": {
+        "name": "Logros ocultos"
+      },
+      "mergeDuplicates": {
+        "name": "Fusionar duplicados"
+      },
+      "timeMerge": {
+        "name": "Marca de tiempo al fusionar",
+        "description": "Cuando se fusionan duplicados, ¿qué valor de fecha se prefiere?",
+        "value": {
+          "recent": "Reciente",
+          "oldest": "Más antiguo"
+        }
+      },
+      "hideZero": {
+        "name": "Ocultar juegos al 0%"
+      }
+    },
+    "notification" : {
+      "title": {
+        "common": "Común",
+        "toast": "Notificación emergente",
+        "transport": "Transporte"
+      },
+      "info" : {
+        "toast" : "Algunas características solo están disponibles en Windows 10"
+      },
+      "option": {
+        "notification" : {
+          "name": "Notificación",
+          "description": "Notificar al desbloquear un logro si es posible"
+        },
+        "souvenir" : {
+          "name": "Souvenir",
+          "description": "Tomar una captura de pantalla cuando desbloquees un logro"
+        },
+        "showDesc" : {
+          "name": "Mostrar descripción",
+          "description": "Mostrar la descripción de los logros, si los hubiera"
+        },
+        "rumble" : {
+          "name": "Vibración del gamepad (XInput)",
+          "description": "Vibra el primer controlador al desbloquear un logro"
+        },
+        "notifyOnProgress" : {
+          "name": "Reporte de progreso",
+          "description": "Notificar sobre el progreso de los logros si es posible"
+        },
+        "customToastAudio" : {
+          "name": "Sonido de notif. emergente",
+          "description": "Especifica el sonido que se reproducirá cuando se muestra una notificación emergente",
+          "value": {
+            "systemDefault": "Por defecto",
+            "muted": "Silenciado"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "Souvenir emergente",
+          "description": "Muestra la captura de pantalla souvenir dentro de la notif. emergente",
+          "value": {
+            "top" : "Arriba",
+            "bottom" : "Abajo"
+          }
+        },
+        "groupToast" : {
+          "name": "Agrupar por juego",
+          "description": "Visualmente agrupar las notif. emergentes del mismo juego en el Centro de acciones"
+        },
+        "useToast" : {
+          "name": "Notificación emergente",
+          "description": "Notificación emergente de Windows 8-10"
+        },
+        "useWinRT" : {
+          "name": "Windows 10 WinRT API",
+          "description": "Usar WinRT si está disponible para una notificación más rápida en lugar de PowerShell"
+        },
+        "useBalloon" : {
+          "name": "Globo descriptivo",
+          "description": "Usar globo descriptivo si la notificación emergente falla"
+        },
+        "useWS" : {
+          "description": "Transmitir los logros a todos los clientes conectados"
+        }
+      }
+    },
+    "folder": {
+      "headline": "Dónde buscar los archivos de logros:",
+      "default": "Directorios por defecto",
+      "custom": "Directorios de usuario",
+      "addInfo": [
+        "Seleccionar una carpeta que contenga carpetas appid.",
+        "Para ALI213, Hoodlum, RPCS3 por favor, seleccionar la carpeta donde",
+        "los archivos ALI213.ini, valve.ini, hlm.ini, ds.ini o RPCS3.exe se encuentran."],
+      "add": "Agregar una carpeta"
+    },
+    "source": {
+      "legitSteam": {
+        "name": "Mostrar juegos de Steam",
+        "description": "¡Steam debe estar instalado y tu perfil de Steam debe ser público!",
+        "value": {
+          "none": "Ninguno",
+          "installed": "Instalados",
+          "owned": "Adquiridos"
+        }
+      },
+      "steamEmu": {
+        "name": "Emulador de Steam"
+      },
+      "greenLuma": {
+        "description": "GreenLuma 2020 y Reborn"
+      },
+      "rpcs3": {
+        "description": "Emulador de Playstation 3"
+      },
+      "lumaPlay": {
+        "description": "Emulador de Uplay"
+      },  
+      "importCache": {
+        "name": "Importar caché de notificación",
+        "description": "Importar el caché de Watchdog como otra fuente de logros"
+      }
+    },
+    "advanced": {
+      "blacklistTitle":"Lista negra de AppIDs",
+      "blacklistButton":"Reiniciar lista negra",
+      "blacklistInfo":"Clic derecho en cualquier cajón de juegos para agregarlo a la lista negra."
+    } 
+  } 
+}
