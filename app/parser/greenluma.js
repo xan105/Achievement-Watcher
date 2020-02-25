@@ -64,10 +64,13 @@ module.exports.getAchievements = async (root,key) => {
     let result = [];
     
     for (let achievement of achievements){
-      result.push({
-        id: achievement,
-        Achieved: parseInt(await regedit.promises.RegQueryIntegerValue(root,key,achievement)) 
-      });
+      if(!achievement.endsWith("_Time")) {
+        result.push({
+          id: achievement,
+          Achieved: parseInt(await regedit.promises.RegQueryIntegerValue(root,key,achievement)),
+          UnlockTime: parseInt(await regedit.promises.RegQueryIntegerValue(root,key,achievement + "_Time"))  
+        });
+      }
     }
     
     return result;   
