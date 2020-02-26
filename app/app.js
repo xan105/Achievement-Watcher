@@ -50,6 +50,10 @@ var app = {
       meter: $("#game-list .loading .progressBar > .meter")
    };
   
+   $("#user-info .info .stats li:eq(0) span.data").text("0");
+   $("#user-info .info .stats li:eq(1) span.data").text("0");
+   $("#user-info .info .stats li:eq(2) span.data").text("0");
+   
    achievements.makeList(self.config,(percent)=>{
    
       loadingElem.progress.attr("data-percent",percent);
