@@ -36,7 +36,7 @@ You can test notification in Settings > Debug to make sure your system is correc
   <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
 </p>
 
-There might be a slight delay between the event and the display of the notification as running powershell and loading a remote image can take a few seconds in some cases.<br />
+There might be a slight delay between the event and the display of the notification when running powershell and loading a remote image can take a few seconds in some cases.<br />
 
 Game must be set to Window borderless for the notification to be rendered on top of it.<br />
 
@@ -67,19 +67,20 @@ Compatibility :
 
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
-|Codex| Yes | Yes | Yes, if available | Yes |
-|Goldberg Steam Emu| Yes | Yes | No | Yes |
-|Hoodlum| Via user custom dir| Yes | No | Yes
-|DARKSiDERS| Via user custom dir| Yes | No | Yes
-|Skidrow| Yes | No | No | Yes |
-|ALI213| Via user custom dir | Yes | No | Yes |
-|RLD!| Yes | Yes | No | Yes (on game exit)
-|GreenLumaReborn| Yes | No | No | No |
-|SmartSteamEmu| Yes | Yes | No | Yes |
-|SmartSteamEmu Reborn| Yes | Yes | No | Yes |
-|Legit Steam Client| Yes (Steam must be installed and your Steam profile must be public) | Yes | No | Steam overlay does it already | 
-|RPCS3 (PS3) | Via user custom dir | No | N/A | RPCS3 does it already|  
-|LumaPlay (Uplay) | Yes | No | No | No |
+|Codex| ✔️ | ✔️ | ⚠️ If available | ✔️ |
+|Goldberg Steam Emu| ✔️ | ✔️ | ❌ | ✔️ |
+|Hoodlum| ⚠️ Via user custom dir| ✔️ | ❌ | ✔️
+|DARKSiDERS| ⚠️ Via user custom dir| ✔️ | ❌ | ✔️
+|Skidrow| ✔️ | ❌ | ❌ | ✔️ |
+|ALI213| ⚠️ Via user custom dir | ✔️ | ❌ | ✔️ |
+|RLD!| ✔️ | ✔️ | ❌ | ⚠️ On game exit
+|GreenLumaReborn| ✔️ | ✔️ | ❌ | ❌ |
+|GreenLuma2020| ✔️ | ✔️ | ❌ | ❌ |
+|SmartSteamEmu| ✔️ | ✔️ | ❌ | ✔️ |
+|SmartSteamEmu Reborn| ✔️ | ✔️ | ❌ | ✔️ |
+|Legit Steam Client| ⚠️ Steam must be installed and your Steam profile must be public | ✔️ | ❌ | ❌ | 
+|RPCS3 (PS3) | ⚠️ Via user custom dir | ❌ | ❌ | ❌|  
+|LumaPlay (Uplay) | ✔️ | ❌ | ❌ | ❌ |
 
 
 ### Steam Emulator
@@ -126,6 +127,9 @@ Note that `TROPCONF.SFM` is language specific; So for PS3 games, trophies will b
 As of this writing there is no unlock time : the trophies unlocked in a PS3 that has never been connected online doesn't contains timestamps.
 
 ### LumaPlay
+
+⚠️ Disabled by default; Subject to removal
+
 Since there is no public API to get a Uplay game achievements info as of this writing there are limitations: <br/>
 Uplay client must be installed in order to try to get the game's info from its cache.<br/> 
 To have the game info in the Uplay client cache you **don't** need to install the game but you need to have at least seen the achievement listing page of the game once in the Uplay client.<br/>
@@ -137,6 +141,7 @@ Options
 Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but most of them are configurable via the GUI<br />
 
 ### [achievement]
+
 - lang<br />
   default to user locale<br />
   Both UI and data from Steam.<br />
@@ -157,18 +162,36 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   default to false<br />
   Hide 0% Game.<br />
   
+- thumbnailPortrait<br />
+  default to false<br />
+  Game thumbnail orientation: classic or portrait mode (Like the new Steam UI)
+  
+### [achievement_source]
+
 - legitSteam<br />
   default to 0<br />
   Steam games : (0) none / (1) installed / (2) owned.<br />
   
+- steamEmu<br />
+  default to true<br />
+  Import Steam Emu achievements
+  
+- greenLuma<br />
+  default to true<br />
+  Import GreenLuma achievements stored in the registry
+  
+- rpcs3<br />
+  default to true<br />
+  Import RPCS3 trophies
+  
+- lumaPlay<br />
+  default to false<br />
+  Import lumaPlay achievements
+ 
 - importCache<br /> 
   default to true<br />
   Import Watchdog's (Notification) cache as another source of achievement<br />
   Use this(true) + mergeDuplicate(true) + timeMergeRecentFirst(false) to correct/fix most SteamEmu quirks 
-  
-- thumbnailPortrait<br />
-  default to false<br />
-  Game thumbnail orientation: classic or portrait mode (Like the new Steam UI)
   
 ### [notification]
 
@@ -177,18 +200,33 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Notify on achievement unlocking if possible. <br />
   (`AchievementWatcher.exe` doesn't need to be running for this, but `watchdog.exe` does).<br />
   
-- powershell <br />
-  default to true<br />
-  Use powershell to create a Windows 8-10 toast notification.<br />
-  
-- gntp <br />
-  default to true<br />
-  Send a gntp@localhost:23053 if available.<br />
-  
 - souvenir<br />
   default to true<br />
   Take a screenshot when you unlock an achievement in<br />
   `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
+ 
+- showDesc<br />
+  default to false<br />
+  Show achievement description if any.<br />
+  
+- rumble<br />
+  default to true<br />
+  Vibrates first xinput controller when unlocking an achievement.<br />
+  
+- notifyOnProgress<br />
+  default to true<br />
+  Notify on achievement progress when possible.<br />
+  
+  <p align="center">
+    <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/ach_progress.png" width="800px">
+  </p>
+  
+### [notification_toast]
+  
+- customToastAudio<br />
+  default to 1<br />
+  Specifies the sound to play when a toast notification is displayed.<br />
+  (0) disable-muted / (1) System default / (2) Custom sound specified by user<br />
   
 - toastSouvenir<br />
   default to 0<br />
@@ -211,26 +249,33 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Both will show the screenshot within their toast in the action center if there is enough space.<br />
   Otherwise there will be an arrow to show/hide (collapse).<br />
   
-- showDesc<br />
+- groupToast<br />
   default to false<br />
-  Show achievement description if any.<br />
+  Group toast by game within the Action Center
+
+### [notification_transport]
   
-- customToastAudio<br />
-  default to 1<br />
-  Specifies the sound to play when a toast notification is displayed.<br />
-  (0) disable-muted / (1) System default / (2) Custom sound specified by user<br />
-  
-- rumble<br />
+- toast <br />
   default to true<br />
-  Vibrates first xinput controller when unlocking an achievement.<br />
+  Use powershell to create a Windows 8-10 toast notification.<br />
   
-- notifyOnProgress<br />
+- winRT <br /> 
   default to true<br />
-  Notify on achievement progress when possible.<br />
+  Use Windows 10 WinRT API if available for faster toast instead of PowerShell.<br />
   
-  <p align="center">
-    <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/ach_progress.png" width="800px">
-  </p>
+- balloon <br /> 
+  default to true<br />
+  Fallback to balloon tooltip on toast notification failure.<br />
+  
+- websocket<br />
+  default to true<br />
+  Broadcast achievement to all connected clients<br />
+  [More info](https://github.com/xan105/Achievement-Watcher#Websocket)
+  
+- gntp <br />
+  default to true<br />
+  Send a gntp@localhost:23053 if available.<br />
+  [More info](https://github.com/xan105/Achievement-Watcher#GNTP)
   
 ### [notification_advanced]
 
@@ -274,7 +319,7 @@ If you leave the field blank in the settings section, it will automagically fetc
 </p>
 
 An example of a server that feeds you the data is provided within this repo.<br />
-This service is not guarantee over time and is solely provided for your own convenience.<br />
+This service is **not** guarantee over time and is solely provided for your own convenience.<br />
 If you experience any issues please use your own Steam Web API key.<br />              
                 
 You can acquire one [by filling out this form](https://steamcommunity.com/dev/apikey).<br />
@@ -334,8 +379,6 @@ GNTP
 Endpoint: `localhost:23053`
 
 Recommended gntp client is Growl for Windows (despite it being discontinued) [Mirror download link](https://github.com/xan105/Achievement-Watcher/releases/download/1.2.3/Growl.7z)
-
-**Since Windows 7 doesn't have toast notification you can use Growl for Windows to get toast like notification**.<br />
 
 To customize the look of the toast please kindly see your gntp client's options.<br />
 If you are looking for the Achievement Watcher notification sounds they are in `%windir%\Media` (Achievement___.wav)
