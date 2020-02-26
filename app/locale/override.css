@@ -1,7 +1,21 @@
 html[lang="es"] .achievement .stats .time, 
 html[lang="es"] .achievement .stats .community 
 {
-    width: 235px;
+    width: 240px;
+}
+html[lang="es"] #options-notify-toast li:nth-child(1).hasHelper,
+html[lang="es"] #options-notify-toast li:nth-child(2).hasHelper,
+html[lang="es"] #options-notify-transport li:nth-child(2).hasHelper   
+{
+  margin-bottom: 32px;
+}
+html[lang="es"] #options-notify-toast li:nth-child(3).hasHelper  
+{
+  margin-bottom: 48px;
+}
+#settings .content[data-view="folder"] > .controls .info
+{
+  font-size: 12px;
 }
 
 html[lang="ja"] .achievement .stats .time, 

@@ -67,11 +67,13 @@ As of 17/02/2019
     Css override <br/>
     [hugmouse](https://github.com/hugmouse)
 - Spanish (es) | Español-España
-    <br/>Incomplete <br/>
+    <br/> Complete <br/>
     Css override <br/>
-    Steam UI + Google Translate	
+    [1024mb](https://github.com/1024mb)	
 - Spanish: Latin America (es-419) | Español-Latinoamérica
-    <br/>Inherit css override from Spanish (es) <br/>
+    <br/> Complete <br/>
+    Inherit css override from Spanish (es) <br/>
+    [1024mb](https://github.com/1024mb)	
 - Swedish (sv) | Svenska	
 - Thai (th) | ไทย
     <br/>Incomplete <br/>
