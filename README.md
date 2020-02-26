@@ -78,7 +78,7 @@ Compatibility :
 |GreenLuma2020| ✔️ | ✔️ | ❌ | ❌ |
 |SmartSteamEmu| ✔️ | ✔️ | ❌ | ✔️ |
 |SmartSteamEmu Reborn| ✔️ | ✔️ | ❌ | ✔️ |
-|Legit Steam Client| ⚠️ Steam must be installed and your Steam profile must be public | ✔️ | ❌ | ❌ | 
+|Legit Steam Client| ⚠️ Steam must be installed and<br /> your Steam profile must be public | ✔️ | ❌ | ❌ | 
 |RPCS3 (PS3) | ⚠️ Via user custom dir | ❌ | ❌ | ❌|  
 |LumaPlay (Uplay) | ✔️ | ❌ | ❌ | ❌ |
 
