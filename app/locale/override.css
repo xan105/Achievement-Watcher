@@ -49,3 +49,15 @@ html[lang="fr"] #options-notify-transport li:nth-child(2).hasHelper
 {
   margin-bottom: 32px;
 }
+
+html[lang="hu"] .achievement .stats .time, 
+html[lang="hu"] .achievement .stats .community 
+{
+    width: 240px;
+}
+html[lang="hu"] #options-ui li:nth-child(5).hasHelper,
+html[lang="hu"] #options-notify-transport li:nth-child(2).hasHelper,
+html[lang="hu"] #options-source li:nth-child(1).hasHelper
+{
+  margin-bottom: 32px;
+}
