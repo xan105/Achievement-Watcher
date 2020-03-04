@@ -1,0 +1,176 @@
+{
+  "achievements" : "Osiągnięcia",
+  "perfectGame" : "Skończone gry",
+  "completionRate": "Średni procent ukończenia gier",
+  "emptyList": "Brak gier",
+  "loading": "Wczytywanie",
+  "unlocked" : "Odblokowane",
+  "locked": "Zablokowane",
+  "globalStat" : "graczy odblokowało to osiągnięcie",
+  "hiddenRemain" : "ukrytych osiągnięć (pozostało)",
+  "revealedOnceUnlocked" : "Szczegóły każdego osiągnięcia będą ujawnione kiedy je zdobędziesz",
+  "noneUnlocked": "Nie odblokowałeś żadnych osiągnięć",
+  "play": "Zacznij grać!",
+  "scrollUp" : "Przewiń do góry",
+  "allGamesBackButton" : "Wszystkie gry",
+  "removeFromList": "Usuń z listy",
+  "settings" : {
+    "title": "Ustawienia",
+    "sideMenu":{
+      "general": "Ogólne",
+      "notification": "Powiadomienia",
+      "folder": "Foldery",
+      "source": "Źródła",
+      "advanced": "Zaawansowane",
+      "debug": "Debugowanie"
+    },
+    "common": {
+      "show": "Pokaż",
+      "hide": "Ukryj",
+      "enable": "Włącz",
+      "disable": "Wyłącz",
+      "cancel": "Anuluj",
+      "save": "Zapisz",
+      "version": "Wersja"
+    },
+    "general": {
+      "language": {
+        "name": "Język",
+        "description": ["Pomóż tłumaczyć","tutaj"]
+      },
+      "thumbnail": {
+        "name": "Orientacja miniatur",
+        "value": {
+          "portrait": "Pionowa",
+          "landscape": "Pozioma"
+        }
+      },
+      "hiddenAch": {
+        "name": "Ukryte osiągnięcia"
+      },
+      "mergeDuplicates": {
+        "name": "Złącz duplikaty"
+      },
+      "timeMerge": {
+        "name": "Złącz czasy",
+        "description": "Kiedy łączysz duplikaty, jaki czas preferujesz?",
+        "value": {
+          "recent": "Najnowszy",
+          "oldest": "Najstarszy"
+        }
+      },
+      "hideZero": {
+        "name": "Ukryj gry bez zdobytych osiągnięć"
+      }
+    },
+    "notification" : {
+      "title": {
+        "common": "Wspólne",
+        "toast": "Powiadomienia Toast",
+        "transport": "Rozgłaszanie"
+      },
+      "info" : {
+        "toast" : "Niektóre z tych funkcji działają tylko na Windows 10"
+      },
+      "option": {
+        "notification" : {
+          "name": "Powiadomienia",
+          "description": "Powiadom o odblokowaniu osiągnięcia jeżeli to możliwe"
+        },
+        "souvenir" : {
+          "name": "Pamiątka",
+          "description": "Zrób zrzut ekranu kiedy odblokujesz osiągnięcie"
+        },
+        "showDesc" : {
+          "name": "Pokaż opis",
+          "description": "Pokaż opis zdobytego osiągnięcia, jeżeli taki jest"
+        },
+        "rumble" : {
+          "name": "Wibracja kontrolera (XInput)",
+          "description": "Wibruje pierwszy kontroler kiedy zdobędziesz osiągnięcie"
+        },
+        "notifyOnProgress" : {
+          "name": "Raport postępu",
+          "description": "Powiadom o postępie w zdobyciu osiągnięcia, jeżeli to możliwe"
+        },
+        "customToastAudio" : {
+          "name": "Dźwięk powiadomienia",
+          "description": "Wybierz dźwięk który jest odtwarzany przy powiadomieniu",
+          "value": {
+            "systemDefault": "Domyślny",
+            "muted": "Wyciszony"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "Pamiątka w powiadomieniu",
+          "description": "Wyświetl pamiątke (zrzut ekranu) w powiadomieniu",
+          "value": {
+            "top" : "Góra",
+            "bottom" : "Dół"
+          }
+        },
+        "groupToast" : {
+          "name": "Grupuj według nazwy",
+          "description": "Wizualnie grupuj powiadomienia z tej samej gry w Centrum Akcji"
+        },
+        "useToast" : {
+          "name": "Powiadomienie typu Toast",
+          "description": "Powiadomienie Toast w Windows 8-10"
+        },
+        "useWinRT" : {
+          "name": "Windows 10 WinRT API",
+          "description": "Użyj WinRT, aby powiadomienia działały szybciej niż przy PowerShellu"
+        },
+        "useBalloon" : {
+          "name": "Chmurka",
+          "description": "W razie problemów, pokaż chmurke zamiast powiadomienia Toast"
+        },
+        "useWS" : {
+          "description": "Rozgłoś osiągnięcie do wszystkich połączonych urządzeń"
+        }
+      }
+    },
+    "folder": {
+      "headline": "Gdzie szukać plików osiągnięć:",
+      "default": "Domyślny folder",
+      "custom": "Folder użytkownika",
+      "addInfo": [
+        "Wybierz folder który zawiera foldery z identyfikatorami gier.",
+        "Dla ALI213, Hoodlum, RPCS3 wybierz folder w którym",
+        "są pliki: ALI213.ini, valve.ini, hlm.ini, ds.ini lub RPCS3.exe."],
+      "add": "Dodaj folder"
+    },
+    "source": {
+      "legitSteam": {
+        "name": "Pokaż gry Steam",
+        "description": "Steam musi być zainstalowany, oraz twój profil musi być publiczny!",
+        "value": {
+          "none": "Żadne",
+          "installed": "Zainstalowane",
+          "owned": "Posiadane"
+        }
+      },
+      "steamEmu": {
+        "name": "Emulator Steam'a"
+      },
+      "greenLuma": {
+        "description": "GreenLuma 2020 i Reborn"
+      },
+      "rpcs3": {
+        "description": "Emulator Playstation 3"
+      },
+      "lumaPlay": {
+        "description": "Emulator Uplay"
+      },  
+      "importCache": {
+        "name": "Importuj pamięć podręczną powiadomień",
+        "description": "Zaimportuj pamięć podręczną Watchdog jako kolejne źródło osiągnięć"
+      }
+    },
+    "advanced": {
+      "blacklistTitle":"Czarna lista identyfikatorów",
+      "blacklistButton":"Resetuj czarną liste",
+      "blacklistInfo":"Kliknij prawym przyciskiem myszy na grę, aby dodać ją do czarnej listy."
+    } 
+  } 
+}
