@@ -148,32 +148,41 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
                 if(!option.achievement.mergeDuplicate && appid.source) game.source = appid.source;
 
-                let root;
-                
-                if (appid.data.type === "file") {
- 
-                    root = await steam.getAchievementsFromFile(appid.data.path);
-                    //Empty file should be considered as a 0% game -> do not throw an error just issue a warning
-                    if(Object.entries(root).length === 0 && root.constructor === Object) debug.log(`[${appid.appid}] Warning ! Achievement file in '${appid.data.path}' is probably empty`);
-
-                 } else if (appid.data.type === "reg") {
-                       
-                    root = await greenluma.getAchievements(appid.data.root,appid.data.path);
-
-                 } else if (appid.data.type === "steamAPI") {
-                 
-                   root = await steam.getAchievementsFromAPI({appID: appid.appid, user: appid.data.userID, path: appid.data.cachePath , key: option.steam.apiKey });
-
-                 } else if (appid.data.type === "rpcs3"){
+                let root = {};
+                try {
+                  if (appid.data.type === "file") {
                   
-                   root = await rpcs3.getAchievements(appid.data.path,game.achievement.total);
+                      root = await steam.getAchievementsFromFile(appid.data.path);
+                      //Note to self: Empty file should be considered as a 0% game -> do not throw an error just issue a warning
+                      if(root.constructor === Object && Object.entries(root).length === 0) debug.log(`[${appid.appid}] Warning ! Achievement file in '${appid.data.path}' is probably empty`);
+
+                   } else if (appid.data.type === "reg") {
+                         
+                      root = await greenluma.getAchievements(appid.data.root,appid.data.path);
+
+                   } else if (appid.data.type === "steamAPI") {
                    
-                 } else if (appid.data.type === "lumaplay"){
-                  
-                   root = uplay.getAchievementsFromLumaPlay(appid.data.root,appid.data.path);
+                     root = await steam.getAchievementsFromAPI({appID: appid.appid, user: appid.data.userID, path: appid.data.cachePath , key: option.steam.apiKey });
+
+                   } else if (appid.data.type === "rpcs3"){
+                    
+                     root = await rpcs3.getAchievements(appid.data.path,game.achievement.total);
+                     
+                   } else if (appid.data.type === "lumaplay"){
+                    
+                     root = uplay.getAchievementsFromLumaPlay(appid.data.root,appid.data.path);
+                     
+                   } else if (appid.data.type === "cached"){
                    
-                 } else if (appid.data.type === "cached"){
-                   root = await watchdog.getAchievements(appid.appid);
+                     root = await watchdog.getAchievements(appid.appid);
+                     
+                   } else {
+                   
+                     throw "Not yet implemented";
+                    
+                   }
+                 }catch(err){
+                    debug.log(`[${appid.appid}] Error parsing local achievements data => ${err}`);
                  }
                 
                  for (let i in root)
