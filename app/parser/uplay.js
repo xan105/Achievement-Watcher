@@ -65,6 +65,7 @@ module.exports.scanLegit = async ( onlyInstalled = false) => { //Uplay /*Unused 
         
         for (let appid of installedList) {
                 data.push({appid: `UPLAY${appid}`,
+                           source: "uPlay",
                            data: {
                               type: "uplay"}
                 });
@@ -86,6 +87,7 @@ module.exports.scanLegit = async ( onlyInstalled = false) => { //Uplay /*Unused 
 
         for (let game of list) {
                 data.push({appid: `UPLAY${game.appid}`,
+                           source: "uPlay",
                            data: {
                               type: "uplay"}
                 });
