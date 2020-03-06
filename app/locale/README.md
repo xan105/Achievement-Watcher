@@ -21,7 +21,7 @@ Available/Supported langs (based on [steam](https://partner.steamgames.com/doc/s
 
 Translation Status
 ==================
-As of 04/03/2019 | dd-mm-yyyy
+As of 06/03/2019 | dd-mm-yyyy
 
 - Arabic (ar) | العربية
 - Bulgarian (bg) | български език
@@ -61,7 +61,10 @@ As of 04/03/2019 | dd-mm-yyyy
     Steam UI + Google Translate	
 - Korean (ko) | 한국어
 - Norwegian (no) | Norsk	
-- Polish (pl) | Polski	
+- Polish (pl) | Polski
+    <br/> Complete <br/>
+    Css override <br/>
+    [GrzybDev](https://github.com/GrzybDev)	
 - Portuguese (pt) | Português	
 - Portuguese: Brazil (pt-BR) | Português-Brasil	
 - Romanian (ro) | Română	

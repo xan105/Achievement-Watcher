@@ -61,3 +61,17 @@ html[lang="hu"] #options-source li:nth-child(1).hasHelper
 {
   margin-bottom: 32px;
 }
+
+html[lang="pl"] #settingNav li 
+{
+  width: 140px;
+}
+html[lang="pl"] .arrow-list li 
+{
+  font-size: 15px;
+}
+html[lang="pl"] #options-source li:nth-child(6).hasHelper,
+html[lang="pl"] #options-notify-transport li:nth-child(2).hasHelper
+{
+  margin-bottom: 32px;
+}

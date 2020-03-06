@@ -163,7 +163,7 @@
         "description": "Emulator Uplay"
       },  
       "importCache": {
-        "name": "Importuj pamięć podręczną powiadomień",
+        "name": "Importuj pamięć podręczną",
         "description": "Zaimportuj pamięć podręczną Watchdog jako kolejne źródło osiągnięć"
       }
     },
