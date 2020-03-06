@@ -23,7 +23,8 @@ module.exports.scan = async (additionalSearch = []) => {
         path.join(process.env['APPDATA'],"Steam/CODEX"),
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW"),
-        path.join(process.env['APPDATA'],"SmartSteamEmu")
+        path.join(process.env['APPDATA'],"SmartSteamEmu"),
+        path.join(process.env['APPDATA'],"CreamAPI")
     ];
     
     const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
@@ -57,6 +58,8 @@ module.exports.scan = async (additionalSearch = []) => {
                   game.source = "SmartSteamEmu";
                 } else if (dir.includes("ProgramData/Steam")){
                   game.source = "Reloaded";
+                } else if (dir.includes("CreamAPI")){
+                  game.source = "CreamAPI";
                 }
 
                 data.push(game);
@@ -160,7 +163,8 @@ module.exports.getAchievementsFromFile = async (filePath) => {
     "achieve.dat",
     "Achievements.ini",
     "stats/achievements.ini",
-    "stats.bin"
+    "stats.bin",
+    "CreamAPI.Achievements.cfg"
   ];
   
   const filter = ["SteamAchievements","Steam64","Steam"];
@@ -204,8 +208,8 @@ module.exports.getAchievementsFromFile = async (filePath) => {
             result[i].MaxProgress = new DataView(new Uint8Array(Buffer.from(result[i].MaxProgress.toString(),'hex')).buffer).getUint32(0, true);
             result[i].Time = new DataView(new Uint8Array(Buffer.from(result[i].Time.toString(),'hex')).buffer).getUint32(0, true);   
           }catch(e){} 
-     } else {
-        break;
+     } else if (result[i].unlocktime && result[i].unlocktime.length === 7){ //creamAPI
+        result[i].unlocktime = +result[i].unlocktime * 1000 //cf: https://cs.rin.ru/forum/viewtopic.php?p=2074273#p2074273 | timestamp is invalid/incomplete
      }  
   }
 

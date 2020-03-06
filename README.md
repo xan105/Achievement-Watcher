@@ -74,10 +74,11 @@ Compatibility :
 |Skidrow| ✔️ | ❌ | ❌ | ✔️ |
 |ALI213| ⚠️ Via user custom dir | ✔️ | ❌ | ✔️ |
 |RLD!| ✔️ | ✔️ | ❌ | ⚠️ On game exit
-|GreenLumaReborn| ✔️ | ✔️ | ❌ | ❌ |
-|GreenLuma2020| ✔️ | ✔️ | ❌ | ❌ |
 |SmartSteamEmu| ✔️ | ✔️ | ❌ | ✔️ |
 |SmartSteamEmu Reborn| ✔️ | ✔️ | ❌ | ✔️ |
+|GreenLumaReborn| ✔️ | ✔️ | ❌ | ❌ |
+|GreenLuma2020| ✔️ | ✔️ | ❌ | ❌ |
+|CreamAPI| ✔️ | ⚠️ Imprecise timestamp | ❌ | ❌ |
 |Legit Steam Client| ⚠️ Steam must be installed and<br /> your Steam profile must be public | ✔️ | ❌ | ❌ | 
 |RPCS3 (PS3) | ⚠️ Via user custom dir | ❌ | ❌ | ❌|  
 |LumaPlay (Uplay) | ✔️ | ❌ | ❌ | ❌ |
