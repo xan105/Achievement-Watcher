@@ -54,11 +54,11 @@ module.exports.toast = async() => {
     if(options.notification_transport.winRT === false) options.disableWinRT = true;
 
     if (options.notification_advanced.appID && options.notification_advanced.appID !== '') {
-        payload.toastID = options.notification_advanced.appID;
+        payload.appID = options.notification_advanced.appID;
     } else if (win_ver[0] == '6' && ( win_ver[1] == '3' || win_ver[1] == '2') ) {
-        payload.toastID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
+        payload.appID = "microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames";
     } else if (hasXboxOverlay === true){
-        payload.toastID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
+        payload.appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
     }
 
     try
