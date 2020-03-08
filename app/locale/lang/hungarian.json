@@ -145,7 +145,7 @@
         "name": "Steam játékok mutatása",
         "description": "A Steam telepítve kell, hogy legyen és a Steam profilodnak nyilvánosnak kell lennie !",
         "value": {
-          "none": "None",
+          "none": "Nincs",
           "installed": "Telepített",
           "owned": "Megvásárolt"
         }
