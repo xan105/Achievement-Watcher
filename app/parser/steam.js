@@ -167,7 +167,7 @@ module.exports.getAchievementsFromFile = async (filePath) => {
     "Achievements.ini",
     "stats/achievements.ini",
     "stats.bin",
-    "CreamAPI.Achievements.cfg"
+    "stats/CreamAPI.Achievements.cfg"
   ];
   
   const filter = ["SteamAchievements","Steam64","Steam"];
