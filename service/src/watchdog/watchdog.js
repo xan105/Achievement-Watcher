@@ -284,7 +284,7 @@ var app = {
             
             if (self.options.notification_advanced.iconPrefetch) {
               debug.log("Prefetching icon ...");
-              notification.icon = await steam.fetchIcon(notification.icon);
+              notification.icon = await steam.fetchIcon(notification.icon,notification.appid);
             }
             
             debug.log(notification);
@@ -400,7 +400,7 @@ var app = {
       
              if (self.options.notification_advanced.iconPrefetch) {
                debug.log("Prefetching icon ...");
-               notification.icon = await steam.fetchIcon(notification.icon);
+               notification.icon = await steam.fetchIcon(notification.icon,notification.appid);
              }
       
              debug.log(notification);

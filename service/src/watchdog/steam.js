@@ -139,7 +139,7 @@ async function scrapSteamDB(appid){
 module.exports.fetchIcon = async (url,appID) => {
   try{
   
-    const cache = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache/icon",appID);
+    const cache = path.join(process.env['APPDATA'],`Achievement Watcher/steam_cache/icon/${appID}`);
 
     const filename = path.parse(urlParser.parse(url).pathname).base;
 
