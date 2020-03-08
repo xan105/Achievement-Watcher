@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require('path');
+const urlParser = require('url');
 const htmlParser = require('node-html-parser').parse;
 const ffs = require("./util/feverFS.js");
 const request = require('request-zero');
@@ -122,7 +123,7 @@ async function scrapSteamDB(appid){
     });
 
     let result = {
-      binary: binaries.find(binary => binary.windows).executable,
+      binary: binaries.find(binary => binary.windows).executable.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0],
       icon: html.querySelector('.app-icon.avatar').attributes.src,
       header: html.querySelector('.app-logo').attributes.src,
       name: html.querySelector('.css-truncate').innerHTML       
@@ -132,5 +133,25 @@ async function scrapSteamDB(appid){
     
   }catch( err) {
     throw err;
+  }
+}
+
+module.exports.fetchIcon = async (url,appID) => {
+  try{
+  
+    const cache = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache/icon",appID);
+
+    const filename = path.parse(urlParser.parse(url).pathname).base;
+
+    let filePath = path.join(cache,filename);
+
+    if (await ffs.promises.exists(filePath)) {
+      return filePath;
+    } else {
+      return (await request.download(url,cache)).path;
+    }
+
+  }catch(err){
+    return url;
   }
 }

@@ -143,7 +143,19 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                 }else if (appid.data.type === "uplay" || appid.data.type === "lumaplay"){
                   game = await uplay.getGameData(appid.appid,option.achievement.lang);
                 }else{
-                  game = await steam.getGameData({appID: appid.appid, lang: option.achievement.lang, key: option.steam.apiKey });      
+                  game = await steam.getGameData({appID: appid.appid, lang: option.achievement.lang, key: option.steam.apiKey });    
+                  
+                  if(option.notification_advanced.iconPrefetch) {
+                    for (let achievement of game.achievement.list) 
+                    {
+                      let icon = await Promise.all([
+                        steam.fetchIcon(achievement.icon,appid.appid),
+                        steam.fetchIcon(achievement.icongray,appid.appid)
+                      ]);
+                      achievement.icon = icon[0];
+                      achievement.icongray = icon[1];
+                    }
+                  }  
                 }
 
                 if(!option.achievement.mergeDuplicate && appid.source) game.source = appid.source;

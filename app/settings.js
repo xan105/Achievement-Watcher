@@ -143,6 +143,10 @@ module.exports.load = ()=>{
           options.notification_advanced.checkIfProcessIsRunning = true;
         } 
         
+        if (typeof options.notification_advanced.iconPrefetch !== "boolean"){
+          options.notification_advanced.iconPrefetch = false;
+        }
+        
         //Steam Key    
 
         if (options.steam) {
@@ -195,7 +199,8 @@ module.exports.load = ()=>{
           notification_advanced: {
             timeTreshold: 10,
             tick: 600,
-            checkIfProcessIsRunning: true          
+            checkIfProcessIsRunning: true,
+            iconPrefetch: false          
           },
           steam: {}
         };

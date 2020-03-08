@@ -33,7 +33,7 @@
     "moment": "^2.24.0",
     "node-html-parser": "^1.1.17",
     "regodit": "^1.0.1",
-    "request-zero": "^0.2.5",
+    "request-zero": "^0.2.6",
     "rimraf": "^2.7.1",
     "steamid": "^1.1.3",
     "windows-focus-assist": "^1.1.0",

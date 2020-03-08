@@ -180,6 +180,11 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         } 
         
+        if (typeof options.notification_advanced.iconPrefetch !== "boolean"){
+          options.notification_advanced.iconPrefetch = false;
+          fixFile = true;
+        }
+        
         //Steam Key  
 
         let steamKey;
@@ -239,7 +244,8 @@ module.exports.load = async (cfg_file) => {
           notification_advanced: {
             timeTreshold: 10,
             tick: 600,
-            checkIfProcessIsRunning: true          
+            checkIfProcessIsRunning: true,
+            iconPrefetch: false          
           },
           steam: {}
         };

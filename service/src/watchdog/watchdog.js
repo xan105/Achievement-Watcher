@@ -281,6 +281,12 @@ var app = {
          }
 
          if (self.options.notification.notify) {
+            
+            if (self.options.notification_advanced.iconPrefetch) {
+              debug.log("Prefetching icon ...");
+              notification.icon = await steam.fetchIcon(notification.icon);
+            }
+            
             debug.log(notification);
 
             if (self.options.notification_transport.websocket) {
@@ -391,6 +397,12 @@ var app = {
       let self = this; 
       
       if (self.options.notification.notifyOnProgress) {
+      
+             if (self.options.notification_advanced.iconPrefetch) {
+               debug.log("Prefetching icon ...");
+               notification.icon = await steam.fetchIcon(notification.icon);
+             }
+      
              debug.log(notification);
 
              if (self.options.notification_transport.websocket) {

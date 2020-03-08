@@ -7,12 +7,15 @@ const ini = require("ini");
 const omit = require('lodash.omit');
 const moment = require('moment');
 const request = require('request-zero');
+const urlParser = require('url');
 const ffs = require(path.join(appPath,"util/feverFS.js"));
 const htmlParser = require('node-html-parser').parse;
 const regedit = require('regodit');
 const steamID = require(path.join(appPath,"util/steamID.js"));
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 const sse = require(path.join(appPath,"parser/sse.js"));
+
+const cacheRoot = remote.app.getPath('userData');
 
 module.exports.scan = async (additionalSearch = []) => {
   try {
@@ -125,7 +128,7 @@ module.exports.getGameData = async (cfg) => {
         throw "Unsupported API language code";
   }
 
-  const cache = path.join(remote.app.getPath('userData'),"steam_cache/schema",cfg.lang);
+  const cache = path.join(cacheRoot,"steam_cache/schema",cfg.lang);
 
   try {
   
@@ -227,7 +230,7 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
     let result;
   
     let cache = {
-      local : path.join(remote.app.getPath('userData'),"steam_cache/user",cfg.user.user,`${cfg.appID}.db`),
+      local : path.join(cacheRoot,"steam_cache/user",cfg.user.user,`${cfg.appID}.db`),
       steam : path.join(`${cfg.path}`,`UserGameStats_${cfg.user.user}_${cfg.appID}.bin`)
     };
     
@@ -471,5 +474,25 @@ async function scrapSteamDB(appID){
     
   }catch( err) {
     throw err;
+  }
+}
+
+module.exports.fetchIcon = async (url,appID) => {
+  try{
+  
+    const cache = path.join(cacheRoot,"steam_cache/icon",appID);
+
+    const filename = path.parse(urlParser.parse(url).pathname).base;
+
+    let filePath = path.join(cache,filename);
+
+    if (await ffs.promises.exists(filePath)) {
+      return "file:///"+filePath.replace(/\\/g,"/");
+    } else {
+      return "file:///" + (await request.download(url,cache)).path.replace(/\\/g,"/");
+    }
+
+  }catch(err){
+    return url;
   }
 }
