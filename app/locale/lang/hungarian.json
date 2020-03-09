@@ -1,6 +1,6 @@
 {
-  "achievements" : "Teljesítmények",
-  "perfectGame" : "Tökéletes játékok",
+  "achievements" : "Teljesítmény",
+  "perfectGame" : "Tökéletes játék",
   "completionRate": "Játék Teljesítési Átlag",
   "emptyList": "Nincsenek játékok",
   "loading": "Betöltés",
@@ -39,28 +39,28 @@
         "description": ["Segíts a fordításban","itt"]
       },
       "thumbnail": {
-        "name": "Indexkép forgatása",
+        "name": "Indexkép tájolása",
         "value": {
           "portrait": "Portré",
           "landscape": "Tájkép"
         }
       },
       "hiddenAch": {
-        "name": "Rejtett Teljesítmények"
+        "name": "Rejtett teljesítmények"
       },
       "mergeDuplicates": {
         "name": "Duplikációk egybeolvasztása"
       },
       "timeMerge": {
         "name": "Időbélyeg egybeolvasztása",
-        "description": "Duplikációk egybeolvasztásánál milyen idő legyen előnyben részesítve ?",
+        "description": "Duplikációk egybeolvasztásánál milyen idő legyen preferálva ?",
         "value": {
           "recent": "Utóbbi",
           "oldest": "Régebbi"
         }
       },
       "hideZero": {
-        "name": "0%-os Játékok Elrejtése"
+        "name": "0%-os játékok elrejtése"
       }
     },
     "notification" : {
@@ -79,14 +79,14 @@
         },
         "souvenir" : {
           "name": "Emlék",
-          "description": "Képernyőmentés készítése, amikor feloldasz egy teljesítményt"
+          "description": "Képernyőmentés készítése, teljesítmény feloldásnál"
         },
         "showDesc" : {
           "name": "Leírás felfedése",
           "description": "Teljesítmény leírás felfedése, ha elérhető"
         },
         "rumble" : {
-          "name": "Játékvezérlő Rezgés (XInput)",
+          "name": "Játékvezérlő rezgés (XInput)",
           "description": "Teljesítmény feloldásnál rezgést generál az elsődleges játékvezérlőn"
         },
         "notifyOnProgress" : {
@@ -131,7 +131,7 @@
       }
     },
     "folder": {
-      "headline": "Ahol keressük a teljesítmény fájlokat :",
+      "headline": "Teljesítmény fájlok keresésének helyei :",
       "default": "Alapértelmezett Mappák",
       "custom": "Felhasználói Mappák",
       "addInfo": [
@@ -142,12 +142,12 @@
     },
     "source": {
       "legitSteam": {
-        "name": "Steam Játékok Mutatása",
+        "name": "Steam játékok mutatása",
         "description": "A Steam telepítve kell, hogy legyen és a Steam profilodnak nyilvánosnak kell lennie !",
         "value": {
           "none": "Nincs",
-          "installed": "Telepítve",
-          "owned": "Megvásárolva"
+          "installed": "Telepített",
+          "owned": "Megvásárolt"
         }
       },
       "steamEmu": {
@@ -157,7 +157,7 @@
         "description": "GreenLuma 2020 és Reborn"
       },
       "rpcs3": {
-        "description": "Playstation 3 Emulátor"
+        "description": "Playstation 3 emulátor"
       },
       "lumaPlay": {
         "description": "Uplay emulátor"
