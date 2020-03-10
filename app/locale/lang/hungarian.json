@@ -10,8 +10,8 @@
   "hiddenRemain" : "rejtett teljesítmény van hátra",
   "revealedOnceUnlocked" : "A teljesítmények részletei feloldás után lesznek felfedve",
   "noneUnlocked": "Még nem oldottál fel teljesítményt",
-  "play": "Kezdj játszani !",
-  "scrollUp" : "Tekerj fel",
+  "play": "Kezdj játszani!",
+  "scrollUp" : "Vissza a tetejére",
   "allGamesBackButton" : "Összes Játék",
   "removeFromList": "Eltávolítás a listából",
   "settings" : {
@@ -53,7 +53,7 @@
       },
       "timeMerge": {
         "name": "Időbélyeg egybeolvasztása",
-        "description": "Duplikációk egybeolvasztásánál milyen idő legyen preferálva ?",
+        "description": "Duplikációk egybeolvasztásánál milyen idő legyen preferálva?",
         "value": {
           "recent": "Utóbbi",
           "oldest": "Régebbi"
@@ -131,7 +131,7 @@
       }
     },
     "folder": {
-      "headline": "Teljesítmény fájlok keresésének helyei :",
+      "headline": "Teljesítmény fájlok keresésének helyei:",
       "default": "Alapértelmezett Mappák",
       "custom": "Felhasználói Mappák",
       "addInfo": [
