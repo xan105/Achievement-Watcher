@@ -297,6 +297,25 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Ignore file modification within specified timeframe to prevent spam of notification when a game triggers multiple file write at the same time.<br />
   Set it to 0 to disable this feature.<br />
   
+- iconPrefetch<br />
+  default to false<br />
+  By default a notification icon is passed as an url.<br />
+  It is the underlying transport system responsability to handle the download / cache of said icon.<br />
+  _For example you can see information of notification assets cached by the Windows notification system in the registry under `HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications\wpnidm`_
+  
+  In some rare cases it can fail, time out, etc... resulting in a notification without any icon.
+  
+  <p align="center">
+    <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/notification_no_icon.png" width="360px">
+  </p>
+  
+  To work around this you can set this option to *true* and watchdog will handle the download and cache by itself and will pass the file path instead of the url.
+  
+  Icons will be cached in `%appdata%\Achievement Watcher\steam_cache\icon\[appid]`
+  
+  When this option is set to true there will be an additional context menu 'Build icon notification cache' available in Achievement Watcher.
+  Use this if you would like to download every game's icons beforehand.
+  
 - appID<br />
   if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
@@ -309,6 +328,11 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   |Xbox App (Win 8)| microsoft.XboxLIVEGames_8wekyb3d8bbwe!Microsoft.XboxLIVEGames |
   
   ⚠️ You need to use a UWP AppID otherwise you won't be able to remotely load ach. img.
+  
+  Watchdog is by default using Xbox AppID(s) for three main reasons :
+    + They are pre-shipped with Windows
+    + They are pre-set to your focus assistant priority list
+    + They are UWP app so we are allowed to remotely load img.
   
 Steam Web API Key
 =================

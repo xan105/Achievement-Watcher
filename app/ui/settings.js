@@ -380,7 +380,7 @@
          });
        }); 
        
-      $("#gntp_test").click(async function(){
+      $("#gntp_test").click(function(){
         let self = $(this);
         self.css("pointer-events","none");
         

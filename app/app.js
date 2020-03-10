@@ -155,6 +155,29 @@ var app = {
          
           } }));
           
+         if (app.config.notification_advanced.iconPrefetch)
+         {
+              const request = require('request-zero');
+              const cache = path.join(remote.app.getPath('userData'),`steam_cache/icon/${appid}`);
+              menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/image.png")), label: $("#game-list").attr("data-contextMenu1"), async click() { 
+                self.css("pointer-events","none");
+                self.css("filter","grayscale(1)");
+                try{
+                  for (let achievement of list.find(game => game.appid == appid).achievement.list) 
+                  {
+                    await Promise.all([
+                        request.download(achievement.icon,cache),
+                        request.download(achievement.icongray,cache)
+                    ]).catch(()=>{});
+                  }
+                 }catch(err){
+                  remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: `Failed to build icon cache`, detail: `${err}`});
+                 }
+                 self.css("filter","grayscale(0)");
+                 self.css("pointer-events","initial");
+              } }));
+          } 
+          
           if (!self.data("system")) {
             menu.append(new MenuItem({type: 'separator'}));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));

@@ -133,6 +133,10 @@ function incoming(message){
              }));
           });
       }
+      else
+      {
+        debug.log(`WS[${this.id}] received unknow command`);
+      }
   }catch(err){
     debug.log(`WS[${this.id}] ${err}`);
   }

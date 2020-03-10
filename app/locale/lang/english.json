@@ -14,6 +14,7 @@
   "scrollUp" : "Scroll up",
   "allGamesBackButton" : "All Games",
   "removeFromList": "Remove from list",
+  "buildIconPrefetchCache": "Build icon cache",
   "settings" : {
     "title": "Settings",
     "sideMenu":{

@@ -39,6 +39,26 @@ module.exports.loadSteamData = async (appID, lang, key) => {
  
 }
 
+module.exports.fetchIcon = async (url,appID) => {
+  try{
+  
+    const cache = path.join(process.env['APPDATA'],`Achievement Watcher/steam_cache/icon/${appID}`);
+
+    const filename = path.parse(urlParser.parse(url).pathname).base;
+
+    let filePath = path.join(cache,filename);
+
+    if (await ffs.promises.exists(filePath)) {
+      return filePath;
+    } else {
+      return (await request.download(url,cache)).path;
+    }
+
+  }catch(err){
+    return url;
+  }
+}
+
 function getSteamDataFromSRV(appID,lang){
 
   const url = `https://api.xan105.com/steam/ach/${appID}?lang=${lang}`;
@@ -133,25 +153,5 @@ async function scrapSteamDB(appid){
     
   }catch( err) {
     throw err;
-  }
-}
-
-module.exports.fetchIcon = async (url,appID) => {
-  try{
-  
-    const cache = path.join(process.env['APPDATA'],`Achievement Watcher/steam_cache/icon/${appID}`);
-
-    const filename = path.parse(urlParser.parse(url).pathname).base;
-
-    let filePath = path.join(cache,filename);
-
-    if (await ffs.promises.exists(filePath)) {
-      return filePath;
-    } else {
-      return (await request.download(url,cache)).path;
-    }
-
-  }catch(err){
-    return url;
   }
 }

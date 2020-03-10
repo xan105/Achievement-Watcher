@@ -56,6 +56,7 @@ function translateUI(lang,locale,template){
         selector.find(".loading .title").text(clear(template.loading));
         selector.find(".isEmpty span").text(clear(template.emptyList));
         selector.attr("data-contextMenu0",clear(template.removeFromList));
+        selector.attr("data-contextMenu1",clear(template.buildIconPrefetchCache));
         selector = $("#user-info .info .stats");
         selector.find("li:nth-child(1) span:eq(1)").text(clear(template.achievements));
         selector.find("li:nth-child(2) span:eq(1)").text(clear(template.perfectGame));

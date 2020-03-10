@@ -476,23 +476,3 @@ async function scrapSteamDB(appID){
     throw err;
   }
 }
-
-module.exports.fetchIcon = async (url,appID) => {
-  try{
-  
-    const cache = path.join(cacheRoot,"steam_cache/icon",appID);
-
-    const filename = path.parse(urlParser.parse(url).pathname).base;
-
-    let filePath = path.join(cache,filename);
-
-    if (await ffs.promises.exists(filePath)) {
-      return "file:///"+filePath.replace(/\\/g,"/");
-    } else {
-      return "file:///" + (await request.download(url,cache)).path.replace(/\\/g,"/");
-    }
-
-  }catch(err){
-    return url;
-  }
-}
