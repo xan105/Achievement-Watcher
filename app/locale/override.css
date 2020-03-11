@@ -75,3 +75,15 @@ html[lang="pl"] #options-notify-transport li:nth-child(2).hasHelper
 {
   margin-bottom: 32px;
 }
+
+html[lang="pt"] .achievement .stats .time, 
+html[lang="pt"] .achievement .stats .community
+{
+  width: 240px;
+}
+html[lang="pt"] #options-notify-toast li:nth-child(1).hasHelper,
+html[lang="pt"] #options-notify-transport li:nth-child(2).hasHelper,
+html[lang="pt"] #options-notify-transport li:nth-child(3).hasHelper 
+{
+  margin-bottom: 32px;
+}
