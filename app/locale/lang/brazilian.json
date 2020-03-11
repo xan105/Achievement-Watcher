@@ -1,7 +1,7 @@
 {
   "achievements" : "Conquistas",
   "perfectGame" : "Jogos Perfeitos",
-  "completionRate": "Taxa média de conclusão do jogo",
+  "completionRate": "Taxa média de conclusão de jogo",
   "emptyList": "Sem jogos",
   "loading": "Carregando",
   "unlocked" : "Desbloqueado",
@@ -9,8 +9,8 @@
   "globalStat" : "de jogadores tem isso",
   "hiddenRemain" : "conquistas ocultas restantes",
   "revealedOnceUnlocked" : "Os detalhes de cada conquista serão revelados uma vez desbloqueados",
-  "noneUnlocked": "Nenhuma consquista desbloqueada",
-  "play": "Começar a jogar!",
+  "noneUnlocked": "Nenhuma conquista desbloqueada",
+  "play": "Começar a jogar",
   "scrollUp" : "Rolar para cima",
   "allGamesBackButton" : "Todos jogos",
   "removeFromList": "Remover da lista",
@@ -60,50 +60,50 @@
         }
       },
       "hideZero": {
-        "name": "Ocultar 0% de Jogo"
+        "name": "Ocultar jogos com 0% de progresso."
       }
     },
     "notification" : {
       "title": {
         "common": "Comum",
-        "toast": "Toast notificação",
+        "toast": "Notificação Toast",
         "transport": "Transport"
       },
       "info" : {
-        "toast" : "Alguns recursos estão disponíveis apenas no Windows 10"
+        "toast" : "Alguns recursos estão disponíveis apenas no Windows 10."
       },
       "option": {
         "notification" : {
           "name": "Notificação",
-          "description": "Notificar ao desbloquear conquistas, se possível"
+          "description": "Notificar ao desbloquear conquistas, se possível."
         },
         "souvenir" : {
           "name": "Lembrança",
-          "description": "Faça uma captura de tela ao desbloquear uma conquista"
+          "description": "Faça uma captura de tela ao desbloquear uma conquista."
         },
         "showDesc" : {
           "name": "Mostrar descrição",
-          "description": "Mostrar descrição da conquista, se houver"
+          "description": "Mostrar descrição da conquista, se houver."
         },
         "rumble" : {
           "name": "Vibração do Gamepad (XInput)",
-          "description": "Vibra o primeiro controle ao desbloquear uma conquista"
+          "description": "Vibra o primeiro controle ao desbloquear uma conquista."
         },
         "notifyOnProgress" : {
           "name": "Relatório de progresso",
-          "description": "Notificar sobre o progresso da conquista, se possível"
+          "description": "Notificar sobre o progresso da conquista, se possível."
         },
         "customToastAudio" : {
-          "name": "Toast som",
-          "description": "Especifica o som a ser reproduzido quando um Toast(Notificação) é exibido",
+          "name": "Som do Toast",
+          "description": "Especifica o som a ser reproduzido quando um Toast(Notificação) é exibido.",
           "value": {
             "systemDefault": "Padrão",
             "muted": "Silenciado"
           }
         },
         "toastSouvenir" : {
-          "name": "Toasted lembrança",
-          "description": "Exibir captura de tela de lembrança dentro do Toast",
+          "name": "Lembrança Toasted",
+          "description": "Exibir captura de tela de lembrança dentro do Toast.",
           "value": {
             "top" : "Topo",
             "bottom" : "Inferior"
@@ -111,29 +111,29 @@
         },
         "groupToast" : {
           "name": "Agrupar por jogo",
-          "description": "Agrupe visualmente as Toast do mesmo jogo no Action Center"
+          "description": "Agrupe visualmente as Toast do mesmo jogo no Action Center."
         },
         "useToast" : {
-          "name": "Toast notificação",
-          "description": "Windows 8-10 notificação toast"
+          "name": "Notificação Toast",
+          "description": "Windows 8-10 notificação toast."
         },
         "useWinRT" : {
           "name": "Windows 10 WinRT API",
-          "description": "Use o WinRT se disponível para um Toast mais rápido, em vez do PowerShell"
+          "description": "Use o WinRT se disponível para um Toast mais rápido, em vez do PowerShell."
         },
         "useBalloon" : {
           "name": "Dica de balão",
-          "description": "Retorno à dica de ferramenta do balão na falha de notificação do Toast"
+          "description": "Retorno à dica de ferramenta do balão na falha de notificação do Toast."
         },
         "useWS" : {
-          "description": "Transmitir conquista a todos os clientes conectados"
+          "description": "Transmitir conquista a todos os clientes conectados."
         }
       }
     },
     "folder": {
-      "headline": "Onde procurar por arquivos de conquistas :",
-      "default": "Diretorio Padrão",
-      "custom": "Diretorio de Usuário",
+      "headline": "Onde procurar por arquivos de conquistas:",
+      "default": "Diretório Padrão",
+      "custom": "Diretório de Usuário",
       "addInfo": ["Selecione uma pasta que contenha pastas appid.",
                 "Para ALI213, Hoodlum, RPCS3, selecione uma pasta na qual",
                 "O arquivo ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe está localizado."],
@@ -150,16 +150,16 @@
         }
       },
       "steamEmu": {
-        "name": "Steam Emulador"
+        "name": "Emulador do Steam"
       },
       "greenLuma": {
         "description": "GreenLuma 2020 e Reborn"
       },
       "rpcs3": {
-        "description": "Playstation 3 Emulador"
+        "description": "Emulador de Playstation 3"
       },
       "lumaPlay": {
-        "description": "Uplay Emulador"
+        "description": "Emulador do Uplay"
       },  
       "importCache": {
         "name": "Importar cache de notificação",
