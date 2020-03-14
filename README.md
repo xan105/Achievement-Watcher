@@ -67,14 +67,14 @@ Compatibility :
 
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
-|Codex<br />Plaza| ✔️ | ✔️ | ⚠️ If available | ✔️ |
+|- Codex<br /> - Plaza| ✔️ | ✔️ | ⚠️ If available | ✔️ |
 |Goldberg Steam Emu| ✔️ | ✔️ | ❌ | ✔️ |
-|Hoodlum<br />DARKSiDERS<br />Skidrow (> ~Q4 2019) | ⚠️ Via user custom dir| ✔️ | ❌ | ✔️
+|- Hoodlum<br />- DARKSiDERS<br />- Skidrow (> ~Q4 2019) | ⚠️ Via user custom dir| ✔️ | ❌ | ✔️
 |Skidrow| ✔️ | ❌ | ❌ | ✔️ |
 |ALI213| ⚠️ Via user custom dir | ✔️ | ❌ | ✔️ |
 |RLD!| ✔️ | ✔️ | ❌ | ⚠️ On game exit
-|SmartSteamEmu<br />SmartSteamEmu Reborn| ✔️ | ✔️ | ❌ | ✔️ |
-|GreenLumaReborn<br />GreenLuma2020| ✔️ | ✔️ | ❌ | ❌ |
+|- SmartSteamEmu<br />- SmartSteamEmu Reborn| ✔️ | ✔️ | ❌ | ✔️ |
+|- GreenLumaReborn<br />- GreenLuma2020| ✔️ | ✔️ | ❌ | ❌ |
 |CreamAPI| ✔️ | ⚠️ Imprecise timestamp | ❌ | ❌ |
 |Legit Steam Client| ⚠️ Steam must be installed and<br /> your Steam profile must be public | ✔️ | ❌ | ❌ | 
 |RPCS3 (PS3) | ⚠️ Via user custom dir | ❌ | ❌ | ❌|  
