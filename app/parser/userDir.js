@@ -94,7 +94,7 @@ module.exports.scan = async (dir) => {
         
       }
     
-    } else if ( (file === "ds.ini" || file === "hlm.ini") && info.GameSettings) { //Hoodlum - DARKSiDERS
+    } else if ( (file === "ds.ini" || file === "hlm.ini" || file === "steam_api.ini") && info.GameSettings) { //Hoodlum - DARKSiDERS - Skidrow(since end of 2019 ?)
               
         if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
@@ -105,7 +105,7 @@ module.exports.scan = async (dir) => {
 
                 if (dirpath){
                   result.push({ appid: info.GameSettings.AppId,
-                             source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Hoodlum - DARKSiDERS",
+                             source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Skidrow",
                              data: {
                                type: "file",
                                path: path.join(dirpath,"SteamEmu/UserStats")
@@ -120,7 +120,7 @@ module.exports.scan = async (dir) => {
 
                     if (dirpath){
                       result.push({ appid: info.GameSettings.AppId,
-                                 source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Hoodlum - DARKSiDERS",
+                                 source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Skidrow",
                                  data: {
                                    type: "file",
                                    path: path.join(dirpath,"SteamEmu")
@@ -137,7 +137,7 @@ module.exports.scan = async (dir) => {
               let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
               
               result.push({ appid: info.GameSettings.AppId,
-                               source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Hoodlum - DARKSiDERS",
+                               source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Skidrow",
                                data: {
                                  type: "file",
                                  path: (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini"))) ? path.join(dirpath,"UserStats") : dirpath
@@ -147,7 +147,7 @@ module.exports.scan = async (dir) => {
             }
 
         }
-        
+    
     } else if (file === "steam_api.ini" && info.Settings) { //Catherine
     
         if (info.Settings.AppId && info.Settings.SteamID) {

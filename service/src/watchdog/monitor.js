@@ -86,7 +86,7 @@ module.exports.getFolders = async (userDir_file) => {
 
                           if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });  
                     }
-                  } else if ( (file === files.steamEmu[3] || file === files.steamEmu[2]) && info.GameSettings) { //Hoodlum - DARKSiDERS
+                  } else if ( (file === files.steamEmu[3] || file === files.steamEmu[2] || file === files.steamEmu[4] ) && info.GameSettings) { //Hoodlum - DARKSiDERS - Skidrow(since end of 2019 ?)
                   
                   
                       if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
