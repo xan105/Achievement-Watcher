@@ -169,7 +169,7 @@
     },
     "advanced": {
       "blacklistTitle":"AppID Fekelista",
-      "blacklistButton":"Feketelista visszaállítása",
+      "blacklistButton":"Feketelista törlése",
       "blacklistInfo":"Jobb klikk egy játékdobozra a Feketelistához adáshoz."
     } 
   } 
