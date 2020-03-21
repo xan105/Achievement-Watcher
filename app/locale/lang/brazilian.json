@@ -1,25 +1,25 @@
 {
   "achievements" : "Conquistas",
-  "perfectGame" : "Jogos Perfeitos",
-  "completionRate": "Taxa média de conclusão do jogo",
+  "perfectGame" : "Platinados",
+  "completionRate": "Taxa média de conclusão dos jogos",
   "emptyList": "Sem jogos",
   "loading": "Carregando",
-  "unlocked" : "Desbloqueado",
-  "locked": "Bloqueado",
+  "unlocked" : "Desbloqueados",
+  "locked": "Bloqueados",
   "globalStat" : "de jogadores tem isso",
   "hiddenRemain" : "conquistas ocultas restantes",
-  "revealedOnceUnlocked" : "Os detalhes de cada conquista serão revelados uma vez desbloqueados",
-  "noneUnlocked": "Nenhuma consquista desbloqueada",
-  "play": "Começar a jogar!",
-  "scrollUp" : "Rolar para cima",
-  "allGamesBackButton" : "Todos jogos",
+  "revealedOnceUnlocked" : "Os detalhes de cada conquista serão revelados quando desbloqueadas",
+  "noneUnlocked": "Nenhuma conquista desbloqueada",
+  "play": "Começar a jogar !",
+  "scrollUp" : "Rolar pra cima",
+  "allGamesBackButton" : "Todos os jogos",
   "removeFromList": "Remover da lista",
   "settings" : {
     "title": "Configurações",
     "sideMenu":{
       "general": "Geral",
       "notification": "Notificação",
-      "folder": "Pastas",
+      "folder": "Arquivos",
       "source": "Fonte",
       "advanced": "Avançado",
       "debug": "Depuração"
@@ -35,39 +35,39 @@
     },
     "general": {
       "language": {
-        "name": "Linguagem",
-        "description": ["Ajude na tradução","aqui"]
+        "name": "Língua",
+        "description": ["Ajude a traduzir","aqui"]
       },
       "thumbnail": {
-        "name": "Orientação de miniatura",
+        "name": "Orientação de capas",
         "value": {
           "portrait": "Retrato",
-          "landscape": "Panorama"
+          "landscape": "Paisagem"
         }
       },
       "hiddenAch": {
-        "name": "Conquistas Ocultas"
+        "name": "Conquistas ocultas"
       },
       "mergeDuplicates": {
         "name": "Mesclar duplicatas"
       },
       "timeMerge": {
-        "name": "Mesclagem de carimbo de tempo",
-        "description": "Ao fundir duplicatas, qual valor de tempo é preferido?",
+        "name": "Mesclar data/hora",
+        "description": "Ao mesclar duplicatas, qual data/hora é preferida?",
         "value": {
-          "recent": "Recente",
-          "oldest": "Antigo"
+          "recent": "Recentes",
+          "oldest": "Antigas"
         }
       },
       "hideZero": {
-        "name": "Ocultar 0% de Jogo"
+        "name": "Ocultar Jogos 0%"
       }
     },
     "notification" : {
       "title": {
         "common": "Comum",
-        "toast": "Toast notificação",
-        "transport": "Transport"
+        "toast": "Notificação Pop-up",
+        "transport": "Transporte"
       },
       "info" : {
         "toast" : "Alguns recursos estão disponíveis apenas no Windows 10"
@@ -86,44 +86,44 @@
           "description": "Mostrar descrição da conquista, se houver"
         },
         "rumble" : {
-          "name": "Vibração do Gamepad (XInput)",
-          "description": "Vibra o primeiro controle ao desbloquear uma conquista"
+          "name": "Vibração do Controle (XInput)",
+          "description": "Vibra o controle ao desbloquear uma conquista"
         },
         "notifyOnProgress" : {
           "name": "Relatório de progresso",
           "description": "Notificar sobre o progresso da conquista, se possível"
         },
         "customToastAudio" : {
-          "name": "Toast som",
-          "description": "Especifica o som a ser reproduzido quando um Toast(Notificação) é exibido",
+          "name": "Som da notificação",
+          "description": "Especifica o som a ser reproduzido quando uma notif. pop-up é exibida",
           "value": {
             "systemDefault": "Padrão",
             "muted": "Silenciado"
           }
         },
         "toastSouvenir" : {
-          "name": "Toasted lembrança",
-          "description": "Exibir captura de tela de lembrança dentro do Toast",
+          "name": "Lembrança na notificação",
+          "description": "Exibir captura de tela de lembrança dentro da notif. pop-up",
           "value": {
-            "top" : "Topo",
-            "bottom" : "Inferior"
+            "top" : "Em cima",
+            "bottom" : "Embaixo"
           }
         },
         "groupToast" : {
-          "name": "Agrupar por jogo",
-          "description": "Agrupe visualmente as Toast do mesmo jogo no Action Center"
+          "name": "Organizar por jogo",
+          "description": "Organizar visualmente as notif. pop-up do mesmo jogo na Central de Ações"
         },
         "useToast" : {
-          "name": "Toast notificação",
-          "description": "Windows 8-10 notificação toast"
+          "name": "Notificação pop-up",
+          "description": "Notif. pop-up do Windows 8-10"
         },
         "useWinRT" : {
-          "name": "Windows 10 WinRT API",
-          "description": "Use o WinRT se disponível para um Toast mais rápido, em vez do PowerShell"
+          "name": "API do Windows 10 WinRT",
+          "description": "Use o WinRT se disponível para uma notif. pop-up mais rápida, em vez do PowerShell"
         },
         "useBalloon" : {
-          "name": "Dica de balão",
-          "description": "Retorno à dica de ferramenta do balão na falha de notificação do Toast"
+          "name": "Balão de dica",
+          "description": "Retornar ao balão de dica na falha da notif. pop-up"
         },
         "useWS" : {
           "description": "Transmitir conquista a todos os clientes conectados"
@@ -132,34 +132,35 @@
     },
     "folder": {
       "headline": "Onde procurar por arquivos de conquistas :",
-      "default": "Diretorio Padrão",
-      "custom": "Diretorio de Usuário",
-      "addInfo": ["Selecione uma pasta que contenha pastas appid.",
-                "Para ALI213, Hoodlum, RPCS3, selecione uma pasta na qual",
-                "O arquivo ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe está localizado."],
+      "default": "Diretório Padrão",
+      "custom": "Diretório de Usuário",
+      "addInfo": [
+        "Selecione uma pasta que contém as pastas appid.",
+        "Para ALI213, Hoodlum, RPCS3 por favor selecione uma pasta onde o arquivo",
+        "ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe está localizado."],
       "add": "Adicionar uma pasta"
     },
     "source": {
       "legitSteam": {
-        "name": "Mostrar jogos do steam",
-        "description": "O Steam deve estar instalado e seu perfil Steam público!",
+        "name": "Mostrar jogos Steam",
+        "description": "O Steam deve estar instalado e seu perfil Steam deve ser público!",
         "value": {
           "none": "Nenhum",
           "installed": "Instalado",
-          "owned": "Possuí"
+          "owned": "Possuído"
         }
       },
       "steamEmu": {
-        "name": "Steam Emulador"
+        "name": "Emulador de Steam"
       },
       "greenLuma": {
         "description": "GreenLuma 2020 e Reborn"
       },
       "rpcs3": {
-        "description": "Playstation 3 Emulador"
+        "description": "Emulador de Playstation 3"
       },
       "lumaPlay": {
-        "description": "Uplay Emulador"
+        "description": "Emulador de Uplay"
       },  
       "importCache": {
         "name": "Importar cache de notificação",
@@ -167,9 +168,9 @@
       }
     },
     "advanced": {
-      "blacklistTitle":"AppID lista negra",
-      "blacklistButton":"Resetar lista negra",
-      "blacklistInfo":"Clique com o botão direito do mouse em um gamebox para adicioná-lo à lista negra."
+      "blacklistTitle":"Lista negra AppID",
+      "blacklistButton":"Redefinir lista negra",
+      "blacklistInfo":"Clique com o botão direito do mouse em qualquer biblioteca de jogos para adicioná-lo à lista negra."
     } 
   } 
 }
