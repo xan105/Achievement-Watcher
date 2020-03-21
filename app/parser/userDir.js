@@ -75,7 +75,7 @@ module.exports.scan = async (dir) => {
     
     if ( (file === "ALI213.ini" || file === "valve.ini") && info.Settings) { //ALI213
 
-        if(info.Settings.AppID && info.Settings.PlayerName) {
+        if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
 
             let dirpath = await parentFind(async (directory) => {
                               let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, 'Achievements.Bin'));
@@ -92,6 +92,20 @@ module.exports.scan = async (dir) => {
                                });
             }    
         
+      } else if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 1) {
+      
+            const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+            if (mydocs) {
+              
+              result.push({ appid: info.Settings.AppID,
+                            source: "ALI213",
+                            data: {
+                                  type: "file",
+                                  path: path.join(mydocs,`VALVE/${info.Settings.AppID}/${info.Settings.PlayerName}/Stats/`)
+                            }
+                          });
+
+            }
       }
     
     } else if ( (file === "ds.ini" || file === "hlm.ini" || file === "steam_api.ini") && info.GameSettings) { //Hoodlum - DARKSiDERS - Skidrow(since end of 2019 ?)
