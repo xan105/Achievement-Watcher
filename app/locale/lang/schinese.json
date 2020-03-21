@@ -14,6 +14,7 @@
   "scrollUp": "向上滚动",
   "allGamesBackButton": "所有游戏",
   "removeFromList": "从列表中删除",
+  "buildIconPrefetchCache": "构建用于通知的图标缓存",
   "settings" : {
     "title": "设置",
     "sideMenu":{
