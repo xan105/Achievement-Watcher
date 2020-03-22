@@ -330,7 +330,6 @@
 
               if(await userDir.check(dialog.filePaths[0])) {
                   populateUserDirList({dir: dialog.filePaths[0]});
-                  debug.log("-> Added");
                } else {
                   debug.log("-> Invalid folder");
                   remote.dialog.showMessageBoxSync({type: "warning",title: "Invalid folder", message: $("#settings .content[data-view='folder'] > .controls .info p").html().replace(/\s{2,}/g,"").replace(/<br>/g,"\n")});
@@ -345,6 +344,35 @@
         
         self.css("pointer-events","initial");
 
+      });
+      
+      $("#smartFind").click(async function(){
+      
+        let self = $(this);
+        self.css("pointer-events","none");
+        $("#btn-settings-save").css("pointer-events","none");
+        
+        debug.log("auto-finding folder(s) ...");
+        
+          try{
+            
+            for (let dir of await userDir.find())
+            {
+              debug.log(`Found folder: ${dir}`);
+              if(await userDir.check(dir)) { //redundant ?
+                populateUserDirList({dir: dir});
+              } else {
+                debug.log("-> Invalid folder");
+              } 
+            }
+            
+          }catch(err){
+            remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error while auto-finding folder(s)", detail: `${err}`});
+          }
+          
+          self.css("pointer-events","initial");
+          $("#btn-settings-save").css("pointer-events","initial");
+          
       });
       
       $("#blacklist_reset").click(function(){
@@ -495,6 +523,20 @@ function populateUserDirList(option){
               dir: option.dir,
               notify: option.notify || false,
               reverse: option.reverse || false
+            }
+            
+            let alreadyInList = false;
+            $("#dirlist > li").each(function(){
+               let dir = $(this).find(".path span").text();
+               if ( path.normalize(dir) == path.normalize(options.dir)) {
+                  alreadyInList = true;
+                  return false; //break out of each() loop
+                }
+            });
+            
+            if (alreadyInList) {
+              debug.log("-> Already in list");
+              return;
             }
 
             let template = `<li>

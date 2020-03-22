@@ -1308,6 +1308,7 @@ main {
 
 #settings .content[data-view="folder"] > .controls li {
     margin: 2px 5px;
+    display: inline-block;
 }
 
 #settings .content[data-view="folder"] > .controls .btn,

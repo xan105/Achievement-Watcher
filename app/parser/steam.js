@@ -3,6 +3,7 @@
 const { remote } = require('electron');
 const path = require("path");
 const glob = require("fast-glob");
+const normalize = require('normalize-path');
 const ini = require("ini");
 const omit = require('lodash.omit');
 const moment = require('moment');
@@ -39,7 +40,7 @@ module.exports.scan = async (additionalSearch = []) => {
     
     if(additionalSearch.length > 0) search = search.concat(additionalSearch);
     
-    search = search.map((dir) => { return dir+"/([0-9]+)/" });
+    search = search.map((dir) => { return normalize(dir) + "/([0-9]+)" });
     
     let data = [];
     for (let dir of await glob(search,{onlyDirectories: true, absolute: true})) {
@@ -311,7 +312,7 @@ async function getSteamUsers(steamPath) {
         let result = [];
        
         let users = await regedit.promises.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
-        if (!users) users = await glob("*([0-9])/",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
+        if (!users) users = await glob("*([0-9])",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
      
         if (users.length == 0) throw "No Steam User ID found";
             for (let user of users) {

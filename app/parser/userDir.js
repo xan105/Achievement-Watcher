@@ -6,6 +6,7 @@ const ini = require("ini");
 const parentFind = require('find-up');
 const glob = require("fast-glob");
 const ffs = require(path.join(appPath,"util/feverFS.js"));
+const listDrive = require(path.join(appPath,"util/listDrive.js"));
 const regedit = require('regodit');
 
 const file = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
@@ -26,6 +27,38 @@ module.exports.save = async (data) => {
     }catch(err){
         throw err;
     }  
+}
+
+module.exports.find = async () => {
+    
+    const ignore = [
+      "System Volume Information",  
+      "$Recycle.Bin", 
+      "$RECYCLE.BIN", 
+      "Recovery",
+      "MSOCache"
+    ];
+
+    try{
+           
+      const drives = await listDrive();
+
+      let result = [];
+
+      for (let drive of drives) 
+      {
+        for (let filepath of await glob(steam_emu_cfg_file_supported.concat(["rpcs3.exe"]).map((el) => { return "**/" + el }), {cwd: drive, ignore: ignore, onlyFiles: true, absolute: true, suppressErrors: true}))
+        {
+          result.push(path.parse(filepath).dir);
+        }
+      }      
+     
+      return result;
+     
+    }catch(err){
+      throw err;
+    }  
+
 }
 
 module.exports.check = async (dirpath) => {
@@ -78,7 +111,7 @@ module.exports.scan = async (dir) => {
         if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
 
             let dirpath = await parentFind(async (directory) => {
-                              let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, 'Achievements.Bin'));
+                              let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`));
                               return has && directory;
                }, {cwd: dir, type: 'directory'});
 
@@ -113,7 +146,7 @@ module.exports.scan = async (dir) => {
         if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
                 let dirpath = await parentFind(async (directory) => {
-                                let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats','achiev.ini'));
+                                let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats'));
                                 return has && directory;
                             }, {cwd: dir, type: 'directory'});
 
@@ -128,7 +161,7 @@ module.exports.scan = async (dir) => {
                 } else {
                 
                    dirpath = await parentFind(async (directory) => {
-                                    let has = await parentFind.exists(path.join(directory, 'SteamEmu','stats.ini'));
+                                    let has = await parentFind.exists(path.join(directory, 'SteamEmu'));
                                     return has && directory;
                             }, {cwd: dir, type: 'directory'});
 
@@ -154,7 +187,7 @@ module.exports.scan = async (dir) => {
                                source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Skidrow",
                                data: {
                                  type: "file",
-                                 path: (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini"))) ? path.join(dirpath,"UserStats") : dirpath
+                                 path: (await ffs.promises.exists(path.join(dirpath,"UserStats"))) ? path.join(dirpath,"UserStats") : dirpath
                                }
              });
 
@@ -167,7 +200,7 @@ module.exports.scan = async (dir) => {
         if (info.Settings.AppId && info.Settings.SteamID) {
 
                 let dirpath = await parentFind(async (directory) => {
-                                let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`,'Achievements.ini'));
+                                let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`));
                                 return has && directory;
                           }, {cwd: dir, type: 'directory'});
 
