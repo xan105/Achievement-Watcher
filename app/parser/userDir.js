@@ -41,13 +41,17 @@ module.exports.find = async () => {
 
     try{
            
+      const search = steam_emu_cfg_file_supported
+                      .filter(el => el !== "steam_api.ini") //cause a lot of false positive
+                      .concat(["rpcs3.exe"]) //add rpcs3
+                      .map((el) => { return "**/" + el }); //glob pattern
       const drives = await listDrive();
 
       let result = [];
 
       for (let drive of drives) 
       {
-        for (let filepath of await glob(steam_emu_cfg_file_supported.concat(["rpcs3.exe"]).map((el) => { return "**/" + el }), {cwd: drive, ignore: ignore, onlyFiles: true, absolute: true, suppressErrors: true}))
+        for (let filepath of await glob(search, {cwd: drive, ignore: ignore, onlyFiles: true, absolute: true, suppressErrors: true}))
         {
           result.push(path.parse(filepath).dir);
         }
