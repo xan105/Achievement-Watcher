@@ -180,10 +180,8 @@ var app = {
                    self.css("pointer-events","initial");
                 } }));
             } 
-            
-            if (self.find(".info .source").text() === "Goldberg"){
-                
-                menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/file-text.png")), label: "Generate achievements.json", async click() { 
+
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/file-text.png")), label: "Generate achievements.json for Goldberg Emu", async click() { 
                   self.css("pointer-events","none");
                   self.css("filter","grayscale(1)");
                   try{
@@ -241,8 +239,7 @@ var app = {
                   }
                   self.css("filter","grayscale(0)");
                   self.css("pointer-events","initial");
-                } })); 
-            }
+            } })); 
           
             menu.append(new MenuItem({type: 'separator'}));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
