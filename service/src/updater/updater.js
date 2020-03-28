@@ -28,6 +28,7 @@ var updater = {
   },
   notify: async function(){
     try{
+      debug.log("Update complete.");
       await toast({
         appID: this.manifest.config.appid,
         title: "Achievement Watcher",
@@ -103,6 +104,7 @@ instance.lock().then(() => {
       })
       .finally(()=>{
         instance.unlock();
+        process.exit();
       });
   } else {
     updater.check()
@@ -110,6 +112,7 @@ instance.lock().then(() => {
         debug.log(err); 
       }).finally(()=>{
         instance.unlock();
+        process.exit();
       });
   }
 }).catch((err) => {
