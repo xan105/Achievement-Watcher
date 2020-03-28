@@ -94,6 +94,7 @@ var app = {
         let template = `
             <li>
                 <div class="game-box" data-index="${game}" data-appid="${list[game].appid}" data-time="${(timeMostRecent > 0) ? timeMostRecent : 0}" ${(list[game].system) ? `data-system="${list[game].system}"` : ''}>
+                  <div class="loading-overlay"><div class="content"><i class="fas fa-spinner fa-spin"></i></div></div>
                   ${(portrait && list[game].img.portrait) ? `<div class="header glow" style="background: url('${list[game].img.portrait}');">` : `<div class="header" style="background: url('${list[game].img.header}');">`}
                   </div>
                   <div class="info">
@@ -160,7 +161,7 @@ var app = {
            if (app.config.notification_advanced.iconPrefetch){
                 menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/image.png")), label: $("#game-list").attr("data-contextMenu1"), async click() { 
                   self.css("pointer-events","none");
-                  self.css("filter","grayscale(1)");
+                  self.addClass("wait");
                   try{
                   
                     const request = require('request-zero');
@@ -176,14 +177,13 @@ var app = {
                    }catch(err){
                     remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: `Failed to build icon cache`, detail: `${err}`});
                    }
-                   self.css("filter","grayscale(0)");
+                   self.removeClass("wait");
                    self.css("pointer-events","initial");
                 } }));
             } 
 
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/file-text.png")), label: "Generate achievements.json for Goldberg Emu", async click() { 
                   self.css("pointer-events","none");
-                  self.css("filter","grayscale(1)");
                   try{
                   
                     const request = require('request-zero');
@@ -195,6 +195,8 @@ var app = {
                       defaultPath: "achievements.json",
                       properties: ['showHiddenFiles', 'dontAddToRecent']
                     });
+                    
+                    self.addClass("wait");
                     
                     if (dialog.filePath.length > 0){
                       const filePath = dialog.filePath;
@@ -237,7 +239,7 @@ var app = {
                   }catch(err){
                     remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: `Failed to generate achievements.json`, detail: `${err}`});
                   }
-                  self.css("filter","grayscale(0)");
+                  self.removeClass("wait");
                   self.css("pointer-events","initial");
             } })); 
           

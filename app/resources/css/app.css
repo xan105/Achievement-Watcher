@@ -274,6 +274,7 @@ main {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
   transition: 0.3s all ease-in;
+  position: relative;
 }
 
 #game-list .game-box .header {
@@ -1469,3 +1470,43 @@ main {
 #game-list.view-portrait ul > li .game-box .info .title { display: none; }
 #game-list.view-portrait ul > li .game-box .info .progressBar { height: 4px; margin-top: 4px; }
 #game-list.view-portrait ul > li .game-box .info .progressBar:before { font-size: 12px; }
+
+#game-list .game-box .loading-overlay {
+  position: absolute;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+#game-list .game-box.wait{
+  filter: grayscale(1);
+  transition: none !important;
+}
+#game-list .game-box.wait .loading-overlay {
+ display: flex;
+}
+#game-list .game-box .loading-overlay .content
+{
+  margin: auto;
+  font-size: 36px;
+}
+
+#wrap-dirlist {
+  position: relative;
+}
+#wrap-dirlist .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(27, 40, 56, 0.8);
+    display: none;
+}
+#wrap-dirlist .loading-overlay .wrap
+{
+    text-align: center;
+    margin-top: 25px;
+    font-size: 32px;
+}

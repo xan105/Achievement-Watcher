@@ -350,6 +350,8 @@
       
         let self = $(this);
         self.css("pointer-events","none");
+        $("#wrap-dirlist .loading-overlay").show();
+        $("#addCustomDir").css("pointer-events","none");
         $("#btn-settings-save").css("pointer-events","none");
         
         debug.log("auto-finding folder(s) ...");
@@ -371,6 +373,8 @@
           }
           
           self.css("pointer-events","initial");
+          $("#wrap-dirlist .loading-overlay").hide();
+          $("#addCustomDir").css("pointer-events","initial");
           $("#btn-settings-save").css("pointer-events","initial");
           
       });
