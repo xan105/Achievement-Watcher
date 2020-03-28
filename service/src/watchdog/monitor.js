@@ -78,21 +78,25 @@ module.exports.getFolders = async (userDir_file) => {
             if(info) {
 
                   if ( (file === files.steamEmu[0] || file === files.steamEmu[1]) && info.Settings) { //ALI213
-                      if(info.Settings.AppID && info.Settings.PlayerName) {
+                     if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
                           let dirpath = await parentFind(async (directory) => {
-                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`, files.achievement[4]));
+                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`));
                                             return has && directory;
                              }, {cwd: dir.path, type: 'directory'});
 
-                          if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });  
-                    }
+                       if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });  
+                  
+                     } else if (info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 1){
+                       if (mydocs) steamEmu.push({ dir: path.join(mydocs,`VALVE/${info.Settings.AppID}/${info.Settings.PlayerName}/Stats/`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} }); 
+                     }
+                      
                   } else if ( (file === files.steamEmu[3] || file === files.steamEmu[2] || file === files.steamEmu[4] ) && info.GameSettings) { //Hoodlum - DARKSiDERS - Skidrow(since end of 2019 ?)
                   
                   
                       if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
 
                           let dirpath = await parentFind(async (directory) => {
-                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats',files.achievement[2]));
+                                          let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats'));
                                           return has && directory;
                                     }, {cwd: dir.path, type: 'directory'});
 
@@ -101,7 +105,7 @@ module.exports.getFolders = async (userDir_file) => {
                           } else {
    
                             dirpath = await parentFind(async (directory) => {
-                                            let has = await parentFind.exists(path.join(directory, 'SteamEmu',files.achievement[3]));
+                                            let has = await parentFind.exists(path.join(directory, 'SteamEmu'));
                                             return has && directory;
                                       }, {cwd: dir.path, type: 'directory'});
 
@@ -128,7 +132,7 @@ module.exports.getFolders = async (userDir_file) => {
                       if (info.Settings.AppId && info.Settings.SteamID) {
 
                           let dirpath = await parentFind(async (directory) => {
-                                              let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`,files.achievement[6]));
+                                              let has = await parentFind.exists(path.join(directory, `SteamProfile/${info.Settings.SteamID}`));
                                               return has && directory;
                                     }, {cwd: dir.path, type: 'directory'});
 
