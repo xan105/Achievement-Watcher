@@ -158,13 +158,15 @@ var app = {
          if (!self.data("system")) //Steam only
          {
            if (app.config.notification_advanced.iconPrefetch){
-                const request = require('request-zero');
-                const cache = path.join(remote.app.getPath('userData'),`steam_cache/icon/${appid}`);
                 menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/image.png")), label: $("#game-list").attr("data-contextMenu1"), async click() { 
                   self.css("pointer-events","none");
                   self.css("filter","grayscale(1)");
                   try{
-                    for (let achievement of list.find(game => game.appid == appid).achievement.list) 
+                  
+                    const request = require('request-zero');
+                    const cache = path.join(remote.app.getPath('userData'),`steam_cache/icon/${appid}`);
+                  
+                    for (let achievement of list.find(game => game.appid == appid).achievement.list)
                     {
                       await Promise.all([
                           request.download(achievement.icon,cache),
@@ -178,6 +180,69 @@ var app = {
                    self.css("pointer-events","initial");
                 } }));
             } 
+            
+            if (self.find(".info .source").text() === "Goldberg"){
+                
+                menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/file-text.png")), label: "Generate achievements.json", async click() { 
+                  self.css("pointer-events","none");
+                  self.css("filter","grayscale(1)");
+                  try{
+                  
+                    const request = require('request-zero');
+                    const ffs = require(path.join(appPath,"util/feverFS.js"));
+                    
+                    let dialog = await remote.dialog.showSaveDialog(win,{ 
+                      title: "Choose where to generate achievements.json",
+                      buttonLabel: "Generate",
+                      defaultPath: "achievements.json",
+                      properties: ['showHiddenFiles', 'dontAddToRecent']
+                    });
+                    
+                    if (dialog.filePath.length > 0){
+                      const filePath = dialog.filePath;
+                      const dir = path.parse(filePath).dir;
+                      const achievements = list.find(game => game.appid == appid).achievement.list;
+ 
+                      let result = [];
+                      
+                      for (let achievement of achievements)
+                      {
+                        try{
+                          let icons = await Promise.all([
+                              request.download(achievement.icon,path.join(dir,"images")),
+                              request.download(achievement.icongray,path.join(dir,"images"))
+                          ]);
+                          result.push({
+                            description: achievement.description,
+                            displayName: achievement.displayName,
+                            hidden: achievement.hidden,
+                            icon: "images/" + path.parse(icons[0].path).base,
+                            icongray: "images/" + path.parse(icons[1].path).base,
+                            name: achievement.name
+                          });
+                        }catch{
+                          result.push({
+                            description: achievement.description,
+                            displayName: achievement.displayName,
+                            hidden: achievement.hidden,
+                            name: achievement.name
+                          });
+                        }
+                      }
+                      
+                      if (result.length > 0){
+                         await ffs.promises.writeFile(filePath,JSON.stringify(result, null, 2));
+                      }
+                      
+                    }
+
+                  }catch(err){
+                    remote.dialog.showMessageBoxSync({type: "error", title: "Unexpected Error", message: `Failed to generate achievements.json`, detail: `${err}`});
+                  }
+                  self.css("filter","grayscale(0)");
+                  self.css("pointer-events","initial");
+                } })); 
+            }
           
             menu.append(new MenuItem({type: 'separator'}));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
