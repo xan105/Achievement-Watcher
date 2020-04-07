@@ -115,7 +115,7 @@ module.exports.scan = async (dir) => {
         if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
 
             let dirpath = await parentFind(async (directory) => {
-                              let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`));
+                              let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats`));
                               return has && directory;
                }, {cwd: dir, type: 'directory'});
 
@@ -124,7 +124,7 @@ module.exports.scan = async (dir) => {
                                  source: "ALI213",
                                  data: {
                                    type: "file",
-                                   path: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats/`)
+                                   path: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`)
                                  }
                                });
             }    
@@ -138,17 +138,34 @@ module.exports.scan = async (dir) => {
                             source: "ALI213",
                             data: {
                                   type: "file",
-                                  path: path.join(mydocs,`VALVE/${info.Settings.AppID}/${info.Settings.PlayerName}/Stats/`)
+                                  path: path.join(mydocs,`VALVE/${info.Settings.AppID}/${info.Settings.PlayerName}/Stats`)
                             }
                           });
 
             }
+            
+      } else if (info.Settings.AppID && !info.Settings.SaveType){
+      
+            let dirpath = await parentFind(async (directory) => {
+                              let has = await parentFind.exists(path.join(directory, "Profile/Stats"));
+                              return has && directory;
+               }, {cwd: dir, type: 'directory'});
+
+            if (dirpath){
+                      result.push({ appid: info.Settings.AppID,
+                                 source: "ALI213",
+                                 data: {
+                                   type: "file",
+                                   path: path.join(dirpath,"Profile/Stats")
+                                 }
+                               });
+            }
+            
       }
     
     } else if ( (file === "ds.ini" || file === "hlm.ini" || file === "steam_api.ini") && info.GameSettings) { //Hoodlum - DARKSiDERS - Skidrow(since end of 2019 ?)
               
         if(info.GameSettings.UserDataFolder === "." && info.GameSettings.AppId) {
-
                 let dirpath = await parentFind(async (directory) => {
                                 let has = await parentFind.exists(path.join(directory, 'SteamEmu/UserStats'));
                                 return has && directory;
@@ -163,7 +180,6 @@ module.exports.scan = async (dir) => {
                              }
                            });
                 } else {
-                
                    dirpath = await parentFind(async (directory) => {
                                     let has = await parentFind.exists(path.join(directory, 'SteamEmu'));
                                     return has && directory;
@@ -177,7 +193,26 @@ module.exports.scan = async (dir) => {
                                    path: path.join(dirpath,"SteamEmu")
                                  }
                                });
-                    } 
+                    } else if(file === "hlm.ini"){
+                      //Hoodlum using ALI213 like emu (before ~ september 2019 ?)
+                      //User reported that setting it to mydocs has no effect. But should be double confirmed.
+                      //Seems to be using defaults: playerName VALVE and saveType 0
+                      
+                        dirpath = await parentFind(async (directory) => {
+                                 let has = await parentFind.exists(path.join(directory, "Profile/VALVE/Stats"));
+                                 return has && directory;
+                         }, {cwd: dir, type: 'directory'});
+
+                        if (dirpath){
+                           result.push({ appid: info.GameSettings.AppId,
+                                         source: "Hoodlum",
+                                         data: {
+                                           type: "file",
+                                           path: path.join(dirpath,"Profile/VALVE/Stats")
+                                        }
+                           });
+                        }
+                    }
                 }
                 
         } else if (info.GameSettings.UserDataFolder === "mydocs" && info.GameSettings.AppId && info.GameSettings.UserName && info.GameSettings.UserName !== ""){
@@ -198,6 +233,7 @@ module.exports.scan = async (dir) => {
             }
 
         }
+    
     
     } else if (file === "steam_api.ini" && info.Settings) { //Catherine
     
@@ -223,6 +259,7 @@ module.exports.scan = async (dir) => {
 
   }catch(err){
     /*Do nothing*/
+    console.warn(err);
   }
 
   return result;

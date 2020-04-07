@@ -79,15 +79,27 @@ module.exports.getFolders = async (userDir_file) => {
 
                   if ( (file === files.steamEmu[0] || file === files.steamEmu[1]) && info.Settings) { //ALI213
                      if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
+                     
                           let dirpath = await parentFind(async (directory) => {
-                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats/`));
+                                            let has = await parentFind.exists(path.join(directory, `Profile/${info.Settings.PlayerName}/Stats`));
                                             return has && directory;
                              }, {cwd: dir.path, type: 'directory'});
 
                        if (dirpath) steamEmu.push({ dir: path.join(dirpath,`Profile/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });  
                   
                      } else if (info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 1){
-                       if (mydocs) steamEmu.push({ dir: path.join(mydocs,`VALVE/${info.Settings.AppID}/${info.Settings.PlayerName}/Stats/`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} }); 
+                     
+                       if (mydocs) steamEmu.push({ dir: path.join(mydocs,`VALVE/${info.Settings.AppID}/${info.Settings.PlayerName}/Stats`), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });
+                        
+                     } else if (info.Settings.AppID && !info.Settings.SaveType){
+                     
+                          let dirpath = await parentFind(async (directory) => {
+                                            let has = await parentFind.exists(path.join(directory, "Profile/Stats"));
+                                            return has && directory;
+                             }, {cwd: dir.path, type: 'directory'});
+
+                       if (dirpath) steamEmu.push({ dir: path.join(dirpath,"Profile/Stats"), options: { appid: info.Settings.AppID, recursive: false, file: [files.achievement[4]]} });
+                       
                      }
                       
                   } else if ( (file === files.steamEmu[3] || file === files.steamEmu[2] || file === files.steamEmu[4] ) && info.GameSettings) { //Hoodlum - DARKSiDERS - Skidrow(since end of 2019 ?)
@@ -109,7 +121,27 @@ module.exports.getFolders = async (userDir_file) => {
                                             return has && directory;
                                       }, {cwd: dir.path, type: 'directory'});
 
-                            if (dirpath) steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[3]]} });
+                            if (dirpath) {
+                              steamEmu.push({ dir: path.join(dirpath,"SteamEmu"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[3]]} });
+                            } else if(file === files.steamEmu[2] ){
+                              //Hoodlum using ALI213 like emu (before ~ september 2019 ?)
+                              //User reported that setting it to mydocs has no effect. But should be double confirmed.
+                              //Seems to be using defaults: playerName VALVE and saveType 0
+                              //Write ach data only on game exit ?
+                              
+                              dirpath = await parentFind(async (directory) => {
+                                            let has = await parentFind.exists(path.join(directory, "Profile/VALVE/Stats"));
+                                            return has && directory;
+                                        }, {cwd: dir.path, type: 'directory'});
+                                        
+                              if (dirpath) {
+                                steamEmu.push({ 
+                                  dir: path.join(dirpath,"Profile/VALVE/Stats"), 
+                                  options: { appid: info.GameSettings.AppId, disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: false, file: [files.achievement[4]]} 
+                                });
+                              }
+                              
+                            }
                           
                           }
 
@@ -204,7 +236,7 @@ module.exports.parse = async (filePath) => {
                       Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement].earned || local[achievement] == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
-                      UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].Time || local[achievement].earned_time || 0
+                      UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].HaveHaveAchievedTime || local[achievement].Time || local[achievement].earned_time || 0
                   };
                   
                   if (!result.Achieved && result.MaxProgress == 100 && result.CurProgress == 100) { //CODEX 09/2019 (Gears5)

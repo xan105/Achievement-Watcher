@@ -198,7 +198,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                 Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i].Unlocked == 1 || root[i].earned || root[i] == 1) ? true : false,
                                 CurProgress : root[i].CurProgress || 0,
                                 MaxProgress : root[i].MaxProgress || 0,
-                                UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].Time || root[i].earned_time || 0
+                                UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].HaveHaveAchievedTime || root[i].Time || root[i].earned_time || 0
                           };
                           
                           if (!parsed.Achieved && parsed.MaxProgress == 100 && parsed.CurProgress == 100) { //CODEX 09/2019 (Gears5)
