@@ -1,24 +1,29 @@
 {
-  "achievements" : "Errungenschaften",
+  "achievements" : "Erfolge",
   "perfectGame" : "Perfekte Spiele",
-  "completionRate": "Durchschn. Komplettierungsrate",
+  "completionRate": "Durchschnittl. Fertigstellung",
   "emptyList": "Keine Spiele",
   "loading": "Laden",
-  "unlocked" : "Erreicht",
-  "locked": "Unerreicht",
-  "globalStat" : "von allen Spielern",
-  "hiddenRemain" : "versteckte Errungenschaften verbleibend",
-  "revealedOnceUnlocked" : "Details für Errungenschaften werden enthüllt, sobald diese freigeschaltet werden",
-  "noneUnlocked": "Keine Errungenschaften Erreicht",
-  "play": "Jetzt Spielen!",
-  "scrollUp" : "Zurückscrollen",
+  "unlocked" : "Freigeschaltet",
+  "locked": "Nicht freigeschaltet",
+  "globalStat" : " von allen Spielern",
+  "hiddenRemain" : "verbleibende versteckte Erfolge",
+  "revealedOnceUnlocked" : "Details für jeden Erfolg werden enthüllt, sobald diese freigeschaltet worden sind",
+  "noneUnlocked": "Kein Erfolg wurde freigeschaltet",
+  "play": "Spiel starten",
+  "scrollUp" : "Hochscrollen",
   "allGamesBackButton" : "Alle Spiele",
+  "removeFromList": "Von der Liste entfernen",
+  "buildIconPrefetchCache": "Benachrichtigungscache erneuern",
   "settings" : {
     "title": "Einstellungen",
     "sideMenu":{
-      "general": "Allgemeine",
-      "notification": "Mitteilung",
-      "folder": "Ordner"
+      "general": "Allgemein",
+      "notification": "Benachrichtigung",
+      "folder": "Ordner",
+      "source": "Quelle",
+      "advanced": "Erweitert",
+      "debug": "Debug"
     },
     "common": {
       "show": "Anzeigen",
@@ -31,30 +36,142 @@
     },
     "general": {
       "language": {
-        "name": "Sprache"
+        "name": "Sprache",
+        "description": ["Übersetzungshilfe","hier"]
+      },
+      "thumbnail": {
+        "name": "Vorschaubild",
+        "value": {
+          "portrait": "vertikal",
+          "landscape": "horizontal"
+        }
       },
       "hiddenAch": {
-        "name": "Errungenschaften verbleibend"
+        "name": "Versteckte Erfolge"
       },
       "mergeDuplicates": {
-        "name": "Duplikate zusammenführen"
+        "name": "Duplikate zusammenfassen"
+      },
+      "timeMerge": {
+        "name": "Zeitstempel zusammenfassen",
+        "description": "Welcher Zeitwert soll beim Zusammenfassen von Duplikaten genommen werden?",
+        "value": {
+          "recent": "Jüngster",
+          "oldest": "Ältester"
+        }
       },
       "hideZero": {
-        "name": "0% Spiele verstecken"
+        "name": "Spiele mit 0% Erfolgen verstecken"
       }
     },
     "notification" : {
+      "title": {
+        "common": "Allgemein",
+        "toast": "Bannerbenachrichtigung",
+        "transport": "Benachrichtigungsmethode"
+      },
+      "info" : {
+        "toast" : "Einige Möglichkeiten sind nur mit Windows 10 verfügbar."
+      },
       "option": {
         "notification" : {
-          "name": "Mitteilung"
+          "name": "Benachrichtigung",
+          "description": "Wenn möglich, beim Erhalten eines Erfolges benachrichtigen."
+        },
+        "souvenir" : {
+          "name": "Bildschirmfoto",
+          "description": "Bildschirmfoto erstellen, wenn ein Erfolg erreicht wird."
+        },
+        "showDesc" : {
+          "name": "Beschreibung anzeigen",
+          "description": "Beschreibung des Erfolges anzeigen, falls vorhanden."
+        },
+        "rumble" : {
+          "name": "Gamepad Vibration (XInput)",
+          "description": "Das erste Gamepad vibrieren lassen, wenn ein Erfolg erreicht wird."
+        },
+        "notifyOnProgress" : {
+          "name": "Fortschrittsanzeige",
+          "description": "Wenn möglich, bei einem Fortschritt des Erfolges benachrichtigen."
+        },
+        "customToastAudio" : {
+          "name": "Benachrichtigungston",
+          "description": "Ton einstellen, wenn eine Benachrichtigung angezeigt wird.",
+          "value": {
+            "systemDefault": "Standard",
+            "muted": "Stumm"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "Benachrichtigungsbild",
+          "description": "Bildschirmfoto innerhalb der Benachrichtigung anzeigen.",
+          "value": {
+            "top" : "Oben",
+            "bottom" : "Unten"
+          }
+        },
+        "groupToast" : {
+          "name": "Nach Spiel gruppieren",
+          "description": "Gleiche Benachrichtigungen von einem Spiel im Action Center gruppieren."
+        },
+        "useToast" : {
+          "name": "Benachrichtigung",
+          "description": "Windows 8-10 Benachrichtigung"
+        },
+        "useWinRT" : {
+          "name": "Windows 10 WinRT API",
+          "description": "WinRT anstatt PowerShell benutzen, um Nachricht schneller anzuzeigen."
+        },
+        "useBalloon" : {
+          "name": "Kurzinfoballon",
+          "description": "Kurzinfo anzeigen, wenn Benachrichtigungsanzeige fehlschlägt."
+        },
+        "useWS" : {
+          "description": "Erfolg an alle WebSocket Clients weiterleiten."
         }
       }
     },
     "folder": {
-      "headline": "Wo nach Errungenschaften Daten gesucht werden soll :",
-      "default": "Standardverzeichnis",
-      "custom": "Benutzerverzeichnis",
+      "headline": "Ablageort für gespeicherte Erfolge:",
+      "default": "Standardordner",
+      "custom": "Benutzerdefinierte Ordner",
+      "addInfo": [
+        "Einen Ordner auswählen, der appid Ordner enthält.",
+        "Bitte für ALI213, HOODLUM, RPCS3 einen Ordner wählen, der die Dateien",
+        "ALI213.ini, valve.ini, hlm.ini, ds.ini oderr RPCS3.exe enthält."],
       "add": "Ordner hinzufügen"
-    } 
-  } 
+    },
+    "source": {
+      "legitSteam": {
+        "name": "Steam-Spiele anzeigen",
+        "description": "Steam muss installiert sein und das Benutzerprofil muss auf 'Öffentlich' gestellt sein!",
+        "value": {
+          "none": "Keine",
+          "installed": "Installiert",
+          "owned": "Bibliothek"
+        }
+      },
+      "steamEmu": {
+        "name": "Steam-Emulator"
+      },
+      "greenLuma": {
+        "description": "GreenLuma 2020 und Reborn"
+      },
+      "rpcs3": {
+        "description": "Playstation 3 Emulator"
+      },
+      "lumaPlay": {
+        "description": "Uplay Emulator"
+      },
+      "importCache": {
+        "name": "Benachrichtigungszwischenspeicher importieren",
+        "description": "Den Zwischenspeicher vom Watchdog als Erfolgsquelle importieren."
+      }
+    },
+    "advanced": {
+      "blacklistTitle":"AppID Sperrliste",
+      "blacklistButton":"Sperrliste löschen",
+      "blacklistInfo":"Um ein Spiel in die Sperrliste aufzunehmen, mit der rechten Maustaste auf ein Spiel klicken."
+    }
+  }
 }
