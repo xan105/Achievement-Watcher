@@ -164,7 +164,7 @@
         "description": "Uplay Emulator"
       },
       "importCache": {
-        "name": "Benachrichtigungszwischenspeicher importieren",
+        "name": "Nachrichtenimport",
         "description": "Den Zwischenspeicher vom Watchdog als Erfolgsquelle importieren."
       }
     },
