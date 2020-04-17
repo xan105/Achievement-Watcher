@@ -21,7 +21,7 @@ Available/Supported langs (based on [steam](https://partner.steamgames.com/doc/s
 
 Translation Status
 ==================
-As of 06/03/2019 | dd-mm-yyyy
+As of 17/04/2019 | dd-mm-yyyy
 
 - Arabic (ar) | العربية
 - Bulgarian (bg) | български език
@@ -43,9 +43,9 @@ As of 06/03/2019 | dd-mm-yyyy
     Css override <br/>
     Anthony Beaumont
 - German (de) | Deutsch
-    <br/>Incomplete <br/>
-    No css override <br/>
-    Anthony Beaumont, [Shanas377](https://github.com/Shanas377)
+    <br/>Complete <br/>
+    Css override <br/>
+    Anthony Beaumont, [Shanas377](https://github.com/Shanas377), [shakeyourbunny](https://github.com/shakeyourbunny)
 - Greek (el) | Ελληνικά	
 - Hungarian (hu) | Magyar
     <br/>Complete <br/>
@@ -67,6 +67,9 @@ As of 06/03/2019 | dd-mm-yyyy
     [GrzybDev](https://github.com/GrzybDev)	
 - Portuguese (pt) | Português	
 - Portuguese: Brazil (pt-BR) | Português-Brasil	
+    <br/>Complete <br/>
+    Css override <br/>
+    [wallis6n](https://github.com/wallis6n), [Ardente07](https://github.com/Ardente07)	
 - Romanian (ro) | Română	
 - Russian (ru) | Русский	
     <br/>Incomplete <br/>

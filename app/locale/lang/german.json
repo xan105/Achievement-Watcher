@@ -42,8 +42,8 @@
       "thumbnail": {
         "name": "Vorschaubild",
         "value": {
-          "portrait": "vertikal",
-          "landscape": "horizontal"
+          "portrait": "Vertikal",
+          "landscape": "Horizontal"
         }
       },
       "hiddenAch": {

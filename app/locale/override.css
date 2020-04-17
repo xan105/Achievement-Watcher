@@ -87,3 +87,16 @@ html[lang="pt"] #options-notify-transport li:nth-child(3).hasHelper
 {
   margin-bottom: 32px;
 }
+
+html[lang="de"] #settings .box { width: 780px; }
+html[lang="de"] #settingNav li { width: 155px; }
+html[lang="de"] #options-ui li:nth-child(5).hasHelper,
+html[lang="de"] #options-notify-transport li:nth-child(2).hasHelper,
+html[lang="de"] #options-source li:nth-child(1).hasHelper
+{
+  margin-bottom: 32px;
+}
+html[lang="de"] #options-notify-toast li:nth-child(3).hasHelper
+{
+  margin-bottom: 48px;
+}
