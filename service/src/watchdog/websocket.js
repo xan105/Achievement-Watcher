@@ -26,7 +26,7 @@ module.exports.init = () => {
      client.on('pong', function(){ this.isAlive = true }); //heartbeat
      client.on('message', incoming);
      client.on('close', function(code, reason){ debug.log(`WS[${this.id}] connection close (${code}) ${reason}`) });
-     client.on('error', function(error){ debug.log(`WS[${this.id}] Error: ${err}`) });
+     client.on('error', function(err){ debug.log(`WS[${this.id}] Error: ${err}`) });
   });
   
   WebSocket.on('error', (err) => {
