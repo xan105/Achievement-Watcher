@@ -1,8 +1,32 @@
+/*
+MIT License
+
+Copyright (c) 2020 Anthony Beaumont
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 "use strict";
 
 const os = require('os');
-const util = require('util');
 const fs = require('fs');
+const util = require('util');
 const path = require('path');
 
 const code = {
@@ -42,7 +66,7 @@ class Logger {
         fs.mkdirSync(path.parse(this.options.file).dir, { recursive: true });
         this.stream = fs.createWriteStream(this.options.file, 'utf-8')
         .on('error', function (err) {
-            console.error(err);
+              console.error(err);
         });
       }
     }
@@ -78,7 +102,7 @@ function timeStamp() {
     let hour = "0" + date.getHours();
     let min = "0" + date.getMinutes();
     let sec = "0" + date.getSeconds();
-    let ms = "0" + date.getMilliseconds();
+    let ms = "00" + date.getMilliseconds();
     return `(${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}) [${hour.substr(-2)}:${min.substr(-2)}:${sec.substr(-2)}.${ms.substr(-3)}]`;
 }
 
