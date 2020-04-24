@@ -189,9 +189,15 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                  {
 
                      try {
-                          
-                          //(SSE) crc module removes leading 0 when dealing with anything below 0x1000 -.-'
-                          let achievement = game.achievement.list.find( elem => (root[i].crc) ? root[i].crc.includes(crc32(elem.name).toString(16)) : elem.name == (root[i].id || root[i].apiname || root[i].name || i) );
+
+                          let achievement = game.achievement.list.find( (elem) => { 
+                              if (root[i].crc) {
+                                return root[i].crc.includes(crc32(elem.name).toString(16)); //(SSE) crc module removes leading 0 when dealing with anything below 0x1000 -.-'
+                              } else {
+                                let apiname = root[i].id || root[i].apiname || root[i].name || i;
+                                return elem.name == apiname || elem.name.toUpperCase() == apiname.toUpperCase() //uppercase == uppercase : cdx xcom chimera (apiname doesn't match case with steam schema)
+                              }
+                          });
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
                         
                           let parsed = {

@@ -94,7 +94,7 @@ var app = {
         }catch(err){
           debug.log(err);
         }
-     }   
+     } 
       
     }catch(err){
       debug.log(err);
@@ -154,9 +154,14 @@ var app = {
             let j = 0;
             for (let i in achievements) {
                     try{
-                    
-                        //(SSE) crc module removes leading 0 when dealing with anything below 0x1000 -.-'
-                        let ach = game.achievement.list.find(achievement => (achievements[i].crc) ? achievements[i].crc.includes(crc32(achievement.name).toString(16)) : achievement.name === achievements[i].name );
+
+                        let ach = game.achievement.list.find( (achievement ) => { 
+                              if (achievements[i].crc) {
+                                return achievements[i].crc.includes(crc32(achievement.name).toString(16)); //(SSE) crc module removes leading 0 when dealing with anything below 0x1000 -.-'
+                              } else {
+                                return achievement.name == achievements[i].name || achievement.name.toUpperCase() == achievements[i].name.toUpperCase() //uppercase == uppercase : cdx xcom chimera (apiname doesn't match case with steam schema)
+                              }
+                        });
                         if (!ach) throw "ACH_NOT_FOUND_IN_SCHEMA";
                        
                         if(achievements[i].crc) {

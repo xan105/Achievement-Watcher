@@ -232,7 +232,7 @@ module.exports.parse = async (filePath) => {
                   }                  
 
                   let result = {
-                      name: local[achievement].id || local[achievement].apiname || achievement,
+                      name: local[achievement].id || local[achievement].apiname || local[achievement].name || achievement,
                       Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement].earned || local[achievement] == 1) ? true : false,
                       CurProgress : local[achievement].CurProgress || 0,
                       MaxProgress : local[achievement].MaxProgress || 0,
