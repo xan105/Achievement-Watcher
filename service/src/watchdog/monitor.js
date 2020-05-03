@@ -239,10 +239,10 @@ module.exports.parse = async (filePath) => {
                       UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].HaveHaveAchievedTime || local[achievement].Time || local[achievement].earned_time || 0
                   };
                   
-                  if (!result.Achieved && result.MaxProgress == 100 && result.CurProgress == 100) { //CODEX 09/2019 (Gears5)
+                  if (!result.Achieved && result.MaxProgress !== 0 && result.CurProgress !== 0 && result.MaxProgress == result.CurProgress) { //CODEX Gears5 (09/2019)  && Gears tactics (05/2020)
                       result.Achieved = true;
                   }
-                  
+
                   if(local[achievement].crc) {
                     result.crc = local[achievement].crc;
                   }
