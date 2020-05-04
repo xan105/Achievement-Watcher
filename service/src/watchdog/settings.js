@@ -181,7 +181,7 @@ module.exports.load = async (cfg_file) => {
         } 
         
         if (typeof options.notification_advanced.iconPrefetch !== "boolean"){
-          options.notification_advanced.iconPrefetch = false;
+          options.notification_advanced.iconPrefetch = true;
           fixFile = true;
         }
         
@@ -245,7 +245,7 @@ module.exports.load = async (cfg_file) => {
             timeTreshold: 10,
             tick: 600,
             checkIfProcessIsRunning: true,
-            iconPrefetch: false          
+            iconPrefetch: true          
           },
           steam: {}
         };

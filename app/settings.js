@@ -144,7 +144,7 @@ module.exports.load = ()=>{
         } 
         
         if (typeof options.notification_advanced.iconPrefetch !== "boolean"){
-          options.notification_advanced.iconPrefetch = false;
+          options.notification_advanced.iconPrefetch = true;
         }
         
         //Steam Key    
@@ -200,7 +200,7 @@ module.exports.load = ()=>{
             timeTreshold: 10,
             tick: 600,
             checkIfProcessIsRunning: true,
-            iconPrefetch: false          
+            iconPrefetch: true          
           },
           steam: {}
         };

@@ -296,8 +296,8 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Set it to 0 to disable this feature.<br />
   
 - iconPrefetch<br />
-  default to false<br />
-  By default a notification icon is passed as an url.<br />
+  default to true<br />
+  If set to false notification icon is passed as an url.<br />
   It is the underlying transport system responsability to handle the download / cache of said icon.<br />
   _For example you can see information of notification assets cached by the Windows notification system in the registry under `HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications\wpnidm`_
   
