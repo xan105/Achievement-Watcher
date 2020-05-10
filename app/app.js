@@ -213,7 +213,7 @@ var app = {
                               request.download(achievement.icongray,path.join(dir,"images"))
                           ]);
                           result.push({
-                            description: achievement.description,
+                            description: achievement.description || "",
                             displayName: achievement.displayName,
                             hidden: achievement.hidden,
                             icon: "images/" + path.parse(icons[0].path).base,
@@ -222,7 +222,7 @@ var app = {
                           });
                         }catch{
                           result.push({
-                            description: achievement.description,
+                            description: achievement.description || "",
                             displayName: achievement.displayName,
                             hidden: achievement.hidden,
                             name: achievement.name
