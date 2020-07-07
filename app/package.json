@@ -12,7 +12,7 @@
   "author": "Anthony Beaumont",
   "license": "LGPL-3.0-only",
   "devDependencies": {
-    "electron": "^8.2.0",
+    "electron": "^8.2.4",
     "electron-context-menu": "^0.11.0",
     "electron-rebuild": "^1.10.1",
     "patch-package": "^6.2.1"
