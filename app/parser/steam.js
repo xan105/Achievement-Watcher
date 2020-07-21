@@ -61,7 +61,7 @@ module.exports.scan = async (additionalSearch = []) => {
                 } else if (dir.includes("SmartSteamEmu")){
                   game.source = "SmartSteamEmu";
                 } else if (dir.includes("ProgramData/Steam")){
-                  game.source = "Reloaded";
+                  game.source = "Reloaded - 3DM";
                 } else if (dir.includes("CreamAPI")){
                   game.source = "CreamAPI";
                 }
@@ -198,7 +198,13 @@ module.exports.getAchievementsFromFile = async (filePath) => {
           result[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
         }
     }
-
+  } else if (local.Time && local.State ) { //3DM
+  
+      for (let i in local.State) {
+        if(local.State[i] == '0101'){
+          result[i] = { Achieved: "1", UnlockTime: new DataView(new Uint8Array(Buffer.from(local.Time[i].toString(),'hex')).buffer).getUint32(0, true) || null }; 
+        }
+    }
   } else {
     result = omit(local.ACHIEVE_DATA || local, filter);
   }
