@@ -40,6 +40,7 @@ module.exports.getFolders = async (userDir_file) => {
     { 
       dir: path.join(process.env['PROGRAMDATA'],"Steam"), 
       options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
+      //3DM doesn't need override (disableCheckIfProcessIsRunning,disableCheckTimestamp) ...
     },
     {
       dir: path.join(process.env['LOCALAPPDATA'],"SKIDROW"), 
@@ -210,6 +211,14 @@ module.exports.parse = async (filePath) => {
         for (let i in local.Achievements) {
             if (local.Achievements[i] == 1) {
               convert[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
+            }
+        }
+        local = convert;
+      } else if (local.State && local.Time) { //3DM
+        let convert = {};
+        for (let i in local.State) {
+            if (local.local.State[i] == "0101") {
+              convert[`${i}`] = { Achieved: "1", UnlockTime: new DataView(new Uint8Array(Buffer.from(local.Time[i].toString(),'hex')).buffer).getUint32(0, true) || null };
             }
         }
         local = convert;

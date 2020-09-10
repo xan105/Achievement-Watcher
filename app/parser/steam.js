@@ -198,7 +198,7 @@ module.exports.getAchievementsFromFile = async (filePath) => {
           result[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
         }
     }
-  } else if (local.Time && local.State ) { //3DM
+  } else if (local.State && local.Time ) { //3DM
   
       for (let i in local.State) {
         if(local.State[i] == '0101'){
