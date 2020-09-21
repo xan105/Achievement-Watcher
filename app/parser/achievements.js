@@ -207,7 +207,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                                 UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].HaveHaveAchievedTime || root[i].Time || root[i].earned_time || 0
                           };
                           
-                          if (!parsed.Achieved && parsed.MaxProgress !== 0 && parsed.CurProgress !== 0 && parsed.MaxProgress == parsed.CurProgress) { //CODEX Gears5 (09/2019)  && Gears tactics (05/2020)
+                          if (!parsed.Achieved && parsed.MaxProgress != 0 && parsed.CurProgress != 0 && parsed.MaxProgress == parsed.CurProgress) { //CODEX Gears5 (09/2019)  && Gears tactics (05/2020)
                             parsed.Achieved = true;
                           }
 
