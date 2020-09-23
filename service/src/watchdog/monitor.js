@@ -19,7 +19,7 @@ const files = {
     "Achievements.ini",
     "stats.bin" 
   ],
-  steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"]
+  steamEmu: ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini", "SteamConfig.ini"]
 }
 
 module.exports.getFolders = async (userDir_file) => {
@@ -78,7 +78,7 @@ module.exports.getFolders = async (userDir_file) => {
             }
             if(info) {
 
-                  if ( (file === files.steamEmu[0] || file === files.steamEmu[1]) && info.Settings) { //ALI213
+                  if ( (file === files.steamEmu[0] || file === files.steamEmu[1] || file === files.steamEmu[5]) && info.Settings) { //ALI213
                      if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
                      
                           let dirpath = await parentFind(async (directory) => {

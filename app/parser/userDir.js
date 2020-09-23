@@ -11,7 +11,7 @@ const regedit = require('regodit');
 
 const file = path.join(remote.app.getPath('userData'),"cfg/userdir.db");
 
-const steam_emu_cfg_file_supported = ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini"];
+const steam_emu_cfg_file_supported = ["ALI213.ini", "valve.ini", "hlm.ini", "ds.ini", "steam_api.ini", "SteamConfig.ini"];
 
 module.exports.get = async () => {
     try{
@@ -110,7 +110,7 @@ module.exports.scan = async (dir) => {
         Otherwise walk up parent directories and try to find the folder.
     */
     
-    if ( (file === "ALI213.ini" || file === "valve.ini") && info.Settings) { //ALI213
+    if ( (file === "ALI213.ini" || file === "valve.ini" || file === "SteamConfig.ini") && info.Settings) { //ALI213
 
         if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 0) {
 
