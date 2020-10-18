@@ -247,8 +247,8 @@ module.exports.parse = async (filePath) => {
                   let result = {
                       name: local[achievement].id || local[achievement].apiname || local[achievement].name || achievement,
                       Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement].earned || local[achievement] == 1) ? true : false,
-                      CurProgress : local[achievement].CurProgress || 0,
-                      MaxProgress : local[achievement].MaxProgress || 0,
+                      CurProgress : local[achievement].CurProgress || local[achievement].progress || 0,
+                      MaxProgress : local[achievement].MaxProgress || local[achievement].max_progress || 0,
                       UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].HaveHaveAchievedTime || local[achievement].Time || local[achievement].earned_time || 0
                   };
                   
