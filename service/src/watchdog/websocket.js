@@ -3,7 +3,7 @@
 const path = require('path');
 const moment = require("moment");
 const ws = require('ws');
-const debug = new (require("./util/log.js"))({
+const debug = new (require("@xan105/log"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/websocket.log")
 });

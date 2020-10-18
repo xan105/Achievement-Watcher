@@ -4,7 +4,7 @@ const path = require('path');
 const util = require('util');
 const xml2js = require('xml2js');
 const glob = require("fast-glob");
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const ffs = require("@xan105/fs");
 
 const magic = {
   header : Buffer.from('818F54AD','hex'),
@@ -24,7 +24,7 @@ module.exports.scan = async (dir) => {
   
   try {
 
-    if (await ffs.promises.exists(path.join(dir,binary))) {
+    if (await ffs.exists(path.join(dir,binary))) {
 
     let users = await glob("([0-9])+",{cwd: path.join(dir,"dev_hdd0/home"), onlyDirectories: true, absolute: false});
             
@@ -63,7 +63,7 @@ module.exports.scan = async (dir) => {
 module.exports.getGameData = async (dir) => {
 try {
 
-   let file = await ffs.promises.readFile(path.join(dir,files.schema),"utf-8");
+   let file = await ffs.readFile(path.join(dir,files.schema),"utf-8");
    let schema = await util.promisify(xml2js.parseString)(file,{explicitArray: false, explicitRoot: false, ignoreAttrs: false, emptyTag: null});
    
    let result = {
@@ -101,7 +101,7 @@ module.exports.getAchievements = async (dir,length) => {
 
    let result = [];
    
-   let file = await ffs.promises.readFile(path.join(dir,files.userData));
+   let file = await ffs.readFile(path.join(dir,files.userData));
    
    if (!file.toString('hex').startsWith(magic.header.toString('hex'))) throw `Unexpected ${files.userData} file format`
     

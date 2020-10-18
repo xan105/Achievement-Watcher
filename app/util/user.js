@@ -19,9 +19,9 @@ module.exports.get = async (highres = false) => {
     const avatarPicture = await accountms(file);
     
     if(highres){
-      result.avatar = `data:image/${avatarPicture.type};charset=utf-8;base64,${avatarPicture.big.toString('base64')}`;
+      result.avatar = `data:image/${avatarPicture.type};charset=utf-8;base64,${avatarPicture.highres.toString('base64')}`;
     } else {
-      result.avatar = `data:image/${avatarPicture.type};charset=utf-8;base64,${avatarPicture.small.toString('base64')}`;
+      result.avatar = `data:image/${avatarPicture.type};charset=utf-8;base64,${avatarPicture.lowres.toString('base64')}`;
     }
 
   }catch{}

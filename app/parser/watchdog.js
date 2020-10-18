@@ -3,7 +3,7 @@
 const { remote } = require('electron');
 const path = require("path");
 const glob = require("fast-glob");
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const ffs = require("@xan105/fs");
 
 const cache = path.join(remote.app.getPath('userData'),"steam_cache/data");
 
@@ -31,9 +31,5 @@ module.exports.scan = async () => {
 }
 
 module.exports.getAchievements = async (appID) => {
-  try{
-    return JSON.parse(await ffs.promises.readFile(path.join(cache,`${appID}.db`),"utf8"));
-  }catch(err){
-    throw err;
-  }
+    return JSON.parse(await ffs.readFile(path.join(cache,`${appID}.db`),"utf8"));
 }

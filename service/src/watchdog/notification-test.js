@@ -7,7 +7,6 @@ const balloon = require("powerballoon");
 const getStartApps = require('get-startapps');
 const regedit = require('regodit');
 const gntp = require("./util/gntp.js");
-const ffs = require("./util/feverFS.js");
 const settings = require('./settings.js');
 const xinput = require("./native/xinput.js");
 

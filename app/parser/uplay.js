@@ -5,12 +5,12 @@ const path = require('path');
 const yaml = require('js-yaml');
 const glob = require("fast-glob");
 const zip = require('adm-zip');
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const ffs = require('@xan105/fs');
 const regedit = require('regodit');
 const request = require('request-zero');
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
-const debug = new (require(path.join(appPath,"util/log.js")))({
+const debug = new (require("@xan105/log"))({
   console: remote.getCurrentWindow().isDev || false,
   file: path.join(remote.app.getPath('userData'),"logs/uplay.log")
 });
@@ -110,8 +110,8 @@ module.exports.getGameData = async (appid,lang) => {
      
      let schema;
      
-     if (await ffs.promises.existsAndIsYoungerThan(cacheFile,{timeUnit: 'month', time: 1})) {
-        schema = JSON.parse(await ffs.promises.readFile(cacheFile));
+     if (await ffs.existsAndIsOlderThan(cacheFile,{timeUnit: 'month', time: 1, younger: true})) {
+        schema = JSON.parse(await ffs.readFile(cacheFile));
      } else {
         try {
           schema = await getUplayDataFromSRV(appid);
@@ -127,7 +127,7 @@ module.exports.getGameData = async (appid,lang) => {
             debug.log(`Failed to share UPLAY${appid} cache to server => ${err}`)
           }
         }
-        ffs.promises.writeFile(cacheFile,JSON.stringify(schema, null, 2)).catch((err) => {});
+        ffs.writeFile(cacheFile,JSON.stringify(schema, null, 2)).catch((err) => {});
      }
      
      //Lang Loading
@@ -252,7 +252,7 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
         
         try{
           let dest = path.join(`${cache}`,`background${path.parse(index.background).ext}`);
-          await ffs.promises.copyFile(path.join(uplayPath,"cache/assets",`${index.background}`),dest);
+          await ffs.copyFile(path.join(uplayPath,"cache/assets",`${index.background}`),dest);
           game.img.background = dest.replace(/\\/g,"/");
         }catch(e){
           debug.log(e);
@@ -260,7 +260,7 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
         
         try{
           let dest = path.join(`${cache}`,`header${path.parse(index.header).ext}`);
-          await ffs.promises.copyFile(path.join(uplayPath,"cache/assets",`${index.header}`),dest);
+          await ffs.copyFile(path.join(uplayPath,"cache/assets",`${index.header}`),dest);
           game.img.header = dest.replace(/\\/g,"/");
         }catch(e){
           debug.log(e);
@@ -268,7 +268,7 @@ async function generateSchemaFromLocalCache(appid,uplayPath) {
         
         try{
           let dest = path.join(`${cache}`,`icon${path.parse(index.icon).ext}`);
-          await ffs.promises.copyFile(path.join(uplayPath,"data/games",`${index.icon}`),dest);
+          await ffs.copyFile(path.join(uplayPath,"data/games",`${index.icon}`),dest);
           game.img.icon = dest.replace(/\\/g,"/");
         }catch(e){
           debug.log(e);
@@ -339,7 +339,7 @@ let indexDB = {
 
           const file = path.join(uplayPath,"cache/configuration/configurations");
 
-          if (!await ffs.promises.exists(file)){
+          if (!await ffs.exists(file)){
             throw "No Uplay Configurations file found"
           }
 
@@ -351,7 +351,7 @@ let indexDB = {
            /^(?!.*(\:)).*$/gm         // remove yaml line without descriptor pair ( xxx : yyy )
           ];
 
-          let raw = await ffs.promises.readFile(file, 'utf8');
+          let raw = await ffs.readFile(file, 'utf8');
 
           let data = raw.replace(filter[0],'').split("version: 2.0");
           data.shift(); //skip binary garbage before first "version: 2.0" split

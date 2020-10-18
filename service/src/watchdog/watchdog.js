@@ -12,7 +12,7 @@ const balloon = require("powerballoon");
 const regedit = require('regodit');
 const websocket = require("./websocket.js");
 const processPriority = require("./util/priority.js");
-const ffs = require("./util/feverFS.js");
+const ffs = require("@xan105/fs");
 const settings = require('./settings.js');
 const monitor = require('./monitor.js');
 const steam = require("./steam.js");
@@ -21,7 +21,7 @@ const screenshot = require("./native/screenshot.js");
 const xinput = require("./native/xinput.js");
 const gntp = require("./util/gntp.js");
 
-const debug = new (require("./util/log.js"))({
+const debug = new (require("@xan105/log"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/notification.log")
 });
@@ -87,7 +87,7 @@ var app = {
      let i = 1;        
      for (let folder of await monitor.getFolders(cfg_file.userDir)) {
         try{
-          if (await ffs.promises.exists(folder.dir,true)) {
+          if (await ffs.exists(folder.dir,true)) {
             self.watch(i,folder.dir,folder.options);
             i = i+1;
           }

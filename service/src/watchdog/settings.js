@@ -3,7 +3,7 @@
 const path = require('path');
 const ini = require("ini");
 const osLocale = require('os-locale');
-const ffs = require("./util/feverFS.js");
+const ffs = require("@xan105/fs");
 const steamLang = require("./steam.json");
 const aes = require("./util/aes.js");
 
@@ -15,7 +15,7 @@ module.exports.load = async (cfg_file) => {
         
         let fixFile = false;
         
-        options = ini.parse(await ffs.promises.readFile(cfg_file,"utf8"));
+        options = ini.parse(await ffs.readFile(cfg_file,"utf8"));
         
         if (!steamLang.some(lang => lang.api == options.achievement.lang)) {
            try { 
@@ -200,7 +200,7 @@ module.exports.load = async (cfg_file) => {
           options.steam = {};
         }
         
-        if (fixFile) await ffs.promises.writeFile(cfg_file,ini.stringify(options),"utf8").catch(()=>{});
+        if (fixFile) await ffs.writeFile(cfg_file,ini.stringify(options),"utf8").catch(()=>{});
         
         if (steamKey) options.steam.apiKey = steamKey;
 
@@ -265,7 +265,7 @@ module.exports.load = async (cfg_file) => {
           options.achievement.lang = "english";
         }
         
-        await ffs.promises.writeFile(cfg_file,ini.stringify(options),"utf8").catch(()=>{});
+        await ffs.writeFile(cfg_file,ini.stringify(options),"utf8").catch(()=>{});
 
       }
       

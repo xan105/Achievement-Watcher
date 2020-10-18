@@ -3,7 +3,7 @@
 const path = require('path');
 const urlParser = require('url');
 const htmlParser = require('node-html-parser').parse;
-const ffs = require("./util/feverFS.js");
+const ffs = require("@xan105/fs");
 const request = require('request-zero');
 const steamLang = require("./steam.json");
 
@@ -20,15 +20,15 @@ module.exports.loadSteamData = async (appID, lang, key) => {
     let filePath = path.join(`${cache}`,`${appID}.db`);
     let result;
 
-    if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: 1})) {
-        result = JSON.parse(await ffs.promises.readFile(filePath));
+    if (await ffs.existsAndIsOlderThan(filePath,{timeUnit: 'month', time: 1, younger: true})) {
+        result = JSON.parse(await ffs.readFile(filePath));
     } else {
         if (key) {
           result = await getSteamData(appID, lang, key);
         } else {
           result = await getSteamDataFromSRV(appID, lang);
         }
-        ffs.promises.writeFile(filePath,JSON.stringify(result, null, 2)).catch((err) => { console.log(err) });                 
+        ffs.writeFile(filePath,JSON.stringify(result, null, 2)).catch((err) => { console.log(err) });                 
    }
    
    return result;
@@ -48,7 +48,7 @@ module.exports.fetchIcon = async (url,appID) => {
 
     let filePath = path.join(cache,filename);
 
-    if (await ffs.promises.exists(filePath)) {
+    if (await ffs.exists(filePath)) {
       return filePath;
     } else {
       return (await request.download(url,cache)).path;

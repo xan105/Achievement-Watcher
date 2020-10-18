@@ -9,7 +9,7 @@ const omit = require('lodash.omit');
 const moment = require('moment');
 const request = require('request-zero');
 const urlParser = require('url');
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const ffs = require("@xan105/fs");
 const htmlParser = require('node-html-parser').parse;
 const regedit = require('regodit');
 const steamID = require(path.join(appPath,"util/steamID.js"));
@@ -141,15 +141,15 @@ module.exports.getGameData = async (cfg) => {
     
     let result;
 
-    if (await ffs.promises.existsAndIsYoungerThan(filePath,{timeUnit: 'month', time: 1})) {
-        result = JSON.parse(await ffs.promises.readFile(filePath));
+    if (await ffs.existsAndIsOlderThan(filePath,{timeUnit: 'month', time: 1, younger: true})) {
+        result = JSON.parse(await ffs.readFile(filePath));
     } else {
         if (cfg.key) {
           result = await getSteamData(cfg);
         } else {
           result = await getSteamDataFromSRV(cfg.appID, cfg.lang);
         }
-        ffs.promises.writeFile(filePath,JSON.stringify(result, null, 2)).catch((err) => {});                 
+        ffs.writeFile(filePath,JSON.stringify(result, null, 2)).catch((err) => {});                 
    }
    
    return result;
@@ -182,11 +182,11 @@ module.exports.getAchievementsFromFile = async (filePath) => {
      try {
 
        if (path.parse(file).ext == ".json") {
-          local = JSON.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
+          local = JSON.parse(await ffs.readFile(path.join(filePath,file),"utf8"));
        } else if (file === "stats.bin"){
-          local = sse.parse(await ffs.promises.readFile(path.join(filePath,file)));
+          local = sse.parse(await ffs.readFile(path.join(filePath,file)));
        } else {
-          local = ini.parse(await ffs.promises.readFile(path.join(filePath,file),"utf8"));
+          local = ini.parse(await ffs.readFile(path.join(filePath,file),"utf8"));
        }
        break;
      } catch (e) {}
@@ -250,12 +250,12 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
       steam: 0
     };
     
-    let local = await ffs.promises.stats(cache.local);
+    let local = await ffs.stats(cache.local);
     if (Object.keys(local).length > 0) {
       time.local = moment(local.mtime).valueOf();
     }
 
-    let steamStats = await ffs.promises.stats(cache.steam);
+    let steamStats = await ffs.stats(cache.steam);
     if (Object.keys(steamStats).length > 0) {
       time.steam = moment(steamStats.mtime).valueOf();
     }else{
@@ -268,10 +268,10 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
         } else {
           result = await getSteamUserStatsFromSRV(cfg.user.id,cfg.appID);
         }
-        ffs.promises.writeFile(cache.local,JSON.stringify(result, null, 2)).catch((err) => {});
+        ffs.writeFile(cache.local,JSON.stringify(result, null, 2)).catch((err) => {});
 
     } else {
-      result = JSON.parse(await ffs.promises.readFile(cache.local));
+      result = JSON.parse(await ffs.readFile(cache.local));
     }
 
    return result;
@@ -302,7 +302,7 @@ async function getSteamPath(){
           
         steamPath = await regedit.promises.RegQueryStringValue(regHive.root,regHive.key,regHive.name);
         if (steamPath) {
-           if (await ffs.promises.exists(path.join(steamPath,"steam.exe"))){
+           if (await ffs.exists(path.join(steamPath,"steam.exe"))){
              break;
            }
         }  

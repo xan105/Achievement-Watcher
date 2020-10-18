@@ -3,8 +3,8 @@
 const { remote } = require('electron');
 const path = require("path");
 const request = require('request-zero');
-const ffs = require(path.join(appPath,"util/feverFS.js"));
-const debug = new (require(path.join(appPath,"util/log.js")))({
+const ffs = require("@xan105/fs");
+const debug = new (require("@xan105/log"))({
   console: remote.getCurrentWindow().isDev || false,
   file: path.join(remote.app.getPath('userData'),"logs/blacklist.log")
 });
@@ -32,7 +32,7 @@ module.exports.get = async () => {
  }
   
  try{
-      let userExclusion = JSON.parse(await ffs.promises.readFile(file,"utf8")); 
+      let userExclusion = JSON.parse(await ffs.readFile(file,"utf8")); 
       exclude = [...new Set([...exclude,...userExclusion])];
  }catch(err){
       //Do nothing
@@ -43,11 +43,7 @@ module.exports.get = async () => {
 }
 
 module.exports.reset = async() => {
-  try{
-    await ffs.promises.writeFile(file,JSON.stringify([], null, 2),"utf8"); 
-  }catch(err){
-    throw err;
-  }
+    await ffs.writeFile(file,JSON.stringify([], null, 2),"utf8"); 
 }
 
 module.exports.add = async (appid) => {
@@ -58,14 +54,14 @@ module.exports.add = async (appid) => {
         let userExclusion;
         
         try{
-          userExclusion = JSON.parse(await ffs.promises.readFile(file,"utf8"));
+          userExclusion = JSON.parse(await ffs.readFile(file,"utf8"));
         }catch(e){
           userExclusion = [];
         } 
         
         if (!userExclusion.includes(appid)) {
           userExclusion.push(appid);
-          await ffs.promises.writeFile(file,JSON.stringify(userExclusion, null, 2),"utf8"); 
+          await ffs.writeFile(file,JSON.stringify(userExclusion, null, 2),"utf8"); 
           debug.log("Done.");
         } else {
           debug.log("Already blacklisted.");

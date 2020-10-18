@@ -10,7 +10,7 @@ const toast = require('powertoast');
 const balloon = require('powerballoon');
 const request = require('request-zero');
 const semver = require("./util/semver.js");
-const debug = new (require("./util/log.js"))({
+const debug = new (require("@xan105/log"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/updater.log")
 });

@@ -12,7 +12,7 @@ const userDir = require(path.join(appPath,"parser/userDir.js"));
 const user = require(path.join(appPath,"util/user.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
-const debug = new (require(path.join(appPath,"util/log.js")))({
+const debug = new (require("@xan105/log"))({
   console: win.isDev || false,
   file: path.join(remote.app.getPath('userData'),`logs/${remote.app.name}.log`)
 });
@@ -187,7 +187,7 @@ var app = {
                   try{
                   
                     const request = require('request-zero');
-                    const ffs = require(path.join(appPath,"util/feverFS.js"));
+                    const ffs = require("@xan105/fs");
                     
                     let dialog = await remote.dialog.showSaveDialog(win,{ 
                       title: "Choose where to generate achievements.json",
@@ -231,7 +231,7 @@ var app = {
                       }
                       
                       if (result.length > 0){
-                         await ffs.promises.writeFile(filePath,JSON.stringify(result, null, 2));
+                         await ffs.writeFile(filePath,JSON.stringify(result, null, 2));
                       }
                       
                     }

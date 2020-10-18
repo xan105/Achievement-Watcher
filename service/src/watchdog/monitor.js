@@ -4,7 +4,7 @@ const path = require('path');
 const ini = require("ini");
 const parentFind = require('find-up');
 const omit = require('lodash.omit');
-const ffs = require("./util/feverFS.js");
+const ffs = require("@xan105/fs");
 const regedit = require('regodit');
 const sse = require("./sse.js");
 
@@ -68,7 +68,7 @@ module.exports.getFolders = async (userDir_file) => {
         ]);
     }
 
-    let list = JSON.parse(await ffs.promises.readFile(userDir_file,"utf8"));
+    let list = JSON.parse(await ffs.readFile(userDir_file,"utf8"));
     for (let dir of list) {
       if (dir.notify == true) {
         try{
@@ -76,7 +76,7 @@ module.exports.getFolders = async (userDir_file) => {
             let info;
             for (var file of files.steamEmu) {
                   try{
-                    info = ini.parse(await ffs.promises.readFile(path.join(dir.path,file),"utf8"));
+                    info = ini.parse(await ffs.readFile(path.join(dir.path,file),"utf8"));
                     break;
                   }catch(e){}
             }
@@ -156,7 +156,7 @@ module.exports.getFolders = async (userDir_file) => {
 
                             let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");
                             
-                            if (await ffs.promises.exists(path.join(dirpath,"UserStats/achiev.ini"))) {
+                            if (await ffs.exists(path.join(dirpath,"UserStats/achiev.ini"))) {
                               steamEmu.push({ dir: path.join(dirpath,"UserStats"), options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[2]]} });
                             } else {
                               steamEmu.push({ dir: dirpath, options: { appid: info.GameSettings.AppId, recursive: false, file: [files.achievement[3]]} });
@@ -203,11 +203,11 @@ module.exports.parse = async (filePath) => {
       let local;
       let file = path.parse(filePath);
       if (file.ext == ".json") {
-        local = JSON.parse(await ffs.promises.readFile(filePath,"utf8"));
+        local = JSON.parse(await ffs.readFile(filePath,"utf8"));
       } else if (file.base == "stats.bin"){
-        local = sse.parse(await ffs.promises.readFile(filePath));
+        local = sse.parse(await ffs.readFile(filePath));
       } else {
-        local = ini.parse(await ffs.promises.readFile(filePath,"utf8"));
+        local = ini.parse(await ffs.readFile(filePath,"utf8"));
       }
       
       if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum

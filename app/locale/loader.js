@@ -2,7 +2,7 @@
 
 const { remote } = require('electron');
 const merge = require('deepmerge')
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const ffs = require("@xan105/fs");
 
 const langDir = path.join(appPath,"locale/lang");
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
@@ -12,11 +12,11 @@ module.exports.load = async (lang = "english") => {
     
       if (!steamLanguages.some(language => language.api === lang)) lang = "english";   
 
-      let english = JSON.parse(await ffs.promises.readFile(path.join(langDir,"english.json"),"utf8"));
+      let english = JSON.parse(await ffs.readFile(path.join(langDir,"english.json"),"utf8"));
       let template;
       try {
         if (lang != "english") {
-          let requested = JSON.parse(await ffs.promises.readFile(path.join(langDir,`${lang}.json`),"utf8"));
+          let requested = JSON.parse(await ffs.readFile(path.join(langDir,`${lang}.json`),"utf8"));
           template = merge(english,requested,{ arrayMerge: (dest, src, options) => src, //Do not concatenate array
                                                isEmpty: a => a === null || a === '' //Ignore empty or null value
                                              });

@@ -3,7 +3,8 @@
 const { remote } = require('electron');
 const path = require("path");
 const ini = require("ini");
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const fs = require("fs");
+const ffs = require("@xan105/fs");
 const aes = require(path.join(appPath,"util/aes.js"));
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 
@@ -14,7 +15,7 @@ module.exports.load = ()=>{
   let options;
   
   try {
-        options = ini.parse(ffs.sync.readFile(filename,"utf8"));
+        options = ini.parse(fs.readFileSync(filename,"utf8"));
         
         if (!steamLanguages.some(lang => lang.api == options.achievement.lang)) {
           try {
@@ -212,7 +213,7 @@ module.exports.load = ()=>{
             options.achievement.lang = "english";
         }
         
-        ffs.promises.writeFile(filename,ini.stringify(options),"utf8").catch(()=>{});
+        ffs.writeFile(filename,ini.stringify(options),"utf8").catch(()=>{});
     }
     
     return options;
@@ -234,7 +235,7 @@ module.exports.save = (config) => {
       return reject(err);
     }
 
-    return resolve(ffs.promises.writeFile(filename,ini.stringify(options),"utf8"));
+    return resolve(ffs.writeFile(filename,ini.stringify(options),"utf8"));
 
   });
 }

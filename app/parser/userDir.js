@@ -5,7 +5,7 @@ const path = require("path");
 const ini = require("ini");
 const parentFind = require('find-up');
 const glob = require("fast-glob");
-const ffs = require(path.join(appPath,"util/feverFS.js"));
+const ffs = require("@xan105/fs");
 const listDrive = require(path.join(appPath,"util/listDrive.js"));
 const regedit = require('regodit');
 
@@ -15,7 +15,7 @@ const steam_emu_cfg_file_supported = ["ALI213.ini", "valve.ini", "hlm.ini", "ds.
 
 module.exports.get = async () => {
     try{
-        return JSON.parse(await ffs.promises.readFile(file,"utf8"));   
+        return JSON.parse(await ffs.readFile(file,"utf8"));   
     }catch(err){
         throw err;
     }
@@ -23,7 +23,7 @@ module.exports.get = async () => {
 
 module.exports.save = async (data) => {
     try{
-        await ffs.promises.writeFile(file,JSON.stringify(data, null, 2),"utf8");    
+        await ffs.writeFile(file,JSON.stringify(data, null, 2),"utf8");    
     }catch(err){
         throw err;
     }  
@@ -98,7 +98,7 @@ module.exports.scan = async (dir) => {
     let info;
     for (var file of steam_emu_cfg_file_supported) {
       try{
-        info = ini.parse(await ffs.promises.readFile(path.join(dir,file),"utf8"));
+        info = ini.parse(await ffs.readFile(path.join(dir,file),"utf8"));
       break;
       }catch(e){}
     }
@@ -226,7 +226,7 @@ module.exports.scan = async (dir) => {
                                source: (file === "ds.ini") ? "DARKSiDERS" : (file === "hlm.ini") ? "Hoodlum" : "Skidrow",
                                data: {
                                  type: "file",
-                                 path: (await ffs.promises.exists(path.join(dirpath,"UserStats"))) ? path.join(dirpath,"UserStats") : dirpath
+                                 path: (await ffs.exists(path.join(dirpath,"UserStats"))) ? path.join(dirpath,"UserStats") : dirpath
                                }
              });
 
