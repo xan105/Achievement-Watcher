@@ -24,6 +24,7 @@ module.exports.scan = async (additionalSearch = []) => {
     let search = [
         path.join(process.env['Public'],"Documents/Steam/CODEX"), 
         path.join(process.env['APPDATA'],"Goldberg SteamEmu Saves"),
+        path.join(process.env['APPDATA'],"EMPRESS"),
         path.join(process.env['APPDATA'],"Steam/CODEX"),
         path.join(process.env['PROGRAMDATA'],"Steam")+"/*",
         path.join(process.env['LOCALAPPDATA'],"SKIDROW"),
@@ -56,6 +57,9 @@ module.exports.scan = async (additionalSearch = []) => {
                   game.source = "Codex";
                 } else if (dir.includes("Goldberg")){
                   game.source = "Goldberg";
+				} else if (dir.includes("EMPRESS")){
+                  game.source = "Goldberg (EMPRESS)";
+                  game.data.path = path.join(game.data.path,"remote",game.appid);
                 } else if (dir.includes("SKIDROW")){
                   game.source = "Skidrow";
                 } else if (dir.includes("SmartSteamEmu")){
