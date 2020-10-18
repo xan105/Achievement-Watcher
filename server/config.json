@@ -1,6 +1,0 @@
-{
-  "host": "localhost",
-  "port": 80,
-  "proxy": false,
-  "static": true
-}
