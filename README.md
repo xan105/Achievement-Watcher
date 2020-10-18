@@ -68,7 +68,7 @@ Compatibility :
 |Emulator/Client|Supported|Unlock Time|Ach Progress|Notification|
 |--------|---------|-----------|------------|------------|
 |- Codex<br /> - Plaza| ✔️ | ✔️ | ⚠️ If available | ✔️ |
-|Goldberg Steam Emu<br /> EMPRESS| ✔️ | ✔️ | ✔️ | ✔️ |
+|- Goldberg Steam Emu<br /> - EMPRESS (Q4 2020)| ✔️ | ✔️ | ✔️ | ✔️ |
 |- Hoodlum<br />- DARKSiDERS<br />- Skidrow (> ~Q4 2019) | ⚠️ Via user custom dir| ✔️ | ❌ | ✔️
 |Skidrow| ✔️ | ❌ | ❌ | ✔️ |
 |ALI213| ⚠️ Via user custom dir | ✔️ | ❌ | ✔️ |
