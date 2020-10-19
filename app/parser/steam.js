@@ -141,7 +141,7 @@ module.exports.getGameData = async (cfg) => {
     
     let result;
 
-    if (await ffs.existsAndIsOlderThan(filePath,{timeUnit: 'month', time: 1, younger: true})) {
+    if (await ffs.existsAndIsOlderThan(filePath,{timeUnit: 'M', time: 1, younger: true})) {
         result = JSON.parse(await ffs.readFile(filePath));
     } else {
         if (cfg.key) {

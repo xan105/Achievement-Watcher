@@ -110,7 +110,7 @@ module.exports.getGameData = async (appid,lang) => {
      
      let schema;
      
-     if (await ffs.existsAndIsOlderThan(cacheFile,{timeUnit: 'month', time: 1, younger: true})) {
+     if (await ffs.existsAndIsOlderThan(cacheFile,{timeUnit: 'M', time: 1, younger: true})) {
         schema = JSON.parse(await ffs.readFile(cacheFile));
      } else {
         try {
