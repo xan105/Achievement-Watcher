@@ -8,7 +8,10 @@ const ffs = require("@xan105/fs");
 
 const magic = {
   header : Buffer.from('818F54AD','hex'),
-  delimiter : [ Buffer.from('0400000050','hex'), Buffer.from('0600000060','hex') ]
+  delimiter : [ 
+	Buffer.from('0400000050','hex'), 
+	Buffer.from('0600000060','hex') 
+  ]
 };
 
 const files = {
@@ -96,50 +99,52 @@ try {
   }
 }
 
-module.exports.getAchievements = async (dir,length) => {
-  try {
+module.exports.getAchievements = async (dir) => {
 
-   let result = [];
+    let result = [];
    
-   let file = await ffs.readFile(path.join(dir,files.userData));
+    const buffer = await ffs.readFile(path.join(dir,files.userData));
    
-   if (!file.toString('hex').startsWith(magic.header.toString('hex'))) throw `Unexpected ${files.userData} file format`
+	const header = buffer.slice(0, magic.header.length);
+
+	if (Buffer.compare(header,magic.header) !== 0) throw "EUNEXPECTEDFILEFORMAT"
+
+	const headerEndPos = indexOfOccurrence(buffer, magic.delimiter[0], 2) + magic.delimiter[0].length;
+
+	const data = buffer.slice(headerEndPos);
+
+	const separator = new RegExp(magic.delimiter[0].toString('hex') + "|" + magic.delimiter[1].toString('hex') , "g");
+	const stats = data.toString('hex').split(separator);
+
+	if (stats.length % 2 !== 0) throw "EUNEXPECTEDACHCOUNT";
+
+	const length = stats.length / 2;
+
+	for (let i = 0; i <= length - 1; i++) 
+	{
+		 try {
+		   
+		   const timestamp = stats[i].slice(32,40);
+		   
+		   const trophy = {
+			id : parseInt(stats[i].slice(6,8),16),
+			unlockTime : (timestamp === "ffffffff") ? 0 : parseInt(timestamp,16),
+			achieved : (stats[i+length].slice(30,32) === "01") ? true : false
+		   };
+		   
+		   result.push(trophy);
+		   
+		 }catch{ /*Do nothing*/ }
+	}
     
-   let headerEndPos = indexOf(file.toString('hex'),magic.delimiter[0].toString('hex'),2) + magic.delimiter[0].toString('hex').length;
-   let separator = new RegExp(magic.delimiter[0].toString('hex') + "|" + magic.delimiter[1].toString('hex') , "g");
-   
-   let trimmed = file.toString('hex').slice(headerEndPos);
-   let data = trimmed.split(separator);
-   
-   if(data.length !== length*2) throw `Unexpected number of achievements in ${files.userData}`;
-   
-   for (let i=0;i<=length-1;i++) {
-     try {
-       
-       let timestamp = data[i].slice(32,40);
-       
-       result.push({
-          id : parseInt(data[i].slice(6,8),16),
-          UnlockTime : (timestamp == "ffffffff") ? 0 : parseInt(timestamp,16),
-          Achieved : (data[i+length].slice(30,32) === "01") ? true : false
-       });
-     }catch(err){
-      //Do nothing -> try to parse the next one
-     }
-   }
-   
-   return result;
-  
-  }catch(err){
-    throw err;
-  }
+    return result;
 }
 
-function indexOf(str, pattern, n) {
-    var i = -1;
+function indexOfOccurrence(buffer, search, n) {
+    let i = -1;
 
-    while (n-- && i++ < str.length) {
-        i = str.indexOf(pattern, i);
+    while (n-- && i++ < buffer.length) {
+        i = buffer.indexOf(search, i);
         if (i < 0) break;
     }
     
