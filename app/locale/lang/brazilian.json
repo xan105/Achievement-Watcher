@@ -147,7 +147,7 @@
         "value": {
           "none": "Nenhum",
           "installed": "Instalado",
-          "owned": "Possuído"
+          "owned": "Possuí"
         }
       },
       "steamEmu": {
@@ -160,7 +160,7 @@
         "description": "Emulador de Playstation 3"
       },
       "lumaPlay": {
-        "description": "Emulador de Uplay"
+        "description": "Emulador do Uplay"
       },  
       "importCache": {
         "name": "Importar cache de notificação",
