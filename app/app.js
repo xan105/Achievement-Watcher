@@ -182,7 +182,6 @@ var app = {
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/file-text.png")), label: "Generate achievements.json for Goldberg Emu", async click() { 
                   self.css("pointer-events","none");
                   try{
-                  
                     const request = require('request-zero');
                     const ffs = require("@xan105/fs");
                     
@@ -247,7 +246,7 @@ var app = {
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "API", click() {shell.openExternal(`https://api.xan105.com/steam/ach/${appid}?lang=${app.config.achievement.lang}`)} }));
           }
 
-         menu.popup({ window: win });
+         menu.popup({ window: remote.getCurrentWindow() });
          
        });
       
