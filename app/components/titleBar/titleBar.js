@@ -91,7 +91,6 @@ export default class titleBar extends HTMLElement {
       
 		this.update();
       });
-      
     }
     
     disconnectedCallback() {

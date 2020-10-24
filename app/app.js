@@ -1,6 +1,7 @@
 "use strict";
 
 const { ipcRenderer } = require("electron");
+const os = require('os');
 const path = require('path');
 const args_split = require('argv-split');
 const args = require('minimist');
@@ -9,7 +10,6 @@ const settings = require(path.join(appPath,"settings.js"));
 const achievements = require(path.join(appPath,"parser/achievements.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
-const user = require(path.join(appPath,"util/user.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
 const debug = new (require("@xan105/log"))({
@@ -39,10 +39,7 @@ var app = {
       app.errorExit(err,"Error loading lang.");
    });
 
-   user.get(true).then((user) => {
-      if (user.avatar) $("#user-info .avatar").css("background",`url(${user.avatar})`);
-      $("#user-info .info .name").text(user.name);
-   }).catch((err)=>{});
+   $("#user-info .info .name").text(os.userInfo().username || "User");
 
    let loadingElem = {
       elem: $("#game-list .loading"),
