@@ -1,6 +1,7 @@
 'use strict';
 
 const { ipcMain } = require('electron');
+const EventEmitter = require('events');
 
 module.exports.window = (win) => {
 
@@ -34,4 +35,15 @@ module.exports.window = (win) => {
     event.returnValue = win.isDev;
   });
   
+}
+
+module.exports.events = () => {
+
+	const emitter = new EventEmitter();
+
+	ipcMain.handleOnce('components-loaded', async (event) => {
+		 emitter.emit('components-loaded', event);  
+	});
+	
+	return emitter;
 }

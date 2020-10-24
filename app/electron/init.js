@@ -56,9 +56,7 @@ try {
         const contextMenu = require('electron-context-menu')({
 			append: (defaultActions, params, browserWindow) => [
 				{
-					label: 'Reload',
-					visible: params,
-					click: () => { MainWin.reload() }
+					label: 'Reload', visible: params, click: () => { MainWin.reload() }
 				}
 			]
         });
@@ -86,12 +84,14 @@ try {
     
     //enable ipc
     ipc.window(MainWin);
+    const ipcEvents = ipc.events();  
     
     MainWin.loadFile(manifest.config.window.view);
-
-    MainWin.once('ready-to-show', () => {
-      MainWin.show();
-      MainWin.focus();
+    MainWin.once('ready-to-show', () => { //Window is loaded and ready to be drawn
+      ipcEvents.once('components-loaded', () => { //Wait for custom event 
+        MainWin.show();
+		MainWin.focus();
+      });
     });
 
     MainWin.on('closed', () => {
