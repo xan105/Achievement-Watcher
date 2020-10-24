@@ -53,7 +53,15 @@ try {
       MainWin.isDev = true;
       console.info((({node,electron,chrome })=>({node,electron,chrome}))(process.versions));
       try {
-        const contextMenu = require('electron-context-menu')();
+        const contextMenu = require('electron-context-menu')({
+			append: (defaultActions, params, browserWindow) => [
+				{
+					label: 'Reload',
+					visible: params,
+					click: () => { MainWin.reload() }
+				}
+			]
+        });
       }catch(err){
         dialog.showMessageBoxSync({type: "warning",title: "Context Menu", message: "Failed to initialize context menu.", detail: `${err}`});
       }
