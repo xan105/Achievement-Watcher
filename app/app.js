@@ -240,10 +240,11 @@ var app = {
             } })); 
           
             menu.append(new MenuItem({type: 'separator'}));
-            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
-            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "SteamDB", click() {shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
-            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "PCGamingWiki", click() {shell.openExternal(`https://pcgamingwiki.com/api/appid.php?appid=${appid}`)} }));
-            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "API", click() {shell.openExternal(`https://api.xan105.com/steam/ach/${appid}?lang=${app.config.achievement.lang}`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {remote.shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "SteamDB", click() {remote.shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "PCGamingWiki", click() {remote.shell.openExternal(`https://pcgamingwiki.com/api/appid.php?appid=${appid}`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "API (Achievement schema)", click() {remote.shell.openExternal(`https://api.xan105.com/steam/ach/${appid}?lang=${app.config.achievement.lang}`)} }));
+            menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "API (App info)", click() {remote.shell.openExternal(`https://api.xan105.com/v2/steam/appinfo/${appid}`)} }));
           }
 
          menu.popup({ window: remote.getCurrentWindow() });
