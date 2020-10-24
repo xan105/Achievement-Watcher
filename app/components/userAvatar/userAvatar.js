@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const regedit = require('regodit');
 const accountms = require('accountpicture-ms-extractor');
+const request = require('request-zero');
+
+const { getSteamPath, getSteamUsers } = require("../parser/steam.js")
 
 const template = `
 
@@ -27,7 +30,6 @@ const template = `
 		cursor: pointer;
 		box-shadow: rgba(198, 212, 223, 0.5) 0px 0px 8px 2px;
 		color: #d9dfe4;
-
 	}
     
     :host(.round) {
@@ -39,7 +41,7 @@ const template = `
 `;
 
 async function imageFileToBase64(filePath){
-	const ext = path.parse(filePath).ext;
+	const ext = path.parse(filePath).ext.replace(".","");
 	const buffer = await fs.promises.readFile(filePath);
 	const base64 = `data:image/${ext};charset=utf-8;base64,${buffer.toString('base64')}`;
 	return base64;
@@ -72,7 +74,7 @@ export default class titleBar extends HTMLElement {
 		super();
 
 		this.attachShadow({mode: 'open'}).innerHTML = template;
-
+		this.steamUsers = [];
     }
     
     /* Life Cycle */
@@ -80,7 +82,7 @@ export default class titleBar extends HTMLElement {
 		this.addEventListener('click', this.onClick.bind(this));
 		this.addEventListener('contextmenu', this.onContextmenu.bind(this), false);
 		
-		(localStorage["avatarSquared"] == true) ?  this.classList.remove("round") : this.classList.add("round");
+		(localStorage["avatarSquared"] == "true") ?  this.classList.remove("round") : this.classList.add("round");
 		
 		this.update();
     } 
@@ -94,10 +96,7 @@ export default class titleBar extends HTMLElement {
     
     update(){
 		const self = this;
-		
-		getAvatar().then((avatar) => {
-			self.style["background"] = `url(${avatar})`;
-		}).catch(()=>{});
+		getAvatar().then((avatar) => { self.style["background"] = `url(${avatar})` }).catch(()=>{/*Do Nothing*/});
     }
     
     async onClick() {
@@ -109,16 +108,13 @@ export default class titleBar extends HTMLElement {
 				properties: ['openFile', 'showHiddenFiles', 'dontAddToRecent'], filters: [
 				  { name: 'Image', extensions: ['jpeg', 'jpg', 'png', 'gif', 'bmp'] },
 				]
-			 });
-			 
-			if (dialog.canceled) { 
-				self.style["pointer-events"] = "initial";
-				return; 
-			}
+			 }); 
 			
-			const avatar = await imageFileToBase64(dialog.filePaths[0]);
-			localStorage.setItem("avatar", avatar);
-			self.update();
+			if (dialog.filePaths && dialog.filePaths.length > 0) { //if cancel will be 0
+				const avatar = await imageFileToBase64(dialog.filePaths[0]);
+				localStorage.setItem("avatar", avatar);
+				self.update();
+			}
 		}catch(err){
 			remote.dialog.showMessageBoxSync({ type: "error", title: "Unexpected Error", message: "Failed to set avatar.", detail: `${err}` });
 		}
@@ -126,25 +122,68 @@ export default class titleBar extends HTMLElement {
 		self.style["pointer-events"] = "initial";
     } 
     
-    onContextmenu(e){
+    onContextmenu(e, position = null){
     
 		e.preventDefault();
 		
+		const oldPosition = { x: e.pageX, y: e.pageY };
+		
 		const self = this;
 		
-		const { Menu, MenuItem, nativeImage } = remote;
+		const { Menu, MenuItem } = remote;
 		const menu = new Menu();
-		
-		menu.append(new MenuItem({ label: 'Reset to default avatar', click() { 
-			localStorage.removeItem("avatar");
-			self.update();
-		} }));
-		
+
 		menu.append(new MenuItem({ label: 'Squared', type: 'checkbox', checked: !self.classList.contains('round'), click(menuItem, browserWindow, event) { 
 			const status = self.classList.toggle("round"); 
 			localStorage.setItem("avatarSquared", !status);
 		} }));
 		
-		menu.popup({ window: remote.getCurrentWindow() });
+		menu.append(new MenuItem({type: 'separator'}));
+		
+		menu.append(new MenuItem({ label: 'Reset to default avatar', click() { 
+			localStorage.removeItem("avatar");
+			self.update();
+		} }));
+
+		if (self.steamUsers.length === 0) {
+
+			menu.append(new MenuItem({ label: 'Import from Steam...', click() { 
+				getSteamPath()
+				.then((SteamPath)=>{ return getSteamUsers(SteamPath)})
+				.then((SteamUsers)=>{ self.steamUsers = SteamUsers})
+				.then(()=>{
+					menu.closePopup({ window: remote.getCurrentWindow() });
+					self.onContextmenu(e,oldPosition);
+				})
+				.catch((err)=>{
+					remote.dialog.showMessageBoxSync({ type: "error", title: "Error", message: "Failed to import from Steam.", detail: `${err}` });
+				});
+			} }));
+			
+		} else {
+
+			for (let i=0; i < self.steamUsers.length; i++)
+			{
+				menu.append(new MenuItem({ label: `Import ${self.steamUsers[i].name}'s Steam avatar`, click(menuItem, browserWindow, event) { 
+					request(self.steamUsers[i].profile.avatarFull,{encoding: "base64"}).then((res)=>{
+						const base64 = `data:${res.headers["content-type"]};charset=utf-8;base64,${res.body}`
+						localStorage.setItem("avatar",base64);
+						self.update();
+					}).catch((err)=>{
+						remote.dialog.showMessageBoxSync({ type: "error", title: "Error", message: `Failed to fetch ${self.steamUsers[i].name}'s avatar.`, detail: `${err}` });
+					});			
+				} }));
+			}
+		
+		}
+
+		let options = { window: remote.getCurrentWindow() };
+		
+		if(position && position.x && position.y) {
+			options.x = position.x; 
+			options.y = position.y;
+		}
+		
+		menu.popup(options);
     }
 }
