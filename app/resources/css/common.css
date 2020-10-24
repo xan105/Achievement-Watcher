@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'Open-Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), url('../font/opensans/opensans-regular-webfont.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Open-Sans-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), url('../font/opensans/opensans-bold-webfont.woff2') format('woff2');
+}
+
+*:focus{ outline: none; }
+ul, ol, li, p { margin: 0; padding: 0; }
+img { -webkit-user-drag: none; user-drag: none; }
+li { list-style: none; }

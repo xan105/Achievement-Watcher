@@ -1,7 +1,7 @@
 "use strict";
 
+const { ipcRenderer } = require("electron");
 const path = require('path');
-const appPath = remote.app.getAppPath();
 const args_split = require('argv-split');
 const args = require('minimist');
 const moment = require('moment');
@@ -13,7 +13,7 @@ const user = require(path.join(appPath,"util/user.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
 const debug = new (require("@xan105/log"))({
-  console: win.isDev || false,
+  console: ipcRenderer.sendSync("win-isDev") || false,
   file: path.join(remote.app.getPath('userData'),`logs/${remote.app.name}.log`)
 });
 
@@ -30,7 +30,7 @@ var app = {
    
    debug.log(`${remote.app.name} loading...`);
    
-   $("#win-settings").css("pointer-events","none");
+   $("title-bar")[0].inSettings = true;
    
    l10n.load(self.config.achievement.lang).then((locale)=>{
       moment.locale(locale);
@@ -266,7 +266,7 @@ var app = {
       $("#user-info").fadeTo('fast', 1).css("pointer-events","initial");
       $("#sort-box").fadeTo('fast', 1).css("pointer-events","initial");
       $("#search-bar").fadeTo('fast', 1).css("pointer-events","initial");
-      $("#win-settings").css("pointer-events","initial");
+      $("title-bar")[0].inSettings = false;
    });
 
   },

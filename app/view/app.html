@@ -5,21 +5,14 @@
     <meta charset="UTF-8">
     <meta name="author" content="Beaumont Anthony">  
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com; connect-src 'self' https://api.steampowered.com ws://localhost:8082";>
-    <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-FNeri+I6YqdUsa0AZboUgvcTwUto9lI1Irhd2pUGyeaNo+FgvNALfgS72T6cSqAO"/>
-    <link rel="stylesheet" href="../resources/css/fontawesome_all.css" type="text/css" integrity="sha384-2E+vxfAd9BSs686izEvg9IkPuDNoFqJ4y6d+yZOpMUL5850Tp0CpoeKoULCQ/+Yn"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-d5to7CU+XKLaDlxEAMOzztERCdrNJjgr9QbhBJjbpMN3KSlNN+ScFL40treU6N6x"/>
+    <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-M86HUGbBFILBBZ9ykMAbT3nVb0+2C7yZlF8X2CiKNpDOQjKroMJqIeGZ/Le8N2Qp"/>
+    <link rel="stylesheet" href="../resources/css/fontawesome.css" type="text/css" integrity="sha384-2eY9+teNzWBWcmh0K64vzjextrtROU9j9jhkDq4CbtWLeu7dygpWIg5eyTCcynyX"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-FbIDd2B5+ZmKFQS2VfVyhHwZjD3pmDT13zLq+JQODWZiEfGVnzjJaIrer7anbyJf"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-HQ5spd2xdIic/81KQMxrDn5bogmZi15hIT9Aib0UlIf2shhHdccRs/ETDfG1aLeY"/>
   </head>
   <body>
     
-   <header>
-      <ul id="window-controls" class="button hover">
-        <li id="win-close" data-closeAllWindow="false"><i class="fas fa-times"></i></li>
-        <li id="win-maximize"><i class="far fa-window-maximize"></i></li>
-        <li id="win-settings"><i class="fas fa-cog"></i></li>
-        <li id="win-minimize"><i class="far fa-window-minimize"></i></li>
-      </ul>
-    </header>
+	<title-bar></title-bar>
     
     <main id="main">
       <section id="home">
@@ -305,6 +298,10 @@
                  </li>
                  <li>
                     <div class="path"><span class="constant">%appdata%</span>\Goldberg SteamEmu Saves</div>
+                    <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
+                 </li>
+                 <li>
+                    <div class="path"><span class="constant">%appdata%</span>\EMPRESS</div>
                     <div class="controls"><ul><li><i class="fas fa-bell"></i></li></ul></div>
                  </li>
                  <li>
@@ -647,12 +644,12 @@
     </main>
           
 <script>window.$ = window.jQuery = require('../ui/lib/jquery-3.3.1.min.js');</script>
-<script src="../ui/window.js" type="text/javascript" integrity="sha384-DQ+U4PQm8gBMwMQpBPfPk9GngJjWM6AQpJZE9n+7CiYDkm3bvZXSTif0koCmVF6w"></script>
+<script src="../components/register.js" type="module" integrity="sha384-kdgsESJIi9vQKIiutk+wCVasxBhMs0OndtFAXqKQ1yl6emb4zefz0yw3GnQU9pot"></script>
 <script src="../ui/sort.js" type="text/javascript" integrity="sha384-HJoCpWC4LEU3aS56sRk9g9XLvY+CoQ/pwQGXBXzJzuJxRqrMrMdRdkeIpV4h1R1m"></script>
 <script src="../ui/search.js" type="text/javascript" integrity="sha384-bxUsg0pvXLhMFCMqUpwSwidXS+xOcFktyX8as5qAgzGyXpGvarbNjiM5p+zNHdta"></script> 
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-luz88vQqTBlH73dSdJ8kCBnt1JvWu60LD29t+0ZYIr+SJfgBWLaEk/JdGnRRSHek"></script>
-<script src="../ui/settings.js" type="text/javascript" integrity="sha384-aGUVjIx1NFo1ZUc7hR+GxVaz9gMVTKvecXOiorwbB8ES8cYnHkGBypKY/tptWsTq"></script>
-<script src="../app.js" type="text/javascript"></script>     
+<script src="../ui/settings.js" type="text/javascript" integrity="sha384-LC2knWANdy8BHc+mgpCXbn1PtyW5tNmQ5QLKCHNa41m3o1C/2g+MTf1GYsGFApJU"></script>
+<script src="../app.js" type="text/javascript" integrity="sha384-W5FwtpllJJ15k6vFjGqiEDPruO1IueRsEnGn42I5pPmsF55gkzb7jRrLmAeXa0Sj"></script>     
     
   </body>
 </html>

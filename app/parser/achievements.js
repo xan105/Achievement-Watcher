@@ -54,7 +54,7 @@ async function discover(source) {
       try {
         data = data.concat(await steam.scan(additionalSearch));
       }catch(err){
-        debug.log(err);
+        debug.error(err);
       } 
     }
     
@@ -63,7 +63,7 @@ async function discover(source) {
       try {
         data = data.concat(await greenluma.scan());
       }catch(err){
-        debug.log(err);
+        debug.error(err);
       }
     }
     
@@ -72,7 +72,7 @@ async function discover(source) {
       try {
         data = data.concat(await steam.scanLegit(source.legitSteam));
       }catch(err){
-        debug.log(err);
+        debug.error(err);
       }
     }
     
@@ -81,14 +81,14 @@ async function discover(source) {
       try{
         data = data.concat(await uplay.scan());
       }catch(err){
-        debug.log(err);
+        debug.error(err);
       }
       
       //Uplay
       try{
         data = data.concat(await uplay.scanLegit());
       }catch(err){
-        debug.log(err);
+        debug.error(err);
       }
     }
     
@@ -96,7 +96,7 @@ async function discover(source) {
       try{
         data = data.concat(await watchdog.scan());
       }catch(err){
-        debug.log(err);
+        debug.error(err);
       }
     }
     
@@ -105,7 +105,7 @@ async function discover(source) {
         let exclude = await blacklist.get();
         data = data.filter(appid => { return !exclude.some((id) => id == appid.appid) });   
     }catch(err){
-        debug.log(err);
+        debug.error(err);
     }
 
     return data;
@@ -153,7 +153,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                   
                       root = await steam.getAchievementsFromFile(appid.data.path);
                       //Note to self: Empty file should be considered as a 0% game -> do not throw an error just issue a warning
-                      if(root.constructor === Object && Object.entries(root).length === 0) debug.log(`[${appid.appid}] Warning ! Achievement file in '${appid.data.path}' is probably empty`);
+                      if(root.constructor === Object && Object.entries(root).length === 0) debug.warn(`[${appid.appid}] Warning ! Achievement file in '${appid.data.path}' is probably empty`);
 
                    } else if (appid.data.type === "reg") {
                          
@@ -181,7 +181,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                     
                    }
                  }catch(err){
-                    debug.log(`[${appid.appid}] Error parsing local achievements data => ${err}`);
+                    debug.error(`[${appid.appid}] Error parsing local achievements data => ${err}`);
                  }
                 
                  for (let i in root)
@@ -238,9 +238,9 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
      
                        }catch(err){
                           if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
-                            debug.log(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
+                            debug.warn(`[${appid.appid}] Achievement not found in game schema data ?! ... Achievement was probably deleted or renamed over time`);
                           } else {
-                            debug.log(`[${appid.appid}] Unexpected Error: ${err}`);
+                            debug.error(`[${appid.appid}] Unexpected Error: ${err}`);
                           }
                        }          
                  }
@@ -250,7 +250,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
 
             //loop appid
             } catch(err) {
-              debug.log(`[${appid.appid}] Error parsing local achievements data => ${err} > SKIPPING`);
+              debug.error(`[${appid.appid}] Error parsing local achievements data => ${err} > SKIPPING`);
             }
             
         callbackProgress(percent);
@@ -262,7 +262,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
     return result;
       
   }catch(err) {
-    debug.log(err);
+    debug.error(err);
     throw err;
   }
 };
