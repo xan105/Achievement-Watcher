@@ -58,15 +58,12 @@ async function getWindowsProfileAvatar(){
 	lowres : `data:image/${windowsProfileAvatar.type};charset=utf-8;base64,${windowsProfileAvatar.lowres.toString('base64')}`
   }; 
 
-  return avatar;   
+  return avatar.highres;   
 }
 
 async function getAvatar(){
-	
 	let avatar = localStorage.getItem("avatar");
-	
-	if(!avatar) avatar = (await getWindowsProfileAvatar()).highres;
-    
+	if(!avatar) avatar = await getWindowsProfileAvatar();
     return avatar;
 }
 
@@ -82,6 +79,8 @@ export default class titleBar extends HTMLElement {
     connectedCallback() {
 		this.addEventListener('click', this.onClick.bind(this));
 		this.addEventListener('contextmenu', this.onContextmenu.bind(this), false);
+		
+		(localStorage["avatarSquared"] == true) ?  this.classList.remove("round") : this.classList.add("round");
 		
 		this.update();
     } 
@@ -139,6 +138,11 @@ export default class titleBar extends HTMLElement {
 		menu.append(new MenuItem({ label: 'Reset to default avatar', click() { 
 			localStorage.removeItem("avatar");
 			self.update();
+		} }));
+		
+		menu.append(new MenuItem({ label: 'Squared', type: 'checkbox', checked: !self.classList.contains('round'), click(menuItem, browserWindow, event) { 
+			const status = self.classList.toggle("round"); 
+			localStorage.setItem("avatarSquared", !status);
 		} }));
 		
 		menu.popup({ window: remote.getCurrentWindow() });
