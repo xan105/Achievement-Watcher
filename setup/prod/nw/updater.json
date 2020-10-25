@@ -1,0 +1,5 @@
+{
+  "bin": "../updater.exe",
+  "args": "",
+  "cwd": "../"
+}

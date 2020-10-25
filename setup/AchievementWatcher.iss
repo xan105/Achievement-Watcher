@@ -8,7 +8,7 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.3.7"
+#define OurVersion "1.4.0"
 #define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
@@ -94,13 +94,13 @@ Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwriteread
     
 [Icons]
 Name: "{commondesktop}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}"; Check: GetOption('CreateDesktopIcon');
-Name: "{commonstartup}\{#AppName}"; Filename: "{app}\nw.exe"; Parameters: "watchdog"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}";
+Name: "{commonstartup}\{#AppName}"; Filename: "{app}\nw\nw.exe"; Parameters: "-config watchdog.json"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}";
 Name: "{group}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}"; AppUserModelID: "{#AppUserModelID}"; Check: GetOption('CreateStartMenu');
 Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; WorkingDir: "{app}\__unins__"; Check: GetOption('CreateStartMenu') and GetOption('CreateUninstaller');
 
 [Run]
-Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw.exe\"" updater"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
-Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw.exe\"" updater"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
+Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
+Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\watchdog.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{app}\watchdog.exe"; WorkingDir: "{#AppWorkingDir}"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
 Filename: "{app}\updater.exe"; Parameters:"--notify"; WorkingDir: "{#AppWorkingDir}"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist skipifnotsilent; Check: CmdLineHasSwitch('/NOTIFY')

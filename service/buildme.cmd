@@ -1,9 +1,4 @@
 @echo off
-cd "%~dp0src\nw"
-go generate
-cd "%~dp0"
-set GOPATH="%~dp0"
-go build -ldflags "-H windowsgui" -o "%~dp0\build\nw.exe" nw
 call "%~dp0src\watchdog\resources\app.pkg.unpacked\native\souvenir\build.cmd"
 call "%~dp0src\watchdog\resources\app.pkg.unpacked\native\vibrate\build.cmd"
 xcopy /Y "%~dp0src\watchdog\node_modules\regodit\build\regedit.x64.dll" "%~dp0build\resources\app.pkg.unpacked\native\regedit\build\regedit.x64.dll"
