@@ -88,7 +88,7 @@ Source: "resources\avatar*.bmp"; DestDir: "{tmp}" ;Flags: dontcopy;
 Source: "resources\warning.bmp"; DestDir: "{tmp}" ;Flags: dontcopy;
 Source: "resources\curl.exe"; DestDir: "{tmp}" ; Flags: dontcopy;
 Source: "..\app\node_modules\electron\dist\*"; Excludes: "\electron.exe,\LICENSE,\version,\resources\default_app.asar"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;   
-Source: "..\service\build\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
+Source: "..\service\*"; Excludes: "\buildme.cmd,\watchdog\_wip_,\watchdog\patches"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "prod\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;       
     
@@ -101,9 +101,9 @@ Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; Wo
 [Run]
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
-Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\watchdog.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
-Filename: "{app}\watchdog.exe"; WorkingDir: "{#AppWorkingDir}"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
-Filename: "{app}\updater.exe"; Parameters:"--notify"; WorkingDir: "{#AppWorkingDir}"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist skipifnotsilent; Check: CmdLineHasSwitch('/NOTIFY')
+Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\node-v12.19.0-win-x64\node.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
+Filename: "{app}\node-v12.19.0-win-x64\node.exe"; Parameters: "watchdog"; WorkingDir: "{#AppWorkingDir}\watchdog"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
+Filename: "{app}\node-v12.19.0-win-x64\node.exe"; Parameters:"updater --notify"; WorkingDir: "{#AppWorkingDir}\updater"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist skipifnotsilent; Check: CmdLineHasSwitch('/NOTIFY')
 ;PostInstall Checkbox
 Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; Description: "{#AppName}"; Flags: runasoriginaluser postinstall nowait skipifsilent skipifdoesntexist unchecked
 

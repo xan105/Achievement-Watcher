@@ -2,8 +2,8 @@
 net session>nul 2>&1
 if %errorlevel%==0 (goto RUN) else ( goto MESSAGE )
 :RUN
-    SCHTASKS /Create /TN "Achievement Watcher Upgrade Daily" /SC DAILY /TR "\"%~dp0nw.exe\" updater" /RL HIGHEST /RI 60 /DU 24:00 /F
-    SCHTASKS /Create /TN "Achievement Watcher Upgrade OnLogon" /SC ONLOGON /DELAY 0010:00 /TR "\"%~dp0nw.exe\" updater" /RL HIGHEST /F
+    SCHTASKS /Create /TN "Achievement Watcher Upgrade Daily" /SC DAILY /TR "\"%~dp0nw\nw.exe\" -config updater.json" /RL HIGHEST /RI 60 /DU 24:00 /F
+    SCHTASKS /Create /TN "Achievement Watcher Upgrade OnLogon" /SC ONLOGON /DELAY 0010:00 /TR "\"%~dp0nw\nw.exe\" -config updater.json" /RL HIGHEST /F
     goto end
 :MESSAGE
     echo "You need to run this script with admin privileges"
