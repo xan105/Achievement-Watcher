@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
-  "version": "1.3.7",
+  "version": "1.4.0",
   "main": "./electron/init.js",
   "scripts": {
     "start": "electron .",
@@ -35,7 +35,7 @@
     "node-html-parser": "^1.3.1",
     "normalize-path": "^3.0.0",
     "regodit": "^1.1.0",
-    "request-zero": "^0.3.0",
+    "request-zero": "^0.3.1",
     "steamid": "^1.1.3",
     "windows-focus-assist": "^1.2.1",
     "xml2js": "^0.4.23"
