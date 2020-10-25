@@ -1,10 +1,14 @@
 "use strict";
 
+const { remote } = require("electron");
+const appPath = remote.app.getAppPath();
+
 (function($, window, document) {
   $(function() {
 
-     $("#win-settings").click(function(){
-        $(this).css("pointer-events","none");
+     $("title-bar").on('open-settings', function(){
+     
+        this.inSettings = true;
         $("#settings").show();
         $("#settings .box").fadeIn();
         
@@ -114,7 +118,7 @@
             $("#settings .box section.content").removeClass("active");
             $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
             self.css("pointer-events","initial");
-            $("#win-settings").css("pointer-events","initial");
+            $("title-bar")[0].inSettings = false;
             $('#option_customToastAudio').off('change');
           });
        });
@@ -231,7 +235,7 @@
                 $("#game-list .loading .progressBar").attr("data-percent",0);
                 $("#game-list .loading .progressBar > .meter").css("width","0%");
                 self.css("pointer-events","initial");
-                $("#win-settings").css("pointer-events","initial");
+                $("title-bar")[0].inSettings = false;
                 $("#game-list .loading").show();
                 $("#user-info").css("opacity",0).css("pointer-events","none");
                 $("#sort-box").css("opacity",0).css("pointer-events","none");
@@ -259,7 +263,7 @@
               $("#settings .box section.content").removeClass("active");
               $("#settings .box section.content[data-view='"+elem.data("view")+"']").addClass("active");
               self.css("pointer-events","initial");
-              $("#win-settings").css("pointer-events","initial");
+              $("title-bar")[0].inSettings = false;
               
               remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error while writing settings to file.", detail: `${err}`});
               

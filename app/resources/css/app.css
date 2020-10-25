@@ -41,45 +41,10 @@ body {
   background: #1b2838; 
   background-size: cover !important; 
   background-repeat: no-repeat !important;
-  background-position: center !important;;
+  background-position: center !important;
 }
 
-header { 
-    position: relative;
-    width: 100%;
-    height: 30px;
-    -webkit-app-region: drag;
-    cursor: default;
-    z-index: 999;
-    display: flex;
-    color: #50525b;
-    background: #10182194;
-}
-
-#window-controls { 
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 99;
-    direction: rtl;
-    height: 100%;
-}
-
-#window-controls > li {
-    display: inline-block;
-    font-size: 12px;
-    -webkit-app-region: no-drag;
-    width: 45px;
-    height: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 30px;
-}
-#window-controls #win-close{ font-size: 16px;}
-#window-controls li { background-color: transparent;}
-#window-controls li:hover { background-color: rgba(255,255,255,0.20); color: #dedede}
-#window-controls #win-close:hover { background-color: rgba(215,40,40,0.9);}
+title-bar { background: #10182194; }
 
 main {
   color: #d9dfe4; 

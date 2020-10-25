@@ -1,0 +1,5 @@
+{
+  "bin": "../node-v12.19.0-win-x64/node.exe",
+  "args": "watchdog",
+  "cwd": "../watchdog"
+}

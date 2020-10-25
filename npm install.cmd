@@ -2,10 +2,10 @@
 cd "%~dp0app"
 npm i
 npm run-script native-rebuild
-cd "%~dp0server"
+cd "%~dp0service\updater"
 npm i
-cd "%~dp0service\src\updater"
+cd "%~dp0service\watchdog"
 npm i
-cd "%~dp0service\src\watchdog"
+cd "%~dp0server\v2"
 npm i
 PAUSE

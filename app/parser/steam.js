@@ -282,9 +282,7 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
  
 }
 
-async function getSteamPath(){
-  try {
-  
+const getSteamPath = module.exports.getSteamPath = async() => {
      /*
        Some SteamEmu change HKCU/Software/Valve/Steam/SteamPath to the game's dir
        Fallback to Software/WOW6432Node/Valve/Steam/InstallPath in this case 
@@ -310,47 +308,38 @@ async function getSteamPath(){
   
      if (!steamPath) throw "Steam Path not found";
      return steamPath;
-    
-   }catch(err){
-      throw err;
-   }
 }
 
-async function getSteamUsers(steamPath) {
-     try {
+const getSteamUsers = module.exports.getSteamUsers = async (steamPath) => {
             
-        let result = [];
+    let result = [];
        
-        let users = await regedit.promises.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
-        if (!users) users = await glob("*([0-9])",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
+    let users = await regedit.promises.RegListAllSubkeys("HKCU","Software/Valve/Steam/Users");
+    if (!users) users = await glob("*([0-9])",{cwd: path.join(steamPath,"userdata"), onlyDirectories: true, absolute: false}); 
      
-        if (users.length == 0) throw "No Steam User ID found";
-            for (let user of users) {
-               let id = steamID.to64(user);
-               let data = await steamID.whoIs(id);
+    if (users.length == 0) throw "No Steam User ID found";
+        for (let user of users) {
+            let id = steamID.to64(user);
+            let data = await steamID.whoIs(id);
                
-               if (data.privacyState === "public") {
-                   debug.log(`${user} - ${id} (${data.steamID}) is public`);
-                   result.push({
-                      user: user,
-                      id: id,
-                      name: data.steamID
-                   }); 
-                } else {
-                   debug.log(`${user} - ${id} (${data.steamID}) is not public`);
-                }
-             }
+            if (data.privacyState === "public") {
+                debug.log(`${user} - ${id} (${data.steamID}) is public`);
+                result.push({
+                    user: user,
+                    id: id,
+                    name: data.steamID,
+                    profile: data
+                }); 
+            } else {
+                debug.log(`${user} - ${id} (${data.steamID}) is not public`);
+            }
+        }
                 
-         if (result.length > 0) {
-             return result;
-         } else {
-             throw "Public profile: none.";
-         }
-            
-     }catch(err){
-         throw err;
-     }
-          
+    if (result.length > 0) {
+        return result;
+    } else {
+        throw "Public profile: none.";
+    }        
 }
 
 function getSteamUserStatsFromSRV(user,appID) {
