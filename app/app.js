@@ -185,7 +185,7 @@ var app = {
                     const request = require('request-zero');
                     const ffs = require("@xan105/fs");
                     
-                    let dialog = await remote.dialog.showSaveDialog(win,{ 
+                    let dialog = await remote.dialog.showSaveDialog(remote.getCurrentWindow(),{ 
                       title: "Choose where to generate achievements.json",
                       buttonLabel: "Generate",
                       defaultPath: "achievements.json",

@@ -327,7 +327,7 @@ const appPath = remote.app.getAppPath();
         
         try {
         
-          let dialog = await remote.dialog.showOpenDialog(win,{properties : ['openDirectory','showHiddenFiles']});
+          let dialog = await remote.dialog.showOpenDialog(remote.getCurrentWindow(),{properties : ['openDirectory','showHiddenFiles']});
   
           if (dialog.filePaths.length > 0){
               debug.log(`Adding folder: ${dialog.filePaths}`);
