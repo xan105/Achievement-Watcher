@@ -1,3 +1,7 @@
+📢 Development of this project has been moved to the [achievement-watcher](https://github.com/achievement-watcher) organization.
+
+<hr>
+
 A sexy achievement file parser with real-time notification.<br />
 View every achievement earned on your PC whether it's coming from Steam, a Steam emulator, and more.<br />
 To see the full list of what this app can import please see the [**Compatibility**](https://github.com/xan105/Achievement-Watcher#compatibility-) section.
