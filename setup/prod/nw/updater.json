@@ -1,5 +1,9 @@
 {
-  "bin": "../node-v12.19.0-win-x64/node.exe",
+  "bin": "../node/node.exe",
   "args": "updater",
-  "cwd": "../updater"
+  "cwd": "../updater",
+  "fileCheck": [
+    {"sum": "25a34d499f8841a7d0d121eb4e285c836a2a425a0d2e8ba9dd31c13d289690e3", "size": 30032896},
+    {"file": "../updater/updater.js", "sum": "77d71169d4c4067be85f6d996233df7c9c96da2aee3a14644af721d6e670292c", "size": 4119}
+  ]
 }

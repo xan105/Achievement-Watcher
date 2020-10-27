@@ -25,6 +25,14 @@ config file:
 
 ```
 
+If for whatever reason you want to show the window then add the following :
+```json
+{
+	...,
+	"show": true
+}
+```
+
 Build
 -----
 
