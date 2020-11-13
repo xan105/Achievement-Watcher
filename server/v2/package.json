@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@node-steam/vdf": "^2.1.0",
-    "@xan105/fs": "git+https://github.com/xan105/node-fs.git",
+    "@xan105/fs": "github:xan105/node-fs",
     "@xan105/log": "git+https://github.com/xan105/node-log.git",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

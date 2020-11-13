@@ -1,0 +1,9 @@
+{
+  "bin": "../node/node.exe",
+  "args": "watchdog",
+  "cwd": "../watchdog",
+  "fileCheck": [
+    {"sum": "25a34d499f8841a7d0d121eb4e285c836a2a425a0d2e8ba9dd31c13d289690e3", "size": 30032896},
+    {"file": "../watchdog/watchdog.js", "sum": "b79cf33df7cb85ee2cce387228d45a4bc2c1355963df749a619aa06a973106dd", "size": 22367}
+  ]
+}

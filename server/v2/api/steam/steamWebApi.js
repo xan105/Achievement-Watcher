@@ -78,7 +78,7 @@ export async function getAchievementListFromCacheOrRemote(appID,lang = "english"
   
   let achievementList;
   
-  if (await fs.existsAndIsOlderThan(filepath,{timeUnit: 'M', time: 1, younger: true}))
+  if (await fs.existsAndIsYoungerThan(filepath,{timeUnit: 'M', time: 1}))
   {
     console.log("> from cache");
    

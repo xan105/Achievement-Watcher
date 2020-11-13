@@ -5,7 +5,8 @@ const {
   BrowserWindow, 
   dialog, 
   session, 
-  shell
+  shell,
+  ipcMain
 } = require('electron');
 
 const path = require("path");
@@ -84,15 +85,22 @@ try {
     
     //enable ipc
     ipc.window(MainWin);
-    const ipcEvents = ipc.events();  
     
     MainWin.loadFile(manifest.config.window.view);
-    //MainWin.once('ready-to-show', () => { //Window is loaded and ready to be drawn
-    ipcEvents.once('components-loaded', () => { //Wait for custom event 
+    
+    const isReady = [
+		new Promise(function(resolve) { 
+			MainWin.once('ready-to-show', () => { return resolve() }); //Window is loaded and ready to be drawn
+		}),
+		new Promise(function(resolve) { 
+			ipcMain.handleOnce('components-loaded', () => { return resolve() }); //Wait for custom event 
+		})
+    ];
+    
+    Promise.all(isReady).then(() => {
         MainWin.show();
 		MainWin.focus();
-    });
-    //});
+	});
 
     MainWin.on('closed', () => {
       MainWin = null

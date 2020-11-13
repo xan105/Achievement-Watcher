@@ -8,7 +8,7 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.4.0"
+#define OurVersion "1.4.1"
 #define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
@@ -41,7 +41,7 @@ Compression=lzma2/max
 DiskSpanning=no
   SlicesPerDisk=3
   DiskSliceSize=1566000000
-OutputDir=output\
+OutputDir=_dist_\
   OutputBaseFilename={#OutputFileName}
 SolidCompression=no
 AllowRootDirectory=yes
@@ -89,7 +89,7 @@ Source: "resources\warning.bmp"; DestDir: "{tmp}" ;Flags: dontcopy;
 Source: "resources\curl.exe"; DestDir: "{tmp}" ; Flags: dontcopy;
 Source: "..\app\node_modules\electron\dist\*"; Excludes: "\electron.exe,\LICENSE,\version,\resources\default_app.asar"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;   
 Source: "..\service\*"; Excludes: "\buildme.cmd,\watchdog\_wip_,\watchdog\patches"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
-Source: "prod\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
+Source: "{{app}}\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;       
     
 [Icons]

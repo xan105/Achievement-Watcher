@@ -1,7 +1,5 @@
 temp/
-todo.txt
-server/start.sh
 app/node_modules/
-server/node_modules/
-service/src/updater/node_modules/
-service/src/watchdog/node_modules/
+server/server/v2/node_modules/
+service/updater/node_modules/
+service/watchdog/node_modules/
