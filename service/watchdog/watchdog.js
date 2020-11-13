@@ -299,7 +299,7 @@ var app = {
 			so we can display it in AW and post process it (cf: screenshot studio feature) */
             souvenir = await screenshot(filePath);
           }catch(err){
-            debug.err(err);
+            debug.error(err);
           }
          }
 
