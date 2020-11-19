@@ -33,6 +33,7 @@ try {
         nodeIntegration: true,
         contextIsolation: false,
         webviewTag: false,
+        v8CacheOptions: (manifest.config.debug) ? "none" : "code",
         enableRemoteModule: true //Remove me when RemoteModule to IPC makeover is done
     };
     
