@@ -3,3 +3,4 @@ app/node_modules/
 server/server/v2/node_modules/
 service/updater/node_modules/
 service/watchdog/node_modules/
+service/watchdog/_wip_
