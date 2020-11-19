@@ -293,7 +293,7 @@ var app = {
          let souvenir;
          if(self.options.notification.souvenir) {
           try {
-			const userfolder = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","My Pictures");
+			const userfolder = await regedit.promises.RegQueryStringValueAndExpand("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","My Pictures");
 			const filePath = path.join(userfolder,fs.win32.sanitizeFileName(notification.title),fs.win32.sanitizeFileName(notification.message));
 			/*To do: change to appdata under appid\ach_api_name.png 
 			so we can display it in AW and post process it (cf: screenshot studio feature) */
