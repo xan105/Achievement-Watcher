@@ -125,6 +125,10 @@ var app = {
 
         if (evt !== "update") return;
         
+        const currentTime = Date.now();
+		const fileLastModified = (await fs.stats(name)).mtimeMs || 0;
+		if ( (currentTime - fileLastModified) > 1000) return;
+        
         let filePath = path.parse(name);
         if (!options.file.some(file => file == filePath.base)) return;
         
