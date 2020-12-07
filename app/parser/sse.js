@@ -4,12 +4,13 @@ function parse(buffer) {
 
 	if (!Buffer.isBuffer(buffer)) throw "ENOTABUFFER";
 
-    const header = buffer.slice(0, 4);
-    const statsCount = toInt(header.slice(0,1));
-    const statsLength = 24; //Each entries are 24 bytes long
+    const Length = 24; //Each entries are 24 bytes long
     
-    const stats = bufferSplit(buffer.slice(header.length, buffer.length), statsLength);
-    if (stats.length !== statsCount) throw "EUNEXPECTEDFILECONTENT";
+    const header = buffer.slice(0, 4);
+    const stats = bufferSplit(buffer.slice(header.length, buffer.length), Length);
+    
+    const expectedStatsCount = toInt(header);
+    if (stats.length !== expectedStatsCount) throw "EUNEXPECTEDFILECONTENT";
     
     let result = [];
     
