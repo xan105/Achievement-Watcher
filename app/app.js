@@ -10,6 +10,7 @@ const settings = require(path.join(appPath,"settings.js"));
 const achievements = require(path.join(appPath,"parser/achievements.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
 const userDir = require(path.join(appPath,"parser/userDir.js"));
+const PlaytimeTracking = require(path.join(appPath,"parser/playtime.js"));
 const l10n = require(path.join(appPath,"locale/loader.js"));
 const toastAudio = require(path.join(appPath,"util/toastAudio.js"));
 const debug = new (require("@xan105/log"))({
@@ -309,6 +310,16 @@ var app = {
               $('#achievement .wrapper > .header[data-system="playstation"] .trophy li.silver span').text(game.achievement.list.filter( ach => ach.Achieved && ach.type === "S").length);
               $('#achievement .wrapper > .header[data-system="playstation"] .trophy li.bronze span').text(game.achievement.list.filter( ach => ach.Achieved && ach.type === "B").length);
               
+            }
+            
+            $('#achievement .wrapper > .header .playtime').hide();
+            if (game.system !== "playstation" && game.system !== "uplay"){
+				PlaytimeTracking(game.appid).then((playtime)=>{
+					if(playtime > 0) {
+						$('#achievement .wrapper > .header .playtime span').text(`${moment.duration(playtime,'seconds').humanize()}`);
+						$('#achievement .wrapper > .header .playtime').css("display","inline-block");
+					}
+				}).catch(()=>{});
             }
             
             $("#unlock > .header .sort-ach .sort.time").removeClass("active");

@@ -113,7 +113,9 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(5) .left span").text(clear(template.settings.notification.option.notifyOnProgress.name));
         selector.find("li:nth-child(5) .right select option[value='true']").text(clear(template.settings.common.enable));
         selector.find("li:nth-child(5) .right select option[value='false']").text(clear(template.settings.common.disable));
-        selector.find("li:nth-child(5) .help").text(clear(template.settings.notification.option.notifyOnProgress.description));   
+        selector.find("li:nth-child(5) .help").text(clear(template.settings.notification.option.notifyOnProgress.description));
+        selector.find("li:nth-child(6) .right select option[value='true']").text(clear(template.settings.common.enable));
+        selector.find("li:nth-child(6) .right select option[value='false']").text(clear(template.settings.common.disable));   
         selector = $("#options-notify-toast");
         selector.prev().prev(".title").find("span").text(clear(template.settings.notification.title.toast));
         selector.prev(".info").text(clear(template.settings.notification.info.toast));

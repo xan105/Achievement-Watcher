@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com https://cdn.cloudflare.steamstatic.com/; connect-src 'self' https://api.steampowered.com ws://localhost:8082";>
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-YfJLN8pRq0ZV6AMOTTzwQZx1EoYsiIoui3kXZInyzH6LnGBtaHvCXVtQq0mDIvXj"/>
     <link rel="stylesheet" href="../resources/css/fontawesome.css" type="text/css" integrity="sha384-e5X9merJxSRbQ+hGNUE7iLL7gCXJqDu8YQsh7//vQ+2zgtk/9Juuj68g8/XjU9Y5"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-9J/WhkwP8K/+7KKEpMZLrFrrB39qLHZugamm1E20+Z0l4kw2RepUT0YH7uoO0rNB"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-/oTcYlGiK1kIYhI0lfqwBGtIsKIVPf2BWqJOGVNs368SxoM0bgB7xEfXcnoKZqrn"/>
     <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-HQ5spd2xdIic/81KQMxrDn5bogmZi15hIT9Aib0UlIf2shhHdccRs/ETDfG1aLeY"/>
   </head>
   <body>
@@ -79,6 +79,9 @@
                   <li class="silver"><i class="fas fa-trophy"></i> <span>0</span></li>
                   <li class="bronze"><i class="fas fa-trophy"></i> <span>0</span></li>
                 </ol>  
+              </div>
+              <div class="playtime">
+				<i class="fas fa-stopwatch"></i> <span></span>
               </div>
               <div class="backButton" id="btn-previous"></div>
             </div>
@@ -405,8 +408,8 @@
                         </div>
                         <div class="help"></div>
                       </li>
-                      
-                     <li class="hasHelper expand">
+
+                     <li class="hasHelper">
                         <div class="left"><i class="fas fa-tachometer-alt"></i> <span></span></div>
                         <div class="right">
                          <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
@@ -418,6 +421,19 @@
                         </div>
                         <div class="help"></div>
                       </li>
+                      
+                     <li class="expand">
+                        <div class="left"><i class="fas fa-stopwatch"></i> <span>Playtime</span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_playtime">
+                            <option value="true" selected></option>
+                            <option value="false"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                      </li>
+                      
                   </ul>
                   
                   <div class="title"><span></span></div>
@@ -649,7 +665,7 @@
 <script src="../ui/search.js" type="text/javascript" integrity="sha384-bxUsg0pvXLhMFCMqUpwSwidXS+xOcFktyX8as5qAgzGyXpGvarbNjiM5p+zNHdta"></script> 
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-luz88vQqTBlH73dSdJ8kCBnt1JvWu60LD29t+0ZYIr+SJfgBWLaEk/JdGnRRSHek"></script>
 <script src="../ui/settings.js" type="text/javascript" integrity="sha384-MHTAH3aP48spaYhARwkhdzz1QNHeuousTRiWkUDRBnq6Ps+7EYDzWcDnBko4lmnL"></script>
-<script src="../app.js" type="text/javascript" integrity="sha384-8WNKqLRTZdADnOyt2LZePWZzflegdnsq2Bc2Hu/deYTzYp8F3Ih85hm2o6qzhwFl"></script>     
+<script src="../app.js" type="text/javascript" integrity="sha384-wY71tYrjl/XYycEEG0K3iRxhqGKrzGXRrNnoaBUM/4FqCdPptlU5U4XMaRoxA5ZD"></script>     
     
   </body>
 </html>

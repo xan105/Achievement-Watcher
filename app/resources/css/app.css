@@ -375,6 +375,17 @@ main {
   display: none;
 }
 
+#achievement .wrapper > .header .playtime {
+  background: #15202db5;
+  padding: 10px 20px;
+  border-radius: 3px;
+  display: inline-block;
+  height: 19px;
+  vertical-align: top;
+  margin-left: 10px;
+  display: none;
+}
+
 #achievement .wrapper > .header[data-system="playstation"] .trophy {
   display: inline-block;
 }

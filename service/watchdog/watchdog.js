@@ -20,6 +20,7 @@ const track = require("./track.js");
 const screenshot = require("@xan105/screenshot");
 const xinput = require("xinput-ffi");
 const gntp = require("./util/gntp.js");
+const playtimeMonitor = require("./playtime/monitor.js");
 
 const debug = new (require("@xan105/log"))({
   console: true,
@@ -524,11 +525,39 @@ var app = {
 
 instance.lock().then(() => {
   app.start().catch(()=>{});
+  
   try {
     websocket();
   }catch(err){
     debug.error(err); 
   }
+  
+  playtimeMonitor.init()
+  .then((monitor)=>{
+	
+	debug.log("Playtime monitoring activated");
+	
+	monitor.on("notify",([game, time]) => {
+	  if(app.options.notification.playtime){
+	  
+		  const message = (time) ? time : "Now playing";
+		  
+		  toast({
+			  appID: app.toastID,
+			  uniqueID: `${game.appid}`,
+			  title: game.name,
+			  message: message,
+			  attribution: "Steam Game",
+			  headerImg: `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg`,
+			  icon: `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${game.appid}/${game.icon}.jpg`,
+			  cropIcon: true,
+			  silent: true
+		  }).catch((err)=>{debug.error(err)});
+	  } 
+	}); 
+  
+  })
+  .catch((err)=>{debug.error(err)});
 })
 .catch((err) => {
   debug.error(err);
