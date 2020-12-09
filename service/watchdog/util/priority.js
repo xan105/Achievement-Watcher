@@ -13,9 +13,7 @@ const priority = {
 };
 
 module.exports.set = async (level,pid = process.pid) => {
-  try{
-    await util.promisify(exec)('wmic process where "ProcessId=' + pid + '" CALL setpriority '+priority[`${level}`],{windowsHide: true});
-  }catch(err){
-    throw err;
-  } 
+	if ( !priority.hasOwnProperty(level) ) throw "Unknown priority level";
+    const output = await util.promisify(exec)('wmic process where "ProcessId=' + pid + '" CALL setpriority '+priority[`${level}`],{windowsHide: true});
+    if (output.stderr) throw output.stderr;
 }
