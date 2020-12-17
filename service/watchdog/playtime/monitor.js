@@ -28,6 +28,7 @@ const filter = [
 	"smartscreen.exe",
 	"explorer.exe",
 	"FileCoAuth.exe",
+	"sc.exe",
 	"audiodg.exe",
 	"OAWrapper.exe", //NVIDIA GeForce Experience
 	"firefox.exe",
