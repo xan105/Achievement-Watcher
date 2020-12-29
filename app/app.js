@@ -52,6 +52,8 @@ var app = {
    $("#user-info .info .stats li:eq(1) span.data").text("0");
    $("#user-info .info .stats li:eq(2) span.data").text("0");
    
+   $("#search-bar input[type=search]").val("").change();
+   
    achievements.makeList(self.config,(percent)=>{
    
       loadingElem.progress.attr("data-percent",percent);

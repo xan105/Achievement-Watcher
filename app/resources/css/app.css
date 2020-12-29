@@ -1404,7 +1404,7 @@ main {
     text-transform: capitalize;
 }
 
-#search-bar input[type=search]:focus {
+#search-bar input[type=search]:focus, #search-bar input[type=search].has {
 	width: 105px;
 	box-shadow: rgba(198, 212, 223, 0.5) 0px 0px 8px 2px;
 	padding-left: 32px;

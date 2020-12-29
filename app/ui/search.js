@@ -25,6 +25,14 @@
         });
       
       });
+      
+      $("#search-bar input[type=search]").change(function(){
+		let self = $(this);
+		
+		if (self.val().length > 0) self.addClass("has");
+		else self.removeClass("has");
+      
+      });
 
   });
 }(window.jQuery, window, document)); 
