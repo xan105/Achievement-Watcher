@@ -82,10 +82,6 @@ module.exports.load = ()=>{
           options.notification.souvenir = true;
         }
 
-        if (typeof options.notification.showDesc !== "boolean"){
-          options.notification.showDesc = false;
-        }
-
         if (typeof options.notification.rumble !== "boolean"){
           options.notification.rumble = true;
         }
@@ -96,6 +92,10 @@ module.exports.load = ()=>{
         
         if (typeof options.notification.playtime !== "boolean"){
           options.notification.playtime = true;
+        }
+        
+        if (options.notification.videoHighlight != 0 && options.notification.videoHighlight != 1 && options.notification.videoHighlight != 2){
+          options.notification.videoHighlight = 0;
         }
         
         //Toast
@@ -185,10 +185,10 @@ module.exports.load = ()=>{
           notification: {
             notify: true,           
             souvenir: true,
-            showDesc: false,
             rumble: true,
             notifyOnProgress: true,
-            playtime: true
+            playtime: true,
+            videoHighlight: 0
           },
           notification_toast: {
             customToastAudio: 1,
