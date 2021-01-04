@@ -104,11 +104,6 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
 
-        if (typeof options.notification.showDesc !== "boolean"){
-          options.notification.showDesc = false;
-          fixFile = true;
-        }
-
         if (typeof options.notification.rumble !== "boolean"){
           options.notification.rumble = true;
           fixFile = true;
@@ -121,6 +116,11 @@ module.exports.load = async (cfg_file) => {
         
         if (typeof options.notification.playtime !== "boolean"){
           options.notification.playtime = true;
+          fixFile = true;
+        }
+        
+        if (options.notification.videoHighlight != 0 && options.notification.videoHighlight != 1 && options.notification.videoHighlight != 2){
+          options.notification.videoHighlight = 0;
           fixFile = true;
         }
         
@@ -230,10 +230,10 @@ module.exports.load = async (cfg_file) => {
           notification: {
             notify: true,           
             souvenir: true,
-            showDesc: false,
             rumble: true,
             notifyOnProgress: true,
-            playtime: true
+            playtime: true,
+            videoHighlight: 0
           },
           notification_toast: {
             customToastAudio: 1,

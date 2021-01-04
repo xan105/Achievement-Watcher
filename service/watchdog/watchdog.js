@@ -7,9 +7,6 @@ const getStartApps = require('get-startapps');
 const watch = require('node-watch');
 const tasklist = require('win-tasklist');
 const moment = require("moment");
-const toast = require("powertoast");
-const balloon = require("powerballoon");
-const regedit = require('regodit');
 const websocket = require("./websocket.js");
 const processPriority = require("./util/priority.js");
 const fs = require("@xan105/fs");
@@ -17,16 +14,11 @@ const settings = require('./settings.js');
 const monitor = require('./monitor.js');
 const steam = require("./steam.js");
 const track = require("./track.js");
-const screenshot = require("@xan105/screenshot");
-const xinput = require("xinput-ffi");
-const gntp = require("./util/gntp.js");
 const playtimeMonitor = require("./playtime/monitor.js");
-
-const debug = new (require("@xan105/log"))({
-  console: true,
-  file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/notification.log")
-});
+const notify = require("./notification/toaster.js");
+const debug = require("./util/log.js");
 const { crc32 } = require('crc');
+const { isWinRTAvailable } = require('powertoast');
 
 const cfg_file = {
   option: path.join(process.env['APPDATA'],"Achievement Watcher/cfg","options.ini"),
@@ -34,6 +26,7 @@ const cfg_file = {
 }
 
 var app = { 
+  isRecording: false,
   cache : [],
   options : {},
   watcher: [],
@@ -56,6 +49,9 @@ var app = {
      self.options = await settings.load(cfg_file.option);
      debug.log(self.options);
      
+     if (isWinRTAvailable() === true && self.options.notification_transport.winRT === true) debug.log("[Toast] will use WinRT");
+     else debug.warn("[Toast] will use PowerShell");
+     
      getStartApps.has({id:"GamingOverlay"}).then((hasXboxOverlay) => {
 
         let win_ver = os.release().split(".");
@@ -68,25 +64,25 @@ var app = {
                 self.toastID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
         }
 
-        debug.log(`Toast will use "${self.toastID}"`);
+        debug.log(`[Toast] will use appid: "${self.toastID}"`);
          
       })
       .then(()=>{ return getStartApps.isValidAUMID(self.toastID)})
       .then((res)=>{ 
       
 		if(!res){ 
-			debug.warn("Not a valid AUMID !");
+			debug.warn("[Toast] which is not a valid AUMID !");
 			if(!self.options.notification_advanced.iconPrefetch) {
 				self.options.notification_advanced.iconPrefetch = true;
-				debug.warn("Forcing iconPrefetch to true so you will have achievement icon");
+				debug.warn("[Toast] Forcing iconPrefetch to true so you will have achievement icon");
 			}
         } else {
-			debug.log("valid AUMID");
+			debug.log("[Toast] which is a valid AUMID");
         }
       
       })
       .catch(()=>{});
-     
+
      try {
         self.watcher[0] = watch(cfg_file.option, function(evt, name) {
               if (evt === "update") {
@@ -203,16 +199,38 @@ var app = {
                               
                               debug.log("Unlocked:"+ ach.displayName);
                               
-                              await self.notify({
-                                 appid: game.appid,
-                                 title: game.name,
-                                 id: ach.name,
-                                 message: ach.displayName,
-                                 description: ach.description, 
-                                 icon: ach.icon,
-                                 time: achievements[i].UnlockTime,
-                                 delay: j
-                              });
+								  await notify({
+									 appid: game.appid,
+									 gameDisplayName: game.name,
+									 achievementName: ach.name,
+									 achievementDisplayName: ach.displayName,
+									 achievementDescription: ach.description, 
+									 icon: ach.icon,
+									 time: achievements[i].UnlockTime,
+									 delay: j
+								  },{
+									notify: self.options.notification.notify,
+									transport: {
+									  toast: self.options.notification_transport.toast,
+									  gntp: self.options.notification_transport.gntp,
+									  websocket: self.options.notification_transport.websocket
+									},
+									toast: {
+									  appid: self.toastID,
+									  winrt: self.options.notification_transport.winRT,
+									  balloonFallback: self.options.notification_transport.balloon,
+									  customAudio: self.options.notification_toast.customToastAudio,
+									  imageIntegration: self.options.notification_toast.toastSouvenir,
+									  group: self.options.notification_toast.groupToast,
+									  attribution: "Achievement"
+									},
+									prefetch: self.options.notification_advanced.iconPrefetch,
+									souvenir: {
+										screenshot: self.options.notification.souvenir,
+										videoHighlight: self.options.notification.videoHighlight
+									},
+									rumble: self.options.notification.rumble
+								  });
                                       
                               j+=1;
                            } else {
@@ -223,24 +241,44 @@ var app = {
                           debug.log("Already unlocked:"+ ach.displayName);
                           if (previous.UnlockTime > 0 && previous.UnlockTime != achievements[i].UnlockTime) achievements[i].UnlockTime = previous.UnlockTime;
                           
-                       } else if (!achievements[i].Achieved && achievements[i].MaxProgress > 0 && previous.CurProgress < achievements[i].CurProgress ) {
+                       } else if (!achievements[i].Achieved && achievements[i].MaxProgress > 0 && +previous.CurProgress < +achievements[i].CurProgress ) {
                           
                           debug.log("Progress update:"+ ach.displayName);
-
-                          await self.notifyProgress({
-                               appid: game.appid,
-                               title: game.name,
-                               id: ach.name,
-                               message: ach.displayName,
-                               description: ach.description, 
-                               icon: ach.icongray,
-                               progress: {
-                                current: achievements[i].CurProgress,
-                                max: achievements[i].MaxProgress
-                               }
-                          });
                           
-                       }
+                              await notify({
+                                 appid: game.appid,
+                                 gameDisplayName: game.name,
+                                 achievementName: ach.name,
+                                 achievementDisplayName: ach.displayName,
+                                 achievementDescription: ach.description, 
+                                 icon: ach.icongray,
+                                 progress: {
+									current: achievements[i].CurProgress,
+									max: achievements[i].MaxProgress
+                                 }
+                              },{
+								notify: self.options.notification.notify,
+								transport: {
+								  toast: self.options.notification_transport.toast,
+								  gntp: self.options.notification_transport.gntp,
+							      websocket: self.options.notification_transport.websocket
+								},
+								toast: {
+								  appid: self.toastID,
+							      winrt: self.options.notification_transport.winRT,
+								  balloonFallback: self.options.notification_transport.balloon,
+								  customAudio: 0,
+								  imageIntegration: self.options.notification_toast.toastSouvenir,
+								  group: self.options.notification_toast.groupToast
+								},
+								prefetch: self.options.notification_advanced.iconPrefetch,
+								souvenir: {
+									screenshot: false,
+									videoHighlight: 0
+								},
+								rumble: false
+                              });
+                        }
               
                 }catch(err){
                    if(err === "ACH_NOT_FOUND_IN_SCHEMA") {
@@ -288,238 +326,6 @@ var app = {
     }catch(err) {
       throw err;
     }
-  },
-  notify : async function (notification = {}){
-  
-      try {
-
-         let self = this;
-
-         let souvenir;
-         if(self.options.notification.souvenir) {
-          try {
-			const userfolder = await regedit.promises.RegQueryStringValueAndExpand("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","My Pictures");
-			const filePath = path.join(userfolder,fs.win32.sanitizeFileName(notification.title),fs.win32.sanitizeFileName(notification.message));
-			/*To do: change to appdata under appid\ach_api_name.png 
-			so we can display it in AW and post process it (cf: screenshot studio feature) */
-            souvenir = await screenshot(filePath);
-          }catch(err){
-            debug.error(err);
-          }
-         }
-
-         if (self.options.notification.notify) {
-            
-            if (self.options.notification_advanced.iconPrefetch) {
-              debug.log("Prefetching icon ...");
-              notification.icon = await steam.fetchIcon(notification.icon,notification.appid);
-            }
-            
-            debug.log(notification);
-
-            if (self.options.notification_transport.websocket) {
-              websocket.broadcast({
-                       appID: notification.appid,
-                       title: notification.title,
-                       id: notification.id,
-                       message: notification.message,
-                       description: notification.description,
-                       icon: notification.icon,
-                       time: notification.time
-              });
-            }
-
-            if (self.options.notification_transport.toast) {
-              try{
-              
-                 let options = {
-                        appID: self.toastID,
-                        uniqueID: `${notification.appid}:${notification.id}`,
-                        timeStamp: notification.time,
-                        title: notification.title,
-                        message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`,
-                        icon: notification.icon,
-                        attribution: "Achievement",
-                        onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`,
-                        silent: (self.options.notification_toast.customToastAudio == 0) ? true : false,
-                        audio: (self.options.notification_toast.customToastAudio == 2) ? "ms-winsoundevent:Notification.Achievement" : null               
-                 };
-                 
-                 if (self.options.notification.souvenir && self.options.notification_toast.toastSouvenir > 0 && souvenir) {
-                    if (self.options.notification_toast.toastSouvenir == 1) {
-                      options.headerImg = souvenir;
-                    } else if (self.options.notification_toast.toastSouvenir == 2) {
-                      options.footerImg = souvenir;
-                    }
-                 }
-
-                 if(self.options.notification_toast.groupToast) options.group = {id: notification.appid, title: notification.title};
-
-                 if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
-
-                 await toast(options);            
-
-              }catch(err){
-                debug.error(err);
-                debug.error("Fail to invoke toast notification");
-                
-                if(self.options.notification_transport.balloon) {
-                  debug.warn("Fallback to balloon-tooltip requested");
-                  try{
-                    await balloon({
-                      title: notification.title,
-                      message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`,
-                      ico: "./icon.ico"
-                    });
-                  }catch(err){
-                    debug.error(err);
-                  }
-                }
-                
-              }
-           
-           } else {
-            debug.log("Toast notification is disabled > SKIPPING")
-           }
-           
-           if (self.options.notification_transport.gntp) {
-               gntp.hasGrowl().then((has)=>{
-                  if (has) {
-                    debug.log("Sending GNTP Grrr!");
-                    return gntp.send({
-                                 title: notification.title, 
-                                 message: (self.options.notification.showDesc && notification.description) ? `${notification.message}\n${notification.description}` : `${notification.message}`, 
-                                 icon: notification.icon
-                           });
-                  } else {
-                    debug.error("GNTP endpoint unreachable!");
-                  }
-               }).catch((err)=>{debug.log(err)});
-           } else{
-            debug.log("GNTP notification is disabled > SKIPPING")
-           }
-           
-           if(self.options.notification.rumble){
-               if (!self.options.notification_transport.toast) notification.delay = 0;
-              
-			   let toast_duration = 5;
-               let windows_toast_duration = await regedit.promises.RegQueryIntegerValue("HKCU","Control Panel/Accessibility","MessageDuration").catch(()=>{});
-               if(windows_toast_duration) toast_duration = +windows_toast_duration;
-               
-               setTimeout(function(){  
-                    xinput.rumble().catch(()=>{});
-               }, (toast_duration * 1000) * notification.delay || 0);
-            }
-
-         } else {
-           debug.log("Notification is disabled > SKIPPING");
-         }   
-
-    }catch(err){
-      debug.error(err);
-    }
-  },
-  notifyProgress: async function (notification = {}){
-    try {
-
-      let self = this; 
-      
-      if (self.options.notification.notifyOnProgress) {
-      
-             if (self.options.notification_advanced.iconPrefetch) {
-               debug.log("Prefetching icon ...");
-               notification.icon = await steam.fetchIcon(notification.icon,notification.appid);
-             }
-      
-             debug.log(notification);
-
-             if (self.options.notification_transport.websocket) {
-               websocket.broadcast({
-                         appID: notification.appid,
-                         title: notification.title,
-                         id: notification.id,
-                         message: notification.message,
-                         description: notification.description,
-                         icon: notification.icon,
-                         time: notification.time,
-                         progress: {
-                          current: notification.progress.current,
-                          max: notification.progress.max
-                         }
-               });
-             }
-
-             if (self.options.notification_transport.toast) {
-                  try{
-
-                       let options = {   
-                           appID: self.toastID,
-                           uniqueID: `${notification.appid}:${notification.id}`,
-                           title: notification.title,
-                           icon: notification.icon,
-                           attribution: "Progress",
-                           onClick: `ach:--appid ${notification.appid} --name '${notification.id}'`,
-                           silent: true,
-                           progress: {
-                              header: notification.message,
-                              footer: notification.description,
-                              percent: notification.progress.current, 
-                           }
-                       };
-                       
-                       if (notification.progress.max != 100) options.progress.custom = `${notification.progress.current}/${notification.progress.max}`;
-                       
-                       if(self.options.notification_toast.groupToast) options.group = {id: notification.appid, title: notification.title}; 
-                       
-                       if(self.options.notification_transport.winRT === false) options.disableWinRT = true;
-
-                       await toast(options); 
-                       
-                  }catch(err){
-                       debug.error(err);
-                       debug.error("Fail to invoke toast notification");
-                       
-                       if(self.options.notification_transport.balloon) {
-                          debug.warn("Fallback to balloon-tooltip requested");
-                          try{
-                            await balloon({
-                              title: notification.title,
-                              message: (self.options.notification.showDesc && notification.description) ? `[ ${notification.progress.current}/${notification.progress.max} ]\n${notification.message}\n${notification.description}` : `[ ${notification.progress.current}/${notification.progress.max} ]\n${notification.message}`,
-                              ico: "./icon.ico"
-                            });
-                          }catch(err){
-                            debug.log(err);
-                          }
-                        }
-                  }  
-             } else {
-                  debug.log("Toast notification is disabled > SKIPPING")
-             }
-           
-             if (self.options.notification_transport.gntp) {
-                 gntp.hasGrowl().then((has)=>{
-                    if (has) {
-                      debug.log("Sending GNTP Grrr!");
-                      return gntp.send({
-                                   title: notification.title, 
-                                   message: (self.options.notification.showDesc && notification.description) ? `[ ${notification.progress.current}/${notification.progress.max} ]\n${notification.message}\n${notification.description}` : `[ ${notification.progress.current}/${notification.progress.max} ]\n${notification.message}`, 
-                                   icon: notification.icon
-                             });
-                    } else {
-                      debug.error("GNTP endpoint unreachable!");
-                    }
-                 }).catch((err)=>{debug.log(err)});
-            } else{
-                 debug.log("GNTP notification is disabled > SKIPPING")
-            }    
-                      
-      }else{
-         debug.log("Notification on progress is disabled > SKIPPING");
-      }   
-  
-    }catch(err){
-      debug.error(err);
-    }
   }
 }
 
@@ -529,9 +335,9 @@ instance.lock().then(() => {
   try {
     websocket();
   }catch(err){
-    debug.error(err); 
+	debug.error(err);
   }
-  
+
   playtimeMonitor.init()
   .then((monitor)=>{
 	
@@ -539,20 +345,40 @@ instance.lock().then(() => {
 	
 	monitor.on("notify",([game, time]) => {
 	  if(app.options.notification.playtime){
-	  
-		  const message = (time) ? time : "Now playing";
-		  
-		  toast({
-			  appID: app.toastID,
-			  uniqueID: `${game.appid}`,
-			  title: game.name,
-			  message: message,
-			  attribution: "Steam Game",
-			  headerImg: `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg`,
-			  icon: `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${game.appid}/${game.icon}.jpg`,
-			  cropIcon: true,
-			  silent: true
-		  }).catch((err)=>{debug.error(err)});
+
+		    notify({
+                appid: game.appid,
+                gameDisplayName: game.name,
+                achievementDisplayName: game.name,
+                achievementDescription: (time) ? time : "Now playing", 
+                icon: `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${game.appid}/${game.icon}.jpg`,
+                image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg`,
+            },{
+				notify: app.options.notification.notify,
+				transport: {
+					toast: app.options.notification_transport.toast,
+					gntp: app.options.notification_transport.gntp,
+					websocket: false
+				},
+				toast: {
+					appid: app.toastID,
+					winrt: app.options.notification_transport.winRT,
+					balloonFallback: app.options.notification_transport.balloon,
+					customAudio: 0,
+					imageIntegration: 1,
+					group: app.options.notification_toast.groupToast,
+					cropIcon: true,
+					attribution: "Achievement Watcher"
+				},
+				gntpLabel: "Playtime",
+				prefetch: app.options.notification_advanced.iconPrefetch,
+				souvenir: {
+					screenshot: false,
+					videoHighlight: 0
+				},
+				rumble: false
+            });
+  
 	  } 
 	}); 
   

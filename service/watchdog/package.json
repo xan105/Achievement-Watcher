@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watchdog",
   "description": "Sidekick to Achievement Watcher for live notification on achievement unlocking",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "watchdog.js",
   "scripts": {
     "start": "node watchdog.js",
@@ -19,6 +19,7 @@
     "@xan105/fs": "github:xan105/node-fs",
     "@xan105/log": "github:xan105/node-log",
     "@xan105/screenshot": "github:xan105/node-cgo-screenshot",
+    "@xan105/video-capture": "github:xan105/node-video-capture",
     "crc": "^3.8.0",
     "emittery": "^0.7.2",
     "ffi-napi": "^3.0.1",
@@ -33,7 +34,7 @@
     "node-watch": "^0.6.4",
     "os-locale": "^3.1.0",
     "powerballoon": "^1.0.4",
-    "powertoast": "^1.2.1",
+    "powertoast": "^1.2.3",
     "regodit": "^1.1.0",
     "request-zero": "^0.3.1",
     "single-instance": "0.0.1",

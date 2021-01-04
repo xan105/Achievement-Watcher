@@ -14,29 +14,7 @@ const debug = new (require("@xan105/log"))({
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/playtime.log")
 });
 
-const filter = [
-	"nw.exe",
-	"svchost.exe",
-	"conhost.exe",
-	"dllhost.exe",
-	"backgroundTaskHost.exe",
-	"SearchProtocolHost.exe",
-	"SearchFilterHost.exe",
-	"RuntimeBroker.exe",
-	"powershell.exe",
-	"cmd.exe",
-	"smartscreen.exe",
-	"explorer.exe",
-	"FileCoAuth.exe",
-	"sc.exe",
-	"audiodg.exe",
-	"OAWrapper.exe", //NVIDIA GeForce Experience
-	"firefox.exe",
-	"chrome.exe",
-	"GameLauncher.exe",
-	"game.exe",
-	"launcher.exe"
-];
+const filter = require("./filter.json");
 
 async function init(){
 

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
-const EventEmitter = require('events');
+const EventEmitter = require('emittery');
 const ws = require('ws');
 const debug = new (require("@xan105/log"))({
   console: true,
@@ -86,8 +86,8 @@ module.exports = (option = {}) => {
      client.isAlive = true;
      client.on('pong', function(){ this.isAlive = true });
      
-     //client.on('message', function(message){ emitter.emit('message', this, message) });
-     client.on('message', incoming); /* To do mv to another file and use emitter instead*/
+     //client.on('message', function(message){ emitter.emit('message', [this, message]) });
+     client.on('message', incoming);
      client.on('close', function(code, reason){ debug.log(`[${this.id}](${this.ip}) connection close (${code}) ${reason}`) });
      client.on('error', function(err){ debug.error(`[${this.id}](${this.ip}) Error: ${err}`) });
   });

@@ -1,0 +1,23 @@
+[
+	"nw.exe",
+	"svchost.exe",
+	"conhost.exe",
+	"dllhost.exe",
+	"backgroundTaskHost.exe",
+	"SearchProtocolHost.exe",
+	"SearchFilterHost.exe",
+	"RuntimeBroker.exe",
+	"powershell.exe",
+	"cmd.exe",
+	"smartscreen.exe",
+	"explorer.exe",
+	"FileCoAuth.exe",
+	"sc.exe",
+	"audiodg.exe",
+	"OAWrapper.exe",
+	"firefox.exe",
+	"chrome.exe",
+	"GameLauncher.exe",
+	"game.exe",
+	"launcher.exe"
+]

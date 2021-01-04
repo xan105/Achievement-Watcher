@@ -6,7 +6,7 @@ const toast = require("powertoast");
 const balloon = require("powerballoon");
 const getStartApps = require('get-startapps');
 const regedit = require('regodit');
-const gntp = require("./util/gntp.js");
+const gntp = require("./notification/transport/gntp.js");
 const settings = require('./settings.js');
 const xinput = require("xinput-ffi");
 
