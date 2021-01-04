@@ -1,0 +1,8 @@
+Contact me about a (free) open source license (MIT ?).
+
+Basically I can release the code under "some license", but it cannot be the GPL, or so I'm told:
+http://social.msdn.microsoft.com/Forums/en-US/windowsdirectshowdevelopment/thread/a3e8f60b-39e4-4621-837b-50a9a9a469b7
+
+In essence, since its its own DLL (and I hereby grant license to distribute it free of charge, no warranty given of course) you can use it "verbatim" in your project, so you don't need to worry too much about its license per se, since it's "its own dll" project.
+
+Cheers!

@@ -8,12 +8,12 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.4.3"
+#define OurVersion "1.5.0"
 #define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
 #define VersionURL "https://github.com/xan105/Achievement-Watcher/raw/master/setup/version.ini"
-#define Copyright "© 2019-2020"
+#define Copyright "© 2019-2021"
 
 ; xp, vista, win7, win8, win8.1, win10
 #define MinWin "win7"
@@ -102,6 +102,7 @@ Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; Wo
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\node\node.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
+Filename: "{cmd}"; Parameters: "/c regsvr32 /s virtual-audio-capturer.dll"; WorkingDir: "{app}\loopback"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{app}\node\node.exe"; Parameters: "watchdog"; WorkingDir: "{#AppWorkingDir}\watchdog"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
 Filename: "{app}\node\node.exe"; Parameters:"updater --notify"; WorkingDir: "{#AppWorkingDir}\updater"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist skipifnotsilent; Check: CmdLineHasSwitch('/NOTIFY')
 ;PostInstall Checkbox
@@ -113,6 +114,7 @@ Type: filesandordirs; Name: "{userappdata}\Achievement Watcher"
 [UninstallRun]
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Delete /F /TN ""Achievement Watcher Upgrade Daily"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Delete /F /TN ""Achievement Watcher Upgrade OnLogon"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
+Filename: "{cmd}"; Parameters: "/c regsvr32 /s /u virtual-audio-capturer.dll"; WorkingDir: "{app}\loopback"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 
 [Registry]
 Root: HKCR; Subkey: "ach"; ValueType: "string"; ValueData: "URL:Custom Protocol"; Flags: uninsdeletekey
@@ -121,8 +123,8 @@ Root: HKCR; Subkey: "ach\DefaultIcon"; ValueType: "string"; ValueData: "{#AppMai
 Root: HKCR; Subkey: "ach\shell\open\command"; ValueType: "string"; ValueData: """{#AppMain}"" ""%1""" ;Flags: uninsdeletekey
 ;Custom Sound Schema
 Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement"; ValueType: "string"; Flags: uninsdeletekey
-Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.Current"; ValueType: "string"; ValueData: "{win}\media\Achievement Windows 10 Notify System Generic.wav" ; Flags: uninsdeletekey createvalueifdoesntexist
-Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.Default"; ValueType: "string"; ValueData: "{win}\media\Achievement Windows 10 Notify System Generic.wav" ; Flags: uninsdeletekey createvalueifdoesntexist
+Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.Current"; ValueType: "string"; ValueData: "{win}\media\Achievement Watcher - Windows 10 Notify System Generic.wav" ; Flags: uninsdeletekey createvalueifdoesntexist
+Root: HKCU; Subkey: "AppEvents\Schemes\Apps\.Default\Notification.Achievement\.Default"; ValueType: "string"; ValueData: "{win}\media\Achievement Watcher - Windows 10 Notify System Generic.wav" ; Flags: uninsdeletekey createvalueifdoesntexist
 ;Disable Windows 8.1 quiet hours
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHours"; ValueType: "dword"; ValueName: "Enable"; ValueData: "0" ;Flags: uninsdeletekey; Check: isWin('win8.1')
 
