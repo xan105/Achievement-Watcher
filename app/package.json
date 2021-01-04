@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "main": "./electron/init.js",
   "scripts": {
     "start": "electron .",
