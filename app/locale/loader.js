@@ -102,10 +102,9 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(2) .right select option[value='true']").text(clear(template.settings.common.enable));
         selector.find("li:nth-child(2) .right select option[value='false']").text(clear(template.settings.common.disable));
         selector.find("li:nth-child(2) .help").text(clear(template.settings.notification.option.souvenir.description));
-        selector.find("li:nth-child(3) .left span").text(clear(template.settings.notification.option.showDesc.name));
-        selector.find("li:nth-child(3) .right select option[value='true']").text(clear(template.settings.common.enable));
-        selector.find("li:nth-child(3) .right select option[value='false']").text(clear(template.settings.common.disable));
-        selector.find("li:nth-child(3) .help").text(clear(template.settings.notification.option.showDesc.description));
+        selector.find("li:nth-child(3) .left span").text(clear(template.settings.notification.option.videoHighlight.name));
+        selector.find("li:nth-child(3) .right select option[value='0']").text(clear(template.settings.common.disable));
+        selector.find("li:nth-child(3) .help").text(clear(template.settings.notification.option.videoHighlight.description)); 
         selector.find("li:nth-child(4) .left span").text(clear(template.settings.notification.option.rumble.name));
         selector.find("li:nth-child(4) .right select option[value='true']").text(clear(template.settings.common.enable));
         selector.find("li:nth-child(4) .right select option[value='false']").text(clear(template.settings.common.disable));
@@ -114,8 +113,10 @@ function translateUI(lang,locale,template){
         selector.find("li:nth-child(5) .right select option[value='true']").text(clear(template.settings.common.enable));
         selector.find("li:nth-child(5) .right select option[value='false']").text(clear(template.settings.common.disable));
         selector.find("li:nth-child(5) .help").text(clear(template.settings.notification.option.notifyOnProgress.description));
+        selector.find("li:nth-child(6) .left span").text(clear(template.settings.notification.option.playtime.name));
         selector.find("li:nth-child(6) .right select option[value='true']").text(clear(template.settings.common.enable));
-        selector.find("li:nth-child(6) .right select option[value='false']").text(clear(template.settings.common.disable));   
+        selector.find("li:nth-child(6) .right select option[value='false']").text(clear(template.settings.common.disable));  
+        selector.find("li:nth-child(6) .help").text(clear(template.settings.notification.option.playtime.description));
         selector = $("#options-notify-toast");
         selector.prev().prev(".title").find("span").text(clear(template.settings.notification.title.toast));
         selector.prev(".info").text(clear(template.settings.notification.info.toast));

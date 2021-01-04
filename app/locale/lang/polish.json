@@ -81,10 +81,6 @@
           "name": "Pamiątka",
           "description": "Zrób zrzut ekranu kiedy odblokujesz osiągnięcie"
         },
-        "showDesc" : {
-          "name": "Pokaż opis",
-          "description": "Pokaż opis zdobytego osiągnięcia, jeżeli taki jest"
-        },
         "rumble" : {
           "name": "Wibracja kontrolera (XInput)",
           "description": "Wibruje pierwszy kontroler kiedy zdobędziesz osiągnięcie"

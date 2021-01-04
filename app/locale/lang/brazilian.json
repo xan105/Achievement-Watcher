@@ -81,10 +81,6 @@
           "name": "Lembrança",
           "description": "Faça uma captura de tela ao desbloquear uma conquista"
         },
-        "showDesc" : {
-          "name": "Mostrar descrição",
-          "description": "Mostrar descrição da conquista, se houver"
-        },
         "rumble" : {
           "name": "Vibração do Controle (XInput)",
           "description": "Vibra o controle ao desbloquear uma conquista"

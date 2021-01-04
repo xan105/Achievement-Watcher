@@ -81,10 +81,6 @@
           "name": "Emlék",
           "description": "Képernyőmentés készítése, teljesítmény feloldásnál"
         },
-        "showDesc" : {
-          "name": "Leírás felfedése",
-          "description": "Teljesítmény leírás felfedése, ha elérhető"
-        },
         "rumble" : {
           "name": "Játékvezérlő rezgés (XInput)",
           "description": "Teljesítmény feloldásnál rezgést generál az elsődleges játékvezérlőn"

@@ -82,10 +82,6 @@
           "name": "Bildschirmfoto",
           "description": "Bildschirmfoto erstellen, wenn ein Erfolg erreicht wird."
         },
-        "showDesc" : {
-          "name": "Beschreibung anzeigen",
-          "description": "Beschreibung des Erfolges anzeigen, falls vorhanden."
-        },
         "rumble" : {
           "name": "Gamepad Vibration (XInput)",
           "description": "Das erste Gamepad vibrieren lassen, wenn ein Erfolg erreicht wird."

@@ -81,10 +81,6 @@
           "name": "Souvenir",
           "description": "Tomar una captura de pantalla cuando desbloquees un logro"
         },
-        "showDesc" : {
-          "name": "Mostrar descripción",
-          "description": "Mostrar la descripción de los logros, si los hubiera"
-        },
         "rumble" : {
           "name": "Vibración del gamepad (XInput)",
           "description": "Vibra el primer controlador al desbloquear un logro"

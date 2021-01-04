@@ -81,9 +81,9 @@
           "name": "Souvenir",
           "description": "Prendre une capture d'écran lorsque vous débloquez un succès"
         },
-        "showDesc" : {
-          "name": "Montrer la description",
-          "description": "Montrer la description du succès s'il y en a une"
+        "videoHighlight": {
+          "name": "Souvenir vidéo",
+          "description": "Enregistrez une courte vidéo lorsque vous débloquez un succès à l'aide de l'encodeur matériel de votre GPU"
         },
         "rumble" : {
           "name": "Vibration de la manette (XInput)",
@@ -92,6 +92,10 @@
         "notifyOnProgress" : {
           "name": "Rapport d'avancement",
           "description": "Informer sur la progression quand c'est possible"
+        },
+        "playtime": {
+          "name": "Temps de jeux",
+          "description": "Informer du début et de la fin du suivi"
         },
         "customToastAudio" : {
           "name": "Effet sonore du toast",

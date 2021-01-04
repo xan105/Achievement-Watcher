@@ -82,9 +82,9 @@
           "name": "Souvenir",
           "description": "Take a screenshot when you unlock an achievement"
         },
-        "showDesc" : {
-          "name": "Show description",
-          "description": "Show achievement description if any"
+        "videoHighlight": {
+          "name": "Video souvenir",
+          "description": "Record a short video when you unlock an achievement using the hardware encoder of your GPU"
         },
         "rumble" : {
           "name": "Gamepad Vibration (XInput)",
@@ -93,6 +93,10 @@
         "notifyOnProgress" : {
           "name": "Progress report",
           "description": "Notify on achievement progress if possible"
+        },
+        "playtime": {
+          "name": "Playtime tracking",
+          "description": "Notify on tracking start/end"
         },
         "customToastAudio" : {
           "name": "Toast sound",

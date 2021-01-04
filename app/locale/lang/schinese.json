@@ -82,10 +82,6 @@
           "name": "纪念",
           "description": "解锁成就时截图"
         },
-        "showDesc" : {
-          "name": "显示描述",
-          "description": "显示成就描述（如果有）"
-        },
         "rumble" : {
           "name": "手柄震动（XInput）",
           "description": "解锁成就时震动第一个手柄"
