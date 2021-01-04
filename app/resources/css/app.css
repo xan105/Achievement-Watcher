@@ -734,8 +734,17 @@ main {
     text-shadow: rgba(0, 0, 0, .5) 3px 3px 3px;
 }
 
-.achievement .progressBar[data-max="100"]:before {
-    content: attr(data-current) "%";
+.achievement .progressBar:after {
+    content: attr(data-percent) "%";
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%;
+    margin-left: 5px;
+    display: table;
+    color: #dedede;
+    z-index: 1;
 }
 
 .achievement .progressBar:not([data-max="0"]) {
@@ -762,10 +771,13 @@ main {
   color: #ffc04ec7;
 }
 
-.achievement .stats .time:hover span:nth-child(3):first-letter { text-transform: uppercase; }
-.achievement .stats .time span:nth-child(3),
-.achievement .stats .time:hover span:nth-child(2) { display: none; }
-.achievement .stats .time:hover span:nth-child(3) { display: inline-block; }
+.achievement .stats .time span { display: inline-block; }
+.achievement .stats .time span:nth-child(3)::first-letter { text-transform: uppercase; }
+
+.achievement .stats .time span:nth-child(2),
+.achievement .stats .time:hover span:nth-child(3) { display: none; }
+.achievement .stats .time:hover span:nth-child(2) { display: inline-block; }
+
 
 #hidden-disclaimer .achievement .icon {
   display: flex;
