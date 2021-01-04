@@ -35,7 +35,7 @@ module.exports.scan = async (additionalSearch = []) => {
     const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
     if (mydocs) {
       search = search.concat([
-        path.join(mydocs,"Skidrow")
+        path.join(mydocs,"SkidRow")
       ]);
     }
     
