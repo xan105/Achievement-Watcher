@@ -45,7 +45,6 @@ module.exports = async (message, options) => {
 		} else {
 			notification.progress = { percent: message.progress.current	}
 		}
-		notification.sequenceNumber = message.progress.current
     }
 
 	await toast(notification);	
