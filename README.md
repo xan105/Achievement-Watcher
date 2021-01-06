@@ -204,7 +204,7 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
 - souvenir<br />
   default to true<br />
   Take a screenshot when you unlock an achievement in<br />
-  `"Pictures\[Game Name]\[Game Name] - [Achievement Name].png"`<br />
+  `"Pictures\[Game Name]\[Achievement Name].png"`<br />
  
 - showDesc<br />
   default to false<br />
@@ -221,6 +221,22 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   <p align="center">
     <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/ach_progress.png" width="800px">
   </p>
+  
+- playtime<br />
+  default to true<br />
+  Notify on playtime tracking start/end.
+  
+  <p align="center">
+    <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/playtime_notification.png" width="720px">
+  </p>
+
+- videoHighlight<br />
+  default to 0<br />
+  Record a short video when you unlock an achievement using the hardware encoder of your GPU (= low performance hit) in<br />
+  `"Videos\[Game Name]\[Achievement Name].mp4"`<br />
+  (0) disable / (1) NVIDIA (NVENC) / (2) AMD (AMF)<br />
+  
+  _This feature requires NVIDIA or AMD GPU with hardware-accelerated encoding capabilities._
   
 ### [notification_toast]
   
