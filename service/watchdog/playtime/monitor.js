@@ -14,7 +14,17 @@ const debug = new (require("@xan105/log"))({
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/playtime.log")
 });
 
-const filter = require("./filter.json");
+const filter = {
+	ignore: require("./filter.json"), //WMI WQL FILTER
+	mute: [
+		process.env['APPDATA'],
+		process.env['LOCALAPPDATA'],
+		process.env['ProgramFiles'],
+		process.env['ProgramFiles(x86)'],
+		path.join(process.env['SystemRoot'],"System32"),
+		path.join(process.env['SystemRoot'],"SysWOW64")
+	]	
+};
 
 async function init(){
 
@@ -24,9 +34,19 @@ async function init(){
 	let gameIndex = await getGameIndex();
 
 	await WQL.promises.createEventSink();
-	const processMonitor = await WQL.promises.subscribe({ filterWindowsNoise: false, filter: filter });
+	const processMonitor = await WQL.promises.subscribe({ 
+		/*
+		Elevated process (scene release are usually UAC elevated via appcompatibility out of the box)
+		Set inbuild filter to false 
+		cf: https://github.com/xan105/node-processMonitor/issues/2
+		*/
+		filterWindowsNoise: false, filterUsualProgramLocations: false,
+		filter: filter.ignore 
+	});
 
 	processMonitor.on("creation", ([process,pid,filepath]) => {
+	  
+	  if (filepath && filter.mute.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
 	  
 	  const game = gameIndex.find(game => game.binary === process && !game.name.includes("Demo"));
 	  if(game) 

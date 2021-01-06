@@ -1,5 +1,4 @@
 [
-	"nw.exe",
 	"svchost.exe",
 	"conhost.exe",
 	"dllhost.exe",
@@ -15,8 +14,10 @@
 	"sc.exe",
 	"audiodg.exe",
 	"OAWrapper.exe",
+	"WMIC.exe",
 	"firefox.exe",
 	"chrome.exe",
+	"nw.exe",
 	"GameLauncher.exe",
 	"game.exe",
 	"launcher.exe"
