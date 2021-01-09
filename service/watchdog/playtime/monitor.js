@@ -14,16 +14,21 @@ const debug = new (require("@xan105/log"))({
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/playtime.log")
 });
 
+const blacklist = require("./filter.json");
+
 const filter = {
-	ignore: require("./filter.json"), //WMI WQL FILTER
-	mute: [
-		process.env['APPDATA'],
-		process.env['LOCALAPPDATA'],
-		process.env['ProgramFiles'],
-		process.env['ProgramFiles(x86)'],
-		path.join(process.env['SystemRoot'],"System32"),
-		path.join(process.env['SystemRoot'],"SysWOW64")
-	]	
+	ignore: blacklist.ignore, //WMI WQL FILTER
+	mute: {
+		dir: [
+			process.env['APPDATA'],
+			process.env['LOCALAPPDATA'],
+			process.env['ProgramFiles'],
+			process.env['ProgramFiles(x86)'],
+			path.join(process.env['SystemRoot'],"System32"),
+			path.join(process.env['SystemRoot'],"SysWOW64")
+		],
+		file: blacklist.mute
+	}	
 };
 
 async function init(){
@@ -37,7 +42,7 @@ async function init(){
 	const processMonitor = await WQL.promises.subscribe({ 
 		/*
 		Elevated process (scene release are usually UAC elevated via appcompatibility out of the box)
-		Set inbuild filter to false 
+		Set built-in filter to false 
 		cf: https://github.com/xan105/node-processMonitor/issues/2
 		*/
 		filterWindowsNoise: false, filterUsualProgramLocations: false,
@@ -46,7 +51,8 @@ async function init(){
 
 	processMonitor.on("creation", ([process,pid,filepath]) => {
 	  
-	  if (filepath && filter.mute.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
+	  if (filepath && filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
+	  if (filter.mute.file.some( bin => bin === process)) return; //Mute event
 	  
 	  const game = gameIndex.find(game => game.binary === process && !game.name.includes("Demo"));
 	  if(game) 
