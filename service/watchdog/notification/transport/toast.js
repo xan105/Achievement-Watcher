@@ -37,14 +37,10 @@ module.exports = async (message, options) => {
     
     if (message.progress && message.progress.max > 0) 
     {
-		if (message.progress.max != 100) {
-			notification.progress = {
-				percent: Math.floor( ( message.progress.current / message.progress.max ) * 100 ),
-				custom: `${message.progress.current}/${message.progress.max}`
-			}
-		} else {
-			notification.progress = { percent: message.progress.current	}
-		}
+		notification.progress = {
+			percent: Math.floor( ( message.progress.current / message.progress.max ) * 100 ),
+			footer: `${message.progress.current}/${message.progress.max}`
+		};
     }
 
 	await toast(notification);	
