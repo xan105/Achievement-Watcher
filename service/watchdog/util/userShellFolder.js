@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const regedit = require('regodit');
 
 const folders = {

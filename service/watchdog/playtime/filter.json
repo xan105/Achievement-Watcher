@@ -21,6 +21,7 @@
 	],
 	"mute" : [
 		"nw.exe",
+		"lib.exe",
 		"GameLauncher.exe",
 		"game.exe",
 		"launcher.exe",
