@@ -50,6 +50,7 @@ module.exports = async (message, option = {}) => {
 			debug.log("Souvenir: video highlight");
 			try {
 				const filePath = path.join(userShellFolder["myvideo"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName));
+				debug.log(`"${filePath}"`);
 				videoIsRecording = true;
 				const vendor = options.souvenir.videoHighlight == 1 ? "nvidia" : "amd";
 				videoCapture.h264_hwencode(filePath, vendor, {audioInterface: "virtual-audio-capturer"})
@@ -65,6 +66,7 @@ module.exports = async (message, option = {}) => {
 			debug.log("Souvenir: screenshot");
 			try{
 				const filePath = path.join(userShellFolder["mypictures"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName));
+				debug.log(`"${filePath}"`);
 				if (options.toast.imageIntegration > 0) {
 					message.image = await screenshot(filePath);
 				} else {
