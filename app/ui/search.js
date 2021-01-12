@@ -34,5 +34,23 @@
       
       });
 
+      $(document).keydown(function(e) {
+		if(e.ctrlKey && e.which === 70) { //CTRL+F
+			if( !$("#achievement").is(":visible")) {
+				if ($("#search-bar input[type=search]").is(":focus"))
+					$("#search-bar input[type=search]").blur();
+				else {
+					$("#search-bar input[type=search]").focus();
+				}
+			}
+		}
+      });
+      
+      $("#search-bar input[type=search]").keyup(function(e) {
+		if (e.which === 27){ //ESC
+			this.val("").change();
+		}
+      });
+
   });
 }(window.jQuery, window, document)); 
