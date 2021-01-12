@@ -120,7 +120,7 @@ function sort(elem, option = {}) {
             sortby.percent = !sortby.percent;
         }
         else if (self.hasClass("time")) {
-            sortby.time = !sortby.time; 
+            localStorage.sortAchByTime = sortby.time = !sortby.time; 
         }
 
         li.detach().sort(function(a, b) {

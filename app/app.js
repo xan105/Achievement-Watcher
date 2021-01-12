@@ -384,6 +384,10 @@ var app = {
             
             }
             
+            if(localStorage.sortAchByTime === "true") {
+				$("#unlock > .header .sort-ach .sort.time").trigger("click");
+			}
+            
             let count_unlocked = game.achievement.list.filter( elem => elem.Achieved).length; /*can replace by value on header which were calculated parse etc already*/
             let count_locked = game.achievement.list.length - count_unlocked;
             
