@@ -6,6 +6,7 @@ const path = require('path');
 const args_split = require('argv-split');
 const args = require('minimist');
 const moment = require('moment');
+const humanizeDuration = require("humanize-duration");
 const settings = require(path.join(appPath,"settings.js"));
 const achievements = require(path.join(appPath,"parser/achievements.js"));
 const blacklist = require(path.join(appPath,"parser/blacklist.js"));
@@ -318,7 +319,16 @@ var app = {
             if (game.system !== "playstation" && game.system !== "uplay"){
 				PlaytimeTracking(game.appid).then((playtime)=>{
 					if(playtime > 0) {
-						$('#achievement .wrapper > .header .playtime span').text(`${moment.duration(playtime,'seconds').humanize()}`);
+						let humanized;
+						if ( playtime < 60 ) {
+							humanized = moment.duration(playtime,'seconds').humanize();
+						} else if (playtime >= 86400){
+							humanized = humanizeDuration(playtime * 1000, { language: moment.locale(), fallbacks: ["en"], units: ["h", "m"], round: true }) + " (~ " +
+										moment.duration(playtime,'seconds').humanize() + ")";
+						} else {
+							humanized = humanizeDuration(playtime * 1000, { language: moment.locale(), fallbacks: ["en"], units: ["h", "m"], round: true });
+						}
+						$('#achievement .wrapper > .header .playtime span').text(`${humanized}`);
 						$('#achievement .wrapper > .header .playtime').css("display","inline-block");
 					}
 				}).catch(()=>{});
@@ -384,7 +394,7 @@ var app = {
             
             }
             
-            if(localStorage.sortAchByTime === "true") {
+            if($("#unlock > .header .sort-ach .sort.time").hasClass("show") && localStorage.sortAchByTime === "true") {
 				$("#unlock > .header .sort-ach .sort.time").trigger("click");
 			}
             

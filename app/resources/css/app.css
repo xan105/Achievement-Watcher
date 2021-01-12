@@ -386,6 +386,13 @@ main {
   display: none;
 }
 
+#achievement .wrapper > .header .playtime span{
+    display: inline-block;
+}
+#achievement .wrapper > .header .playtime span::first-letter {
+    text-transform: uppercase;
+}
+
 #achievement .wrapper > .header[data-system="playstation"] .trophy {
   display: inline-block;
 }
