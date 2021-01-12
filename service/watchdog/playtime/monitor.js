@@ -91,11 +91,16 @@ async function init(){
 	 
 		debug.log("playtime: " + Math.floor( playedtime / 60 ) + "min");
 		
-		const playedtimeHumanized = `You played for ${humanizeDuration(playedtime * 1000, { language: "en", conjunction: " and ", units: ["h", "m", "s"] })}`;
+		let humanized;
+		if (playedtime < 60) {
+			humanized = humanizeDuration(playedtime * 1000, { language: "en", units: ["s"] }); 
+		} else {
+			humanized = humanizeDuration(playedtime * 1000, { language: "en", conjunction: " and ", units: ["h", "m"], round: true });
+		}
 		
 		TimeTrack(game.appid,playedtime).catch((err)=>{debug.error(err)});
 		
-		emitter.emit("notify", [game, playedtimeHumanized]);
+		emitter.emit("notify", [game, "You played for " + humanized]);
 
 	  }
 
