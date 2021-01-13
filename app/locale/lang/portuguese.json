@@ -96,7 +96,7 @@
         },
         "playtime": {
           "name": "Registar tempo de jogo",
-          "description": "Notify on tracking start/end Notificar quando começa e acaba de registar"
+          "description": "Notificar quando começa e acaba de registar"
         },
         "customToastAudio" : {
           "name": "Som do Toast",
@@ -140,7 +140,7 @@
       "default": "Diretório padrão",
       "custom": "Usar Diretório",
       "addInfo": [
-        "Select a folder which contains appid folder(s). Selecione uma pasta que contenha a(s) pasta(s) appid",
+        "Selecione uma pasta que contenha a(s) pasta(s) appid",
         "Para ALI213, Hoodlum, RPCS3 por favor selecione a pasta onde o",
         "ficheiro ALI213.ini, valve.ini, hlm.ini, ds.ini or RPCS3.exe está localizado."],
       "add": "Adicionar pasta"
