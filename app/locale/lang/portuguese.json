@@ -1,0 +1,181 @@
+{
+  "achievements" : "Conquistas",
+  "perfectGame" : "Jogos Aperfeiçoados",
+  "completionRate": "Média de Conclusão de Jogos",
+  "emptyList": "Nenhuns Jogos",
+  "loading": "A Carregar",
+  "unlocked" : "Desbloquado",
+  "locked": "Bloqueado",
+  "globalStat" : "de jogadores têm isto",
+  "hiddenRemain" : "conquistas ocultas restantes",
+  "revealedOnceUnlocked" : "Detalhes de cada conquista serão revelados quando desbloquados",
+  "noneUnlocked": "Nenhumas conquistas ainda desbloquadas",
+  "play": "Comece a jogar!",
+  "scrollUp" : "Arraste para cima",
+  "allGamesBackButton" : "Todos os Jogos",
+  "removeFromList": "Remover da lista",
+  "buildIconPrefetchCache": "Construa o cache do item de notificação",
+  "settings" : {
+    "title": "Definições",
+    "sideMenu":{
+      "general": "Geral",
+      "notification": "Notificação",
+      "folder": "Pastas",
+      "source": "Fonte",
+      "advanced": "Avançado",
+      "debug": "Depuração"
+    },
+    "common": {
+      "show": "Mostrar",
+      "hide": "Esconder",
+      "enable": "Habilitar",
+      "disable": "Desabilitar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "version": "Versão"
+    },
+    "general": {
+      "language": {
+        "name": "Linguagem",
+        "description": ["Ajude a tradução","aqui"]
+      },
+      "thumbnail": {
+        "name": "Orientação da miniatura",
+        "value": {
+          "portrait": "Retrato",
+          "landscape": "Panorama"
+        }
+      },
+      "hiddenAch": {
+        "name": "Conquistas Ocultas"
+      },
+      "mergeDuplicates": {
+        "name": "Funda duplicados"
+      },
+      "timeMerge": {
+        "name": "Funda Timestamp",
+        "description": "Quando os duplicados são fundidos, qual é o valor de tempo preferido ?",
+        "value": {
+          "recent": "Recente",
+          "oldest": "Antigo"
+        }
+      },
+      "hideZero": {
+        "name": "Esconder jogos a 0%"
+      }
+    },
+    "notification" : {
+      "title": {
+        "common": "Comum",
+        "toast": "Notificação Toast",
+        "transport": "Transporte"
+      },
+      "info" : {
+        "toast" : "Algumas características estão disponiveis só em Windows 10"
+      },
+      "option": {
+        "notification" : {
+          "name": "Notificação",
+          "description": "Notificar ao desbloquear conquistas, se possível"
+        },
+        "souvenir" : {
+          "name": "Lembrança",
+          "description": "Fazer uma captura de ecrã quando desbloqueias uma conquista"
+        },
+        "videoHighlight": {
+          "name": "Video de lembrança",
+          "description": "Grave um pequeno video quando desbloqueias uma conquista usando o codificador de hardware do teu GPU"
+        },
+        "rumble" : {
+          "name": "Vibração do Comando (XInput)",
+          "description": "Vibra o primeiro comando quando desbloqueias uma conquista"
+        },
+        "notifyOnProgress" : {
+          "name": "Relatório de progresso",
+          "description": "Notificar no progresso de uma conquista se possível"
+        },
+        "playtime": {
+          "name": "Registar tempo de jogo",
+          "description": "Notify on tracking start/end Notificar quando começa e acaba de registar"
+        },
+        "customToastAudio" : {
+          "name": "Som do Toast",
+          "description": "Espicifica que som tocar quando um toast é mostrado",
+          "value": {
+            "systemDefault": "Padrão",
+            "muted": "Silencio"
+          }
+        },
+        "toastSouvenir" : {
+          "name": "Lembrança Toasted",
+          "description": "Mostar a lembrança da captura de ecrã dentro do toast",
+          "value": {
+            "top" : "Topo",
+            "bottom" : "Inferior"
+          }
+        },
+        "groupToast" : {
+          "name": "Agrupar por jogo",
+          "description": "Agrupar visualmente o toast do mesmo jogo na Central de Ações"
+        },
+        "useToast" : {
+          "name": "Notificações toast",
+          "description": "Notificações toast do Windows 8-10"
+        },
+        "useWinRT" : {
+          "name": "Windows 10 WinRT API",
+          "description": "Usar WinRT se disponivel para um toast mais rápido em vez de PowerShell"
+        },
+        "useBalloon" : {
+          "name": "Balão de dica",
+          "description": "Usar balão de dica em caso da notificação toast falhar"
+        },
+        "useWS" : {
+          "description": "Transmitir conquista para todos os clientes conectados"
+        }
+      }
+    },
+    "folder": {
+      "headline": "Onde procurar para ficheiros de conquistas :",
+      "default": "Diretório padrão",
+      "custom": "Usar Diretório",
+      "addInfo": [
+        "Select a folder which contains appid folder(s). Selecione uma pasta que contenha a(s) pasta(s) appid",
+        "Para ALI213, Hoodlum, RPCS3 por favor selecione a pasta onde o",
+        "ficheiro ALI213.ini, valve.ini, hlm.ini, ds.ini or RPCS3.exe está localizado."],
+      "add": "Adicionar pasta"
+    },
+    "source": {
+      "legitSteam": {
+        "name": "Mostrar jogos da Steam",
+        "description": "Steam deve estár instalada e o seu perfil Steam publico !",
+        "value": {
+          "none": "Nenhum",
+          "installed": "Instalado",
+          "owned": "Possuído"
+        }
+      },
+      "steamEmu": {
+        "name": "Emulador Steam"
+      },
+      "greenLuma": {
+        "description": "GreenLuma 2020 e Reborn"
+      },
+      "rpcs3": {
+        "description": "Emulador Playstation 3"
+      },
+      "lumaPlay": {
+        "description": "Emulador Uplay"
+      },  
+      "importCache": {
+        "name": "Importar cache de notificação",
+        "description": "Importar cache de Watchdog's como outra fonte de conquistas"
+      }
+    },
+    "advanced": {
+      "blacklistTitle":"Lista negra de AppID",
+      "blacklistButton":"Repor lista negra",
+      "blacklistInfo":"Clique com o botão direito numa caixa de jogos para adiciona-la á lista negra."
+    } 
+  } 
+}
