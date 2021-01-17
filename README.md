@@ -466,6 +466,7 @@ How to build
 
 You will need Node.js (>= 12.x) in x64 with NPM installed.<br/>
 NB: Due to [this bug](https://github.com/xan105/node-processMonitor/issues/1) process monitoring (playtime tracking) is unreliable in Node >= 14 as it randomly crashes the node process.
+
 Innosetup 5 unicode with preprocessor and [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/) (building the setup)<br/>
 
 For Node.js you globally need asar and json :<br/>
@@ -483,7 +484,7 @@ Use `buildme.cmd` in the root folder to build.
 
 ### Notes: 
 
-+ Most of the native code is now shipped as prebuilt binaries. If you want to compile them yourself I invit you to check out their corresponding repo.
++ Most of the native code is now shipped as prebuilt binaries. If you want to compile them yourself I invit you to check out their corresponding repo.<br/>
 NB: Golang cgo requires a gcc compiler installed and set in PATH (recommended : http://tdm-gcc.tdragon.net/download).
 
 + Innosetup is expected to be installed in `C:\Program Files (x86)\Inno Setup 5` if that is not the case then update `buildme.cmd` with the correct path.
