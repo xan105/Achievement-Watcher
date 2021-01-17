@@ -464,9 +464,7 @@ How to build
 
 ### Prequisites:
 
-You will need Node.js (>= 12.x) in x64 with NPM installed.<br/>
-NB: Due to [this bug](https://github.com/xan105/node-processMonitor/issues/1) process monitoring (playtime tracking) is unreliable in Node >= 14 as it randomly crashes the node process.
-
+You will need Node.js 12.x in x64 with NPM installed.<br/>
 Innosetup 5 unicode with preprocessor and [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/) (building the setup)<br/>
 
 For Node.js you globally need asar and json :<br/>
