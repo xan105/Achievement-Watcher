@@ -82,6 +82,10 @@
           "name": "纪念",
           "description": "解锁成就时截图"
         },
+        "videoHighlight": {
+          "name": "视频纪念",
+          "description": "解锁成就时使用 GPU 的硬件编码器录制一个短视频"
+        },
         "rumble" : {
           "name": "手柄震动（XInput）",
           "description": "解锁成就时震动第一个手柄"
@@ -89,6 +93,10 @@
         "notifyOnProgress" : {
           "name": "进度报告",
           "description": "尽可能通知成就进度"
+        },
+        "playtime": {
+          "name": "游戏时间追踪",
+          "description": "在开始或结束游戏时间追踪时通知"
         },
         "customToastAudio" : {
           "name": "通知音效",
