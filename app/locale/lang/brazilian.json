@@ -142,7 +142,7 @@
             "default": "Diretório Padrão",
             "custom": "Diretório de Usuário",
             "addInfo": [
-                "Selecione uma pasta que contém as pasta(s) appid.",
+                "Selecione uma pasta que contém a(s) pasta(s) appid.",
                 "Para ALI213, Hoodlum, RPCS3 por favor selecione uma pasta onde o arquivo",
                 "ALI213.ini, valve.ini, hlm.ini, ds.ini ou RPCS3.exe está localizado."
             ],
