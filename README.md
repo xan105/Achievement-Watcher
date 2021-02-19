@@ -395,12 +395,12 @@ ws.onmessage = (evt) => {
   /* Output:
     {
       appID: steam appID,
-      title: game name,
-      id: achievement id,
-      message: achievement title,
-      description: achievement description if any,
+      game: game name,
+      achievement: achievement id,
+      displayName: achievement title,
+      description: achievement description (if any),
       icon: unlocked icon url,
-      time: timestamp from the Steam emu,
+      time: unix timestamp,
       progress: //if it's a progress and not an unlocked achievement; 
                 //Otherwise this property is not sent at all
       { 

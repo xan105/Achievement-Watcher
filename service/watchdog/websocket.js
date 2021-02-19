@@ -6,6 +6,7 @@ const http = require('http');
 const https = require('https');
 const EventEmitter = require('emittery');
 const ws = require('ws');
+const moment = require("moment");
 const debug = new (require("@xan105/log"))({
   console: true,
   file: path.join(process.env['APPDATA'],"Achievement Watcher/logs/websocket.log")
@@ -147,10 +148,10 @@ function incoming(message){
                 
         const dummy = {
            appID: 480,
-           title: "Achievement Watcher",
-           id: "achievement_00",
-           message: "Hello World",
-           description: "beep boop",
+           game: "Spacewar",
+           achievement: "ACH_WIN_ONE_GAME",
+           displayName: "Winner",
+           description: "Win one game.",
            icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
            time: moment().valueOf()
         };
