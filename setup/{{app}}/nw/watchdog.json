@@ -4,6 +4,6 @@
   "cwd": "../watchdog",
   "fileCheck": [
     {"sum": "25a34d499f8841a7d0d121eb4e285c836a2a425a0d2e8ba9dd31c13d289690e3", "size": 30032896},
-    {"file": "../watchdog/watchdog.js", "sum": "9400b97213b8c47128598f651b1021eec1043904163b2512da74c4dbdd3f1a45", "size": 14896}
+    {"file": "../watchdog/watchdog.js", "sum": "14333ba29222a420c2894199918e466becb42d849b0354efde380702908c986e", "size": 15028}
   ]
 }

@@ -227,7 +227,9 @@ var app = {
 									prefetch: self.options.notification_advanced.iconPrefetch,
 									souvenir: {
 										screenshot: self.options.notification.souvenir,
-										videoHighlight: self.options.notification.videoHighlight
+										videoHighlight: self.options.notification.videoHighlight,
+										screenshotDir: self.options.souvenir_custom_dir.screenshot,
+										videoDir: self.options.souvenir_custom_dir.video
 									},
 									rumble: self.options.notification.rumble
 								  });

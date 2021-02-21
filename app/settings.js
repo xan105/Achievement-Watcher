@@ -152,6 +152,8 @@ module.exports.load = ()=>{
           options.notification_advanced.iconPrefetch = true;
         }
         
+         if(!options.souvenir_custom_dir) options.souvenir_custom_dir = {};
+        
         //Steam Key    
 
         if (options.steam) {
@@ -208,6 +210,7 @@ module.exports.load = ()=>{
             checkIfProcessIsRunning: true,
             iconPrefetch: true          
           },
+          souvenir_custom_dir: {},
           steam: {}
         };
         

@@ -190,6 +190,26 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
         
+        if(options.souvenir_custom_dir) {
+			
+			if (options.souvenir_custom_dir.screenshot && 
+				! await fs.exists(options.souvenir_custom_dir.screenshot)
+			) {
+				delete options.souvenir_custom_dir.screenshot
+				fixFile = true;
+			}
+			
+			if (options.souvenir_custom_dir.video && 
+				! await fs.exists(options.souvenir_custom_dir.video)
+			) {
+				delete options.souvenir_custom_dir.video
+				fixFile = true;
+			}
+			
+		} else {
+			options.souvenir_custom_dir = {};
+		}
+        
         //Steam Key  
 
         let steamKey;
@@ -204,7 +224,7 @@ module.exports.load = async (cfg_file) => {
         } else {
           options.steam = {};
         }
-        
+
         if (fixFile) await fs.writeFile(cfg_file,ini.stringify(options),"utf8").catch(()=>{});
         
         if (steamKey) options.steam.apiKey = steamKey;
@@ -253,6 +273,7 @@ module.exports.load = async (cfg_file) => {
             checkIfProcessIsRunning: true,
             iconPrefetch: true          
           },
+          souvenir_custom_dir: {},
           steam: {}
         };
 
