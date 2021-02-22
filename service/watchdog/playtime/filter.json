@@ -25,6 +25,7 @@
 		"GameLauncher.exe",
 		"game.exe",
 		"launcher.exe",
-		"default.exe"
+		"default.exe",
+		"javaw.exe"
 	]
 }
