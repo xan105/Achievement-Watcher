@@ -152,7 +152,7 @@ module.exports.load = ()=>{
           options.notification_advanced.iconPrefetch = true;
         }
         
-         if(!options.souvenir_custom_dir) options.souvenir_custom_dir = {};
+        if(!options.souvenir_custom_dir) options.souvenir_custom_dir = {};
         
         //Steam Key    
 

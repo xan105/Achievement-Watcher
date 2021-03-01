@@ -190,25 +190,7 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
         
-        if(options.souvenir_custom_dir) {
-			
-			if (options.souvenir_custom_dir.screenshot && 
-				! await fs.exists(options.souvenir_custom_dir.screenshot)
-			) {
-				delete options.souvenir_custom_dir.screenshot
-				fixFile = true;
-			}
-			
-			if (options.souvenir_custom_dir.video && 
-				! await fs.exists(options.souvenir_custom_dir.video)
-			) {
-				delete options.souvenir_custom_dir.video
-				fixFile = true;
-			}
-			
-		} else {
-			options.souvenir_custom_dir = {};
-		}
+		if(!options.souvenir_custom_dir) options.souvenir_custom_dir = {};
         
         //Steam Key  
 
