@@ -333,7 +333,7 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
   Use this if you would like to download every game's icons beforehand.
   
 - appID<br />
-  if not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
+  If not set, default to Xbox Game Bar if available otherwise to Xbox App<br />
   Notification appID ([Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids)).<br />
   Example: 
   
@@ -349,6 +349,14 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
     + They are pre-shipped with Windows
     + They are pre-set to your focus assistant priority list
     + They are UWP app so we are allowed to remotely load img.
+
+### [souvenir_custom_dir]
+- screenshot<br />
+	If set, override default root folder (Pictures homefolder) where screenshot souvenirs are saved.
+	eg: `D:\Pictures\Achievement Watcher`
+- video<br />
+	If set, override default root folder (Videos homefolder) where video souvenirs are saved.
+	eg: `D:\Videos\Achievement Watcher`  
   
 Steam Web API Key
 =================
