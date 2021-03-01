@@ -1,19 +1,26 @@
 html[lang="es"] .achievement .stats .time, 
-html[lang="es"] .achievement .stats .community 
+html[lang="es"] .achievement .stats .community,
+html[lang="es-419"] .achievement .stats .time, 
+html[lang="es-419"] .achievement .stats .community  
 {
     width: 240px;
 }
 html[lang="es"] #options-notify-toast li:nth-child(1).hasHelper,
 html[lang="es"] #options-notify-toast li:nth-child(2).hasHelper,
-html[lang="es"] #options-notify-transport li:nth-child(2).hasHelper   
+html[lang="es"] #options-notify-transport li:nth-child(2).hasHelper,
+html[lang="es-419"] #options-notify-toast li:nth-child(1).hasHelper,
+html[lang="es-419"] #options-notify-toast li:nth-child(2).hasHelper,
+html[lang="es-419"] #options-notify-transport li:nth-child(2).hasHelper   
 {
   margin-bottom: 32px;
 }
-html[lang="es"] #options-notify-toast li:nth-child(3).hasHelper  
+html[lang="es"] #options-notify-toast li:nth-child(3).hasHelper,
+html[lang="es-419"] #options-notify-toast li:nth-child(3).hasHelper   
 {
   margin-bottom: 48px;
 }
-#settings .content[data-view="folder"] > .controls .info
+html[lang="es"] #settings .content[data-view="folder"] > .controls .info,
+html[lang="es-419"] #settings .content[data-view="folder"] > .controls .info
 {
   font-size: 12px;
 }
@@ -91,15 +98,25 @@ html[lang="pl"] #options-notify-transport li:nth-child(2).hasHelper
 }
 
 html[lang="pt"] .achievement .stats .time, 
-html[lang="pt"] .achievement .stats .community
+html[lang="pt"] .achievement .stats .community,
+html[lang="pt-br"] .achievement .stats .time, 
+html[lang="pt-br"] .achievement .stats .community
 {
   width: 240px;
 }
-html[lang="pt"] #options-notify-toast li:nth-child(1).hasHelper,
-html[lang="pt"] #options-notify-transport li:nth-child(2).hasHelper,
-html[lang="pt"] #options-notify-transport li:nth-child(3).hasHelper 
+html[lang="pt"] #options-ui li:nth-child(5).hasHelper,
+html[lang="pt"] #options-notify-transport li:nth-child(2).hasHelper
 {
   margin-bottom: 32px;
+}
+html[lang="pt-br"] #options-notify-toast li:nth-child(1).hasHelper,
+html[lang="pt-br"] #options-notify-transport li:nth-child(2).hasHelper
+{
+  margin-bottom: 32px;
+}
+html[lang="pt-br"] #options-notify-toast li:nth-child(3).hasHelper.expand
+{
+  margin-bottom: 48px;
 }
 
 html[lang="de"] #settings .box { width: 780px; }
@@ -113,4 +130,9 @@ html[lang="de"] #options-source li:nth-child(1).hasHelper
 html[lang="de"] #options-notify-toast li:nth-child(3).hasHelper
 {
   margin-bottom: 48px;
+}
+
+html[lang="zh-cn"] #options-notify-common li:nth-child(3).hasHelper.expand
+{
+  margin-bottom: 16px;
 }

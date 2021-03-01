@@ -50,7 +50,7 @@ function translateUI(lang,locale,template){
             selector.append(`<option value="${language.api}" data-tooltip="${language.native}" title="${language.displayName}" ${language.api === lang ? "selected": ""}>${language.native}</option>`);   
         }
 
-        $("html").attr("lang",`${locale.slice(0,2).toLowerCase()}`);
+        $("html").attr("lang",`${locale.toLowerCase()}`);
         
         selector = $("#game-list");
         selector.find(".loading .title").text(clear(template.loading));

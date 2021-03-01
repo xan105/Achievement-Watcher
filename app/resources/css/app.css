@@ -1163,6 +1163,14 @@ main {
     font-style: italic;
 }
 
+#settings .content li .left {
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 275px;
+    height: 22px;
+}
+
 #settings .content .title{
     font-family: "Raleway-bold";
     border-bottom: 1px solid white;
