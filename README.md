@@ -351,11 +351,13 @@ Options are stored in ```%AppData%\Achievement Watcher\cfg\options.ini``` but mo
     + They are UWP app so we are allowed to remotely load img.
 
 ### [souvenir_custom_dir]
+
 - screenshot<br />
-	If set, override default root folder (Pictures homefolder) where screenshot souvenirs are saved.
+	If set, override default root folder (Pictures homefolder) where screenshot souvenirs are saved.<br />
 	eg: `D:\Pictures\Achievement Watcher`
+	
 - video<br />
-	If set, override default root folder (Videos homefolder) where video souvenirs are saved.
+	If set, override default root folder (Videos homefolder) where video souvenirs are saved.<br />
 	eg: `D:\Videos\Achievement Watcher`  
   
 Steam Web API Key
