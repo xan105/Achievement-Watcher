@@ -283,12 +283,17 @@ async function generateAchievementList(appID,lang = "english"){
         
      for ( let i in achievements)
      {
-       achievements[i].icon = achievements[i].icon.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0].replace(".jpg","");
+       
        try{
-		achievements[i].icongray = achievements[i].icongray.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0].replace(".jpg","");
-	   }catch{ //Some have none (hidden ach) or point to root url(403) eg: 692850
-		delete achievements[i].icongray;
-	   }
+        achievements[i].icon = achievements[i].icon.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0].replace(".jpg","");
+       }catch{ //200900 / 'festivus' > no icon ?! (root url)
+        delete achievements[i].icon;
+       }
+       try{
+        achievements[i].icongray = achievements[i].icongray.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0].replace(".jpg","");
+      }catch{ //Some have none (hidden ach) or point to root url(403) eg: 692850
+        delete achievements[i].icongray;
+      }
           
        try{
          if(achievements[i].hidden && !achievements[i].description && achievementstatsAPI) 

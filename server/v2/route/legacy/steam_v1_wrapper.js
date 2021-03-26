@@ -27,7 +27,7 @@ try {
 		data.apiVersion = 1;
 		
 		data.achievement.list.forEach((achievement) => {
-			achievement.icon = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${data.appid}/${achievement.icon}.jpg`
+			if (achievement.icon) achievement.icon = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${data.appid}/${achievement.icon}.jpg`
 			if (achievement.icongray) achievement.icongray = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${data.appid}/${achievement.icongray}.jpg`
 		});
 		delete data.achievement.version;
