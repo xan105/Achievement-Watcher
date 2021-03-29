@@ -22,6 +22,7 @@
     "@xan105/video-capture": "github:xan105/node-video-capture",
     "crc": "^3.8.0",
     "emittery": "^0.7.2",
+    "fast-glob": "^3.2.5",
     "ffi-napi": "^3.1.0",
     "find-up": "^4.1.0",
     "get-startapps": "^1.0.3",

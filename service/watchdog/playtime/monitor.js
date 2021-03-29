@@ -8,6 +8,7 @@ const humanizeDuration = require("humanize-duration");
 const EventEmitter = require("emittery");
 const Timer = require('./timer.js');
 const TimeTrack = require('./track.js');
+const { findByReadingContentOfKnownConfigfilesIn } = require('./steam_appid_find.js');
 
 const debug = new (require("@xan105/log"))({
   console: true,
@@ -49,31 +50,59 @@ async function init(){
 		filter: filter.ignore 
 	});
 
-	processMonitor.on("creation", ([process,pid,filepath]) => {
+	processMonitor.on("creation", async ([process,pid,filepath]) => {
+
+	  let game;
 	  
-	  if (filepath && filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
-	  if (filter.mute.file.some( bin => bin === process)) return; //Mute event
-	  
-	  const game = gameIndex.find(game => game.binary === process && !game.name.includes("Demo"));
-	  if(game) 
+	  if (filepath) 
 	  {
-		debug.log(`DB Hit for ${game.name}(${game.appid}) in "${filepath}"`);
-		if (!nowPlaying.includes(game)) { //Only one instance allowed
+      if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
 
-		  const playing = Object.assign(game,{ 
-			pid: pid,
-			timer: new Timer
-		  });
-		  debug.log(playing);
-		  
-		  nowPlaying.push(playing);
-		} else {
-			debug.error("Only one game instance allowed");
-		}
-	
-		emitter.emit("notify", [game]);
+      const games = gameIndex.filter(game => game.binary === process && !game.name.includes("Demo"));
 
+      if (games.length === 1) {
+        if (filter.mute.file.some( bin => bin === process)) return; //Mute event
+        game = games[0];
+      }
+	    else if (games.length > 1) {
+        debug.log(`More than 1 entry for "${process}"`);
+        const gameDir = path.parse(filepath).dir;
+        debug.log(`Try to find appid from a cfg file in "${gameDir}"`);
+        try{
+          const appid = await findByReadingContentOfKnownConfigfilesIn(gameDir);
+          debug.log(`Found appid: ${appid}`);
+          game = games.find(game => game.appid == appid);
+        }catch(err){
+          debug.warn(err);
+        }
+ 
+      }
+	  } 
+	  else 
+	  {
+      if (filter.mute.file.some( bin => bin === process)) return; //Mute event
+      game = gameIndex.find(game => game.binary === process && !game.name.includes("Demo"));
 	  }
+	  
+	  if(game) 
+      {
+      debug.log(`DB Hit for ${game.name}(${game.appid}) in "${filepath}"`);
+      if (!nowPlaying.includes(game)) { //Only one instance allowed
+
+        const playing = Object.assign(game,{ 
+        pid: pid,
+        timer: new Timer
+        });
+        debug.log(playing);
+        
+        nowPlaying.push(playing);
+      } else {
+        debug.error("Only one game instance allowed");
+      }
+    
+      emitter.emit("notify", [game]);
+
+      }
   
 	});
 
