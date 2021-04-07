@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watchdog",
   "description": "Sidekick to Achievement Watcher for live notification on achievement unlocking",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "main": "watchdog.js",
   "scripts": {
     "start": "node watchdog.js",
@@ -16,10 +16,10 @@
   "dependencies": {
     "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
     "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
-    "@xan105/fs": "github:xan105/node-fs",
-    "@xan105/log": "github:xan105/node-log",
-    "@xan105/screenshot": "github:xan105/node-cgo-screenshot",
-    "@xan105/video-capture": "github:xan105/node-video-capture",
+    "@xan105/fs": "^1.2.0",
+    "@xan105/log": "^1.0.2",
+    "@xan105/screenshot": "^1.1.2",
+    "@xan105/video-capture": "^1.1.3",
     "crc": "^3.8.0",
     "emittery": "^0.7.2",
     "fast-glob": "^3.2.5",
@@ -42,6 +42,6 @@
     "win-tasklist": "^1.0.1",
     "wql-process-monitor": "^1.3.1",
     "ws": "^7.4.2",
-    "xinput-ffi": "^1.2.0"
+    "xinput-ffi": "^1.2.1"
   }
 }

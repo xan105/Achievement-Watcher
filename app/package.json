@@ -18,9 +18,9 @@
     "patch-package": "^6.2.2"
   },
   "dependencies": {
-    "@xan105/fs": "github:xan105/node-fs",
-    "@xan105/log": "github:xan105/node-log",
-    "accountpicture-ms-extractor": "^1.2.2",
+    "@xan105/fs": "^1.2.0",
+    "@xan105/log": "^1.0.2",
+    "accountpicture-ms-extractor": "^1.2.4",
     "adm-zip": "0.4.13",
     "argv-split": "^2.0.1",
     "crc": "^3.8.0",

@@ -167,7 +167,7 @@ module.exports = async (message, option = {}) => {
 				const duration = +await regedit.promises.RegQueryIntegerValue("HKCU","Control Panel/Accessibility","MessageDuration").catch(()=>{ return null }) || 5; 
 				setTimeout(function(){ 
 					debug.log("XInput Rumble");
-					xinput.rumble().catch( (err) => { debug.warn(err) });
+					xinput.rumble({forceStateWhileRumble: true}).catch( (err) => { debug.warn(err) });
 				}, (duration * 1000) * message.delay || 0);
 			}
 			
