@@ -138,8 +138,8 @@ module.exports = async (message, option = {}) => {
 			
 			if (options.transport.gntp){
 				debug.log("GNTP");
-				gntp.hasGrowl().then((hasGrowl)=>{
-					if (hasGrowl) {
+        try {
+					if (await gntp.hasGrowl()) {
 						debug.log("Sending GNTP Grrr!");
 						
 						let notification = {
@@ -152,11 +152,11 @@ module.exports = async (message, option = {}) => {
 						
 						if (message.progress) notification.message = `[ ${message.progress.current}/${message.progress.max} ]\n${message.achievementDescription}`;
 						
-						return gntp.send(notification)
+						await gntp.send(notification)
 					} else {
 						debug.error("GNTP endpoint unreachable");
 					}
-				}).catch( (err) => { debug.error(err) });
+				}catch(err){ debug.error(err) };
 				
 			} else {
 				debug.log("GNTP notification is disabled > SKIPPING");
