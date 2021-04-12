@@ -1,13 +1,13 @@
 diff --git a/node_modules/regodit/lib/regedit.cjs b/node_modules/regodit/lib/regedit.cjs
-index 8a6fc11..ab82035 100644
+index fe10d60..fbf44e5 100644
 --- a/node_modules/regodit/lib/regedit.cjs
 +++ b/node_modules/regodit/lib/regedit.cjs
-@@ -4,7 +4,7 @@ const path = require('path');
- const ffi = require('ffi-napi');
- const normalize = require('./normalize.cjs');
+@@ -6,7 +6,7 @@ const normalize = require('./util/normalize.cjs');
  
--const lib = ffi.Library(path.join(__dirname, "dist/regodit.x64.dll"), {
-+const lib = ffi.Library(path.join(__dirname, "dist/regodit.x64.dll").replace('app.asar', 'app.asar.unpacked'), {
+ const HKEY = require("./HKEY.json");
+ 
+-const lib = ffi.Library(path.join(__dirname, "dist/regodit.dll"), {
++const lib = ffi.Library(path.join(__dirname, "dist/regodit.dll").replace('app.asar', 'app.asar.unpacked'), {
     'RegKeyExists': ["int", ["string", "string"]],
     'RegListAllSubkeys': ["string", ["string", "string"]],
     'RegListAllValues': ["string", ["string", "string"]],

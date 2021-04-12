@@ -1,6 +1,6 @@
 'use strict';
 
-const { remote } = require('electron');
+const remote = require('@electron/remote');
 const { imageFileToBase64 } = require('./avatar.js');
 
 async function selectFileDialog() {

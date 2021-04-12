@@ -1,6 +1,7 @@
 "use strict";
 
-const { remote } = require('electron');
+const remote = require('@electron/remote');
+
 const merge = require('deepmerge')
 const ffs = require("@xan105/fs");
 

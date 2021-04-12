@@ -1,6 +1,7 @@
 "use strict";
 
-const { remote } = require("electron");
+const remote = require('@electron/remote');
+
 const appPath = remote.app.getAppPath();
 
 (function($, window, document) {

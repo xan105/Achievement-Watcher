@@ -1,6 +1,6 @@
 "use strict";
 
-const { remote } = require('electron');
+const remote = require('@electron/remote');
 const path = require("path");
 const ini = require("ini");
 const parentFind = require('find-up');

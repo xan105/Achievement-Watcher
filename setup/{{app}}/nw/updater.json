@@ -3,7 +3,7 @@
   "args": "updater",
   "cwd": "../updater",
   "fileCheck": [
-    {"sum": "4d33c82761b20dd41ee16e5d3c155d165d90c152e73a0a3f7ea68c3e6be75de4", "size": 30155264},
+    {"sum": "02cd30da48078c3c7cee213891b0bfb013e33435245519de7e84b12750bcc072", "size": 56239104},
     {"file": "../updater/updater.js", "sum": "77d71169d4c4067be85f6d996233df7c9c96da2aee3a14644af721d6e670292c", "size": 4119}
   ]
 }

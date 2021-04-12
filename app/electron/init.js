@@ -8,6 +8,7 @@ const {
   shell,
   ipcMain
 } = require('electron');
+const remote = require('@electron/remote/main');
 
 const path = require("path");
 const fs = require("fs");
@@ -34,7 +35,7 @@ try {
         contextIsolation: false,
         webviewTag: false,
         v8CacheOptions: (manifest.config.debug) ? "none" : "code",
-        enableRemoteModule: true //Remove me when RemoteModule to IPC makeover is done
+        enableRemoteModule: true
     };
     
     //electron 9 crash if no icon exists to specified path
@@ -86,6 +87,7 @@ try {
     
     //enable ipc
     ipc.window(MainWin);
+    remote.initialize();
     
     MainWin.loadFile(manifest.config.window.view);
     

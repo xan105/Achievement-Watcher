@@ -3,7 +3,7 @@
   "args": "watchdog",
   "cwd": "../watchdog",
   "fileCheck": [
-    {"sum": "4d33c82761b20dd41ee16e5d3c155d165d90c152e73a0a3f7ea68c3e6be75de4", "size": 30155264},
+    {"sum": "02cd30da48078c3c7cee213891b0bfb013e33435245519de7e84b12750bcc072", "size": 56239104},
     {"file": "../watchdog/watchdog.js", "sum": "14333ba29222a420c2894199918e466becb42d849b0354efde380702908c986e", "size": 15028}
   ]
 }

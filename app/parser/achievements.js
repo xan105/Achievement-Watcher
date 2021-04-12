@@ -1,6 +1,6 @@
 "use strict";
 
-const { remote } = require('electron');
+const remote = require('@electron/remote');
 const path = require("path");
 const steam = require(path.join(appPath,"parser/steam.js"));
 const uplay = require(path.join(appPath,"parser/uplay.js"));

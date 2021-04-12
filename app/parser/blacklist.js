@@ -1,6 +1,6 @@
 "use strict";
 
-const { remote } = require('electron');
+const remote = require('@electron/remote');
 const path = require("path");
 const request = require('request-zero');
 const ffs = require("@xan105/fs");
