@@ -61,7 +61,7 @@ async function init(){
       const games = gameIndex.filter(game => game.binary === process && !game.name.includes("Demo"));
 
       if (games.length === 1) {
-        if (filter.mute.file.some( bin => bin === process)) return; //Mute event
+        if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
         game = games[0];
       }
 	    else if (games.length > 1) {
@@ -80,7 +80,7 @@ async function init(){
 	  } 
 	  else 
 	  {
-      if (filter.mute.file.some( bin => bin === process)) return; //Mute event
+      if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
       game = gameIndex.find(game => game.binary === process && !game.name.includes("Demo"));
 	  }
 	  
