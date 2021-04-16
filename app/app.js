@@ -410,7 +410,10 @@ var app = {
               
               let template = `
               <li>
-                <div class="notice">${$("#unlock").data("lang-noneUnlocked")} <i class="fas fa-frown-open"></i> ${$("#unlock").data("lang-play")}</div>
+                <div class="notice">
+                  <p>${$("#unlock").data("lang-noneUnlocked")} <i class="fas fa-frown-open"></i> ${$("#unlock").data("lang-play")}</p>
+                  <p>⚠️ If achievement do not unlock please kindly read the "FAQ / Troubleshoot" section of the <a href="https://github.com/xan105/Achievement-Watcher/wiki" target="_blank">Wiki</a>.</p>
+                  </div>
               </li>`;
               unlock.append(template);
             } 

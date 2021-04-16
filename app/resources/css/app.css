@@ -852,8 +852,16 @@ main {
 
 #unlock ul li > .notice { 
     text-align: center;
-    padding: 20px 10px;
+    padding: 10px;
     font-size: 20px;
+}
+
+#unlock ul li > .notice p {
+  padding: 5px 0;
+}
+
+#unlock ul li > .notice p a{
+  color: inherit;
 }
 
 #btn-scrollup {
