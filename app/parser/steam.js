@@ -10,7 +10,6 @@ const moment = require('moment');
 const request = require('request-zero');
 const urlParser = require('url');
 const ffs = require("@xan105/fs");
-const htmlParser = require('node-html-parser').parse;
 const regedit = require('regodit');
 const steamID = require(path.join(appPath,"util/steamID.js"));
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
@@ -154,8 +153,11 @@ module.exports.getGameData = async (cfg) => {
    
    return result;
    
- }catch( err) {
-  throw "Could not load Steam data."
+ }catch(err) {
+  if (err.code)
+    throw `Could not load Steam data: ${err.code} - ${err.message}`;
+  else
+    throw `Could not load Steam data: ${err}`;
  }
 }
 
@@ -277,7 +279,11 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
    return result;
    
  }catch(err) {
-  throw "Could not load Steam User Stats."
+    if (err.code)
+      throw `Could not load Steam User Stats: ${err.code} - ${err.message}`;
+    else
+      throw `Could not load Steam User Stats: ${err}`;
+   }
  }
  
 }
@@ -412,22 +418,24 @@ function getSteamData(cfg) {
   
   return new Promise((resolve, reject) => {
   
-      Promise.all([request.getJson(url.api),request.getJson(url.store,{headers: {"Accept-Language" : "en-US;q=1.0"}}),scrapSteamDB(cfg.appID)]).then(function(data) {
+      Promise.all([request.getJson(url.api),request.getJson(url.store,{headers: {"Accept-Language" : "en-US;q=1.0"}})]).then(function(data) {
 
         try {
 
-          let schema = data[0].game.availableGameStats;
-          let appdetail = data[1][cfg.appID].data;
-          let steamdb = data[2];
+          const schema = data[0].game.availableGameStats;
+          const appdetail = data[1][cfg.appID].data;
 
-          let result = {
-            name: (data[1][cfg.appID].success) ? appdetail.name : steamdb.name, //If the game is no longer available in the store fallback to steamdb
+          if (!(schema && schema.achievements && schema.achievements.length > 0)) throw "Schema doesn't have any achievements";
+          if (!data[1][cfg.appID].success) throw "Game is no longer available in the store";
+
+          const result = {
+            name: appdetail.name, 
             appid: cfg.appID,
-            binary: path.parse(steamdb.binary).base,
+            binary: null,
             img: {
-              header: (data[1][cfg.appID].success) ? appdetail.header_image.split("?")[0] : steamdb.header, //If the game is no longer available in the store fallback to steamdb
-              background: (data[1][cfg.appID].success) ? appdetail.background.split("?")[0] : null,
-              icon: steamdb.icon
+              header: appdetail.header_image.split("?")[0],
+              background: appdetail.background.split("?")[0],
+              icon: null
             },
             achievement: {
               total: schema.achievements.length,
@@ -445,34 +453,4 @@ function getSteamData(cfg) {
           return reject(err);
       });
   });
-}
-
-async function scrapSteamDB(appID){
-  try {
-    let data = await request(`https://steamdb.info/app/${appID}/`);
-    let html = htmlParser(data.body);
-
-    let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
-    
-      let data = tr.split("</td>\n");
-
-      return {
-        executable: data[1].replace(/<\/?[^>]+>/gi, '').replace(/[\r\n]/g, ''),
-        windows: data[4].includes(`aria-label="windows"`) || (!data[4].includes(`aria-label="macOS"`) && !data[4].includes(`aria-label="Linux"`)) ? true : false,
-      };
-    
-    });
-
-    let result = {
-      binary: binaries.find(binary => binary.windows).executable.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0], 
-      icon: html.querySelector('.app-icon.avatar').attributes.src,
-      header: html.querySelector('.app-logo').attributes.src,
-      name: html.querySelector('.css-truncate').innerHTML
-    };
-
-    return result
-    
-  }catch( err) {
-    throw err;
-  }
 }
