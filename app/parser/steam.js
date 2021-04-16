@@ -283,7 +283,6 @@ module.exports.getAchievementsFromAPI = async(cfg) => {
       throw `Could not load Steam User Stats: ${err.code} - ${err.message}`;
     else
       throw `Could not load Steam User Stats: ${err}`;
-   }
  }
  
 }
