@@ -2,7 +2,6 @@
 
 const path = require('path');
 const urlParser = require('url');
-const htmlParser = require('node-html-parser').parse;
 const fs = require("@xan105/fs");
 const request = require('request-zero');
 const steamLang = require("./steam.json");
@@ -82,76 +81,61 @@ function getSteamDataFromSRV(appID,lang){
   });
 }
 
-function getSteamData (appID,lang,key) {
+async function getSteamData (appID,lang,key) {
   
-  const url = {
-    api : `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${key}&appid=${appID}&l=${lang}&format=json`,
-    store : `https://store.steampowered.com/api/appdetails?appids=${appID}` 
+  const url = `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${key}&appid=${appID}&l=${lang}&format=json`;
+
+  const data = await request.getJson(url);
+  
+  const schema = data.game.availableGameStats;
+  if (!(schema && schema.achievements && schema.achievements.length > 0)) throw "Schema doesn't have any achievement";
+
+  const result = {
+    name: await findInAppList(+appID), 
+    appid: appID,
+    binary: null,
+    img: {
+      header: `https://cdn.akamai.steamstatic.com/steam/apps/${appID}/header.jpg`,
+      background: `https://cdn.akamai.steamstatic.com/steam/apps/${appID}/page_bg_generated_v6b.jpg`,
+      portrait: `https://cdn.akamai.steamstatic.com/steam/apps/${appID}/library_600x900.jpg`,
+      icon: null
+    },
+    achievement: {
+      total: schema.achievements.length,
+      list: schema.achievements
+    }
   };
-  
-  return new Promise((resolve, reject) => {
-
-      Promise.all([request.getJson(url.api),request.getJson(url.store,{headers: {"Accept-Language" : "en-US;q=1.0"}}),scrapSteamDB(appID)]).then(function(data) {
-
-        try {
-
-          let schema = data[0].game.availableGameStats;
-          let appdetail = data[1][appID].data;
-          let steamdb = data[2];
-
-          let result = {
-            name: (data[1][cfg.appID].success) ? appdetail.name : steamdb.name, //If the game is no longer available in the store fallback to steamdb
-            appid: appID,
-            binary: path.parse(steamdb.binary).base,
-            img: {
-              header: (data[1][cfg.appID].success) ? appdetail.header_image.split("?")[0] : steamdb.header, //If the game is no longer available in the store fallback to steamdb
-              background: (data[1][cfg.appID].success) ? appdetail.background.split("?")[0] : null,
-              icon: steamdb.icon
-            },
-            achievement: {
-              total: schema.achievements.length,
-              list: schema.achievements
-            }
-          };
           
-          return resolve(result);
-          
-        }catch(err) {
-            return reject(err);
-        }
-        
-      }).catch((err) => {
-          return reject(err);
-      });
-  });
+  return result;
 }
 
-async function scrapSteamDB(appid){
-  try {
-    let data = await request(`https://steamdb.info/app/${appid}/`);
-    let html = htmlParser(data.body);
-
-    let binaries = html.querySelector('#config table tbody').innerHTML.split("</tr>\n<tr>").map((tr) => {
+async function findInAppList(appID){
+  
+  if (!appID || !(Number.isInteger(appID) && appID > 0)) throw "ERR_INVALID_APPID";
+  
+  const cache = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache/schema");
+  const filepath = path.join(cache,"appList.json");
+  
+  try
+  {
+    const list = JSON.parse(await fs.readFile(filepath));
+    const app = list.find(app => app.appid === appID);
+    if (!app) throw "ERR_NAME_NOT_FOUND";
+    return app.name; 
+  } 
+  catch
+  {
+    const url = "http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json";
     
-      let data = tr.split("</td>\n");
-
-      return {
-        executable: data[1].replace(/<\/?[^>]+>/gi, '').replace(/[\r\n]/g, ''),
-        windows: data[4].includes(`aria-label="windows"`) || (!data[4].includes(`aria-label="macOS"`) && !data[4].includes(`aria-label="Linux"`)) ? true : false,
-      };
+    const data = await request.getJson(url,{timeout: 4000});
     
-    });
-
-    let result = {
-      binary: binaries.find(binary => binary.windows).executable.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0],
-      icon: html.querySelector('.app-icon.avatar').attributes.src,
-      header: html.querySelector('.app-logo').attributes.src,
-      name: html.querySelector('.css-truncate').innerHTML       
-    };
+    let list = data.applist.apps;
+    list.sort((a, b) => b.appid - a.appid); //recent first
     
-    return result
+    await fs.writeFile(filepath,JSON.stringify(list, null, 2));
     
-  }catch( err) {
-    throw err;
+    const app = list.find(app => app.appid === appID);
+    if (!app) throw "ERR_NAME_NOT_FOUND"; 
+    return app.name;
   }
 }
