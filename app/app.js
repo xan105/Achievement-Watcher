@@ -278,6 +278,8 @@ var app = {
 
         if (self.data('time') > 0) $("#unlock > .header .sort-ach .sort.time").addClass("show");
         
+        $("#search-bar-float input[type=search]").val("").blur().removeClass("has"); //reset
+        
         $("#home").fadeOut(function() {
             
             if(game.img.background) {

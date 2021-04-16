@@ -1404,11 +1404,20 @@ main {
   opacity: 0;
 }
 
-#search-bar .wrapper {
+#search-bar-float {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 1;
+}
+
+#search-bar .wrapper, 
+#search-bar-float .wrapper {
   position: relative;
 }
 
-#search-bar .wrapper > i {
+#search-bar .wrapper > i, 
+#search-bar-float .wrapper > i {
   position: absolute;
   top: 7px;
   left: 11px;
@@ -1431,7 +1440,24 @@ main {
     text-transform: capitalize;
 }
 
-#search-bar input[type=search]:focus, #search-bar input[type=search].has {
+#search-bar-float input[type=search] {
+    outline: none;
+    box-sizing: content-box;
+    background: #15202d;
+    border: solid #6f7f90 1px;
+    padding: 6px 10px;
+    transition: all .5s;
+    width: 15px;
+    height: 16px;
+    color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Open-Sans";
+    text-transform: capitalize;
+}
+
+#search-bar input[type=search]:focus, 
+#search-bar input[type=search].has {
 	width: 105px;
 	box-shadow: rgba(198, 212, 223, 0.5) 0px 0px 8px 2px;
 	padding-left: 32px;
@@ -1439,12 +1465,24 @@ main {
 	cursor: auto;
 }
 
+#search-bar-float input[type=search]:focus, 
+#search-bar-float input[type=search].has {
+	width: 160px;
+	box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+	padding-left: 32px;
+	color: #d9dfe4;
+	cursor: auto;
+}
+
 #search-bar input::-webkit-search-decoration,
-#search-bar input::-webkit-search-cancel-button {
+#search-bar input::-webkit-search-cancel-button,
+#search-bar-float input::-webkit-search-decoration,
+#search-bar-float input::-webkit-search-cancel-button {
 	display: none; 
 }
 
-#search-bar input::-webkit-input-placeholder {
+#search-bar input::-webkit-input-placeholder,
+#search-bar-float input::-webkit-input-placeholder {
 	color: transparent;
 }
 
