@@ -408,48 +408,61 @@ function getSteamDataFromSRV(appID,lang){
   });
 }
 
-function getSteamData(cfg) {
+async function getSteamData(cfg) {
   
-  const url = {
-    api : `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${cfg.key}&appid=${cfg.appID}&l=${cfg.lang}&format=json`,
-    store : `https://store.steampowered.com/api/appdetails?appids=${cfg.appID}` 
+  const url = `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=${cfg.key}&appid=${cfg.appID}&l=${cfg.lang}&format=json`;
+
+  const data = await request.getJson(url);
+  
+  const schema = data.game.availableGameStats;
+  if (!(schema && schema.achievements && schema.achievements.length > 0)) throw "Schema doesn't have any achievement";
+
+  const result = {
+    name: await findInAppList(+cfg.appID), 
+    appid: cfg.appID,
+    binary: null,
+    img: {
+      header: `https://cdn.akamai.steamstatic.com/steam/apps/${cfg.appID}/header.jpg`,
+      background: `https://cdn.akamai.steamstatic.com/steam/apps/${cfg.appID}/page_bg_generated_v6b.jpg`,
+      portrait: `https://cdn.akamai.steamstatic.com/steam/apps/${cfg.appID}/library_600x900.jpg`,
+      icon: null
+    },
+    achievement: {
+      total: schema.achievements.length,
+      list: schema.achievements
+    }
   };
-  
-  return new Promise((resolve, reject) => {
-  
-      Promise.all([request.getJson(url.api),request.getJson(url.store,{headers: {"Accept-Language" : "en-US;q=1.0"}})]).then(function(data) {
-
-        try {
-
-          const schema = data[0].game.availableGameStats;
-          const appdetail = data[1][cfg.appID].data;
-
-          if (!(schema && schema.achievements && schema.achievements.length > 0)) throw "Schema doesn't have any achievements";
-          if (!data[1][cfg.appID].success) throw "Game is no longer available in the store";
-
-          const result = {
-            name: appdetail.name, 
-            appid: cfg.appID,
-            binary: null,
-            img: {
-              header: appdetail.header_image.split("?")[0],
-              background: appdetail.background.split("?")[0],
-              icon: null
-            },
-            achievement: {
-              total: schema.achievements.length,
-              list: schema.achievements
-            }
-          };
           
-          return resolve(result);
-          
-        }catch(err) {
-            return reject(err);
-        }
-        
-      }).catch((err) => {
-          return reject(err);
-      });
-  });
+  return result;
+}
+
+async function findInAppList(appID){
+  
+  if (!appID || !(Number.isInteger(appID) && appID > 0)) throw "ERR_INVALID_APPID";
+  
+  const cache = path.join(cacheRoot,"steam_cache/schema");
+  const filepath = path.join(cache,"appList.json");
+  
+  try
+  {
+    const list = JSON.parse(await ffs.readFile(filepath));
+    const app = list.find(app => app.appid === appID);
+    if (!app) throw "ERR_NAME_NOT_FOUND";
+    return app.name; 
+  } 
+  catch
+  {
+    const url = "http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json";
+    
+    const data = await request.getJson(url,{timeout: 4000});
+    
+    let list = data.applist.apps;
+    list.sort((a, b) => b.appid - a.appid); //recent first
+    
+    await ffs.writeFile(filepath,JSON.stringify(list, null, 2));
+    
+    const app = list.find(app => app.appid === appID);
+    if (!app) throw "ERR_NAME_NOT_FOUND"; 
+    return app.name;
+  }
 }
