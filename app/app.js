@@ -53,7 +53,7 @@ var app = {
    $("#user-info .info .stats li:eq(1) span.data").text("0");
    $("#user-info .info .stats li:eq(2) span.data").text("0");
    
-   $("#search-bar input[type=search]").val("").change();
+   $("#search-bar input[type=search]").val("").change().blur();
    
    achievements.makeList(self.config,(percent)=>{
    
