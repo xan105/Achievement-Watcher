@@ -375,7 +375,8 @@ main {
   display: none;
 }
 
-#achievement .wrapper > .header .playtime {
+#achievement .wrapper > .header .playtime,
+#achievement .wrapper > .header .lastplayed {
   background: #15202db5;
   padding: 10px 20px;
   border-radius: 3px;
@@ -386,7 +387,8 @@ main {
   display: none;
 }
 
-#achievement .wrapper > .header .playtime span{
+#achievement .wrapper > .header .playtime span,
+#achievement .wrapper > .header .lastplayed span{
     display: inline-block;
 }
 #achievement .wrapper > .header .playtime span::first-letter {

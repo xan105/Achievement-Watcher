@@ -318,22 +318,27 @@ var app = {
             }
             
             $('#achievement .wrapper > .header .playtime').hide();
+            $('#achievement .wrapper > .header .lastplayed').hide();
             if (game.system !== "playstation" && game.system !== "uplay"){
-				PlaytimeTracking(game.appid).then((playtime)=>{
-					if(playtime > 0) {
-						let humanized;
-						if ( playtime < 60 ) {
-							humanized = moment.duration(playtime,'seconds').humanize();
-						} else if (playtime >= 86400){
-							humanized = humanizeDuration(playtime * 1000, { language: moment.locale(), fallbacks: ["en"], units: ["h", "m"], round: true }) + " (~ " +
-										moment.duration(playtime,'seconds').humanize() + ")";
-						} else {
-							humanized = humanizeDuration(playtime * 1000, { language: moment.locale(), fallbacks: ["en"], units: ["h", "m"], round: true });
-						}
-						$('#achievement .wrapper > .header .playtime span').text(`${humanized}`);
-						$('#achievement .wrapper > .header .playtime').css("display","inline-block");
-					}
-				}).catch(()=>{});
+              PlaytimeTracking(game.appid).then(({playtime, lastplayed})=>{
+                if(playtime > 0) {
+                  let humanized;
+                  if ( playtime < 60 ) {
+                    humanized = moment.duration(playtime,'seconds').humanize();
+                  } else if (playtime >= 86400){
+                    humanized = humanizeDuration(playtime * 1000, { language: moment.locale(), fallbacks: ["en"], units: ["h", "m"], round: true }) + " (~ " + moment.duration(playtime,'seconds').humanize() + ")";
+                  } else {
+                    humanized = humanizeDuration(playtime * 1000, { language: moment.locale(), fallbacks: ["en"], units: ["h", "m"], round: true });
+                  }
+                  $('#achievement .wrapper > .header .playtime span').text(`${humanized}`);
+                  $('#achievement .wrapper > .header .playtime').css("display","inline-block");
+                }
+                
+                if(lastplayed > 0){
+                  $('#achievement .wrapper > .header .lastplayed span').text(`${moment.unix(lastplayed).format('ll')}`);
+                  $('#achievement .wrapper > .header .lastplayed').css("display","inline-block");
+                }
+              }).catch((err)=>{debug.error(err)});
             }
             
             $("#unlock > .header .sort-ach .sort.time").removeClass("active");
