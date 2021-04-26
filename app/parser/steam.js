@@ -31,7 +31,7 @@ module.exports.scan = async (additionalSearch = []) => {
         path.join(process.env['APPDATA'],"CreamAPI")
     ];
     
-    const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+    const mydocs = await regedit.promises.RegQueryStringValueAndExpand("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
     if (mydocs) {
       search = search.concat([
         path.join(mydocs,"SkidRow")
