@@ -131,7 +131,7 @@ module.exports.scan = async (dir) => {
         
       } else if(info.Settings.AppID && info.Settings.PlayerName && info.Settings.SaveType == 1) {
       
-            const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+            const mydocs = await regedit.promises.RegQueryStringValueAndExpand("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
             if (mydocs) {
               
               result.push({ appid: info.Settings.AppID,
@@ -217,7 +217,7 @@ module.exports.scan = async (dir) => {
                 
         } else if (info.GameSettings.UserDataFolder === "mydocs" && info.GameSettings.AppId && info.GameSettings.UserName && info.GameSettings.UserName !== ""){
         
-            const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+            const mydocs = await regedit.promises.RegQueryStringValueAndExpand("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
             if (mydocs) {
 
               let dirpath = path.join(mydocs,info.GameSettings.UserName,info.GameSettings.AppId,"SteamEmu");

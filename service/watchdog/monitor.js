@@ -58,7 +58,7 @@ module.exports.getFolders = async (userDir_file) => {
 
   try{
   
-    const mydocs = await regedit.promises.RegQueryStringValue("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
+    const mydocs = await regedit.promises.RegQueryStringValueAndExpand("HKCU","Software/Microsoft/Windows/CurrentVersion/Explorer/User Shell Folders","Personal");
     if (mydocs) {
         steamEmu = steamEmu.concat([
           {
