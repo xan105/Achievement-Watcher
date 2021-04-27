@@ -159,6 +159,14 @@ var app = {
           
          if (!self.data("system")) //Steam only
          {
+
+           menu.append(new MenuItem({label: "Reset playtime and last played", async click() { 
+             self.css("pointer-events","none");
+             await PlaytimeTracking.reset(appid).catch((err)=>{debug.error(err)});
+             self.css("pointer-events","initial");
+           } }));
+           menu.append(new MenuItem({type: 'separator'}));
+
            if (app.config.notification_advanced.iconPrefetch){
                 menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/image.png")), label: $("#game-list").attr("data-contextMenu1"), async click() { 
                   self.css("pointer-events","none");
@@ -242,7 +250,7 @@ var app = {
                   self.removeClass("wait");
                   self.css("pointer-events","initial");
             } })); 
-          
+
             menu.append(new MenuItem({type: 'separator'}));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "Steam", click() {remote.shell.openExternal(`https://store.steampowered.com/app/${appid}/`)} }));
             menu.append(new MenuItem({ icon: nativeImage.createFromPath(path.join(appPath,"resources/img/globe.png")), label: "SteamDB", click() {remote.shell.openExternal(`https://steamdb.info/app/${appid}/`)} }));
