@@ -90,6 +90,7 @@ Source: "resources\curl.exe"; DestDir: "{tmp}" ; Flags: dontcopy;
 Source: "..\app\node_modules\electron\dist\*"; Excludes: "\electron.exe,\LICENSE,\version,\resources\default_app.asar"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;   
 Source: "..\service\*"; Excludes: "\buildme.cmd,\watchdog\_wip_,\watchdog\patches"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "{{app}}\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
+Source: "{{appData}}\*"; DestDir: "{userappdata}\Achievement Watcher\steam_cache\schema"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs;
 Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;       
     
 [Icons]
