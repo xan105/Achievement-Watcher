@@ -14,6 +14,7 @@ const regedit = require('regodit');
 const steamID = require(path.join(appPath,"util/steamID.js"));
 const steamLanguages = require(path.join(appPath,"locale/steam.json"));
 const sse = require(path.join(appPath,"parser/sse.js"));
+const htmlParser = require("node-html-parser");
 
 const cacheRoot = remote.app.getPath('userData');
 
@@ -417,15 +418,17 @@ async function getSteamData(cfg) {
   const schema = data.game.availableGameStats;
   if (!(schema && schema.achievements && schema.achievements.length > 0)) throw "Schema doesn't have any achievement";
 
+  const store = await getDataFromSteamStore(+cfg.appID);
+
   const result = {
-    name: await findInAppList(+cfg.appID), 
+    name: store.name || await findInAppList(+cfg.appID), 
     appid: cfg.appID,
     binary: null,
     img: {
       header: `https://cdn.akamai.steamstatic.com/steam/apps/${cfg.appID}/header.jpg`,
       background: `https://cdn.akamai.steamstatic.com/steam/apps/${cfg.appID}/page_bg_generated_v6b.jpg`,
       portrait: `https://cdn.akamai.steamstatic.com/steam/apps/${cfg.appID}/library_600x900.jpg`,
-      icon: null
+      icon: store.icon ? `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/${cfg.appID}/${store.icon}.jpg` : null
     },
     achievement: {
       total: schema.achievements.length,
@@ -434,6 +437,35 @@ async function getSteamData(cfg) {
   };
           
   return result;
+}
+
+async function getDataFromSteamStore(appID){
+  
+  if (!appID || !(Number.isInteger(appID) && appID > 0)) throw "ERR_INVALID_APPID";
+
+  const url = `https://store.steampowered.com/app/${appID}`;
+  
+  try {
+  
+    const { body }  = await request(url,{ headers: 
+      { 
+        'Cookie': "birthtime=662716801; wants_mature_content=1; path=/; domain=store.steampowered.com", //Bypass age check and mature filter
+        "Accept-Language" : "en-US;q=1.0" //force result to english
+      } 
+    }); 
+       
+    const html = htmlParser.parse(body);
+
+    const result = {
+      name: html.querySelector('.apphub_AppName').innerHTML,
+      icon: html.querySelector('.apphub_AppIcon img').attributes.src.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0].replace(".jpg","")
+    };
+       
+    return result;   
+    
+  } catch {
+    return {};
+  }
 }
 
 async function findInAppList(appID){
