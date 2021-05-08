@@ -29,7 +29,7 @@
   $("#search-bar-float input[type=search]").keyup(function(){
 
     const self = $(this);
-    const searchValue = self.val().toLowerCase();
+    const searchValue = self.val().toString().toLowerCase();
     const achievementlist = $("#achievement .achievement-list ul");
     const li = achievementlist.children("li:not(#hidden-disclaimer)"); 
     
@@ -39,16 +39,16 @@
       $("#hidden-disclaimer").hide();
     }
 
-    li.each( (index,elem) => {
+    li.each( (index,elem) => {  
+        const _this = $(elem);
+        if ( _this.find('> div.notice').length > 0 ) return; //ignore notice placeholder when no unlocked achievement
         
-      const _this = $(elem);
-      const achievementName = _this.find(".achievement .content .title").text().toLowerCase();
-      const achievementID = _this.find(".achievement").data("name").toLowerCase();   
-      
-      if (!(_this.hasClass("hidden") && hidden))
-        (achievementName.includes(searchValue) || achievementID === searchValue) ? _this.show() : _this.hide();
-    });
+        const achievementName = _this.find(".achievement .content .title").text().toString().toLowerCase();
+        const achievementID = _this.find(".achievement").data("name").toString().toLowerCase();   
         
+        if (!(_this.hasClass("hidden") && hidden))
+          (achievementName.includes(searchValue) || achievementID === searchValue) ? _this.show() : _this.hide();
+        });
   });
   
   $("#search-bar input[type=search], #search-bar-float input[type=search]").change(function(){
