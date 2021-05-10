@@ -70,7 +70,7 @@ module.exports.toast = async() => {
              await balloon({
                 title: payload.title,
                 message: (options.notification.showDesc) ? "Balloon Fallback\nHello World" : "Balloon Fallback",
-                ico: "./icon.ico"
+                ico: "./notification/icon/icon.ico"
              });
           }catch(err){
              throw err;
@@ -96,7 +96,7 @@ module.exports.gntp = async() => {
         await gntp.send({
                          title: "Achievement Watcher", 
                          message: (options.notification.showDesc) ? "Grrr!\nHello World" : "Grrr!", 
-                         icon: "./icon.png"
+                         icon: "./notification/icon/icon.png"
         });
         
        if(options.notification.rumble){ xinput.rumble().catch(()=>{}); }
