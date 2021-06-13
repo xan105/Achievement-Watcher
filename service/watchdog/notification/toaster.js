@@ -51,7 +51,7 @@ module.exports = async (message, option = {}) => {
 		if (options.souvenir.videoHighlight > 0 && videoIsRecording === false) {
 			debug.log("Souvenir: video highlight");
 			try {
-				const filePath = path.join(options.souvenir.videoDir || userShellFolder["myvideo"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName));
+				const filePath = path.join(options.souvenir.videoDir || userShellFolder["myvideo"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".mp4");
 				debug.log(`"${filePath}"`);
 				videoIsRecording = true;
 				const vendor = options.souvenir.videoHighlight == 1 ? "nvidia" : "amd";
@@ -67,7 +67,7 @@ module.exports = async (message, option = {}) => {
 		if (options.souvenir.screenshot) {
 			debug.log("Souvenir: screenshot");
 			try{
-				const filePath = path.join(options.souvenir.screenshotDir || userShellFolder["mypictures"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName));
+				const filePath = path.join(options.souvenir.screenshotDir || userShellFolder["mypictures"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".png");
 				debug.log(`"${filePath}"`);
 				if (options.toast.imageIntegration > 0) {
 					message.image = await screenshot(filePath);
