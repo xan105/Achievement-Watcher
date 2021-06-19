@@ -17,18 +17,18 @@ try {
    
    try{
 	   data.img = {
-			header: `https://steamcdn-a.akamaihd.net/steam/apps/${data.appid}/header.jpg`,
-			background: `https://steamcdn-a.akamaihd.net/steam/apps/${data.appid}/page_bg_generated_v6b.jpg`,
-			portrait: `https://steamcdn-a.akamaihd.net/steam/apps/${data.appid}/library_600x900.jpg`,
-			hero: `https://steamcdn-a.akamaihd.net/steam/apps/${data.appid}/library_hero.jpg`,
-			icon: `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${data.appid}/${data.icon}.jpg`
+			header: `https://cdn.akamai.steamstatic.com/steam/apps/${data.appid}/header.jpg`,
+			background: `https://cdn.akamai.steamstatic.com/steam/apps/${data.appid}/page_bg_generated_v6b.jpg`,
+			portrait: `https://cdn.akamai.steamstatic.com/steam/apps/${data.appid}/library_600x900.jpg`,
+			hero: `https://cdn.akamai.steamstatic.com/steam/apps/${data.appid}/library_hero.jpg`,
+			icon: `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/${data.appid}/${data.icon}.jpg`
 		}
 		delete data.icon;
 		data.apiVersion = 1;
 		
 		data.achievement.list.forEach((achievement) => {
-			if (achievement.icon) achievement.icon = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${data.appid}/${achievement.icon}.jpg`
-			if (achievement.icongray) achievement.icongray = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${data.appid}/${achievement.icongray}.jpg`
+			if (achievement.icon) achievement.icon = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/${data.appid}/${achievement.icon}.jpg`
+			if (achievement.icongray) achievement.icongray = `https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/${data.appid}/${achievement.icongray}.jpg`
 		});
 		delete data.achievement.version;
 	
