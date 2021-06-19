@@ -58,7 +58,7 @@ async function init(){
 	  {
       if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
 
-      const games = gameIndex.filter(game => game.binary === process && !game.name.includes("Demo"));
+      const games = gameIndex.filter(game => game.binary.toLowerCase() === process.toLowerCase() && !game.name.toLowerCase().includes("demo"));
 
       if (games.length === 1) {
         if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
@@ -81,7 +81,7 @@ async function init(){
 	  else 
 	  {
       if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
-      game = gameIndex.find(game => game.binary === process && !game.name.includes("Demo"));
+      game = gameIndex.find(game => game.binary.toLowerCase() === process.toLowerCase() && !game.name.toLowerCase().includes("demo"));
 	  }
 	  
 	  if(game) 
@@ -90,8 +90,8 @@ async function init(){
       if (!nowPlaying.includes(game)) { //Only one instance allowed
 
         const playing = Object.assign(game,{ 
-        pid: pid,
-        timer: new Timer
+          pid: pid,
+          timer: new Timer
         });
         debug.log(playing);
         
