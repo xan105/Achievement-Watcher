@@ -149,7 +149,11 @@ var app = {
           isRunning = true;
         } else if (self.options.notification_advanced.checkIfProcessIsRunning) {
           if (game.binary) {
-            isRunning = await tasklist.isProcessRunning(game.binary).catch((err) => {return false});
+            isRunning = await tasklist.isProcessRunning(game.binary).catch((err) => {
+              debug.error(err);
+              debug.warn("Assuming process is NOT running");
+              return false
+            });
           } else {
             debug.warn(`Warning! Missing "${game.name}" (${game.appid}) binary name > Overriding user choice to check if process is running`);
             isRunning = true;
