@@ -108,7 +108,7 @@ async function init(){
 
 	processMonitor.on("deletion",([process,pid]) => {
 	  
-	  const game = nowPlaying.find(game => game.pid === pid && game.binary === process);
+	  const game = nowPlaying.find(game => game.pid === pid && game.binary.toLowerCase() === process.toLowerCase());
 	  if (game)
 	  {
 		debug.log(`Stop playing ${game.name}(${game.appid})`);
