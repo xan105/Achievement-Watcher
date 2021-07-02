@@ -17,6 +17,7 @@ config file:
   "bin": "/path/to/exe", //required
   "args": "",
   "cwd": "./",
+  "env": ["myvar=something"],
   "fileCheck": [
     {"sum": "sha256", "size": 0}, //self(bin_value)
     {"file": "/path/to/file", "sum": "sha256", "size": 0}

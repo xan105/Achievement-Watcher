@@ -2,6 +2,7 @@
   "bin": "../node/node.exe",
   "args": "watchdog",
   "cwd": "../watchdog",
+  "env": ["NODE_SKIP_PLATFORM_CHECK=1"],
   "fileCheck": [
     {"sum": "02cd30da48078c3c7cee213891b0bfb013e33435245519de7e84b12750bcc072", "size": 56239104},
     {"file": "../watchdog/watchdog.js", "sum": "33d661d24ba8fc1d911afaf9460cb0ac064ce3db485d52b30626920f9284e491", "size": 15153}
