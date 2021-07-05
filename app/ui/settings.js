@@ -70,6 +70,26 @@ const appPath = remote.app.getAppPath();
           }
         });
         
+        for (let option in app.config.souvenir_screenshot) {    
+               if ( option === "custom_dir" ) {
+                    $("#custom_dir_screenshot div.btn").attr("data-path",app.config.souvenir_screenshot[option].toString());
+               } 
+               else if ( $(`#option_${option} option[value="${app.config.souvenir_screenshot[option]}"]`).length > 0 )
+               {
+                    $(`#option_${option}`).val(app.config.souvenir_screenshot[option].toString()).change();
+               }
+        }
+        
+        for (let option in app.config.souvenir_video) {
+               if ( option === "custom_dir" ) {
+                    $("#custom_dir_video div.btn").attr("data-path",app.config.souvenir_video[option].toString());
+               } 
+               else if ( $(`#option_${option} option[value="${app.config.souvenir_video[option]}"]`).length > 0 )
+               {
+                    $(`#option_${option}`).val(app.config.souvenir_video[option].toString()).change();
+               }
+        }
+        
         if (app.config.steam) {
           if (app.config.steam.apiKey) {
             $("#steamwebapikey").val(app.config.steam.apiKey);
@@ -194,6 +214,35 @@ const appPath = remote.app.getAppPath();
                         
         });
         
+        $("#options-souvenir-screenshot .right").children("select").each(function(index) {  
+                  
+           try {
+             if ($(this)[0].id !== "" && $(this).val() !== "") {
+                 app.config.souvenir_screenshot[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
+             }
+           }catch(e){
+            console.warn(e);
+            debug.log("error while reading notification transport settings ui");
+           }
+                        
+        });
+        
+        $("#options-souvenir-video .right").children("select").each(function(index) {  
+                  
+           try {
+             if ($(this)[0].id !== "" && $(this).val() !== "") {
+                 app.config.souvenir_video[$(this)[0].id.replace("option_","")] = ($(this).val() === "true") ? true : ($(this).val() === "false") ? false : $(this).val();
+             }
+           }catch(e){
+            console.warn(e);
+            debug.log("error while reading notification transport settings ui");
+           }
+                        
+        });
+        
+        app.config.souvenir_screenshot.custom_dir = $("#custom_dir_screenshot div.btn").data("path") || "";
+        app.config.souvenir_video.custom_dir = $("#custom_dir_video div.btn").data("path") || "";
+        
         let customToastAudio = $('#option_customToastAudio').find(':selected');
         if (customToastAudio.val() == 2) toastAudio.setCustom(customToastAudio.data("file"))
         
@@ -295,6 +344,51 @@ const appPath = remote.app.getAppPath();
         $("#settings .box section.content").removeClass("active");
         $("#settings .box section.content[data-view='"+view+"']").addClass("active");
         
+        self.css("pointer-events","initial");
+      });
+      
+      
+      $("#custom_dir_screenshot div.btn").click(async function(){
+        let self = $(this);
+        self.css("pointer-events","none");
+        
+        try {
+          const options = {
+            defaultPath : app.config.souvenir_screenshot.custom_dir || process.env['USERPROFILE'],
+            properties : ['openDirectory','showHiddenFiles']
+          };
+          let dialog = await remote.dialog.showOpenDialog(remote.getCurrentWindow(),options);
+          if (dialog.filePaths.length > 0){
+            $("#custom_dir_screenshot div.btn").attr("data-path",dialog.filePaths[0].toString());
+            debug.log(`screenshot custom folder: ${dialog.filePaths[0]}`);
+          }else{
+            debug.log("screenshot custom folder: User Cancel");
+          }
+        }catch(err){
+          remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error changing screenshot custom folder", detail: `${err}`});
+        };
+        self.css("pointer-events","initial");
+      });
+      
+      $("#custom_dir_video div.btn").click(async function(){
+        let self = $(this);
+        self.css("pointer-events","none");
+        
+        try {
+          const options = {
+            defaultPath : app.config.souvenir_video.custom_dir || process.env['USERPROFILE'],
+            properties : ['openDirectory','showHiddenFiles']
+          };
+          let dialog = await remote.dialog.showOpenDialog(remote.getCurrentWindow(),options);
+          if (dialog.filePaths.length > 0){
+            $("#custom_dir_video div.btn").attr("data-path",dialog.filePaths[0].toString());
+            debug.log(`video custom folder: ${dialog.filePaths[0]}`);
+          }else{
+            debug.log("video custom folder: User Cancel");
+          }
+        }catch(err){
+          remote.dialog.showMessageBoxSync({type: "error",title: "Unexpected Error", message: "Error changing video custom folder", detail: `${err}`});
+        };
         self.css("pointer-events","initial");
       });
       

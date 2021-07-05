@@ -19,6 +19,7 @@
     "sideMenu":{
       "general": "General",
       "notification": "Notificación",
+      "souvenir": "Souvenir",
       "folder": "Carpetas",
       "source": "Fuente",
       "advanced": "Avanzado",
@@ -31,7 +32,8 @@
       "disable": "Deshabilitar",
       "cancel": "Cancelar",
       "save": "Guardar",
-      "version": "Versión"
+      "version": "Versión",
+      "edit": "Edit"
     },
     "general": {
       "language": {
@@ -77,10 +79,6 @@
           "name": "Notificación",
           "description": "Notificar al desbloquear un logro si es posible"
         },
-        "souvenir" : {
-          "name": "Souvenir",
-          "description": "Tomar una captura de pantalla cuando desbloquees un logro"
-        },
         "rumble" : {
           "name": "Vibración del gamepad (XInput)",
           "description": "Vibra el primer controlador al desbloquear un logro"
@@ -114,7 +112,7 @@
           "description": "Notificación emergente de Windows 8-10"
         },
         "useWinRT" : {
-          "name": "Windows 10 WinRT API",
+          "name": "WinRT API",
           "description": "Usar WinRT si está disponible para una notificación más rápida en lugar de PowerShell"
         },
         "useBalloon" : {
@@ -123,6 +121,45 @@
         },
         "useWS" : {
           "description": "Transmitir los logros a todos los clientes conectados"
+        }
+      }
+    },
+    "souvenir":{
+      "title": {
+        "screenshot": "Screenshot",
+        "video": "Video"
+      },
+      "option":{
+        "screenshot" : {
+          "name": "Souvenir",
+          "description": "Tomar una captura de pantalla cuando desbloquees un logro"
+        },
+        "video": {
+          "name": "Video souvenir",
+          "description": "Record a short video when you unlock an achievement using the hardware encoder of your GPU"
+        },
+        "overwrite": {
+          "name": "Overwrite if existing file"
+        },
+        "custom_dir": {
+          "name": "Save location"
+        },
+        "codec": {
+          "name": "Video codec",
+          "description": "H.265/HEVC is more performant but less supported"
+        },
+        "colorDepth": {
+          "name": "Color depth",
+          "description": "10bits is only available for H.265/HEVC"
+        },
+        "duration": {
+          "name": "Duration"
+        },
+        "framerate": {
+          "name": "Framerate"
+        },
+        "cursor": {
+          "name": "Mouse cursor"
         }
       }
     },

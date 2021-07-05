@@ -19,7 +19,11 @@
     "sideMenu":{
       "general": "Generale",
       "notification": "Notifiche",
-      "folder": "Cartelle"
+      "souvenir": "Souvenir",
+      "folder": "Cartelle",
+      "source": "Source",
+      "advanced": "Advanced",
+      "debug": "Debug"
     },
     "common": {
       "show": "Mostra",
@@ -28,7 +32,8 @@
       "disable": "Disabilita",
       "cancel": "Elimina",
       "save": "Salva",
-      "version": "Versione"
+      "version": "Versione",
+      "edit": "Edit"
     },
     "general": {
       "language": {

@@ -52,7 +52,7 @@ html[lang="ru"] #settingNav li {
   width: 130px;
 }
 html[lang="ru"] #options-ui li:nth-child(5).hasHelper,
-html[lang="ru"] #options-notify-common li:nth-child(4).hasHelper,
+html[lang="ru"] #options-notify-common li:nth-child(2).hasHelper,
 html[lang="ru"] #options-notify-toast li:nth-child(1).hasHelper,
 html[lang="ru"] #options-notify-toast li:nth-child(2).hasHelper,
 html[lang="ru"] #options-notify-transport li:nth-child(2).hasHelper,
@@ -76,7 +76,6 @@ html[lang="hu"] .achievement .stats .community
 {
     width: 240px;
 }
-html[lang="hu"] #options-ui li:nth-child(5).hasHelper,
 html[lang="hu"] #options-notify-transport li:nth-child(2).hasHelper,
 html[lang="hu"] #options-source li:nth-child(1).hasHelper
 {
@@ -132,7 +131,7 @@ html[lang="de"] #options-notify-toast li:nth-child(3).hasHelper
   margin-bottom: 48px;
 }
 
-html[lang="zh-cn"] #options-notify-common li:nth-child(3).hasHelper.expand
+html[lang="zh-cn"] #options-souvenir-video li:nth-child(1).hasHelper.expand
 {
   margin-bottom: 16px;
 }

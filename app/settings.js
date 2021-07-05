@@ -78,10 +78,6 @@ module.exports.load = ()=>{
           options.notification.notify = true;
         }
 
-        if (typeof options.notification.souvenir !== "boolean"){
-          options.notification.souvenir = true;
-        }
-
         if (typeof options.notification.rumble !== "boolean"){
           options.notification.rumble = true;
         }
@@ -92,10 +88,6 @@ module.exports.load = ()=>{
         
         if (typeof options.notification.playtime !== "boolean"){
           options.notification.playtime = true;
-        }
-        
-        if (options.notification.videoHighlight != 0 && options.notification.videoHighlight != 1 && options.notification.videoHighlight != 2){
-          options.notification.videoHighlight = 0;
         }
         
         //Toast
@@ -152,7 +144,54 @@ module.exports.load = ()=>{
           options.notification_advanced.iconPrefetch = true;
         }
         
-        if(!options.souvenir_custom_dir) options.souvenir_custom_dir = {};
+        //Souvenir
+        
+        if (typeof options.souvenir_screenshot.screenshot !== "boolean"){
+          options.souvenir_screenshot.screenshot = true;
+        }
+        
+        if (typeof options.souvenir_screenshot.custom_dir !== "string"){
+          options.souvenir_screenshot.custom_dir = "";
+        }
+        
+        if (typeof options.souvenir_screenshot.overwrite_image !== "boolean"){
+          options.souvenir_screenshot.overwrite_image = false;
+        }
+        
+        if (options.souvenir_video.video != 0 && options.souvenir_video.video != 1 && options.souvenir_video.video != 2){
+          options.souvenir_video.video = 0;
+        }
+        
+        if (options.souvenir_video.codec != 0 && options.souvenir_video.codec != 1){
+          options.souvenir_video.codec = 0;
+        }
+        
+        if (typeof options.souvenir_video.colorDepth10bits !== "boolean"){
+          options.souvenir_video.colorDepth10bits = false;
+        }
+        
+        if (typeof options.souvenir_video.custom_dir !== "string"){
+          options.souvenir_video.custom_dir = "";
+        }
+        
+        if (typeof options.souvenir_video.overwrite_video !== "boolean"){
+          options.souvenir_video.overwrite_video = false;
+        }
+        
+        if (options.souvenir_video.duration != 10 && options.souvenir_video.duration != 15 &&
+            options.souvenir_video.duration != 20 && options.souvenir_video.duration != 30 &&
+            options.souvenir_video.duration != 45)
+        {
+          options.souvenir_video.duration = 20;
+        }
+        
+        if (options.souvenir_video.framerate != 30 && options.souvenir_video.framerate != 60){
+          options.souvenir_video.framerate = 60;
+        }
+        
+        if (typeof options.souvenir_video.cursor !== "boolean"){
+          options.souvenir_video.cursor = false;
+        }
         
         //Steam Key    
 
@@ -186,11 +225,9 @@ module.exports.load = ()=>{
           },
           notification: {
             notify: true,           
-            souvenir: true,
             rumble: true,
             notifyOnProgress: true,
-            playtime: true,
-            videoHighlight: 0
+            playtime: true
           },
           notification_toast: {
             customToastAudio: 1,
@@ -210,7 +247,21 @@ module.exports.load = ()=>{
             checkIfProcessIsRunning: true,
             iconPrefetch: true          
           },
-          souvenir_custom_dir: {},
+          souvenir_screenshot: {
+            screenshot: true,
+            custom_dir: "",
+            overwrite_image: false
+          },
+          souvenir_video: {
+            video: 0,
+            codec: 0,
+            colorDepth10bits: false,
+            custom_dir: "",
+            overwrite_video: false,
+            duration: 20,
+            framerate: 60,
+            cursor: false
+          },
           steam: {}
         };
         

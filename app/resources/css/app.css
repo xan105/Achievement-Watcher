@@ -1367,6 +1367,19 @@ main {
     transform: scale(0.9);
 }
 
+#settings .content[data-view="souvenir"] .btn {
+  padding: 3px 10px;
+  background: #27374a;
+  border: solid #3e5065 1px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  display: inline-block;
+  width: 88px;
+  margin-left: 1px;
+}
+
 #notify_test ~ select {
   background: #d9dfe4;
   font-family: "Open-sans";

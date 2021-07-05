@@ -19,6 +19,7 @@
     "sideMenu":{
       "general": "Ogólne",
       "notification": "Powiadomienia",
+      "souvenir": "Souvenir",
       "folder": "Foldery",
       "source": "Źródła",
       "advanced": "Zaawansowane",
@@ -31,7 +32,8 @@
       "disable": "Wyłącz",
       "cancel": "Anuluj",
       "save": "Zapisz",
-      "version": "Wersja"
+      "version": "Wersja",
+      "edit": "Edit"
     },
     "general": {
       "language": {
@@ -77,10 +79,6 @@
           "name": "Powiadomienia",
           "description": "Powiadom o odblokowaniu osiągnięcia jeżeli to możliwe"
         },
-        "souvenir" : {
-          "name": "Pamiątka",
-          "description": "Zrób zrzut ekranu kiedy odblokujesz osiągnięcie"
-        },
         "rumble" : {
           "name": "Wibracja kontrolera (XInput)",
           "description": "Wibruje pierwszy kontroler kiedy zdobędziesz osiągnięcie"
@@ -114,7 +112,7 @@
           "description": "Powiadomienie Toast w Windows 8-10"
         },
         "useWinRT" : {
-          "name": "Windows 10 WinRT API",
+          "name": "WinRT API",
           "description": "Użyj WinRT, aby powiadomienia działały szybciej niż przy PowerShellu"
         },
         "useBalloon" : {
@@ -123,6 +121,45 @@
         },
         "useWS" : {
           "description": "Rozgłoś osiągnięcie do wszystkich połączonych urządzeń"
+        }
+      }
+    },
+    "souvenir":{
+      "title": {
+        "screenshot": "Screenshot",
+        "video": "Video"
+      },
+      "option":{
+        "screenshot" : {
+          "name": "Pamiątka",
+          "description": "Zrób zrzut ekranu kiedy odblokujesz osiągnięcie"
+        },
+        "video": {
+          "name": "Video souvenir",
+          "description": "Record a short video when you unlock an achievement using the hardware encoder of your GPU"
+        },
+        "overwrite": {
+          "name": "Overwrite if existing file"
+        },
+        "custom_dir": {
+          "name": "Save location"
+        },
+        "codec": {
+          "name": "Video codec",
+          "description": "H.265/HEVC is more performant but less supported"
+        },
+        "colorDepth": {
+          "name": "Color depth",
+          "description": "10bits is only available for H.265/HEVC"
+        },
+        "duration": {
+          "name": "Duration"
+        },
+        "framerate": {
+          "name": "Framerate"
+        },
+        "cursor": {
+          "name": "Mouse cursor"
         }
       }
     },

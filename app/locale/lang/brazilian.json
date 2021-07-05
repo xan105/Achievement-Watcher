@@ -19,6 +19,7 @@
         "sideMenu": {
             "general": "Geral",
             "notification": "Notificação",
+            "souvenir": "Souvenir",
             "folder": "Arquivos",
             "source": "Fonte",
             "advanced": "Avançado",
@@ -31,7 +32,8 @@
             "disable": "Desabilitar",
             "cancel": "Cancelar",
             "save": "Salvar",
-            "version": "Versão"
+            "version": "Versão",
+            "edit": "Edit"
         },
         "general": {
             "language": {
@@ -80,14 +82,6 @@
                     "name": "Notificação",
                     "description": "Notificar ao desbloquear conquistas, se possível"
                 },
-                "souvenir": {
-                    "name": "Lembrança",
-                    "description": "Faça uma captura de tela ao desbloquear uma conquista"
-                },
-                "videoHighlight": {
-                    "name": "Lembrança de vídeo",
-                    "description": "Grave um pequeno vídeo ao desbloquear uma conquista usando o codificador de hardware de sua GPU"
-                },
                 "rumble": {
                     "name": "Vibração do Controle (XInput)",
                     "description": "Vibra o controle ao desbloquear uma conquista"
@@ -125,7 +119,7 @@
                     "description": "Notif. pop-up do Windows 8-10"
                 },
                 "useWinRT": {
-                    "name": "API do Windows 10 WinRT",
+                    "name": "API do WinRT",
                     "description": "Use o WinRT se disponível para uma notif. pop-up mais rápida, em vez do PowerShell"
                 },
                 "useBalloon": {
@@ -136,6 +130,45 @@
                     "description": "Transmitir conquista a todos os clientes conectados"
                 }
             }
+        },
+        "souvenir":{
+          "title": {
+            "screenshot": "Screenshot",
+            "video": "Video"
+          },
+          "option":{
+            "screenshot" : {
+              "name": "Lembrança",
+              "description": "Faça uma captura de tela ao desbloquear uma conquista"
+            },
+            "video": {
+              "name": "Lembrança de vídeo",
+              "description": "Grave um pequeno vídeo ao desbloquear uma conquista usando o codificador de hardware de sua GPU"
+            },
+            "overwrite": {
+              "name": "Overwrite if existing file"
+            },
+            "custom_dir": {
+              "name": "Save location"
+            },
+            "codec": {
+              "name": "Video codec",
+              "description": "H.265/HEVC is more performant but less supported"
+            },
+            "colorDepth": {
+              "name": "Color depth",
+              "description": "10bits is only available for H.265/HEVC"
+            },
+            "duration": {
+              "name": "Duration"
+            },
+            "framerate": {
+              "name": "Framerate"
+            },
+            "cursor": {
+              "name": "Mouse cursor"
+            }
+          }
         },
         "folder": {
             "headline": "Onde procurar por arquivos de conquistas :",

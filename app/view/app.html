@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8bN0RHehxwM+NantiQEoMGefMcuLhhUiisPMRn1ajz0='; style-src 'self' 'unsafe-inline';  font-src 'self'; media-src 'self'; img-src 'self' data: https://steamcdn-a.akamaihd.net https://api.xan105.com https://cdn.cloudflare.steamstatic.com/ https://cdn.akamai.steamstatic.com/; connect-src 'self' https://api.steampowered.com ws://localhost:8082";>
     <link rel="stylesheet" href="../resources/css/normalize.css" type="text/css" integrity="sha384-YfJLN8pRq0ZV6AMOTTzwQZx1EoYsiIoui3kXZInyzH6LnGBtaHvCXVtQq0mDIvXj"/>
     <link rel="stylesheet" href="../resources/css/fontawesome.css" type="text/css" integrity="sha384-e5X9merJxSRbQ+hGNUE7iLL7gCXJqDu8YQsh7//vQ+2zgtk/9Juuj68g8/XjU9Y5"/>
-    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity="sha384-ThE1AdK+sjzr3orKU9zBzr06UKXgOV8q4zlGz88u8iEHduvy8Wjl2byQZYvQGk/D"/>
-    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity="sha384-aXVZVO3uxVOjIojIi9VA5lTFHOdSrMOBm4W49IsRtOFFVRJBoL6weNEbfyq75itP"/>
+    <link rel="stylesheet" href="../resources/css/app.css" type="text/css" integrity=""/>
+    <link rel="stylesheet" href="../locale/override.css" type="text/css" integrity=""/>
   </head>
   <body>
     
@@ -145,6 +145,7 @@
               <ul>
                 <li class="active" data-view="general"><i class="fas fa-tools"></i> <span></span></li>
                 <li data-view="notification"><i class="fas fa-bell"></i> <span></span></li>
+                <li data-view="souvenir"><i class="fas fa-camera"></i> <span></span></li>
                 <li data-view="folder"><i class="far fa-folder"></i> <span></span></li>
                 <li data-view="source"><i class="fas fa-file-import"></i> <span></span></li>
                 <li data-view="advanced"><i class="fas fa-flask"></i> <span></span></li>
@@ -361,6 +362,146 @@
 
              </section>
              
+              <section class="content" data-view="souvenir">
+                <div id="options-souvenir" class="arrow-list">
+                  
+                  <div class="title"><span></span></div>
+                  <ul id="options-souvenir-screenshot">
+                      <li class="hasHelper">
+                        <div class="left"><i class="fas fa-camera"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" id="option_screenshot">
+                                <option value="false"></option>
+                                <option value="true" selected></option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                         <div class="help"></div>
+                      </li> 
+          
+                      <li>
+                        <div class="left"><i class="fas fa-file-signature"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_overwrite_image">
+                            <option value="false" selected></option>
+                            <option value="true"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                      </li>
+                  </ul>
+                  
+                  <ul id="custom_dir_screenshot">
+                    <li><div class="left"><i class="fas fa-folder-open"></i> <span></span></div>
+                    <div class="right">
+                      <div class="btn" data-path=""> <span></span></div>
+                    </div></li>
+                  </ul>
+                  
+                  <div class="title"><span></span></div>
+                  <ul id="options-souvenir-video">
+                      <li class="hasHelper expand">
+                        <div class="left"><i class="fas fa-video"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" id="option_video">
+                                <option value="0" selected></option>
+                                <option value="1">NVIDIA</option>
+                                <option value="2">AMD</option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                         <div class="help"></div>
+                      </li> 
+
+                      <li class="hasHelper">
+                        <div class="left"><i class="fas fa-film"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" id="option_codec">
+                                <option value="0" selected>H.264/AVC</option>
+                                <option value="1">H.265/HEVC</option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                         <div class="help"></div>
+                      </li> 
+                      
+                      <li class="hasHelper">
+                        <div class="left"><i class="fas fa-paint-roller"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" id="option_colorDepth10bits">
+                                <option value="false" selected>8bits</option>
+                                <option value="true">10bits</option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                         <div class="help"></div>
+                      </li> 
+          
+                      <li>
+                        <div class="left"><i class="fas fa-stopwatch"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" class="dropdown" id="option_duration">
+                                <option value="10">10''</option>
+                                <option value="15">15''</option>
+                                <option value="20" selected>20''</option>
+                                <option value="30">30''</option>
+                                <option value="45">45''</option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                      </li> 
+                      
+                      <li>
+                        <div class="left"><i class="fas fa-angle-double-right"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" id="option_framerate">
+                                <option value="30">30</option>
+                                <option value="60" selected>60</option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                      </li>
+                      
+                      <li>
+                        <div class="left"><i class="fas fa-mouse-pointer"></i> <span></span></div>
+                            <div class="right">
+                             <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                              <select autocomplete="off" id="option_cursor">
+                                <option value="false" selected></option>
+                                <option value="true"></option>
+                              </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                      </li> 
+
+                      <li>
+                        <div class="left"><i class="fas fa-file-signature"></i> <span></span></div>
+                        <div class="right">
+                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
+                          <select autocomplete="off" id="option_overwrite_video">
+                            <option value="false" selected></option>
+                            <option value="true"></option>
+                          </select>
+                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
+                        </div>
+                      </li>
+
+                  </ul>
+                  
+                  <ul id="custom_dir_video">
+                    <li><div class="left"><i class="fas fa-folder-open"></i> <span></span></div>
+                    <div class="right">
+                      <div class="btn" data-path=""> <span></span></div>
+                    </div></li>
+                  </ul>
+                  
+                </div>
+             </section>
+             
              <section class="content" data-view="notification">
                 <div id="options-notify" class="arrow-list">
                   
@@ -373,34 +514,6 @@
                           <select autocomplete="off" id="option_notify">
                             <option value="true" selected></option>
                             <option value="false"></option>
-                          </select>
-                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
-                        </div>
-                        <div class="help"></div>
-                      </li>
-
-                      <li class="hasHelper">
-                        <div class="left"><i class="fas fa-camera"></i> <span></span></div>
-                        <div class="right">
-                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" id="option_souvenir">
-                            <option value="true" selected></option>
-                            <option value="false"></option>
-                          </select>
-                         <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
-                        </div>
-                        <div class="help"></div>
-                      </li>
-                      
-                      <li class="hasHelper expand">
-                        <div class="left"><i class="fas fa-video"></i> <span></span></div>
-                        <div class="right">
-                         <div class="previous"><span class="arrow"><i class="fas fa-chevron-left"></i></span></div>
-                          <select autocomplete="off" class="dropdown" id="option_videoHighlight">
-                            <option value="0" selected></option>
-                            <option value="1">NVIDIA</option>
-                            <option value="2">AMD</option>
-                          </select>
                           </select>
                          <div class="next"><span class="arrow"><i class="fas fa-chevron-right"></i></span></div>
                         </div>
@@ -576,7 +689,7 @@
                   </ul>
                 </div>
              </section>
-
+             
              <section class="content active" data-view="general">
              
                 <div id="options-ui" class="arrow-list">
@@ -679,7 +792,7 @@
 <script src="../ui/search.js" type="text/javascript" integrity="sha384-Pu5cI3xPeBsnvbzbcbgj1yy6IpJBTZF8omwwZ1vZRjQa0BQA1K5yphR4DKJZzkSl"></script> 
 <script src="../ui/game.js" type="text/javascript" integrity="sha384-luz88vQqTBlH73dSdJ8kCBnt1JvWu60LD29t+0ZYIr+SJfgBWLaEk/JdGnRRSHek"></script>
 <script src="../ui/refresh.js" type="text/javascript" integrity="sha384-+Y57rDV2mODA9UOpOSxhzSVjxS4vHVYvLO9/qmgiNSauxBhI4LaXEl7PWebm2U5J"></script>
-<script src="../ui/settings.js" type="text/javascript" integrity="sha384-NMzbFHXIpauQy1bGEJXJe913j30gwDJ2gnmQjKisYdlwCMe8SJ7Q6i2Jt03oTU1e"></script>
+<script src="../ui/settings.js" type="text/javascript" integrity=""></script>
 <script src="../app.js" type="text/javascript" integrity="sha384-vcT5pwoStx+XfQlBn17vHRQSaShJYEo8DFPoV52WQ++P+871ZGaQATDGxEj3DSi2"></script>     
   </body>
 </html>

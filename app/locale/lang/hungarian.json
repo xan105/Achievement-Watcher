@@ -19,6 +19,7 @@
     "sideMenu":{
       "general": "Általános",
       "notification": "Értesítés",
+      "souvenir": "Souvenir",
       "folder": "Mappák",
       "source": "Forrás",
       "advanced": "Haladó",
@@ -31,7 +32,8 @@
       "disable": "Letiltva",
       "cancel": "Mégse",
       "save": "Mentés",
-      "version": "Verzió"
+      "version": "Verzió",
+      "edit": "Edit"
     },
     "general": {
       "language": {
@@ -77,10 +79,6 @@
           "name": "Értesítés",
           "description": "Értesíts lehetséges teljesítmény feloldásnál"
         },
-        "souvenir" : {
-          "name": "Emlék",
-          "description": "Képernyőmentés készítése, teljesítmény feloldásnál"
-        },
         "rumble" : {
           "name": "Játékvezérlő rezgés (XInput)",
           "description": "Teljesítmény feloldásnál rezgést generál az elsődleges játékvezérlőn"
@@ -114,7 +112,7 @@
           "description": "Windows 8-10 értesítés"
         },
         "useWinRT" : {
-          "name": "Windows 10 WinRT API",
+          "name": "WinRT API",
           "description": "A gyorsabb értesítés érdekében WinRT használata a PowerShell helyett, ha elérhető"
         },
         "useBalloon" : {
@@ -123,6 +121,45 @@
         },
         "useWS" : {
           "description": "Teljesítmény közvetítése az összes csatlakozott kliensnek felé"
+        }
+      }
+    },
+    "souvenir":{
+      "title": {
+        "screenshot": "Screenshot",
+        "video": "Video"
+      },
+      "option":{
+        "screenshot" : {
+          "name": "Emlék",
+          "description": "Képernyőmentés készítése, teljesítmény feloldásnál"
+        },
+        "video": {
+          "name": "Video souvenir",
+          "description": "Record a short video when you unlock an achievement using the hardware encoder of your GPU"
+        },
+        "overwrite": {
+          "name": "Overwrite if existing file"
+        },
+        "custom_dir": {
+          "name": "Save location"
+        },
+        "codec": {
+          "name": "Video codec",
+          "description": "H.265/HEVC is more performant but less supported"
+        },
+        "colorDepth": {
+          "name": "Color depth",
+          "description": "10bits is only available for H.265/HEVC"
+        },
+        "duration": {
+          "name": "Duration"
+        },
+        "framerate": {
+          "name": "Framerate"
+        },
+        "cursor": {
+          "name": "Mouse cursor"
         }
       }
     },

@@ -19,6 +19,7 @@
     "sideMenu":{
       "general": "Général",
       "notification": "Notification",
+      "souvenir": "Souvenir",
       "folder": "Dossiers",
       "source": "Source",
       "advanced": "Avancé",
@@ -31,7 +32,8 @@
       "disable": "Désactiver",
       "cancel": "Annuler",
       "save": "Ok",
-      "version": "Version"
+      "version": "Version",
+      "edit": "Changer"
     },
     "general": {
       "language": {
@@ -77,14 +79,6 @@
           "name": "Notification",
           "description": "Informer si possible lorsque un succès est débloqué"
         },
-        "souvenir" : {
-          "name": "Souvenir",
-          "description": "Prendre une capture d'écran lorsque vous débloquez un succès"
-        },
-        "videoHighlight": {
-          "name": "Souvenir vidéo",
-          "description": "Enregistrez une courte vidéo lorsque vous débloquez un succès à l'aide de l'encodeur matériel de votre GPU"
-        },
         "rumble" : {
           "name": "Vibration de la manette (XInput)",
           "description": "Faire vibrer la première manette lorsque un succès est débloqué"
@@ -122,7 +116,7 @@
           "description": "Windows 8-10 notification toast"
         },
         "useWinRT" : {
-          "name": "Windows 10 WinRT API",
+          "name": "WinRT API",
           "description": "Utilisez WinRT si disponible pour un toast plus rapide au lieu de PowerShell"
         },
         "useBalloon" : {
@@ -131,6 +125,45 @@
         },
         "useWS" : {
           "description": "Diffusion des succès à tous les clients connectés"
+        }
+      }
+    },
+    "souvenir":{
+      "title": {
+        "screenshot": "Capture d'écran",
+        "video": "Vidéo"
+      },
+      "option":{
+        "screenshot" : {
+          "name": "Souvenir",
+          "description": "Prendre une capture d'écran lorsque vous débloquez un succès"
+        },
+        "video": {
+          "name": "Souvenir vidéo",
+          "description": "Enregistrez une courte vidéo lorsque vous débloquez un succès à l'aide de l'encodeur matériel de votre GPU"
+        },
+        "overwrite": {
+          "name": "Écraser si fichier existant"
+        },
+        "custom_dir": {
+          "name": "Enregistrer dans ..."
+        },
+        "codec": {
+          "name": "Codec vidéo",
+          "description": "H.265/HEVC est plus performant mais moins pris en charge"
+        },
+        "colorDepth": {
+          "name": "Profondeur de couleur",
+          "description": "10bits n'est disponible que pour H.265/HEVC"
+        },
+        "duration": {
+          "name": "Durée du clip"
+        },
+        "framerate": {
+          "name": "Fréquence d'images"
+        },
+        "cursor": {
+          "name": "Curseur de la souris"
         }
       }
     },

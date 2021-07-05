@@ -20,10 +20,11 @@
     "sideMenu":{
       "general": "Главные",
       "notification": "Уведомления",
+      "souvenir": "Souvenir",
       "folder": "Папки",
-	  "source": "Источник",
+	    "source": "Источник",
       "advanced": "Расширенные",
-	  "debug": "Отладка"
+	    "debug": "Отладка"
     },
     "common": {
       "show": "Показать",
@@ -32,7 +33,8 @@
       "disable": "Выключить",
       "cancel": "Отменить",
       "save": "Сохранить",
-      "version": "Версия"
+      "version": "Версия",
+      "edit": "Edit"
     },
     "general": {
       "language": {
@@ -78,10 +80,6 @@
           "name": "Уведомление",
           "description": "Уведомить о разблокировке достижения, если это возможно"
         },
-        "souvenir" : {
-          "name": "Иконка",
-          "description": "Сделать снимок экрана, при получении достижения"
-        },
         "rumble" : {
           "name": "Вибрация геймпада (XInput)",
           "description": "Первый контроллер будет вибрировать при получении достижения"
@@ -115,7 +113,7 @@
           "description": "Всплывающее уведомление Windows 8-10"
         },
         "useWinRT" : {
-          "name": "Windows 10 WinRT API",
+          "name": "WinRT API",
           "description": "Используйте WinRT API, если он доступен, для более быстрого всплывающего уведомления вместо PowerShell"
         },
         "useBalloon" : {
@@ -124,6 +122,45 @@
         },
         "useWS" : {
           "description": "Транслирование достижений всем подключенным клиентам"
+        }
+      }
+    },
+    "souvenir":{
+      "title": {
+        "screenshot": "Screenshot",
+        "video": "Video"
+      },
+      "option":{
+        "screenshot" : {
+          "name": "Иконка",
+          "description": "Сделать снимок экрана, при получении достижения"
+        },
+        "video": {
+          "name": "Video souvenir",
+          "description": "Record a short video when you unlock an achievement using the hardware encoder of your GPU"
+        },
+        "overwrite": {
+          "name": "Overwrite if existing file"
+        },
+        "custom_dir": {
+          "name": "Save location"
+        },
+        "codec": {
+          "name": "Video codec",
+          "description": "H.265/HEVC is more performant but less supported"
+        },
+        "colorDepth": {
+          "name": "Color depth",
+          "description": "10bits is only available for H.265/HEVC"
+        },
+        "duration": {
+          "name": "Duration"
+        },
+        "framerate": {
+          "name": "Framerate"
+        },
+        "cursor": {
+          "name": "Mouse cursor"
         }
       }
     },
