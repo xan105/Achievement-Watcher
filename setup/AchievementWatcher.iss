@@ -81,6 +81,7 @@ en.ButtonDonate=Donate
 en.UpdateNotice=A newer version of this setup is available at
 en.Finishing=Finishing ...
 en.Redist=Visual C++ 2015-2019 ...
+en.DirectX=DirectX End-User Runtime ...
 
 #include <idp.iss>
 
@@ -93,7 +94,8 @@ Source: "..\service\*"; Excludes: "\buildme.cmd,\watchdog\_wip_,\watchdog\patche
 Source: "{{app}}\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "{{appData}}\*"; DestDir: "{userappdata}\Achievement Watcher\steam_cache\schema"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs;
 Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;
-Source: "redist\VC_redist.x64.exe"; DestDir: "{tmp}" ; Flags: ignoreversion overwritereadonly; 
+Source: "redist\microsoft\*"; DestDir: "{tmp}\redist" ; Flags: ignoreversion overwritereadonly;
+Source: "redist\growl\*"; DestDir: "{tmp}\redist" ; Flags: ignoreversion overwritereadonly; 
     
 [Icons]
 Name: "{commondesktop}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}"; Check: GetOption('CreateDesktopIcon');
@@ -102,15 +104,19 @@ Name: "{group}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir
 Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; WorkingDir: "{app}\__unins__"; Check: GetOption('CreateStartMenu') and GetOption('CreateUninstaller');
 
 [Run]
-Filename: "{tmp}\VC_redist.x64.exe"; Parameters: "/install /quiet /norestart"; WorkingDir: "{tmp}"; StatusMsg: "{cm:Redist}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent
+;Redist
+Filename: "{tmp}\redist\VC_redist.x64.exe"; Parameters: "/repair /quiet /norestart"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:Redist}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent
+;xinput1_3 (Windows 7)
+Filename: "{tmp}\redist\dxwebsetup.exe"; Parameters: "/Q"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:DirectX}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: isWin('win7')
+;Misc
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\node\node.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c regsvr32 /s virtual-audio-capturer.dll"; WorkingDir: "{app}\loopback"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
-Filename: "{app}\node\node.exe"; Parameters: "watchdog"; WorkingDir: "{#AppWorkingDir}\watchdog"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
-Filename: "{app}\node\node.exe"; Parameters:"updater --notify"; WorkingDir: "{#AppWorkingDir}\updater"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist skipifnotsilent; Check: CmdLineHasSwitch('/NOTIFY')
+Filename: "{app}\nw\nw.exe"; Parameters: "-config watchdog.json"; WorkingDir: "{#AppWorkingDir}\nw"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
 ;PostInstall Checkbox
-Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; Description: "{#AppName}"; Flags: runasoriginaluser postinstall nowait skipifsilent skipifdoesntexist unchecked
+Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; Description: "Run {#AppName}"; Flags: runasoriginaluser postinstall nowait skipifsilent skipifdoesntexist unchecked
+Filename: "msiexec.exe"; Parameters: "/i ""Growl_v2.0.msi"" "; WorkingDir: "{tmp}\redist"; Description: "Install Growl For Windows ? (Recommended for Win7)"; Flags: runasoriginaluser postinstall skipifsilent skipifdoesntexist unchecked;
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{userappdata}\Achievement Watcher"
@@ -600,6 +606,9 @@ begin
    end;
 
    if(CurStep = ssPostInstall) then begin;
+    //Old files clean up
+    DelTree(ExpandConstant('{app}')+'\watchdog.exe', False, True, False);
+    DelTree(ExpandConstant('{app}')+'\updater.exe', False, True, False);
    end;
 
    if(CurStep = ssDone) then begin;
