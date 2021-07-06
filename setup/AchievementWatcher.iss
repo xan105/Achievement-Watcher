@@ -617,12 +617,15 @@ begin
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
+var 
+  ResultCode: Integer;
 begin
    if(CurStep = ssInstall) then begin
    end;
 
    if(CurStep = ssPostInstall) then begin;
     //Old files clean up
+    Exec('taskkill.exe', '/f /im watchdog.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
     DelTree(ExpandConstant('{app}')+'\watchdog.exe', False, True, False);
     DelTree(ExpandConstant('{app}')+'\updater.exe', False, True, False);
    end;
@@ -636,4 +639,5 @@ var
   ResultCode: Integer;
 begin
   Exec('taskkill.exe', '/f /im watchdog.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Exec('taskkill.exe', '/f /im node.exe /t', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 end;
