@@ -39,6 +39,7 @@ export default async function productInfoRequest(appID, onlyGame = true){
     }
     catch(err)
     {
+      console.error(err);
       if (await fs.exists(filepath))
       {
         result = JSON.parse(await fs.readFile(filepath));
@@ -78,19 +79,18 @@ export function findBinary(launchOptions){
       });
           
       for (let launch of filteredLaunchOptions)
-      {
+      { 
         binary = launch.executable.match(/([^\\\/\:\*\?\"\<\>\|])+$/)[0];
         if (launch.type === "default") break;
       }
     }
   
   }catch(err){
-  
-  console.warn(err);
-  /*Do nothing*/
+    console.warn(err);
+    /*Do nothing*/
   }
 
-
+  console.log("found binary: " + binary);
   return binary;
 }
 

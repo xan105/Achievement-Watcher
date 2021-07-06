@@ -240,8 +240,8 @@ const appPath = remote.app.getAppPath();
                         
         });
         
-        app.config.souvenir_screenshot.custom_dir = $("#custom_dir_screenshot div.btn").data("path") || "";
-        app.config.souvenir_video.custom_dir = $("#custom_dir_video div.btn").data("path") || "";
+        app.config.souvenir_screenshot.custom_dir = $("#custom_dir_screenshot div.btn").attr("data-path") || "";
+        app.config.souvenir_video.custom_dir = $("#custom_dir_video div.btn").attr("data-path") || "";
         
         let customToastAudio = $('#option_customToastAudio').find(':selected');
         if (customToastAudio.val() == 2) toastAudio.setCustom(customToastAudio.data("file"))

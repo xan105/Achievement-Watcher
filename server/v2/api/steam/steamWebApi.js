@@ -24,6 +24,41 @@ export async function getServerGameIndex(){
   
 }
 
+async function updateGameServerIndex(gameInfo){
+
+  console.log("updateGameServerIndex");
+  
+  const lastEntryCount = 16193;
+  
+  const filepath = path.join(folder.cache,"steam/schema/gameIndex.json");
+  const file = await fs.readFile(filepath);
+  const db = JSON.parse(file);
+  const size = db.length;
+  
+  if (gameInfo.appid && gameInfo.name && gameInfo.binary && gameInfo.icon)
+  {
+    
+    if (db.find(game => game.appid === gameInfo.appid)) {
+      console.error("updateGameServerIndex > gameInfo already exists ! > ABORTING file write");
+      return;
+    }
+    db.push(gameInfo);
+    db.sort((a, b) => b.appid - a.appid); //recent first
+
+    if (db.length > size && db.length > lastEntryCount ) 
+    {
+      await fs.writeFile(filepath,JSON.stringify(db, null));
+      console.log("updateGameServerIndex > pushed to db");
+    } else {
+      console.error("updateGameServerIndex > New DB is smaller ?! > ABORTING file write");
+    }
+
+  } else {
+    console.warn("updateGameServerIndex > Missing game info > SKIPPING");
+    console.warn(gameInfo);
+  } 
+}
+
 export async function getSteamGameInfoFromCacheOrRemote(appID){
 
   console.log("getSteamGameInfoFromCacheOrRemote");
@@ -34,11 +69,10 @@ export async function getSteamGameInfoFromCacheOrRemote(appID){
   
   let db, gameInfo;
   try{
-    
     console.log("> cache db exists");
-    
     db = JSON.parse(await fs.readFile(filepath)); 
-  }catch{
+  }catch(err){
+    console.error(err);
     db = [];
   }
 
@@ -50,17 +84,7 @@ export async function getSteamGameInfoFromCacheOrRemote(appID){
   }catch{
     console.log("> not found in db");
     gameInfo = await generateSteamGameInfo(appID);
-    
-    if (gameInfo.appid && gameInfo.name && gameInfo.binary && gameInfo.icon){
-      db.push(gameInfo);
-      db.sort((a, b) => b.appid - a.appid); //recent first
-      await fs.writeFile(filepath,JSON.stringify(db, null, 2)).catch(()=>{});
-      console.log("> pushed to db");
-    } else {
-      console.warn("MISSING INFO");
-      console.warn(gameInfo);
-    }
-
+    await updateGameServerIndex(gameInfo).catch((err) => { console.error(err) });
   }
   
   return gameInfo;
@@ -198,7 +222,7 @@ async function generateSteamGameInfo(appID){
   
     const promises = [
       getDataFromSteamStoreFallbackStoreAPI(appID),
-      getDataFromSteamDB(appID),
+      //getDataFromSteamDB(appID),
       findInAppList(appID)
     ];
 
