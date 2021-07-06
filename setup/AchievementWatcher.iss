@@ -80,8 +80,8 @@ en.CreateUninstaller=Create Uninstaller
 en.ButtonDonate=Donate
 en.UpdateNotice=A newer version of this setup is available at
 en.Finishing=Finishing ...
-en.Redist=Visual C++ 2015-2019 ...
-en.DirectX=DirectX End-User Runtime ...
+en.Redist=VCRuntime 2015-2019 ...
+en.DirectX=DirectX Runtime ...
 
 #include <idp.iss>
 
@@ -105,7 +105,7 @@ Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; Wo
 
 [Run]
 ;Redist
-Filename: "{tmp}\redist\VC_redist.x64.exe"; Parameters: "/repair /quiet /norestart"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:Redist}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent
+Filename: "{tmp}\redist\VC_redist.x64.exe"; Parameters: "/quiet /norestart"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:Redist}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: not VCRuntimeIsInstalled
 ;xinput1_3 (Windows 7)
 Filename: "{tmp}\redist\dxwebsetup.exe"; Parameters: "/Q"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:DirectX}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: isWin('win7')
 ;Misc
@@ -140,17 +140,33 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\QuietHou
 
 [Code]
 
-function CmdLineHasSwitch(const Value: string): Boolean;
-var
-  I: Integer;  
-begin
+function VCRuntimeIsInstalled: Boolean;
+ var
+  required_major: Cardinal;
+  required_minor: Cardinal;
+  required_bld: Cardinal;
+  required_rbld: Cardinal;
+  major: Cardinal;
+  minor: Cardinal;
+  bld: Cardinal;
+  rbld: Cardinal;
+  key: String;
+ begin
+  required_major := 14;
+  required_minor := 29;
+  required_bld := 30037;
+  required_rbld := 0;
   Result := False;
-  for I := 1 to ParamCount do
-    if CompareText(ParamStr(I), Value) = 0 then
-    begin
-      Result := True;
-      Exit;
+  key := 'SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64';
+  if RegQueryDWordValue(HKLM, key, 'Major', major) then begin
+    if RegQueryDWordValue(HKLM, key, 'Minor', minor) then begin
+      if RegQueryDWordValue(HKLM, key, 'Bld', bld) then begin
+        if RegQueryDWordValue(HKLM, key, 'Rbld', rbld) then begin
+            Result := (major > required_major) or ((major = required_major) and ((minor > required_minor) or ((minor = required_minor) and ((bld > required_bld) or ((bld = required_bld) and (rbld >= required_rbld))))))
+        end;
+      end;
     end;
+  end;
 end;
 
 procedure GoToWebsite(Sender: TObject);
