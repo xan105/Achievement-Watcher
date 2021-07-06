@@ -8,7 +8,7 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.6.2"
+#define OurVersion "1.6.3"
 #define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
@@ -80,6 +80,7 @@ en.CreateUninstaller=Create Uninstaller
 en.ButtonDonate=Donate
 en.UpdateNotice=A newer version of this setup is available at
 en.Finishing=Finishing ...
+en.Redist=Visual C++ 2015-2019 ...
 
 #include <idp.iss>
 
@@ -91,7 +92,8 @@ Source: "..\app\node_modules\electron\dist\*"; Excludes: "\electron.exe,\LICENSE
 Source: "..\service\*"; Excludes: "\buildme.cmd,\watchdog\_wip_,\watchdog\patches"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "{{app}}\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "{{appData}}\*"; DestDir: "{userappdata}\Achievement Watcher\steam_cache\schema"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs;
-Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;       
+Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;
+Source: "redist\VC_redist.x64.exe"; DestDir: "{tmp}" ; Flags: ignoreversion overwritereadonly; 
     
 [Icons]
 Name: "{commondesktop}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir}"; IconFilename: "{#AppIcon}"; Check: GetOption('CreateDesktopIcon');
@@ -100,6 +102,7 @@ Name: "{group}\{#AppName}"; Filename: "{#AppMain}"; WorkingDir: "{#AppWorkingDir
 Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; WorkingDir: "{app}\__unins__"; Check: GetOption('CreateStartMenu') and GetOption('CreateUninstaller');
 
 [Run]
+Filename: "{tmp}\VC_redist.x64.exe"; Parameters: "/install /quiet /norestart"; WorkingDir: "{tmp}"; StatusMsg: "{cm:Redist}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\node\node.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
