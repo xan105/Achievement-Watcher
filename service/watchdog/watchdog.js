@@ -230,10 +230,10 @@ var app = {
 									},
 									prefetch: self.options.notification_advanced.iconPrefetch,
 									souvenir: {
-										screenshot: self.options.notification.souvenir,
-										videoHighlight: self.options.notification.videoHighlight,
-										screenshotDir: self.options.souvenir_custom_dir.screenshot,
-										videoDir: self.options.souvenir_custom_dir.video
+										screenshot: self.options.souvenir_screenshot.screenshot,
+										video: self.options.souvenir_video.video,
+										screenshot_options: self.options.souvenir_screenshot,
+										video_options: self.options.souvenir_video
 									},
 									rumble: self.options.notification.rumble
 								  });
@@ -280,7 +280,7 @@ var app = {
 								prefetch: self.options.notification_advanced.iconPrefetch,
 								souvenir: {
 									screenshot: false,
-									videoHighlight: 0
+									video: 0
 								},
 								rumble: false
                               });
@@ -380,7 +380,7 @@ instance.lock().then(() => {
 				prefetch: app.options.notification_advanced.iconPrefetch,
 				souvenir: {
 					screenshot: false,
-					videoHighlight: 0
+					video: 0
 				},
 				rumble: false
             });

@@ -41,21 +41,29 @@ module.exports = async (message, option = {}) => {
 			prefetch : option.prefetch != null ? option.prefetch : true,
 			souvenir: {
 				screenshot: option.souvenir.screenshot || false,
-				videoHighlight: option.souvenir.videoHighlight >= 0 && option.souvenir.videoHighlight <= 2 ? option.souvenir.videoHighlight : 0,
-				screenshotDir: option.souvenir.screenshotDir || null,
-				videoDir: option.souvenir.videoDir || null 
+				video: option.souvenir.video >= 0 && option.souvenir.video <= 2 ? option.souvenir.video : 0,
+				screenshot_options: option.souvenir.screenshot_options || {},
+				video_options: option.souvenir.video_options || {}
 			},
 			rumble: option.rumble != null ? option.rumble : true
 		};
 		
-		if (options.souvenir.videoHighlight > 0 && videoIsRecording === false) {
-			debug.log("Souvenir: video highlight");
+		if (options.souvenir.video > 0 && videoIsRecording === false) {
+			debug.log("Souvenir: video");
 			try {
-				const filePath = path.join(options.souvenir.videoDir || userShellFolder["myvideo"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".mp4");
+				const filePath = path.join(options.souvenir.video_options.custom_dir || userShellFolder["myvideo"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".mp4");
 				debug.log(`"${filePath}"`);
 				videoIsRecording = true;
-				const vendor = options.souvenir.videoHighlight == 1 ? "nvidia" : "amd";
-				videoCapture.h264_hwencode(filePath, vendor, {audioInterface: "virtual-audio-capturer"})
+				const vendor = options.souvenir.video == 1 ? "nvenc" : "amf";
+				const encoder = options.souvenir.video_options.codec == 1 ? "h265" : "h264";
+				videoCapture.hwencode(filePath, `${encoder}_${vendor}`, {
+          overwrite: options.souvenir.video_options.overwrite_video,
+          timeLength: `00:00:${options.souvenir.video_options.duration}`,
+          framerate: options.souvenir.video_options.framerate,
+          bits10: options.souvenir.video_options.colorDepth10bits,
+          mouse: options.souvenir.video_options.cursor,
+          audioInterface: "virtual-audio-capturer"
+				})
 				.then(()=>{ videoIsRecording = false })
 				.catch((err) => { 
 					videoIsRecording = false;
@@ -67,12 +75,12 @@ module.exports = async (message, option = {}) => {
 		if (options.souvenir.screenshot) {
 			debug.log("Souvenir: screenshot");
 			try{
-				const filePath = path.join(options.souvenir.screenshotDir || userShellFolder["mypictures"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".png");
+				const filePath = path.join(options.souvenir.screenshot_options.custom_dir || userShellFolder["mypictures"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".png");
 				debug.log(`"${filePath}"`);
 				if (options.toast.imageIntegration > 0) {
 					message.image = await screenshot(filePath);
 				} else {
-					screenshot(filePath)
+					screenshot(filePath, options.souvenir.screenshot_options.overwrite_image )
 					.catch( (err) => { debug.error(err) });
 				}
 			}catch(err){ debug.error(err) }
