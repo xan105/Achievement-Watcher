@@ -34,7 +34,7 @@
     "steam-binary-vdf": "^0.1.0",
     "steam-resources": "github:seishun/node-steam-resources",
     "steamid": "^1.1.3",
-    "ws": "^7.3.1"
+    "ws": "^7.4.6"
   },
   "bundledDependencies": [
     "steam-resources"
