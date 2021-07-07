@@ -1,4 +1,4 @@
-A sexy achievement file parser with real-time notification and playtime tracking.<br />
+A sexy achievement file parser with real-time notification, automatic screenshot and playtime tracking.<br />
 View every achievement earned on your PC whether it's coming from Steam, a Steam emulator, and more.<br />
 To see the full list of what this app can import please see the [**Wiki/Compatibility**](https://github.com/xan105/Achievement-Watcher/wiki/Compatibility).
 
@@ -41,7 +41,7 @@ There is a lot of things to check so make sure to have a look at the [wiki](http
   <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
 </p>
 
-If you have enabled the *souvenir* option(s) then a screenshot and/or video will be taken when you unlock an achievement<br />
+📸 If you have enabled the *souvenir* option(s) then a screenshot and/or video will be taken when you unlock an achievement.<br />
 
 📖 Wiki and troubleshoot
 ========================
