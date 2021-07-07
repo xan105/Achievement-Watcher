@@ -30,12 +30,12 @@ Notification on achievement unlocking
 Not as sexy as a directX Overlay but it's the next best thing.<br />
 Display a notification when you unlock an achievement via<br />
 - [Toast notification](https://github.com/xan105/Achievement-Watcher/wiki/Toast-notification) (Windows 8 / 10)
-- [Websocket](https://github.com/xan105/Achievement-Watcher/wiki/Websocket-Notification-'API') (For example Twitch overlay) 
+- [Websocket](https://github.com/xan105/Achievement-Watcher/wiki/Websocket-Notification-'API') (Usage example: Twitch overlay) 
 - [GNTP (Growl)](https://github.com/xan105/Achievement-Watcher/wiki/GNTP-(Growl-Notification-Transport-Protocol)) (Recommended for Windows 7)
 
-⚠️ **Please verify your system settings to work properly**.<br />
-You can test notification in Settings > Debug to make sure your system is correctly configured.
-[More info](https://github.com/xan105/Achievement-Watcher/wiki) in the wiki.
+⚠️ **Please verify your system settings for this to work properly**. [More info](https://github.com/xan105/Achievement-Watcher/wiki)<br />
+You can test notification in Settings > Debug to make sure your system is correctly configured or seems to be.<br />
+There is a lot of things to check so make sure to have a look at the [wiki](https://github.com/xan105/Achievement-Watcher/wiki) before asking for help.
 
 <p align="center">
   <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
@@ -43,11 +43,11 @@ You can test notification in Settings > Debug to make sure your system is correc
 
 If you have enabled the *souvenir* option(s) then a screenshot and/or video will be taken when you unlock an achievement<br />
 
-Wiki and troubleshoot
-=====================
+📖 Wiki and troubleshoot
+========================
 
 There is a lot to say about this app. So for more info, configuration, troubleshoot, common issues etc ...<br />
-Please kindly see the [Wiki](https://github.com/xan105/Achievement-Watcher/wiki).
+Please kindly see the [Wiki](https://github.com/xan105/Achievement-Watcher/wiki), thank you.
 
 Translation Help
 ================
