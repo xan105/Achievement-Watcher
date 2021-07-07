@@ -33,9 +33,9 @@ Display a notification when you unlock an achievement via<br />
 - [Websocket](https://github.com/xan105/Achievement-Watcher/wiki/Websocket-Notification-'API') (Usage example: Twitch overlay) 
 - [GNTP (Growl)](https://github.com/xan105/Achievement-Watcher/wiki/GNTP-(Growl-Notification-Transport-Protocol)) (Recommended for Windows 7)
 
-⚠️ **Please verify your system settings for this to work properly**. [More info](https://github.com/xan105/Achievement-Watcher/wiki)<br />
+⚠️ **Please verify your system settings for this to work properly**. [More info](https://github.com/xan105/Achievement-Watcher/wiki/Toast-notification#windows-settings)<br />
 You can test notification in Settings > Debug to make sure your system is correctly configured or seems to be.<br />
-There is a lot of things to check so make sure to have a look at the [wiki](https://github.com/xan105/Achievement-Watcher/wiki) before asking for help.
+There is a lot of things to check so make sure to have a look at the [wiki](https://github.com/xan105/Achievement-Watcher/wiki/Notification-%22Not-Working%22) before asking for help.
 
 <p align="center">
   <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
