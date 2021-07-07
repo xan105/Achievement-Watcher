@@ -20,7 +20,7 @@
     "sideMenu":{
       "general": "通用",
       "notification": "通知",
-      "souvenir": "Souvenir",
+      "souvenir": "纪念",
       "folder": "目录",
       "source": "来源",
       "advanced": "高级",
@@ -34,7 +34,7 @@
       "cancel": "取消",
       "save": "保存",
       "version": "版本",
-      "edit": "Edit"
+      "edit": "编辑"
     },
     "general": {
       "language": {
@@ -131,8 +131,8 @@
     },
     "souvenir":{
       "title": {
-        "screenshot": "Screenshot",
-        "video": "Video"
+        "screenshot": "截图",
+        "video": "视频"
       },
       "option":{
         "screenshot" : {
@@ -141,30 +141,30 @@
         },
         "video": {
           "name": "视频纪念",
-          "description": "解锁成就时使用 GPU 的硬件编码器录制一个短视频"
+          "description": "解锁成就时使用 GPU 的硬件编码器录制一段短视频"
         },
         "overwrite": {
-          "name": "Overwrite if existing file"
+          "name": "覆盖现有文件"
         },
         "custom_dir": {
-          "name": "Save location"
+          "name": "保存路径"
         },
         "codec": {
-          "name": "Video codec",
-          "description": "H.265/HEVC is more performant but less supported"
+          "name": "视频编码",
+          "description": "H.265/HEVC 性能更高但兼容性较差"
         },
         "colorDepth": {
-          "name": "Color depth",
-          "description": "10bits is only available for H.265/HEVC"
+          "name": "色深",
+          "description": "10bits 仅适用于 H.265/HEVC"
         },
         "duration": {
-          "name": "Duration"
+          "name": "持续时间"
         },
         "framerate": {
-          "name": "Framerate"
+          "name": "帧率"
         },
         "cursor": {
-          "name": "Mouse cursor"
+          "name": "鼠标指针"
         }
       }
     },
