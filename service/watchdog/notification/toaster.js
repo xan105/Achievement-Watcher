@@ -55,7 +55,7 @@ module.exports = async (message, option = {}) => {
 				debug.log(`"${filePath}"`);
 				videoIsRecording = true;
 				const vendor = options.souvenir.video == 1 ? "nvenc" : "amf";
-				const encoder = options.souvenir.video_options.codec == 1 ? "h265" : "h264";
+				const encoder = options.souvenir.video_options.codec == 1 ? "hevc" : "h264";
 				videoCapture.hwencode(filePath, `${encoder}_${vendor}`, {
           overwrite: options.souvenir.video_options.overwrite_video,
           timeLength: `00:00:${options.souvenir.video_options.duration}`,
@@ -78,7 +78,7 @@ module.exports = async (message, option = {}) => {
 				const filePath = path.join(options.souvenir.screenshot_options.custom_dir || userShellFolder["mypictures"],fs.win32.sanitizeFileName(message.gameDisplayName),fs.win32.sanitizeFileName(message.achievementDisplayName) + ".png");
 				debug.log(`"${filePath}"`);
 				if (options.toast.imageIntegration > 0) {
-					message.image = await screenshot(filePath);
+					message.image = await screenshot(filePath, options.souvenir.screenshot_options.overwrite_image);
 				} else {
 					screenshot(filePath, options.souvenir.screenshot_options.overwrite_image )
 					.catch( (err) => { debug.error(err) });
