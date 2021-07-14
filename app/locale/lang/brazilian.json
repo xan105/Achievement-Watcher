@@ -10,7 +10,7 @@
     "hiddenRemain": "conquistas ocultas restantes",
     "revealedOnceUnlocked": "Os detalhes de cada conquista serão revelados quando desbloqueadas",
     "noneUnlocked": "Nenhuma conquista desbloqueada",
-    "play": "Começar a jogar!",
+    "play": "Comece a jogar!",
     "scrollUp": "Rolar pra cima",
     "allGamesBackButton": "Todos os jogos",
     "removeFromList": "Remover da lista",
@@ -19,7 +19,7 @@
         "sideMenu": {
             "general": "Geral",
             "notification": "Notificação",
-            "souvenir": "Souvenir",
+            "souvenir": "Lembrança",
             "folder": "Arquivos",
             "source": "Fonte",
             "advanced": "Avançado",
@@ -33,7 +33,7 @@
             "cancel": "Cancelar",
             "save": "Salvar",
             "version": "Versão",
-            "edit": "Edit"
+            "edit": "Editar"
         },
         "general": {
             "language": {
@@ -57,8 +57,8 @@
                 "name": "Mesclar duplicatas"
             },
             "timeMerge": {
-                "name": "Mesclar data/hora",
-                "description": "Ao mesclar duplicatas, qual data/hora é preferida?",
+                "name": "Mesclar timestamp",
+                "description": "Ao mesclar duplicatas, qual tempo é preferido?",
                 "value": {
                     "recent": "Recentes",
                     "oldest": "Antigas"
@@ -119,7 +119,7 @@
                     "description": "Notif. pop-up do Windows 8-10"
                 },
                 "useWinRT": {
-                    "name": "API do WinRT",
+                    "name": "API WinRT",
                     "description": "Use o WinRT se disponível para uma notif. pop-up mais rápida, em vez do PowerShell"
                 },
                 "useBalloon": {
@@ -133,7 +133,7 @@
         },
         "souvenir":{
           "title": {
-            "screenshot": "Screenshot",
+            "screenshot": "Captura de Tela",
             "video": "Video"
           },
           "option":{
@@ -146,27 +146,27 @@
               "description": "Grave um pequeno vídeo ao desbloquear uma conquista usando o codificador de hardware de sua GPU"
             },
             "overwrite": {
-              "name": "Overwrite if existing file"
+              "name": "Sobrescrever se o arquivo existir"
             },
             "custom_dir": {
-              "name": "Save location"
+              "name": "Local de Salvamento"
             },
             "codec": {
-              "name": "Video codec",
-              "description": "H.265/HEVC is more performant but less supported"
+              "name": "Codec de vídeo",
+              "description": "H.265/HEVC é mais performático, mas menos apoiado"
             },
             "colorDepth": {
-              "name": "Color depth",
-              "description": "10bits is only available for H.265/HEVC"
+              "name": "Profundidade de cor",
+              "description": "10bits só está disponivel para H.265/HEVC"
             },
             "duration": {
-              "name": "Duration"
+              "name": "Duração"
             },
             "framerate": {
-              "name": "Framerate"
+              "name": "Taxa de quadros"
             },
             "cursor": {
-              "name": "Mouse cursor"
+              "name": "Cursor do mouse"
             }
           }
         },
@@ -192,16 +192,16 @@
                 }
             },
             "steamEmu": {
-                "name": "Emulador do Steam"
+                "name": "Emulador Steam"
             },
             "greenLuma": {
                 "description": "GreenLuma 2020 e Reborn"
             },
             "rpcs3": {
-                "description": "Emulador de Playstation 3"
+                "description": "Emulador Playstation 3"
             },
             "lumaPlay": {
-                "description": "Emulador do Uplay"
+                "description": "Emulador Uplay"
             },
             "importCache": {
                 "name": "Importar cache de notificação",
