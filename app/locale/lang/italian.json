@@ -77,7 +77,7 @@
       },
       "option": {
         "notification" : {
-          "name": "Notifiche"
+          "name": "Notifiche",
           "description": "Notifica lo sblocco dei risultati se possibile"
         },
         "rumble" : {
