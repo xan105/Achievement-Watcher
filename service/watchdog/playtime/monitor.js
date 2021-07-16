@@ -21,6 +21,7 @@ const filter = {
 	ignore: blacklist.ignore, //WMI WQL FILTER
 	mute: {
 		dir: [
+			process.env['USERPROFILE'],
 			process.env['APPDATA'],
 			process.env['LOCALAPPDATA'],
 			process.env['ProgramFiles'],
@@ -58,13 +59,16 @@ async function init(){
 	  {
       if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
 
-      const games = gameIndex.filter(game => game.binary.toLowerCase() === process.toLowerCase() && !game.name.toLowerCase().includes("demo"));
+      const games = gameIndex.filter(game => ( game.binary.toLowerCase() === process.toLowerCase() ||
+                                               game.binary.replace(".exe","-Win64-Shipping.exe").toLowerCase() === process.toLowerCase() //thanks UE -.-'
+                                             ) && !game.name.toLowerCase().includes("demo")
+      );
 
-      if (games.length === 1) {
+      if (games.length === 1) { //single hit
         if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
         game = games[0];
       }
-	    else if (games.length > 1) {
+	    else if (games.length > 1) { //more than one
         debug.log(`More than 1 entry for "${process}"`);
         const gameDir = path.parse(filepath).dir;
         debug.log(`Try to find appid from a cfg file in "${gameDir}"`);
@@ -80,8 +84,9 @@ async function init(){
 	  } 
 	  else 
 	  {
-      if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
-      game = gameIndex.find(game => game.binary.toLowerCase() === process.toLowerCase() && !game.name.toLowerCase().includes("demo"));
+      /*if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
+      game = gameIndex.find(game => game.binary.toLowerCase() === process.toLowerCase() && !game.name.toLowerCase().includes("demo"));*/
+      debug.warn(`Filepath for process "${process}" is unavailable (permission problem ?) > SKIPPING`); 
 	  }
 	  
 	  if(game) 
@@ -108,7 +113,11 @@ async function init(){
 
 	processMonitor.on("deletion",([process,pid]) => {
 	  
-	  const game = nowPlaying.find(game => game.pid === pid && game.binary.toLowerCase() === process.toLowerCase());
+	  const game = nowPlaying.find(game => game.pid === pid && ( game.binary.toLowerCase() === process.toLowerCase() ||
+                                                               game.binary.replace(".exe","-Win64-Shipping.exe").toLowerCase() === process.toLowerCase() //thanks UE -.-'
+                                                             )
+    );
+    
 	  if (game)
 	  {
 		debug.log(`Stop playing ${game.name}(${game.appid})`);

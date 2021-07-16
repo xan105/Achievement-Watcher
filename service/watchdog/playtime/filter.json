@@ -26,6 +26,12 @@
 		"game.exe",
 		"launcher.exe",
 		"default.exe",
-		"javaw.exe"
+		"java.exe",
+		"javaw.exe",
+		"python.exe",
+		"pythonw.exe",
+		"pip.exe",
+		"node.exe",
+		"setup.exe"
 	]
 }
