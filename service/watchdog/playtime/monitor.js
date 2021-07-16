@@ -53,62 +53,53 @@ async function init(){
 
 	processMonitor.on("creation", async ([process,pid,filepath]) => {
 
+	  if (!filepath) return;
+	  //Mute event
+	  if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return;
+	  if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return;
+	  
+    const games = gameIndex.filter(game => ( game.binary.toLowerCase() === process.toLowerCase() ||
+                                             game.binary.replace(".exe","-Win64-Shipping.exe").toLowerCase() === process.toLowerCase() //thanks UE -.-'
+                                           ) && !game.name.toLowerCase().includes("demo")
+    );
+	  
 	  let game;
 	  
-	  if (filepath) 
-	  {
-      if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return; //Mute event
-
-      const games = gameIndex.filter(game => ( game.binary.toLowerCase() === process.toLowerCase() ||
-                                               game.binary.replace(".exe","-Win64-Shipping.exe").toLowerCase() === process.toLowerCase() //thanks UE -.-'
-                                             ) && !game.name.toLowerCase().includes("demo")
-      );
-
-      if (games.length === 1) { //single hit
-        if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
-        game = games[0];
+    if (games.length === 1) { //single hit
+      game = games[0];
+    }
+	  else if (games.length > 1) { //more than one
+      debug.log(`More than 1 entry for "${process}"`);
+      const gameDir = path.parse(filepath).dir;
+      debug.log(`Try to find appid from a cfg file in "${gameDir}"`);
+      try{
+        const appid = await findByReadingContentOfKnownConfigfilesIn(gameDir);
+        debug.log(`Found appid: ${appid}`);
+        game = games.find(game => game.appid == appid);
+      }catch(err){
+        debug.warn(err);
       }
-	    else if (games.length > 1) { //more than one
-        debug.log(`More than 1 entry for "${process}"`);
-        const gameDir = path.parse(filepath).dir;
-        debug.log(`Try to find appid from a cfg file in "${gameDir}"`);
-        try{
-          const appid = await findByReadingContentOfKnownConfigfilesIn(gameDir);
-          debug.log(`Found appid: ${appid}`);
-          game = games.find(game => game.appid == appid);
-        }catch(err){
-          debug.warn(err);
-        }
  
-      }
-	  } 
-	  else 
-	  {
-      /*if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return; //Mute event
-      game = gameIndex.find(game => game.binary.toLowerCase() === process.toLowerCase() && !game.name.toLowerCase().includes("demo"));*/
-      debug.warn(`Filepath for process "${process}" is unavailable (permission problem ?) > SKIPPING`); 
-	  }
-	  
-	  if(game) 
-      {
-      debug.log(`DB Hit for ${game.name}(${game.appid}) in "${filepath}"`);
-      if (!nowPlaying.includes(game)) { //Only one instance allowed
+    }
 
-        const playing = Object.assign(game,{ 
-          pid: pid,
-          timer: new Timer
-        });
-        debug.log(playing);
-        
-        nowPlaying.push(playing);
-      } else {
-        debug.error("Only one game instance allowed");
-      }
+	  if(!game) return;
+    debug.log(`DB Hit for ${game.name}(${game.appid}) ["${filepath}"]`);
     
-      emitter.emit("notify", [game]);
+    if (!nowPlaying.includes(game)) { //Only one instance allowed
 
-      }
-  
+      const playing = Object.assign(game,{ 
+        pid: pid,
+        timer: new Timer
+      });
+      debug.log(playing);
+        
+      nowPlaying.push(playing);
+        
+    } else {
+      debug.warn("Only one game instance allowed");
+    }
+    
+    emitter.emit("notify", [game]);
 	});
 
 	processMonitor.on("deletion",([process,pid]) => {
@@ -118,8 +109,8 @@ async function init(){
                                                              )
     );
     
-	  if (game)
-	  {
+	  if (!game) return;
+	  
 		debug.log(`Stop playing ${game.name}(${game.appid})`);
 		game.timer.stop();
 		const playedtime = game.timer.played;
@@ -139,8 +130,6 @@ async function init(){
 		TimeTrack(game.appid,playedtime).catch((err)=>{debug.error(err)});
 		
 		emitter.emit("notify", [game, "You played for " + humanized]);
-
-	  }
 
 	});
 

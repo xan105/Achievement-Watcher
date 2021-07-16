@@ -21,9 +21,8 @@
 	],
 	"mute" : [
 		"nw.exe",
+		"node.exe",
 		"lib.exe",
-		"GameLauncher.exe",
-		"game.exe",
 		"launcher.exe",
 		"default.exe",
 		"java.exe",
@@ -31,7 +30,6 @@
 		"python.exe",
 		"pythonw.exe",
 		"pip.exe",
-		"node.exe",
 		"setup.exe"
 	]
 }
