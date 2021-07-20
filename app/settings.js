@@ -87,7 +87,7 @@ module.exports.load = ()=>{
         }
         
         if (typeof options.notification.playtime !== "boolean"){
-          options.notification.playtime = true;
+          options.notification.playtime = false;
         }
         
         //Toast
@@ -227,7 +227,7 @@ module.exports.load = ()=>{
             notify: true,           
             rumble: true,
             notifyOnProgress: true,
-            playtime: true
+            playtime: false
           },
           notification_toast: {
             customToastAudio: 1,

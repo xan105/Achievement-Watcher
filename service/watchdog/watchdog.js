@@ -149,11 +149,22 @@ var app = {
           isRunning = true;
         } else if (self.options.notification_advanced.checkIfProcessIsRunning) {
           if (game.binary) {
+
             isRunning = await tasklist.isProcessRunning(game.binary).catch((err) => {
               debug.error(err);
               debug.warn("Assuming process is NOT running");
               return false
             });
+            
+            if (!isRunning) {
+              debug.log("Trying with '-Win64-Shipping' (Unreal Engine Game) ...");
+              isRunning = await tasklist.isProcessRunning(game.binary.replace(".exe","-Win64-Shipping.exe")).catch((err) => {
+                debug.error(err);
+                debug.warn("Assuming process is NOT running");
+                return false
+              });
+            }
+            
           } else {
             debug.warn(`Warning! Missing "${game.name}" (${game.appid}) binary name > Overriding user choice to check if process is running`);
             isRunning = true;
@@ -163,7 +174,7 @@ var app = {
         }
 
         if (isRunning) {
-        
+          
           let achievements = await monitor.parse(name);
           
           if (achievements.length > 0) {
@@ -300,7 +311,7 @@ var app = {
           }
         }
         else {
-          debug.warn(`binary "${game.binary}" not running`);
+          debug.warn(`game's process "${game.binary}" not running`);
         }
           
       }catch(err){

@@ -1,5 +1,6 @@
 'use strict';
 
+const os = require('os');
 const path = require('path');
 const fs = require('@xan105/fs');
 const request = require('request-zero');
@@ -17,10 +18,13 @@ const debug = new (require("@xan105/log"))({
 
 const blacklist = require("./filter.json");
 
+const systemTempDir = os.tmpdir() || process.env['TEMP'] || process.env['TMP'];
+
 const filter = {
 	ignore: blacklist.ignore, //WMI WQL FILTER
 	mute: {
 		dir: [
+      systemTempDir,
 			process.env['USERPROFILE'],
 			process.env['APPDATA'],
 			process.env['LOCALAPPDATA'],
@@ -53,9 +57,9 @@ async function init(){
 
 	processMonitor.on("creation", async ([process,pid,filepath]) => {
 
-	  if (!filepath) return;
 	  //Mute event
-	  if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.startsWith(dirpath))) return;
+	  if (!filepath) return;
+	  if (filter.mute.dir.some( dirpath => path.parse(filepath).dir.toLowerCase().startsWith(dirpath.toLowerCase()))) return;
 	  if (filter.mute.file.some( bin => bin.toLowerCase() === process.toLowerCase() )) return;
 	  
     const games = gameIndex.filter(game => ( game.binary.toLowerCase() === process.toLowerCase() ||

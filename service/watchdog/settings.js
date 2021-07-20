@@ -110,7 +110,7 @@ module.exports.load = async (cfg_file) => {
         }
         
         if (typeof options.notification.playtime !== "boolean"){
-          options.notification.playtime = true;
+          options.notification.playtime = false;
           fixFile = true;
         }
         
@@ -281,7 +281,7 @@ module.exports.load = async (cfg_file) => {
             notify: true,           
             rumble: true,
             notifyOnProgress: true,
-            playtime: true
+            playtime: false
           },
           notification_toast: {
             customToastAudio: 1,

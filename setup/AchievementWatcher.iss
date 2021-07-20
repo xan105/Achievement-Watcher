@@ -8,7 +8,7 @@
 [Setup]
 #define AppUserModelID "io.github.xan105.achievement.watcher"
 #define AppName "Achievement Watcher"
-#define OurVersion "1.6.3"
+#define OurVersion "1.6.4"
 #define Author "Anthony Beaumont"
 #define Website "https://github.com/xan105/Achievement-Watcher"
 #define DonationURL "https://www.paypal.me/xan105"
@@ -94,7 +94,7 @@ Source: "..\service\*"; Excludes: "\buildme.cmd,\watchdog\_wip_,\watchdog\patche
 Source: "{{app}}\*"; DestDir: "{app}"; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "{{appData}}\*"; DestDir: "{userappdata}\Achievement Watcher\steam_cache\schema"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs;
 Source: "winmedia\*"; DestDir: "{win}\media"; Flags: ignoreversion overwritereadonly;
-Source: "redist\microsoft\*"; DestDir: "{tmp}\redist" ; Flags: ignoreversion overwritereadonly;
+Source: "redist\microsoft\*"; DestDir: "{tmp}\redist" ; Flags: ignoreversion overwritereadonly recursesubdirs createallsubdirs;
 Source: "redist\growl\*"; DestDir: "{tmp}\redist" ; Flags: ignoreversion overwritereadonly; 
     
 [Icons]
@@ -107,7 +107,7 @@ Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"; Wo
 ;Redist
 Filename: "{tmp}\redist\VC_redist.x64.exe"; Parameters: "/quiet /norestart"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:Redist}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: not VCRuntimeIsInstalled
 ;xinput1_3 (Windows 7)
-Filename: "{tmp}\redist\dxwebsetup.exe"; Parameters: "/Q"; WorkingDir: "{tmp}\redist"; StatusMsg: "{cm:DirectX}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: isWin('win7')
+Filename: "{tmp}\redist\directx\DXSETUP.exe"; Parameters: "/silent"; WorkingDir: "{tmp}\redist\directx"; StatusMsg: "{cm:DirectX}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: isWin('win7')
 ;Misc
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
