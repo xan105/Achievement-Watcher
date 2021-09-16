@@ -186,7 +186,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                 
                  for (let i in root)
                  {
-
+                    if(Object.prototype.hasOwnProperty.call(root,i)){
                      try {
 
                           let achievement = game.achievement.list.find( (elem) => { 
@@ -198,9 +198,9 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                               }
                           });
                           if(!achievement) throw "ACH_NOT_FOUND_IN_SCHEMA";
-                        
+
                           let parsed = {
-                                Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i].Unlocked == 1 || root[i].earned || root[i] == 1) ? true : false,
+                                Achieved : (root[i].Achieved == 1 || root[i].achieved == 1 || root[i].State == 1 || root[i].HaveAchieved == 1 || root[i].Unlocked == 1 || root[i].earned || root[i] === "1") ? true : false,
                                 CurProgress : root[i].CurProgress || root[i].progress || 0,
                                 MaxProgress : root[i].MaxProgress || root[i].max_progress || 0,
                                 UnlockTime : root[i].UnlockTime || root[i].unlocktime || root[i].HaveAchievedTime || root[i].HaveHaveAchievedTime || root[i].Time || root[i].earned_time || 0
@@ -243,6 +243,7 @@ module.exports.makeList = async(option, callbackProgress = ()=>{}) => {
                             debug.error(`[${appid.appid}] Unexpected Error: ${err}`);
                           }
                        }          
+                    }
                  }
 
                  game.achievement.unlocked = game.achievement.list.filter(ach => ach.Achieved == 1).length;

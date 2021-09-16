@@ -183,6 +183,7 @@ var app = {
             
             let j = 0;
             for (let i in achievements) {
+              if(Object.prototype.hasOwnProperty.call(achievements,i)){
                     try{
 
                         let ach = game.achievement.list.find( (achievement ) => { 
@@ -304,8 +305,8 @@ var app = {
                      debug.error(`Unexpected Error for achievement "${achievements[i].name}": ${err}`);
                    }
                 }
+              }
             }
-            
             await track.save(appID,achievements);
           
           }

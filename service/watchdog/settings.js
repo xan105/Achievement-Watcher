@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require('path');
-const ini = require("ini");
+const ini = require("@xan105/ini");
 const osLocale = require('os-locale');
 const fs = require("@xan105/fs");
 const steamLang = require("./steam.json");

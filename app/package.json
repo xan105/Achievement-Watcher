@@ -20,6 +20,7 @@
   "dependencies": {
     "@electron/remote": "^1.1.0",
     "@xan105/fs": "^1.2.0",
+    "@xan105/ini": "^1.0.1",
     "@xan105/log": "^1.0.2",
     "accountpicture-ms-extractor": "^1.2.4",
     "adm-zip": "0.4.13",
@@ -29,7 +30,6 @@
     "fast-glob": "^3.2.4",
     "find-up": "^4.1.0",
     "humanize-duration": "^3.25.1",
-    "ini": "1.3.5",
     "js-yaml": "^3.14.1",
     "lodash.omit": "^4.5.0",
     "minimist": "^1.2.5",

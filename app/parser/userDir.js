@@ -2,7 +2,7 @@
 
 const remote = require('@electron/remote');
 const path = require("path");
-const ini = require("ini");
+const ini = require("@xan105/ini");
 const parentFind = require('find-up');
 const glob = require("fast-glob");
 const ffs = require("@xan105/fs");

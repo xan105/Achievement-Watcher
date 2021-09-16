@@ -3,7 +3,7 @@
 const path = require('path');
 const fs = require('@xan105/fs');
 const glob = require('fast-glob');
-const ini = require('ini');
+const ini = require('@xan105/ini');
 
 async function findByReadingContentOfKnownConfigfilesIn(dirPath){
   const files = [

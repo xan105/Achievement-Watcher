@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require('path');
-const ini = require("ini");
+const ini = require("@xan105/ini");
 const parentFind = require('find-up');
 const omit = require('lodash.omit');
 const fs = require("@xan105/fs");
@@ -213,17 +213,21 @@ module.exports.parse = async (filePath) => {
       if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum
         let convert = {};
         for (let i in local.Achievements) {
+          if(Object.prototype.hasOwnProperty.call(local.Achievements,i)){
             if (local.Achievements[i] == 1) {
               convert[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
             }
+          }
         }
         local = convert;
       } else if (local.State && local.Time) { //3DM
         let convert = {};
         for (let i in local.State) {
+          if(Object.prototype.hasOwnProperty.call(local.State,i)){
             if (local.local.State[i] == "0101") {
               convert[`${i}`] = { Achieved: "1", UnlockTime: new DataView(new Uint8Array(Buffer.from(local.Time[i].toString(),'hex')).buffer).getUint32(0, true) || null };
             }
+          }
         }
         local = convert;
       } else {
@@ -233,7 +237,7 @@ module.exports.parse = async (filePath) => {
       let achievements = [];
 
       for (let achievement in local){
-
+        if(Object.prototype.hasOwnProperty.call(local,achievement)){
                 try {
                   
                   if(local[achievement].State) { //RLD!
@@ -246,7 +250,7 @@ module.exports.parse = async (filePath) => {
 
                   let result = {
                       name: local[achievement].id || local[achievement].apiname || local[achievement].name || achievement,
-                      Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement].earned || local[achievement] == 1) ? true : false,
+                      Achieved : (local[achievement].Achieved == 1 || local[achievement].achieved == 1 || local[achievement].State == 1 || local[achievement].HaveAchieved == 1 || local[achievement].Unlocked == 1 || local[achievement].earned || local[achievement] === "1") ? true : false,
                       CurProgress : local[achievement].CurProgress || local[achievement].progress || 0,
                       MaxProgress : local[achievement].MaxProgress || local[achievement].max_progress || 0,
                       UnlockTime : local[achievement].UnlockTime || local[achievement].unlocktime || local[achievement].HaveAchievedTime || local[achievement].HaveHaveAchievedTime || local[achievement].Time || local[achievement].earned_time || 0
@@ -262,6 +266,7 @@ module.exports.parse = async (filePath) => {
                   
                   achievements.push(result);
                 }catch(e){}
+        }
       }
 
       achievements.sort((a,b) => {

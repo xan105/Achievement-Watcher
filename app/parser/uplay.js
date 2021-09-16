@@ -359,7 +359,7 @@ let indexDB = {
           let result = [];
 
           for (let i in data) {
-
+           if(Object.prototype.hasOwnProperty.call(data,i)){
             try{
               let doc = yaml.safeLoad(data[i].replace(filter[1],'').replace(filter[2],""));
 
@@ -424,7 +424,7 @@ let indexDB = {
               }
               
             }
-
+           }
           }//loop
           debug.log(`end of Parsing\n==============`);
           return result;

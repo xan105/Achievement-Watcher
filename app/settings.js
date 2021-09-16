@@ -2,7 +2,7 @@
 
 const remote = require('@electron/remote');
 const path = require("path");
-const ini = require("ini");
+const ini = require("@xan105/ini");
 const fs = require("fs");
 const ffs = require("@xan105/fs");
 const aes = require(path.join(appPath,"util/aes.js"));

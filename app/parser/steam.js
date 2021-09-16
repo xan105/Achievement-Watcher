@@ -4,7 +4,7 @@ const remote = require('@electron/remote');
 const path = require("path");
 const glob = require("fast-glob");
 const normalize = require('normalize-path');
-const ini = require("ini");
+const ini = require("@xan105/ini");
 const omit = require('lodash.omit');
 const moment = require('moment');
 const request = require('request-zero');
@@ -201,33 +201,39 @@ module.exports.getAchievementsFromFile = async (filePath) => {
   if (local.AchievementsUnlockTimes && local.Achievements) { //hoodlum DARKSiDERS
     
     for (let i in local.Achievements) {
+      if(Object.prototype.hasOwnProperty.call(local.Achievements,i)){
         if (local.Achievements[i] == 1) {
           result[`${i}`] = { Achieved: "1", UnlockTime: local.AchievementsUnlockTimes[i] || null };
         }
+      }
     }
   } else if (local.State && local.Time ) { //3DM
   
-      for (let i in local.State) {
+    for (let i in local.State) {
+      if(Object.prototype.hasOwnProperty.call(local.State,i)){
         if(local.State[i] == '0101'){
           result[i] = { Achieved: "1", UnlockTime: new DataView(new Uint8Array(Buffer.from(local.Time[i].toString(),'hex')).buffer).getUint32(0, true) || null }; 
         }
+      }
     }
   } else {
     result = omit(local.ACHIEVE_DATA || local, filter);
   }
 
   for (let i in result) {
-     if(result[i].State) { //RLD!
-          try{  
-            //uint32 little endian
-            result[i].State = new DataView(new Uint8Array(Buffer.from(result[i].State.toString(),'hex')).buffer).getUint32(0, true);
-            result[i].CurProgress = new DataView(new Uint8Array(Buffer.from(result[i].CurProgress.toString(),'hex')).buffer).getUint32(0, true);
-            result[i].MaxProgress = new DataView(new Uint8Array(Buffer.from(result[i].MaxProgress.toString(),'hex')).buffer).getUint32(0, true);
-            result[i].Time = new DataView(new Uint8Array(Buffer.from(result[i].Time.toString(),'hex')).buffer).getUint32(0, true);   
-          }catch(e){} 
-     } else if (result[i].unlocktime && result[i].unlocktime.length === 7){ //creamAPI
-        result[i].unlocktime = +result[i].unlocktime * 1000 //cf: https://cs.rin.ru/forum/viewtopic.php?p=2074273#p2074273 | timestamp is invalid/incomplete
-     }  
+    if(Object.prototype.hasOwnProperty.call(result,i)){
+       if(result[i].State) { //RLD!
+            try{  
+              //uint32 little endian
+              result[i].State = new DataView(new Uint8Array(Buffer.from(result[i].State.toString(),'hex')).buffer).getUint32(0, true);
+              result[i].CurProgress = new DataView(new Uint8Array(Buffer.from(result[i].CurProgress.toString(),'hex')).buffer).getUint32(0, true);
+              result[i].MaxProgress = new DataView(new Uint8Array(Buffer.from(result[i].MaxProgress.toString(),'hex')).buffer).getUint32(0, true);
+              result[i].Time = new DataView(new Uint8Array(Buffer.from(result[i].Time.toString(),'hex')).buffer).getUint32(0, true);   
+            }catch(e){} 
+       } else if (result[i].unlocktime && result[i].unlocktime.length === 7){ //creamAPI
+          result[i].unlocktime = +result[i].unlocktime * 1000 //cf: https://cs.rin.ru/forum/viewtopic.php?p=2074273#p2074273 | timestamp is invalid/incomplete
+       }  
+    }
   }
 
   return result;
