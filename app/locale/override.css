@@ -81,6 +81,10 @@ html[lang="hu"] #options-source li:nth-child(1).hasHelper
 {
   margin-bottom: 32px;
 }
+html[lang="hu"] #options-souvenir-video li:nth-child(1).hasHelper
+{
+  margin-bottom: 16px;
+}
 
 html[lang="pl"] #settingNav li 
 {

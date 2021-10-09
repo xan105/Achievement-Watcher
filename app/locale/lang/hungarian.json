@@ -1,25 +1,26 @@
 {
   "achievements" : "Teljesítmény",
-  "perfectGame" : "Tökéletes játék",
+  "perfectGame" : "Befejezett játék",
   "completionRate": "Játék Teljesítési Átlag",
   "emptyList": "Nincsenek játékok",
   "loading": "Betöltés",
-  "unlocked" : "Feloldva",
-  "locked": "Zárolva",
+  "unlocked" : "Feloldott",
+  "locked": "Zárolt",
   "globalStat" : "-nyi játékosnak van meg",
   "hiddenRemain" : "rejtett teljesítmény van még",
-  "revealedOnceUnlocked" : "A rejtett teljesítmények leírásai feloldás után lesznek felfedve, ha elérhetőek",
+  "revealedOnceUnlocked" : "A rejtett teljesítmények leírásai feloldás után lesznek felfedve",
   "noneUnlocked": "Még nem oldottál fel teljesítményt",
   "play": "Kezdj játszani!",
   "scrollUp" : "Vissza a tetejére",
   "allGamesBackButton" : "Összes Játék",
   "removeFromList": "Hozzáadás a Feketelistához",
+  "buildIconPrefetchCache": "Értesítés ikonok gyorsítótárának létrehozása",
   "settings" : {
     "title": "Beállítások",
     "sideMenu":{
       "general": "Általános",
       "notification": "Értesítés",
-      "souvenir": "Souvenir",
+      "souvenir": "Emlék",
       "folder": "Mappák",
       "source": "Forrás",
       "advanced": "Haladó",
@@ -33,7 +34,7 @@
       "cancel": "Mégse",
       "save": "Mentés",
       "version": "Verzió",
-      "edit": "Edit"
+      "edit": "Tallózás"
     },
     "general": {
       "language": {
@@ -77,27 +78,31 @@
       "option": {
         "notification" : {
           "name": "Értesítés",
-          "description": "Értesíts lehetséges teljesítmény feloldásnál"
+          "description": "Értesítés lehetséges teljesítmény feloldásnál"
         },
         "rumble" : {
           "name": "Játékvezérlő rezgés (XInput)",
-          "description": "Teljesítmény feloldásnál rezgést generál az elsődleges játékvezérlőn"
+          "description": "Teljesítmény feloldásánál rezgést generál az elsődleges játékvezérlőn"
         },
         "notifyOnProgress" : {
           "name": "Haladás jelentés",
-          "description": "Értesíts lehetséges teljesítmény haladásnál"
+          "description": "Értesítés lehetséges teljesítmény haladásnál"
+          },
+        "playtime": {
+          "name": "Játékidő követés",
+          "description": "Értesítés a követés kezdetekor/befejezésekor"
         },
         "customToastAudio" : {
           "name": "Értesítés hangja",
           "description": "Meghatározza a lejászott hangot az értesítés megjelenítésekor",
           "value": {
             "systemDefault": "Alapértelmezett",
-            "muted": "Némított"
+            "muted": "Néma"
           }
         },
         "toastSouvenir" : {
           "name": "Értesítéses emlék",
-          "description": "Emlék képernyőmentés mutatása értesítésben",
+          "description": "Emlék képernyőmentés mutatása az értesítésben",
           "value": {
             "top" : "Felül",
             "bottom" : "Alul"
@@ -120,65 +125,65 @@
           "description": "Buborék értesítés használata, ha a sima értesítés nem működik"
         },
         "useWS" : {
-          "description": "Teljesítmény közvetítése az összes csatlakozott kliensnek felé"
+          "description": "Teljesítmény közvetítése az összes csatlakozott kliens felé"
         }
       }
     },
     "souvenir":{
       "title": {
-        "screenshot": "Screenshot",
-        "video": "Video"
+        "screenshot": "Képernyőmentés",
+        "video": "Videó"
       },
       "option":{
         "screenshot" : {
           "name": "Emlék",
-          "description": "Képernyőmentés készítése, teljesítmény feloldásnál"
+          "description": "Képernyőmentés készítése, teljesítmény feloldásánál"
         },
         "video": {
-          "name": "Video souvenir",
-          "description": "Record a short video when you unlock an achievement using the hardware encoder of your GPU"
+          "name": "Videó emlék",
+          "description": "Rövid videó készítése a GPU használatával, teljesítmény feloldásánál"
         },
         "overwrite": {
-          "name": "Overwrite if existing file"
+          "name": "Meglévő fájl felülírása"
         },
         "custom_dir": {
-          "name": "Save location"
+          "name": "Mentés helye"
         },
         "codec": {
-          "name": "Video codec",
-          "description": "H.265/HEVC is more performant but less supported"
+          "name": "Videó kodek",
+          "description": "A H.265/HEVC jobb teljesítményű, de kevésbé támogatott"
         },
         "colorDepth": {
-          "name": "Color depth",
-          "description": "10bits is only available for H.265/HEVC"
+          "name": "Színmélység",
+          "description": "A 10 bites csak a H.265/HEVC részére elérhető"
         },
         "duration": {
-          "name": "Duration"
+          "name": "Időtartam"
         },
         "framerate": {
-          "name": "Framerate"
+          "name": "Képkocka"
         },
         "cursor": {
-          "name": "Mouse cursor"
+          "name": "Kurzor"
         }
       }
     },
     "folder": {
       "headline": "Teljesítmény fájlok keresésének helyei:",
-      "default": "Alapértelmezett Mappák",
-      "custom": "Felhasználói Mappák",
+      "default": "Alapértelmezett mappák",
+      "custom": "Felhasználói mappák",
       "addInfo": [
         "Válassz ki olyan mappát, ami tartalmaz appid mappá(ka)t.",
-        "A(z) ALI213, Hoodlum, RPCS3 mappáknál olyan mappát válassz ki, ahol a(z)",
+        "Az ALI213, Hoodlum, RPCS3 mappáknál olyan mappát válassz ki, ahol az",
         "ALI213.ini, valve.ini, hlm.ini, ds.ini vagy RPCS3.exe fájl található."],
       "add": "Mappa hozzáadása"
     },
     "source": {
       "legitSteam": {
-        "name": "Steam játékok mutatása",
-        "description": "A Steam telepítve kell, hogy legyen és a Steam profilodnak nyilvánosnak kell lennie !",
+        "name": "Steam-es játékok mutatása",
+        "description": "A Steam-nek telepítve kell lennie és a Steam profilodnak nyilvánosnak kell lennie!",
         "value": {
-          "none": "Nincs",
+          "none": "Letiltva",
           "installed": "Telepített",
           "owned": "Megvásárolt"
         }
