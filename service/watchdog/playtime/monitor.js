@@ -4,6 +4,7 @@ const os = require('os');
 const path = require('path');
 const fs = require('@xan105/fs');
 const request = require('request-zero');
+const regedit = require('regodit');
 const WQL = require('wql-process-monitor');
 const humanizeDuration = require("humanize-duration");
 const EventEmitter = require("emittery");
@@ -88,6 +89,12 @@ async function init(){
 
 	  if(!game) return;
     debug.log(`DB Hit for ${game.name}(${game.appid}) ["${filepath}"]`);
+    
+    const runningAppID = await regedit.promises.RegQueryIntegerValue("HKCU","SOFTWARE/Valve/Steam", "RunningAppID") || 0;
+    if (+runningAppID == game.appid){
+      debug.warn("Ignoring game launched by Steam");
+      return;
+    }
     
     if (!nowPlaying.includes(game)) { //Only one instance allowed
 
