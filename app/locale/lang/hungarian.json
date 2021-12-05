@@ -1,7 +1,7 @@
 {
   "achievements" : "Teljesítmény",
-  "perfectGame" : "Befejezett játék",
-  "completionRate": "Játék Teljesítési Átlag",
+  "perfectGame" : "Tökéletes játék",
+  "completionRate": "Átlagos játékteljesítési mutató",
   "emptyList": "Nincsenek játékok",
   "loading": "Betöltés",
   "unlocked" : "Feloldott",
