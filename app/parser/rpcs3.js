@@ -9,8 +9,8 @@ const ffs = require("@xan105/fs");
 const magic = {
   header : Buffer.from('818F54AD','hex'),
   delimiter : [ 
-	Buffer.from('0400000050','hex'), 
-	Buffer.from('0600000060','hex') 
+    Buffer.from('0400000050','hex'), 
+    Buffer.from('0600000060','hex') 
   ]
 };
 
@@ -101,52 +101,77 @@ try {
 
 module.exports.getAchievements = async (dir) => {
 
-    let result = [];
+  let result = [];
    
-    const buffer = await ffs.readFile(path.join(dir,files.userData));
+  const buffer = await ffs.readFile(path.join(dir,files.userData));
    
 	const header = buffer.slice(0, magic.header.length);
+	if (!header.equals(magic.header)) throw "ERR_UNEXPECTED_FILE_FORMAT";
 
-	if (Buffer.compare(header,magic.header) !== 0) throw "EUNEXPECTEDFILEFORMAT"
-
-	const headerEndPos = indexOfOccurrence(buffer, magic.delimiter[0], 2) + magic.delimiter[0].length;
-
+	const headerEndPos = indexOfNthOccurrence(buffer, magic.delimiter[0], 2) + magic.delimiter[0].length;
 	const data = buffer.slice(headerEndPos);
 
-	const separator = new RegExp(magic.delimiter[0].toString('hex') + "|" + magic.delimiter[1].toString('hex') , "g");
-	const stats = data.toString('hex').split(separator);
-
-	if (stats.length % 2 !== 0) throw "EUNEXPECTEDACHCOUNT";
+	const stats = bufferSplit(data, magic.delimiter);
+	if (stats.length % 2 !== 0) throw "ERR_UNEXPECTED_TROPHY_COUNT";
 
 	const length = stats.length / 2;
-
+  if (length > 128) throw "ERR_UNEXPECTED_MAX_TROPHY_LIMIT_EXCEEDED";
+    
 	for (let i = 0; i <= length - 1; i++) 
 	{
-		 try {
+    try {
 		   
-		   const timestamp = stats[i].slice(32,40);
+      const timestamp = stats[i].slice(16,20);
+      const value = stats[i+length].slice(12,16).readInt32BE();
 		   
-		   const trophy = {
-			id : parseInt(stats[i].slice(6,8),16),
-			unlockTime : (timestamp === "ffffffff") ? 0 : parseInt(timestamp,16),
-			achieved : (stats[i+length].slice(30,32) === "01") ? true : false
-		   };
+      const trophy = {
+        id : stats[i].slice(0,4).readInt32BE(),
+        unlockTime : timestamp.equals(Buffer.from("ffffffff","hex")) ? 0 : timestamp.readInt32BE(),
+        achieved : value === 1
+      };
 		   
-		   result.push(trophy);
+      result.push(trophy);
 		   
-		 }catch{ /*Do nothing*/ }
-	}
+      }catch{ continue }
+  }
     
-    return result;
+  return result;
 }
 
-function indexOfOccurrence(buffer, search, n) {
-    let i = -1;
+function indexOfAny(buffer, values, offset = 0){
+  for (const value of values){
+    const pos = buffer.indexOf(value, offset);
+    if (pos > -1) return { pos: pos, offset: value.length }
+  }
+  return { pos: -1, offset: 0 }
+}
 
-    while (n-- && i++ < buffer.length) {
-        i = buffer.indexOf(search, i);
-        if (i < 0) break;
-    }
+function bufferSplit(buffer, separators){
+
+  let result = [];
+
+  let pos = -1;
+  let prev = 0;
+
+  while (pos++ < buffer.length) {
+    const search = indexOfAny(buffer, separators, pos);
+    pos = search.pos > 0 ? search.pos : buffer.length;
+    const chunck = buffer.slice(prev, pos);
+    prev = pos + search.offset;
+    result.push(chunck);
+  }
+  
+  return result;
+} 
+
+function indexOfNthOccurrence(buffer, search, n) 
+{
+  let i = -1;
+
+  while (n-- && i++ < buffer.length) {
+    i = buffer.indexOf(search, i);
+    if (i < 0) break;
+  }
     
-    return i;
+  return i;
 }

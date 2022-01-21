@@ -2,15 +2,14 @@
 
 function parse(buffer) {
 
-	if (!Buffer.isBuffer(buffer)) throw "ENOTABUFFER";
+	if (!Buffer.isBuffer(buffer)) throw "ERR_INVALID_ARGS";
 
-    const Length = 24; //Each entries are 24 bytes long
-    
+    const length = 24; //Each entries are 24 bytes long
     const header = buffer.slice(0, 4);
-    const stats = bufferSplit(buffer.slice(header.length, buffer.length), Length);
     
-    const expectedStatsCount = toInt(header);
-    if (stats.length !== expectedStatsCount) throw "EUNEXPECTEDFILECONTENT";
+    const stats = bufferSplitIntoChuncks(buffer.slice(header.length, buffer.length), length);
+    const expectedStatsCount = header.readInt32LE();
+    if (stats.length !== expectedStatsCount) throw "ERR_UNEXPECTED_STATS_COUNT";
     
     let result = [];
     
@@ -18,33 +17,26 @@ function parse(buffer) {
     {  
         try{
         
-          const value = toInt(stats[i].slice(20,21));
-          if ( value === 1 )  //is an achievement or a stat when 0 or 1; is a stat 100% when > 1; NB: a stat has also an unlocktime with sse
-          {
-            result.push({
-                crc: toString(stats[i].slice(0,4)),
-                Achieved : value,
-                UnlockTime: toInt(stats[i].slice(8, 12))
-            });
-          }
+          const value = stats[i].slice(20,24).readInt32LE();
+          if ( value > 1 ) continue  //is an achievement or a stat when 0 or 1; is a stat 100% when > 1; NB: a stat has also an unlocktime with sse
           
-        }catch{ /* Do nothing */ }
+          result.push({
+            crc: stats[i].slice(0,4).reverse().toString('hex'), //api_name is a CRC32
+            Achieved : value,
+            UnlockTime: stats[i].slice(8,12).readInt32LE()
+          });
+          
+        }catch{ continue }
     }
     
     return result;
 }
 
-function toString(buffer){
-	return buffer.reverse().toString('hex');
-}
-
-function toInt(buffer) {
-	return parseInt(buffer.reverse().toString('hex'),16);
-}
-
-function bufferSplit(buffer, n){
+//splitting a buffer into n-sized chunks
+function bufferSplitIntoChuncks(buffer, n){
   let result = [];
-  for (let i = 0, j = 1; i < buffer.length; i += n, j++) result.push(buffer.slice(i,n*j));
+  for (let i = 0, j = 1; i < buffer.length; i += n, j++) 
+    result.push(buffer.slice(i, n*j));
   return result;
 }
 
