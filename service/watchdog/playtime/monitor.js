@@ -8,6 +8,7 @@ const regedit = require('regodit');
 const WQL = require('wql-process-monitor');
 const humanizeDuration = require("humanize-duration");
 const EventEmitter = require("emittery");
+const tasklist = require('win-tasklist');
 const Timer = require('./timer.js');
 const TimeTrack = require('./track.js');
 const { findByReadingContentOfKnownConfigfilesIn } = require('./steam_appid_find.js');
@@ -92,8 +93,12 @@ async function init(){
     
     const runningAppID = await regedit.promises.RegQueryIntegerValue("HKCU","SOFTWARE/Valve/Steam", "RunningAppID") || 0;
     if (+runningAppID == game.appid){
-      debug.warn("Ignoring game launched by Steam");
-      return;
+      debug.warn("RunningAppID found! Checking if Steam is running...");
+      const isSteamRunning = await tasklist.isProcessRunning("steam.exe").catch((err) => { return false });
+      if (isSteamRunning){
+        debug.warn("Ignoring game launched by Steam");
+        return;
+      }
     }
     
     if (!nowPlaying.includes(game)) { //Only one instance allowed
