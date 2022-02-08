@@ -42,6 +42,10 @@ module.exports.getFolders = async (userDir_file) => {
       options: { recursive: true, filter: /([0-9]+)\\remote\\([0-9]+)/, file: [files.achievement[1]] }
     },
     { 
+      dir: path.join(process.env['Public'],"EMPRESS"), 
+      options: { recursive: true, filter: /([0-9]+)\\remote\\([0-9]+)/, file: [files.achievement[1]] }
+    },
+    { 
       dir: path.join(process.env['PROGRAMDATA'],"Steam"), 
       options: { disableCheckIfProcessIsRunning: true, disableCheckTimestamp: true, recursive: true, filter: /([0-9]+)\\stats/, file: [files.achievement[0]] } 
       //3DM doesn't need override (disableCheckIfProcessIsRunning,disableCheckTimestamp) ...
