@@ -2,6 +2,7 @@
 
 const instance = new (require('single-instance'))('Achievement Watchdog');
 const os = require('os');
+const { spawn } = require("child_process");
 const path = require('path');
 const getStartApps = require('get-startapps');
 const watch = require('node-watch');
