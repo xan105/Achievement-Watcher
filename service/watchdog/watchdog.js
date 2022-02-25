@@ -214,6 +214,26 @@ var app = {
                            if (options.disableCheckTimestamp || (elapsedTime >= 0 && elapsedTime <= self.options.notification_advanced.timeTreshold)) {
                               
                               debug.log("Unlocked:"+ ach.displayName);
+
+                  try{
+                    if (self.options.action.target){
+                      debug.log(`Action: ${self.options.action.target}`);
+                      const exec = spawn(self.options.action.target, { cwd: self.options.action.cwd || path.parse(self.options.action.target).dir, stdio: "ignore", detached: true, windowsHide: self.options.action.hide ?? true,
+                        env : { ...process.env, 
+                          AW_APPID: appID.toString(), 
+                          AW_GAME: game.name.toString(),
+                          AW_ACHIEVEMENT: ach.name.toString(),
+                          AW_DISPLAYNAME: ach.displayName.toString(),
+                          AW_DESCRIPTION: ach.description?.toString() || "",
+                          AW_ICON: ach.icon?.toString() || "",
+                          AW_TIME: achievements[i].UnlockTime.toString()
+                        }
+                      });
+                      exec.unref();
+                    }
+                  }catch(err){
+                    debug.error(`Action failed: ${err}`);
+                  }
                               
 								  await notify({
 									 appid: game.appid,

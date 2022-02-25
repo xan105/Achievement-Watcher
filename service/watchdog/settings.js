@@ -240,6 +240,22 @@ module.exports.load = async (cfg_file) => {
           fixFile = true;
         }
         
+        //Action
+        if (typeof options.action.target !== "string"){
+          options.action.target = "";
+          fixFile = true;
+        }
+        
+        if (typeof options.action.cwd !== "string"){
+          options.action.cwd = "";
+          fixFile = true;
+        }
+        
+        if (typeof options.action.hide !== "boolean"){
+          options.action.hide = true;
+          fixFile = true;
+        }
+        
         //Steam Key  
 
         let steamKey;
@@ -315,6 +331,11 @@ module.exports.load = async (cfg_file) => {
             duration: 20,
             framerate: 60,
             cursor: false
+          },
+          action:{
+            target: "",
+            cwd: "",
+            hide: true
           },
           steam: {}
         };

@@ -193,6 +193,19 @@ module.exports.load = ()=>{
           options.souvenir_video.cursor = false;
         }
         
+        //Action
+        if (typeof options.action.target !== "string"){
+          options.action.target = "";
+        }
+        
+        if (typeof options.action.cwd !== "string"){
+          options.action.cwd = "";
+        }
+        
+        if (typeof options.action.hide !== "boolean"){
+          options.action.hide = true;
+        }
+        
         //Steam Key    
 
         if (options.steam) {
@@ -261,6 +274,11 @@ module.exports.load = ()=>{
             duration: 20,
             framerate: 60,
             cursor: false
+          },
+          action:{
+            target: "",
+            cwd: "",
+            hide: true
           },
           steam: {}
         };
