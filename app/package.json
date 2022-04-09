@@ -33,7 +33,7 @@
     "js-yaml": "^3.14.1",
     "lodash.omit": "^4.5.0",
     "minimist": "^1.2.5",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "node-html-parser": "^4.0.0",
     "normalize-path": "^3.0.0",
     "regodit": "^1.1.2",
