@@ -1,8 +1,11 @@
 {
   "name": "Achievement-Watcher-Updater",
   "description": "Keep Achievement Watcher up-to-date",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "updater.js",
+  "engines": {
+    "node": "~14.0.0"
+  },
   "scripts": {
     "start": "node updater.js",
     "clean": "npm prune --production"
