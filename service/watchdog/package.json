@@ -21,6 +21,7 @@
     "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
     "@xan105/fs": "^1.2.0",
     "@xan105/ini": "^1.0.1",
+    "@xan105/is": "^2.4.0",
     "@xan105/log": "^1.0.2",
     "@xan105/screenshot": "^1.2.1",
     "@xan105/video-capture": "^1.2.0",

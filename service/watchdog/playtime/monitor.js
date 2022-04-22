@@ -154,28 +154,48 @@ async function init(){
 
 async function getGameIndex(){
 	
-	const filePath = path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache/schema","gameIndex.json");
+	//Temporary esm in cjs load | REPLACE ME when using ESM !
+	//Warning @xan105/is targets >= node16 but should be fine.
+	const { shouldArrayOfObjWithProperties } = (await import("@xan105/is")).assert;
 	
-	let gameIndex;
+	const filePath = {
+    cache: path.join(process.env['APPDATA'],"Achievement Watcher/steam_cache/schema","gameIndex.json"),
+    user: path.join(process.env['APPDATA'],"Achievement Watcher/cfg","gameIndex.json")
+  };
+	
+	let gameIndex, userOverride;
 	
 	try{
-		if (await fs.existsAndIsYoungerThan(filePath,{timeUnit: 'd', time: 1})) {
-			gameIndex = JSON.parse( await fs.readFile(filePath,"utf8") );
+		if (await fs.existsAndIsYoungerThan(filePath.cache,{timeUnit: 'd', time: 1})) {
+			gameIndex = JSON.parse( await fs.readFile(filePath.cache,"utf8") );
 		} else {
 			try{
 				gameIndex = ( await request.getJson("https://api.xan105.com/v2/steam/gameindex") ).data;
-				await fs.writeFile(filePath,JSON.stringify(gameIndex),"utf8").catch((err)=>{debug.error(err)});
+				debug.log("[Playtime] gameIndex updated");
+				await fs.writeFile(filePath.cache,JSON.stringify(gameIndex),"utf8").catch((err)=>{debug.error(err)});
 			}catch(err){
 				debug.error(err);
-				gameIndex = JSON.parse( await fs.readFile(filePath,"utf8") );
+				gameIndex = JSON.parse( await fs.readFile(filePath.cache,"utf8") );
 			}
 		}
+		debug.log(`[Playtime] gameIndex loaded ! ${gameIndex.length} game(s)`);
 	}catch(err){
 		debug.error(err);
 		gameIndex = [];
 	}
-
-	return gameIndex;
+	
+	try{
+    userOverride = JSON.parse( await fs.readFile(filePath.user,"utf8") );
+    shouldArrayOfObjWithProperties(userOverride, ["appid","name","binary"]);
+    debug.log(`[Playtime] user gameIndex loaded ! ${userOverride.length} override(s)`);
+	}catch(err){
+    debug.error(err);
+    userOverride = [];
+  }
+  
+  //Merge (assign) arrB in arrA using prop as unique key
+  const mergeArrayOfObj = (arrA, arrB, prop) => arrA.filter(a => !arrB.find(b => a[prop] === b[prop])).concat(arrB);
+  return mergeArrayOfObj(gameIndex, userOverride, "appid");
 }
 
 module.exports = { init };
