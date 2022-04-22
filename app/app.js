@@ -292,7 +292,7 @@ var app = {
             
             if(game.img.background) {
 
-              if (game.system === "uplay") {
+              if (game.system === "uplay" || game.img?.overlay === true) {
                 let gradient = `linear-gradient(to bottom right, rgba(0, 47, 75, .8), rgba(35, 54, 78, 0.9))`;
                 $("body").fadeIn().attr("style",`background: ${gradient}, url('${game.img.background}')`);
               } else {
