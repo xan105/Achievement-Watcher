@@ -19,7 +19,7 @@ module.exports.loadSteamData = async (appID, lang, key) => {
     let filePath = path.join(`${cache}`,`${appID}.db`);
     let result;
 
-    if (await fs.existsAndIsYoungerThan(filePath,{timeUnit: 'M', time: 1})) {
+    if (await fs.existsAndIsYoungerThan(filePath,{timeUnit: 'M', time: 6})) {
         result = JSON.parse(await fs.readFile(filePath));
     } else {
         if (key) {
