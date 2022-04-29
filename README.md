@@ -76,6 +76,7 @@ VS2017 / C++ build tools, Python ~2.7~ 3.x (node-gyp), and the Windows SDK **10.
 ### Build:
 
 Install `node_modules` folders with `npm install.cmd`<br/>
+or do it yourself with `npm ci` in `/app`, `/service/updater` and `/service/watchdog`.<br/>
 Use `buildme.cmd` in the root folder to build.
 
 ### Notes: 

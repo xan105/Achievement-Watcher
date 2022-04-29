@@ -1,11 +1,11 @@
 @echo off
 cd "%~dp0app"
-npm i
+npm ci
 npm run-script native-rebuild
 cd "%~dp0service\updater"
-npm i
+npm ci
 cd "%~dp0service\watchdog"
-npm i
+npm ci
 cd "%~dp0server\v2"
-npm i
+npm ci
 PAUSE
