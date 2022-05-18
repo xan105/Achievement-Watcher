@@ -11,12 +11,12 @@ function getSteamGlobalStat(appid) {
       timeout: 5000,
       beforeSend: ()=>{},
       success: (data) => { 
-        for (let globalStat of data.achievementpercentages.achievements) {      
-        
-           let percent = Math.round(globalStat.percent);
+        for (const globalStat of data.achievementpercentages.achievements) {      
+           
+           const percent = Math.round(globalStat.percent * 10) / 10;
            if(percent > 100) percent = 100;
         
-           let elem = $(`#achievement li .achievement[data-name="${globalStat.name}"]`);
+           const elem = $(`#achievement li .achievement[data-name="${globalStat.name}"]`);
            
            elem.find(".stats .community span.data").text(percent);
            
