@@ -91,7 +91,8 @@ async function init(){
 	  if(!game) return;
     debug.log(`DB Hit for ${game.name}(${game.appid}) ["${filepath}"]`);
     
-    const runningAppID = await regedit.promises.RegQueryIntegerValue("HKCU","SOFTWARE/Valve/Steam", "RunningAppID") || 0;
+    //RunningAppID is not that reliable and this intefere with Greenluma; Commenting out for now
+    /*const runningAppID = await regedit.promises.RegQueryIntegerValue("HKCU","SOFTWARE/Valve/Steam", "RunningAppID") || 0;
     if (+runningAppID == game.appid){
       debug.warn("RunningAppID found! Checking if Steam is running...");
       const isSteamRunning = await tasklist.isProcessRunning("steam.exe").catch((err) => { return false });
@@ -99,7 +100,7 @@ async function init(){
         debug.warn("Ignoring game launched by Steam");
         return;
       }
-    }
+    }*/
     
     if (!nowPlaying.includes(game)) { //Only one instance allowed
 
