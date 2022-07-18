@@ -110,7 +110,6 @@ Filename: "{tmp}\redist\VC_redist.x64.exe"; Parameters: "/quiet /norestart"; Wor
 Filename: "{tmp}\redist\directx\DXSETUP.exe"; Parameters: "/silent"; WorkingDir: "{tmp}\redist\directx"; StatusMsg: "{cm:DirectX}"; Flags: runhidden waituntilterminated skipifdoesntexist skipifsilent; Check: isWin('win7')
 ;Misc
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade Daily"" /RL HIGHEST /SC DAILY /RI 60 /DU 24:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
-Filename: "{cmd}"; Parameters: "/c SCHTASKS /Create /F /TN ""Achievement Watcher Upgrade OnLogon"" /RL HIGHEST /SC ONLOGON /DELAY 0010:00 /TR ""\""{app}\nw\nw.exe\"" -config updater.json"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c Netsh.exe advfirewall firewall add rule name=""Achievement Watchdog"" program=""{app}\node\node.exe"" protocol=tcp dir=in enable=yes action=allow profile=Private"; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c regsvr32 /s virtual-audio-capturer.dll"; WorkingDir: "{app}\loopback"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{app}\nw\nw.exe"; Parameters: "-config watchdog.json"; WorkingDir: "{#AppWorkingDir}\nw"; StatusMsg: "{cm:Finishing}"; Flags: runasoriginaluser runhidden nowait skipifdoesntexist
@@ -123,7 +122,6 @@ Type: filesandordirs; Name: "{userappdata}\Achievement Watcher"
 
 [UninstallRun]
 Filename: "{cmd}"; Parameters: "/c SCHTASKS /Delete /F /TN ""Achievement Watcher Upgrade Daily"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
-Filename: "{cmd}"; Parameters: "/c SCHTASKS /Delete /F /TN ""Achievement Watcher Upgrade OnLogon"""; WorkingDir: "{app}"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 Filename: "{cmd}"; Parameters: "/c regsvr32 /s /u virtual-audio-capturer.dll"; WorkingDir: "{app}\loopback"; StatusMsg: "{cm:Finishing}"; Flags: runhidden waituntilterminated skipifdoesntexist
 
 [Registry]
