@@ -20,6 +20,7 @@ const notify = require("./notification/toaster.js");
 const debug = require("./util/log.js");
 const { crc32 } = require('crc');
 const { isWinRTAvailable } = require('powertoast');
+const { isFullscreenAppRunning } = require('./queryUserNotificationState.js');
 
 const cfg_file = {
   option: path.join(process.env['APPDATA'],"Achievement Watcher/cfg","options.ini"),
@@ -149,8 +150,12 @@ var app = {
         if (options.disableCheckIfProcessIsRunning === true) {
           isRunning = true;
         } else if (self.options.notification_advanced.checkIfProcessIsRunning) {
-          if (game.binary) {
-
+          if(await isFullscreenAppRunning()){
+              isRunning = true;
+              debug.warn("Fullscreen application detected on primary display. Assuming process is running");
+          }
+          else if (game.binary) 
+          {
             isRunning = await tasklist.isProcessRunning(game.binary).catch((err) => {
               debug.error(err);
               debug.warn("Assuming process is NOT running");
@@ -166,7 +171,8 @@ var app = {
               });
             }
             
-          } else {
+          } 
+          else {
             debug.warn(`Warning! Missing "${game.name}" (${game.appid}) binary name > Overriding user choice to check if process is running`);
             isRunning = true;
           }
