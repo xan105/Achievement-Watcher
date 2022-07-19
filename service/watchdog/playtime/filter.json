@@ -17,7 +17,11 @@
 		"OAWrapper.exe",
 		"WMIC.exe",
 		"firefox.exe",
-		"chrome.exe"
+		"chrome.exe",
+		"opera.exe",
+		"brave.exe",
+		"msedge.exe",
+		"vivaldi.exe"
 	],
 	"mute" : [
 		"nw.exe",
