@@ -395,7 +395,7 @@ instance.lock().then(() => {
                 appid: game.appid,
                 gameDisplayName: game.name,
                 achievementDisplayName: game.name,
-                achievementDescription: (time) ? time : "Now playing", 
+                achievementDescription: (time) ? time : "Tracking playtime", 
                 icon: `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${game.appid}/${game.icon}.jpg`,
                 image: `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg`,
             },{
