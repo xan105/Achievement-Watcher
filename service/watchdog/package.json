@@ -1,7 +1,7 @@
 {
   "name": "Achievement-Watchdog",
   "description": "Sidekick to Achievement Watcher for live notification on achievement unlocking",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "main": "watchdog.js",
   "engines": {
     "node": "~14.0.0"

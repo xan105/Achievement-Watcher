@@ -70,6 +70,8 @@ module.exports = async (message, option = {}) => {
 					debug.error(err); 
 				});
 			}catch(err){ debug.error(err) }
+		} else {
+      debug.log("Skipping souvenir: video");
 		}
 		
 		if (options.souvenir.screenshot) {
@@ -84,6 +86,8 @@ module.exports = async (message, option = {}) => {
 					.catch( (err) => { debug.error(err) });
 				}
 			}catch(err){ debug.error(err) }
+		} else {
+      debug.log("Skipping souvenir: screenshot");
 		}
 		
 		if (options.notify)

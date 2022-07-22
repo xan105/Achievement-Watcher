@@ -1,8 +1,8 @@
 //From notification-state-ffi: https://github.com/xan105/node-notification-state-ffi | MIT license 
 //CJS. Use above lib when moving to ESM 
 const { promisify } = require('util'); 
-const ffi require('ffi-napi');
-const ref require('ref-napi');
+const ffi = require('ffi-napi');
+const ref = require('ref-napi');
 
 const QUERY_USER_NOTIFICATION_STATE = {
   1: "QUNS_NOT_PRESENT", //A screen saver is displayed, the machine is locked, or a nonactive Fast User Switching session is in progress
@@ -15,7 +15,7 @@ const QUERY_USER_NOTIFICATION_STATE = {
 };
   
 const lib = ffi.Library("shell32.dll", {
-  SHQueryUserNotificationState: ["long", ["*int32"]],
+  SHQueryUserNotificationState: ["long", ["int32 *"], { abi: ffi.FFI_WIN64 }]
 });
 
 async function queryUserNotificationState(){
