@@ -15,7 +15,7 @@
   "author": "Anthony Beaumont",
   "license": "LGPL-3.0-only",
   "devDependencies": {
-    "electron": "12.2.3",
+    "electron": "15.5.5",
     "electron-context-menu": "^2.5.0",
     "electron-rebuild": "^2.3.5",
     "patch-package": "^6.2.2"
