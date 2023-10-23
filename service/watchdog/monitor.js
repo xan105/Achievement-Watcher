@@ -42,7 +42,7 @@ module.exports.getFolders = async (userDir_file) => {
       options: { recursive: true, filter: /([0-9]+)\\remote\\([0-9]+)/, file: [files.achievement[1]] }
     },
     { 
-      dir: path.join(process.env['Public'],"EMPRESS"), 
+      dir: path.join(process.env['Public'],"Documents/EMPRESS"), 
       options: { recursive: true, filter: /([0-9]+)\\remote\\([0-9]+)/, file: [files.achievement[1]] }
     },
     { 
