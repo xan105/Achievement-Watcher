@@ -1,3 +1,10 @@
+**⚠️ NB: The cache server was shutdown over a year ago.<br />
+You need a Steam Web API key for the app to be able to fetch data from Steam.<br />
+You can acquire one [by filling out this form](https://steamcommunity.com/dev/apikey).<br />
+Enter your key in `Settings > Advanced`.**
+
+<hr />
+
 A sexy achievement file parser with real-time notification, automatic screenshot and playtime tracking.<br />
 View every achievement earned on your PC whether it's coming from Steam, a Steam emulator, and more.<br />
 To see the full list of what this app can import please see the [**Wiki/Compatibility**](https://github.com/xan105/Achievement-Watcher/wiki/Compatibility).
