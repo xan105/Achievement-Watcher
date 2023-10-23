@@ -11,8 +11,8 @@ To see the full list of what this app can import please see the [**Wiki/Compatib
 
 <table >
 <tr>
-<td align="left"><img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/home.png" width="400px"></td>
-<td align="left"><img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/ach_view.png" width="400px"></td>
+<td align="left"><img src="https://github.com/xan105/Achievement-Watcher/raw/1.x/screenshot/home.png" width="400px"></td>
+<td align="left"><img src="https://github.com/xan105/Achievement-Watcher/raw/1.x/screenshot/ach_view.png" width="400px"></td>
 </tr>
 </table>
 
@@ -45,7 +45,7 @@ You can test notification in Settings > Debug to make sure your system is correc
 There is a lot of things to check so make sure to have a look at the [wiki](https://github.com/xan105/Achievement-Watcher/wiki/Notification-%22Not-Working%22) before asking for help.
 
 <p align="center">
-  <img src="https://github.com/xan105/Achievement-Watcher/raw/master/screenshot/live.gif">
+  <img src="https://github.com/xan105/Achievement-Watcher/raw/1.x/screenshot/live.gif">
 </p>
 
 📸 If you have enabled the *souvenir* option(s) then a screenshot and/or video will be taken when you unlock an achievement.<br />
