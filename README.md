@@ -62,7 +62,7 @@ Translation Help
 I do my best to translate everything for every supported language by Steam, but it's rather difficult and I don't speak that much languages.<br />
 Fluent in another language ? Any help to add/modify/improve would be greatly appreciated.
 
-More details [here](https://github.com/xan105/achievement-watcher/tree/master/app/locale)
+More details [here](https://github.com/xan105/achievement-watcher/tree/1.x/app/locale)
 
 How to build
 ============
