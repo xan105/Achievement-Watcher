@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "Achievement-Watchdog",
   "description": "Sidekick to Achievement Watcher for live notification on achievement unlocking",
   "version": "2.3.4",

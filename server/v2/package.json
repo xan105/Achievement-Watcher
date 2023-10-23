@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "achievement-watcher-server-api",
   "version": "2.0.0",
   "type": "module",

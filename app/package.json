@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "Achievement-Watcher",
   "description": "A sexy achievement file parser with real-time notification.",
   "version": "1.6.8",
